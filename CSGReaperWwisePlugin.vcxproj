@@ -59,6 +59,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gui_Transfer.cpp" />
     <ClCompile Include="include\JUCE\include_juce_audio_basics.cpp" />
     <ClCompile Include="include\JUCE\include_juce_audio_devices.cpp" />
     <ClCompile Include="include\JUCE\include_juce_audio_formats.cpp" />
@@ -99,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="include\ConfigFileHandler.h" />
     <ClInclude Include="include\GUI.h" />
+    <ClInclude Include="include\gui_Transfer.h" />
     <ClInclude Include="include\JUCE\AppConfig.h" />
     <ClInclude Include="include\JUCE\JuceHeader.h" />
     <ClInclude Include="include\reaperHelpers.h" />

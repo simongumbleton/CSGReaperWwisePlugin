@@ -19,6 +19,7 @@
 #include "reaper_plugin_functions.h"
 
 #include "GUI.h"
+#include "gui_Transfer.h"
 
 #include "reaperHelpers.h"
 
@@ -38,7 +39,8 @@ char currentProject[256];
 gaccel_register_t action01 = { { 0, 0, 0 }, "Do action 01." };
 
 std::unique_ptr<BasicWindow> mainWindow;
-std::unique_ptr<MainWindow> mainWindow2;
+//std::unique_ptr<MainWindow> mainWindow2;
+std::unique_ptr<TransferWindow> mainWindow2;
 
 extern "C"
 {
@@ -56,7 +58,7 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 
 		MessageManagerLock mml(Thread::getCurrentThread());
 		//mainWindow.reset( new BasicWindow(wName,Colour::Colour(255,0,0),DocumentWindow::TitleBarButtons::allButtons));
-		mainWindow2.reset(new MainWindow(wName, new MainContentComponent));
+		mainWindow2.reset(new TransferWindow(wName, new TransferToWwiseComponent));
 
 
 		//mainWindow->setVisible(true);

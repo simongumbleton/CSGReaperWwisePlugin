@@ -66,6 +66,9 @@
     <ClCompile Include="include\JUCE\include_juce_opengl.cpp">
       <Filter>include\JUCE</Filter>
     </ClCompile>
+    <ClCompile Include="gui_Transfer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\AkAutobahn.lib">
@@ -146,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="include\JUCE\JuceHeader.h">
       <Filter>include\JUCE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gui_Transfer.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
