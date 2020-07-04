@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{f3659e1b-7a77-4cf8-905f-8e8ec6eff6c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{45686b68-feee-4782-9ca2-37af391b0c16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\JUCE">
+      <UniqueIdentifier>{2eb59115-402b-4474-b9a4-f5f44fd68b2c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ConfigFileHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ReaperRenderQueParser.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WaapiConnect.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WaapiFunctions.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WwiseConnectionHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_audio_basics.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_audio_devices.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_audio_formats.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_audio_processors.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_core.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_cryptography.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_data_structures.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_events.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_graphics.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_gui_basics.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_gui_extra.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+    <ClCompile Include="include\JUCE\include_juce_opengl.cpp">
+      <Filter>include\JUCE</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="include\AkAutobahn.lib">
+      <Filter>include</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\AkAutobahn.pdb">
+      <Filter>include</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_audio_basics.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_audio_devices.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_audio_formats.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_audio_processors.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_core.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_cryptography.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_data_structures.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_events.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_graphics.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_gui_basics.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_gui_extra.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+    <None Include="include\JUCE\include_juce_opengl.mm">
+      <Filter>include\JUCE</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ConfigFileHandler.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GUI.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\reaper_plugin.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\reaper_plugin_functions.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\reaperHelpers.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ReaperRenderQueParser.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WaapiConnect.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WaapiFunctions.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WwiseConnectionHandler.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\JUCE\AppConfig.h">
+      <Filter>include\JUCE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\JUCE\JuceHeader.h">
+      <Filter>include\JUCE</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
