@@ -37,7 +37,8 @@ char currentProject[256];
 
 gaccel_register_t action01 = { { 0, 0, 0 }, "Do action 01." };
 
-
+std::unique_ptr<BasicWindow> mainWindow;
+std::unique_ptr<MainWindow> mainWindow2;
 
 extern "C"
 {
@@ -48,15 +49,18 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 	{
 		rec->Register;
 		HWND main = rec->hwnd_main;
-		MessageBox(main, "Hello World","Reaper Basic Extension", MB_OK);
+		//MessageBox(main, "Hello World","Reaper Basic Extension", MB_OK);
 
 		String wName = "JUCE test window";
 		initialiseJuce_GUI();
 
 		MessageManagerLock mml(Thread::getCurrentThread());
-		mainWindow.reset( new BasicWindow(wName,Colour::Colour(255,0,0),DocumentWindow::TitleBarButtons::allButtons));
-		mainWindow->setVisible(true);
-		mainWindow->centreWithSize(500, 500);
+		//mainWindow.reset( new BasicWindow(wName,Colour::Colour(255,0,0),DocumentWindow::TitleBarButtons::allButtons));
+		mainWindow2.reset(new MainWindow(wName, new MainContentComponent));
+
+
+		//mainWindow->setVisible(true);
+		//mainWindow->centreWithSize(500, 500);
 	}
 	return 1;
 }
