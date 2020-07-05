@@ -1,11 +1,18 @@
 #pragma once
 
 #include "JUCE/JuceHeader.h"
+#include "WaapiFunctions.h"
+
+class CurrentWwiseConnection;
+class CreateObjectChoices;
 
 //==============================================================================
 class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
 {
 public:
+
+	CurrentWwiseConnection MyCurrentWwiseConnection;
+
 	TransferToWwiseComponent();
 
 	void resized() override;
@@ -16,10 +23,14 @@ public:
 
 	void labelTextChanged(Label* labelThatHasChanged);
 
+	void InitAllButtons(std::vector<juce::Button *> buttons);
+
+	void InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices);
+
 
 private:
 
-	
+	CreateObjectChoices myCreateChoices;
 
 	juce::TextButton * btn_RenderAndImport = new TextButton("btn_RenderAndImport"); //button
 	juce::TextButton * btn_RefreshJobList = new TextButton("btn_RefreshJobList");
@@ -41,22 +52,30 @@ private:
 	btn_CreatePlayEvent
 	};
 
-	juce::ComboBox dd_Language; //drop down
-	juce::ComboBox dd_EventOption;
-	juce::ComboBox dd_CreateType;
-	juce::ComboBox dd_OnNameConflict;
+	juce::ComboBox * dd_Language = new ComboBox("dd_Language"); //drop down
+	juce::ComboBox * dd_EventOption = new ComboBox("dd_EventOption");
+	juce::ComboBox * dd_CreateType = new ComboBox("dd_CreateType");
+	juce::ComboBox * dd_OnNameConflict = new ComboBox("dd_OnNameConflict");
+
+	std::vector<juce::ComboBox *> comboBoxes{
+		dd_Language,
+		dd_EventOption,
+		dd_CreateType,
+		dd_OnNameConflict
+	};
 
 
-	
-	juce::Label INtxt_OriginalsSubDir;	// INPUT text - editable label
-	juce::Label INtxt_CreateName;
-	juce::Label INtxt_CreateNotes;
-	juce::Label txt_ConnectionStatus; // text
+	juce::Label * INtxt_OriginalsSubDir = new Label("INtxt_OriginalsSubDir");	// INPUT text - editable label
+	juce::Label * INtxt_CreateName = new Label("INtxt_OriginalsSubDir");
+	juce::Label * INtxt_CreateNotes = new Label("INtxt_OriginalsSubDir");
+	juce::Label * txt_ConnectionStatus = new Label("INtxt_OriginalsSubDir"); // text
 
-	juce::Label debugLabel;
+	juce::Label * debugLabel = new Label("INtxt_OriginalsSubDir");
 
-	juce::TreeView tree_RenderJobTree;	//Tree view
+	juce::TreeView * tree_RenderJobTree = new TreeView("tree_RenderJobTree");	//Tree view
 	double transferProgress = 0.0f;
+
+	StringArray ToJuceStringArray(std::vector<std::string>strings);
 
 
 	//==============================================================================

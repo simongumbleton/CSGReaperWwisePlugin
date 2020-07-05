@@ -354,3 +354,5 @@ MigrationBackup/
 
 Intermidiate/
 *.tlog
+*.tlog
+*.tlog
