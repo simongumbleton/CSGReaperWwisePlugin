@@ -73,6 +73,8 @@ private:
 	juce::Label * debugLabel = new Label("INtxt_OriginalsSubDir");
 
 	juce::TreeView * tree_RenderJobTree = new TreeView("tree_RenderJobTree");	//Tree view
+	
+
 	double transferProgress = 0.0f;
 
 	StringArray ToJuceStringArray(std::vector<std::string>strings);

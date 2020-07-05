@@ -59,7 +59,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="gui_Transfer.cpp" />
     <ClCompile Include="include\JUCE\include_juce_audio_basics.cpp" />
     <ClCompile Include="include\JUCE\include_juce_audio_devices.cpp" />
     <ClCompile Include="include\JUCE\include_juce_audio_formats.cpp" />
@@ -73,6 +72,7 @@
     <ClCompile Include="include\JUCE\include_juce_gui_extra.cpp" />
     <ClCompile Include="include\JUCE\include_juce_opengl.cpp" />
     <ClCompile Include="src\ConfigFileHandler.cpp" />
+    <ClCompile Include="src\gui_Transfer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\ReaperRenderQueParser.cpp" />
     <ClCompile Include="src\WaapiConnect.cpp" />
