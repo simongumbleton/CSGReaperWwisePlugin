@@ -1,0 +1,538 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11636DA9169DC78289E66CF4 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414881D993229ED2536DD4CD /* IOKit.framework */; };
+		2FC76915D99E1B8F15C32EF8 /* RecentFilesMenuTemplate.nib in Resources */ = {isa = PBXBuildFile; fileRef = 87002DFB5C332D23C8153A1C /* RecentFilesMenuTemplate.nib */; };
+		72AAF1C63CE3318981181F09 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 972A26C16A9A2684840D1232 /* QuartzCore.framework */; };
+		752D5D1A5C586A16EBCBB078 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F832614AE8137678E79087 /* Cocoa.framework */; };
+		9531AF92A27CD6E6A9C1252F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30AA7EA232DD3AC3E1175AD9 /* Carbon.framework */; };
+		9E1D576C24B7AA990034FC8C /* reaper_wwise_csg.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8F589A7BB761B64EAD7BA20 /* reaper_wwise_csg.dylib */; };
+		9E1D577124B7ACA50034FC8C /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577024B7ACA50034FC8C /* Main.cpp */; };
+		9E1D577924B7AED70034FC8C /* gui_Transfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577224B7AED70034FC8C /* gui_Transfer.cpp */; };
+		9E1D577A24B7AED70034FC8C /* WwiseConnectionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577324B7AED70034FC8C /* WwiseConnectionHandler.cpp */; };
+		9E1D577B24B7AED70034FC8C /* ReaperRenderQueParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577424B7AED70034FC8C /* ReaperRenderQueParser.cpp */; };
+		9E1D577C24B7AED70034FC8C /* WaapiConnect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577524B7AED70034FC8C /* WaapiConnect.cpp */; };
+		9E1D577D24B7AED70034FC8C /* WaapiFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577624B7AED70034FC8C /* WaapiFunctions.cpp */; };
+		9E1D577E24B7AED70034FC8C /* ConfigFileHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577724B7AED70034FC8C /* ConfigFileHandler.cpp */; };
+		9E1D577F24B7AED70034FC8C /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577824B7AED70034FC8C /* Main.cpp */; };
+		9EE14E5F24B66DF8005F3A17 /* include_juce_events.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5824B66DF8005F3A17 /* include_juce_events.mm */; };
+		9EE14E6024B66DF8005F3A17 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5A24B66DF8005F3A17 /* include_juce_graphics.mm */; };
+		9EE14E6124B66DF8005F3A17 /* include_juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5B24B66DF8005F3A17 /* include_juce_data_structures.mm */; };
+		9EE14E6224B66DF8005F3A17 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5C24B66DF8005F3A17 /* include_juce_gui_basics.mm */; };
+		9EE14E6324B66DF8005F3A17 /* include_juce_gui_extra.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5D24B66DF8005F3A17 /* include_juce_gui_extra.mm */; };
+		9EE14E6424B66DF8005F3A17 /* include_juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5E24B66DF8005F3A17 /* include_juce_core.mm */; };
+		F24135C23C01929378C20CB5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C6EF00A7F0A5B13CF9693EE /* WebKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9E1D576B24B7AA640034FC8C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "/Users/simongumbleton/Library/Application Support/REAPER/UserPlugins";
+			dstSubfolderSpec = 0;
+			files = (
+				9E1D576C24B7AA990034FC8C /* reaper_wwise_csg.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		30AA7EA232DD3AC3E1175AD9 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		325E449EC38A27257915855D /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = /Users/simongumbleton/Projects/JUCE/modules/juce_core; sourceTree = "<absolute>"; };
+		3FFD6378618B452432F015E9 /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = /Users/simongumbleton/Projects/JUCE/modules/juce_events; sourceTree = "<absolute>"; };
+		414881D993229ED2536DD4CD /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		572BB9E9BE8A5D004D55534A /* juce_gui_basics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_basics; path = /Users/simongumbleton/Projects/JUCE/modules/juce_gui_basics; sourceTree = "<absolute>"; };
+		7C6EF00A7F0A5B13CF9693EE /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		87002DFB5C332D23C8153A1C /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
+		900E350431118ADE1D9626E2 /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = /Users/simongumbleton/Projects/JUCE/modules/juce_graphics; sourceTree = "<absolute>"; };
+		972A26C16A9A2684840D1232 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		97F832614AE8137678E79087 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		9E1D576F24B7AC570034FC8C /* reaper_plugin.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = reaper_plugin.h; path = include/reaper_plugin.h; sourceTree = SOURCE_ROOT; };
+		9E1D577024B7ACA50034FC8C /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = src/Main.cpp; sourceTree = SOURCE_ROOT; };
+		9E1D577224B7AED70034FC8C /* gui_Transfer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui_Transfer.cpp; path = src/gui_Transfer.cpp; sourceTree = SOURCE_ROOT; };
+		9E1D577324B7AED70034FC8C /* WwiseConnectionHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WwiseConnectionHandler.cpp; path = src/WwiseConnectionHandler.cpp; sourceTree = SOURCE_ROOT; };
+		9E1D577424B7AED70034FC8C /* ReaperRenderQueParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ReaperRenderQueParser.cpp; path = src/ReaperRenderQueParser.cpp; sourceTree = SOURCE_ROOT; };
+		9E1D577524B7AED70034FC8C /* WaapiConnect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaapiConnect.cpp; path = src/WaapiConnect.cpp; sourceTree = SOURCE_ROOT; };
+		9E1D577624B7AED70034FC8C /* WaapiFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaapiFunctions.cpp; path = src/WaapiFunctions.cpp; sourceTree = SOURCE_ROOT; };
+		9E1D577724B7AED70034FC8C /* ConfigFileHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConfigFileHandler.cpp; path = src/ConfigFileHandler.cpp; sourceTree = SOURCE_ROOT; };
+		9E1D577824B7AED70034FC8C /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = src/Main.cpp; sourceTree = SOURCE_ROOT; };
+		9E1D578024B7AEF10034FC8C /* ReaperRenderQueParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ReaperRenderQueParser.h; path = include/ReaperRenderQueParser.h; sourceTree = SOURCE_ROOT; };
+		9E1D578124B7AEF10034FC8C /* WaapiFunctions.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = WaapiFunctions.h; path = include/WaapiFunctions.h; sourceTree = SOURCE_ROOT; };
+		9E1D578224B7AEF10034FC8C /* WaapiConnect.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = WaapiConnect.h; path = include/WaapiConnect.h; sourceTree = SOURCE_ROOT; };
+		9E1D578324B7AEF10034FC8C /* reaperHelpers.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = reaperHelpers.h; path = include/reaperHelpers.h; sourceTree = SOURCE_ROOT; };
+		9E1D578424B7AEF10034FC8C /* GUI.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = GUI.h; path = include/GUI.h; sourceTree = SOURCE_ROOT; };
+		9E1D578524B7AEF10034FC8C /* reaper_plugin_functions.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = reaper_plugin_functions.h; path = include/reaper_plugin_functions.h; sourceTree = SOURCE_ROOT; };
+		9E1D578624B7AEF10034FC8C /* WwiseConnectionHandler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = WwiseConnectionHandler.h; path = include/WwiseConnectionHandler.h; sourceTree = SOURCE_ROOT; };
+		9E1D578724B7AEF10034FC8C /* ConfigFileHandler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ConfigFileHandler.h; path = include/ConfigFileHandler.h; sourceTree = SOURCE_ROOT; };
+		9E1D578824B7AEF10034FC8C /* gui_Transfer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = gui_Transfer.h; path = include/gui_Transfer.h; sourceTree = SOURCE_ROOT; };
+		9EE14E5824B66DF8005F3A17 /* include_juce_events.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = include/JUCE/include_juce_events.mm; sourceTree = "<group>"; };
+		9EE14E5924B66DF8005F3A17 /* JuceHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = include/JUCE/JuceHeader.h; sourceTree = "<group>"; };
+		9EE14E5A24B66DF8005F3A17 /* include_juce_graphics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = include/JUCE/include_juce_graphics.mm; sourceTree = "<group>"; };
+		9EE14E5B24B66DF8005F3A17 /* include_juce_data_structures.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_data_structures.mm; path = include/JUCE/include_juce_data_structures.mm; sourceTree = "<group>"; };
+		9EE14E5C24B66DF8005F3A17 /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = include/JUCE/include_juce_gui_basics.mm; sourceTree = "<group>"; };
+		9EE14E5D24B66DF8005F3A17 /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = include/JUCE/include_juce_gui_extra.mm; sourceTree = "<group>"; };
+		9EE14E5E24B66DF8005F3A17 /* include_juce_core.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = include/JUCE/include_juce_core.mm; sourceTree = "<group>"; };
+		D877068A92EB2BD26EAB3B95 /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = /Users/simongumbleton/Projects/JUCE/modules/juce_data_structures; sourceTree = "<absolute>"; };
+		D8F589A7BB761B64EAD7BA20 /* reaper_wwise_csg.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = reaper_wwise_csg.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6D9DE3C33BFFED3DC512BB3 /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = /Users/simongumbleton/Projects/JUCE/modules/juce_gui_extra; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		96F41723F19227EB6C3FB1E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9531AF92A27CD6E6A9C1252F /* Carbon.framework in Frameworks */,
+				752D5D1A5C586A16EBCBB078 /* Cocoa.framework in Frameworks */,
+				11636DA9169DC78289E66CF4 /* IOKit.framework in Frameworks */,
+				72AAF1C63CE3318981181F09 /* QuartzCore.framework in Frameworks */,
+				F24135C23C01929378C20CB5 /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0753F1804577EE09287EBD73 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D8F589A7BB761B64EAD7BA20 /* reaper_wwise_csg.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0C7E7AAE1F805FD3EDE3E680 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				9E1D576E24B7AC330034FC8C /* include */,
+				9E1D576D24B7AC2C0034FC8C /* src */,
+				82A90D9C182BDACD4CF33859 /* JUCE Modules */,
+				439F3CD80117AED21C67D5B4 /* JUCE */,
+				450090B35B429F51ABE0D889 /* Resources */,
+				61D2747302221CD58FF53236 /* Frameworks */,
+				0753F1804577EE09287EBD73 /* Products */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		439F3CD80117AED21C67D5B4 /* JUCE */ = {
+			isa = PBXGroup;
+			children = (
+				9EE14E5E24B66DF8005F3A17 /* include_juce_core.mm */,
+				9EE14E5B24B66DF8005F3A17 /* include_juce_data_structures.mm */,
+				9EE14E5824B66DF8005F3A17 /* include_juce_events.mm */,
+				9EE14E5A24B66DF8005F3A17 /* include_juce_graphics.mm */,
+				9EE14E5C24B66DF8005F3A17 /* include_juce_gui_basics.mm */,
+				9EE14E5D24B66DF8005F3A17 /* include_juce_gui_extra.mm */,
+				9EE14E5924B66DF8005F3A17 /* JuceHeader.h */,
+			);
+			name = JUCE;
+			sourceTree = "<group>";
+		};
+		450090B35B429F51ABE0D889 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				87002DFB5C332D23C8153A1C /* RecentFilesMenuTemplate.nib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		61D2747302221CD58FF53236 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				30AA7EA232DD3AC3E1175AD9 /* Carbon.framework */,
+				97F832614AE8137678E79087 /* Cocoa.framework */,
+				414881D993229ED2536DD4CD /* IOKit.framework */,
+				972A26C16A9A2684840D1232 /* QuartzCore.framework */,
+				7C6EF00A7F0A5B13CF9693EE /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		82A90D9C182BDACD4CF33859 /* JUCE Modules */ = {
+			isa = PBXGroup;
+			children = (
+				325E449EC38A27257915855D /* juce_core */,
+				D877068A92EB2BD26EAB3B95 /* juce_data_structures */,
+				3FFD6378618B452432F015E9 /* juce_events */,
+				900E350431118ADE1D9626E2 /* juce_graphics */,
+				572BB9E9BE8A5D004D55534A /* juce_gui_basics */,
+				E6D9DE3C33BFFED3DC512BB3 /* juce_gui_extra */,
+			);
+			name = "JUCE Modules";
+			sourceTree = "<group>";
+		};
+		9E1D576D24B7AC2C0034FC8C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				9E1D577724B7AED70034FC8C /* ConfigFileHandler.cpp */,
+				9E1D577224B7AED70034FC8C /* gui_Transfer.cpp */,
+				9E1D577824B7AED70034FC8C /* Main.cpp */,
+				9E1D577424B7AED70034FC8C /* ReaperRenderQueParser.cpp */,
+				9E1D577524B7AED70034FC8C /* WaapiConnect.cpp */,
+				9E1D577624B7AED70034FC8C /* WaapiFunctions.cpp */,
+				9E1D577324B7AED70034FC8C /* WwiseConnectionHandler.cpp */,
+				9E1D577024B7ACA50034FC8C /* Main.cpp */,
+			);
+			name = src;
+			path = source;
+			sourceTree = "<group>";
+		};
+		9E1D576E24B7AC330034FC8C /* include */ = {
+			isa = PBXGroup;
+			children = (
+				9E1D578724B7AEF10034FC8C /* ConfigFileHandler.h */,
+				9E1D578824B7AEF10034FC8C /* gui_Transfer.h */,
+				9E1D578424B7AEF10034FC8C /* GUI.h */,
+				9E1D578524B7AEF10034FC8C /* reaper_plugin_functions.h */,
+				9E1D578324B7AEF10034FC8C /* reaperHelpers.h */,
+				9E1D578024B7AEF10034FC8C /* ReaperRenderQueParser.h */,
+				9E1D578224B7AEF10034FC8C /* WaapiConnect.h */,
+				9E1D578124B7AEF10034FC8C /* WaapiFunctions.h */,
+				9E1D578624B7AEF10034FC8C /* WwiseConnectionHandler.h */,
+				9E1D576F24B7AC570034FC8C /* reaper_plugin.h */,
+			);
+			name = include;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4F479B626692F08194462442 /* reaper_wwise_csg */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CA9A9E919AD0135481CC9B5 /* Build configuration list for PBXNativeTarget "reaper_wwise_csg" */;
+			buildPhases = (
+				FF7DCF870BEF27BBE17BBD27 /* Resources */,
+				0B9166A65AD7C5D065354E84 /* Sources */,
+				96F41723F19227EB6C3FB1E0 /* Frameworks */,
+				9E1D576B24B7AA640034FC8C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = reaper_wwise_csg;
+			productName = NewProject;
+			productReference = D8F589A7BB761B64EAD7BA20 /* reaper_wwise_csg.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		55FCD04F0B818B4E55715CA8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1100;
+				ORGANIZATIONNAME = "";
+			};
+			buildConfigurationList = 2F2462BD35A5A46B588BA652 /* Build configuration list for PBXProject "reaper_wwise_csg" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				English,
+			);
+			mainGroup = 0C7E7AAE1F805FD3EDE3E680 /* Source */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4F479B626692F08194462442 /* reaper_wwise_csg */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FF7DCF870BEF27BBE17BBD27 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FC76915D99E1B8F15C32EF8 /* RecentFilesMenuTemplate.nib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0B9166A65AD7C5D065354E84 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9EE14E5F24B66DF8005F3A17 /* include_juce_events.mm in Sources */,
+				9E1D577124B7ACA50034FC8C /* Main.cpp in Sources */,
+				9E1D577924B7AED70034FC8C /* gui_Transfer.cpp in Sources */,
+				9E1D577C24B7AED70034FC8C /* WaapiConnect.cpp in Sources */,
+				9EE14E6124B66DF8005F3A17 /* include_juce_data_structures.mm in Sources */,
+				9E1D577E24B7AED70034FC8C /* ConfigFileHandler.cpp in Sources */,
+				9EE14E6324B66DF8005F3A17 /* include_juce_gui_extra.mm in Sources */,
+				9E1D577B24B7AED70034FC8C /* ReaperRenderQueParser.cpp in Sources */,
+				9E1D577F24B7AED70034FC8C /* Main.cpp in Sources */,
+				9EE14E6224B66DF8005F3A17 /* include_juce_gui_basics.mm in Sources */,
+				9EE14E6024B66DF8005F3A17 /* include_juce_graphics.mm in Sources */,
+				9EE14E6424B66DF8005F3A17 /* include_juce_core.mm in Sources */,
+				9E1D577D24B7AED70034FC8C /* WaapiFunctions.cpp in Sources */,
+				9E1D577A24B7AED70034FC8C /* WwiseConnectionHandler.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		456FD168B4B5BBE3A606E984 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = NO;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 1;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = NewProject;
+				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wreorder";
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		56ED626F53C342A674A262B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				DEAD_CODE_STRIPPING = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_NDEBUG=1",
+					"NDEBUG=1",
+					"JUCER_XCODE_MAC_F6D2F4CF=1",
+					"JUCE_APP_VERSION=1.0.0",
+					"JUCE_APP_VERSION_HEX=0x10000",
+					"JucePlugin_Build_VST=0",
+					"JucePlugin_Build_VST3=0",
+					"JucePlugin_Build_AU=0",
+					"JucePlugin_Build_AUv3=0",
+					"JucePlugin_Build_RTAS=0",
+					"JucePlugin_Build_AAX=0",
+					"JucePlugin_Build_Standalone=0",
+					"JucePlugin_Build_Unity=0",
+					"JUCE_DISPLAY_SPLASH_SCREEN=1",
+					"JUCE_USE_DARK_SPLASH_SCREEN=1",
+					"JUCE_PROJUCER_VERSION=0x60000",
+					"JUCE_MODULE_AVAILABLE_juce_core=1",
+					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_events=1",
+					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
+					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
+					"JUCE_MODULE_AVAILABLE_juce_gui_extra=1",
+					"JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1",
+					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
+					"JUCE_STANDALONE_APPLICATION=0",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					/Users/simongumbleton/Projects/JUCE/modules,
+					"$(inherited)",
+					"\"$(SRCROOT)/include\"",
+					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/include\"",
+				);
+				INSTALL_PATH = "/Users/simongumbleton/Library/Application Support/REAPER/UserPlugins";
+				LIBRARY_SEARCH_PATHS = (
+					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/Mac/Debug/lib\"",
+					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/Mac/Release/lib\"",
+				);
+				LLVM_LTO = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NewProject;
+				PRODUCT_NAME = reaper_wwise_csg;
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		5FD608EC797EB7344D2898FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = NO;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = NewProject;
+				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wreorder";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		68706947E3D4328A6A357784 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_DEBUG=1",
+					"DEBUG=1",
+					"JUCER_XCODE_MAC_F6D2F4CF=1",
+					"JUCE_APP_VERSION=1.0.0",
+					"JUCE_APP_VERSION_HEX=0x10000",
+					"JucePlugin_Build_VST=0",
+					"JucePlugin_Build_VST3=0",
+					"JucePlugin_Build_AU=0",
+					"JucePlugin_Build_AUv3=0",
+					"JucePlugin_Build_RTAS=0",
+					"JucePlugin_Build_AAX=0",
+					"JucePlugin_Build_Standalone=0",
+					"JucePlugin_Build_Unity=0",
+					"JUCE_DISPLAY_SPLASH_SCREEN=1",
+					"JUCE_USE_DARK_SPLASH_SCREEN=1",
+					"JUCE_PROJUCER_VERSION=0x60000",
+					"JUCE_MODULE_AVAILABLE_juce_core=1",
+					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_events=1",
+					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
+					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
+					"JUCE_MODULE_AVAILABLE_juce_gui_extra=1",
+					"JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1",
+					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
+					"JUCE_STANDALONE_APPLICATION=0",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					/Users/simongumbleton/Projects/JUCE/modules,
+					"$(inherited)",
+					"\"$(SRCROOT)/include\"",
+					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/include\"",
+				);
+				INSTALL_PATH = "/Users/simongumbleton/Library/Application Support/REAPER/UserPlugins";
+				LIBRARY_SEARCH_PATHS = (
+					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/Mac/Debug/lib\"",
+					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/Mac/Release/lib\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NewProject;
+				PRODUCT_NAME = reaper_wwise_csg;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2F2462BD35A5A46B588BA652 /* Build configuration list for PBXProject "reaper_wwise_csg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				456FD168B4B5BBE3A606E984 /* Debug */,
+				5FD608EC797EB7344D2898FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6CA9A9E919AD0135481CC9B5 /* Build configuration list for PBXNativeTarget "reaper_wwise_csg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68706947E3D4328A6A357784 /* Debug */,
+				56ED626F53C342A674A262B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 55FCD04F0B818B4E55715CA8 /* Project object */;
+}

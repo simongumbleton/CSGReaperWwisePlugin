@@ -22,7 +22,7 @@ public:
 	bool Connect(bool suppressOuputMessages = false);
 
 	//object owns this hwnd
-	HWND hwnd;
+	//HWND hwnd;
 
 	//Socket client for Waapi connection
 	AK::WwiseAuthoringAPI::Client m_client;
@@ -50,5 +50,5 @@ private:
 	int m_transferWindowId;
 
 	//The progress window will set and reset this value when it opens and closes
-	std::atomic<HWND> m_progressWindow;
+	//std::atomic<HWND> m_progressWindow;
 };

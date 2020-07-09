@@ -17,11 +17,11 @@ public:
 
 	void resized() override;
 
-	void buttonClicked(juce::Button* pButton);
+	void buttonClicked(juce::Button* pButton)override;
 
-	void comboBoxChanged(ComboBox* comboBoxThatHasChanged);
+	void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override;
 
-	void labelTextChanged(Label* labelThatHasChanged);
+	void labelTextChanged(Label* labelThatHasChanged)override;
 
 	void InitAllButtons(std::vector<juce::Button *> buttons);
 

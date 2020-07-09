@@ -73,7 +73,7 @@ public:
 		label.setBounds(area.removeFromBottom(labelHeight));
 	}
 
-	void buttonClicked(juce::Button* pButton)
+	void buttonClicked(juce::Button* pButton) override
 	{
 		pButton->setColour(juce::Label::textColourId, juce::Colours::aqua);
 		String text = ("CLICKED: " + pButton->getButtonText());

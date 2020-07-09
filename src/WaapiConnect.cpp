@@ -1,13 +1,14 @@
-#include <windows.h>
-#include <Wincodec.h>
-#include <Commctrl.h>
+#pragma once
+//#include <windows.h>
+//#include <Wincodec.h>
+//#include <Commctrl.h>
 #include "stdio.h"
-//#include "stdlib.h"
-//#include <string>
+#include "stdlib.h"
+#include <string>
 #include <iostream> 
 #include <sstream>
 
-#include "waapiconnect.h"
+#include "WaapiConnect.h"
 #include <AK/WwiseAuthoringAPI/AkVariantBase.h>
 #include <AK/WwiseAuthoringAPI/waapi.h>
 
@@ -47,10 +48,10 @@ bool WAAPIConnect::Connect(bool suppressOuputMessages)	//Connect to Wwise. Optio
 			status << "Connected on port " + std::to_string(g_Waapi_Port) + ": ";
 			status << wwiseInfo["displayName"].GetVariant().GetString();
 			status << " - " + wwiseInfo["version"]["displayName"].GetVariant().GetString();
-			std::string WwiseConnectionStatus = status.str();
+            std::string WwiseConnectionStatus = std::to_string(status);
 			if (!suppressOuputMessages)
 			{
-				MessageBox(NULL, WwiseConnectionStatus.c_str(), "Wwise Connection Status", MB_OK);
+				//MessageBox(NULL, WwiseConnectionStatus.c_str(), "Wwise Connection Status", MB_OK);
 			}
 		}
 	}
@@ -59,7 +60,7 @@ bool WAAPIConnect::Connect(bool suppressOuputMessages)	//Connect to Wwise. Optio
 	{
 		if (!suppressOuputMessages)
 		{
-			MessageBox(NULL, "! Failed to Connect !", "Wwise Connection Status", MB_OK);
+			//MessageBox(NULL, "! Failed to Connect !", "Wwise Connection Status", MB_OK);
 		}
 	}
 
@@ -105,13 +106,13 @@ bool WAAPIConnect::GetSelectedWwiseObject()
 //				status << " Parent =  " + wwiseObjectParent;
 				std::string SelectedObject = status.str();
 
-				MessageBox(NULL, SelectedObject.c_str(), "Wwise Objects Selected", MB_OK);
+				//MessageBox(NULL, SelectedObject.c_str(), "Wwise Objects Selected", MB_OK);
 			}
 		}
 	}
 	else
 	{
-		MessageBox(NULL, "No Wwise Connection Found!", "Wwise Objects Selected", MB_OK);
+		//(NULL, "No Wwise Connection Found!", "Wwise Objects Selected", MB_OK);
 	}
 
 

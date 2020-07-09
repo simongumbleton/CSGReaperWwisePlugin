@@ -1,10 +1,11 @@
-#pragma once
+
 #ifdef _WIN32
 #include <windows.h>
-#else
-#include "../../WDL/swell/swell.h"
-#endif
 #include <Commctrl.h>
+#else
+#include "WDL/swell/swell.h"
+#endif
+
 #include <string>
 #include "stdio.h"
 #include "stdlib.h"
@@ -58,7 +59,8 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 
 		MessageManagerLock mml(Thread::getCurrentThread());
 		//mainWindow.reset( new BasicWindow(wName,Colour::Colour(255,0,0),DocumentWindow::TitleBarButtons::allButtons));
-		mainWindow2.reset(new TransferWindow(wName, new TransferToWwiseComponent));
+		
+        mainWindow2.reset(new TransferWindow(wName, new TransferToWwiseComponent));
 
 
 		//mainWindow->setVisible(true);

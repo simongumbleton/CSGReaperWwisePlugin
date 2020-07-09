@@ -35,7 +35,7 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	juce::Identifier renderJobType("ARenderJob");
 	juce::ValueTree renderJobNode(renderJobType);
 
-	tree_RenderJobTree->setRootItem(renderJobNode);
+	//tree_RenderJobTree->setRootItem(renderJobNode);
 
 
 	addAndMakeVisible(tree_RenderJobTree);
