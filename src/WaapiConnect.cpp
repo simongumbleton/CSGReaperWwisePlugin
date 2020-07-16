@@ -48,7 +48,7 @@ bool WAAPIConnect::Connect(bool suppressOuputMessages)	//Connect to Wwise. Optio
 			status << "Connected on port " + std::to_string(g_Waapi_Port) + ": ";
 			status << wwiseInfo["displayName"].GetVariant().GetString();
 			status << " - " + wwiseInfo["version"]["displayName"].GetVariant().GetString();
-            std::string WwiseConnectionStatus = std::to_string(status);
+            std::string WwiseConnectionStatus = status.str();
 			if (!suppressOuputMessages)
 			{
 				//MessageBox(NULL, WwiseConnectionStatus.c_str(), "Wwise Connection Status", MB_OK);

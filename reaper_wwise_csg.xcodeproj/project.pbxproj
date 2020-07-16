@@ -7,532 +7,1205 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		11636DA9169DC78289E66CF4 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414881D993229ED2536DD4CD /* IOKit.framework */; };
-		2FC76915D99E1B8F15C32EF8 /* RecentFilesMenuTemplate.nib in Resources */ = {isa = PBXBuildFile; fileRef = 87002DFB5C332D23C8153A1C /* RecentFilesMenuTemplate.nib */; };
-		72AAF1C63CE3318981181F09 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 972A26C16A9A2684840D1232 /* QuartzCore.framework */; };
-		752D5D1A5C586A16EBCBB078 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F832614AE8137678E79087 /* Cocoa.framework */; };
-		9531AF92A27CD6E6A9C1252F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30AA7EA232DD3AC3E1175AD9 /* Carbon.framework */; };
-		9E1D576C24B7AA990034FC8C /* reaper_wwise_csg.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8F589A7BB761B64EAD7BA20 /* reaper_wwise_csg.dylib */; };
-		9E1D577124B7ACA50034FC8C /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577024B7ACA50034FC8C /* Main.cpp */; };
-		9E1D577924B7AED70034FC8C /* gui_Transfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577224B7AED70034FC8C /* gui_Transfer.cpp */; };
-		9E1D577A24B7AED70034FC8C /* WwiseConnectionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577324B7AED70034FC8C /* WwiseConnectionHandler.cpp */; };
-		9E1D577B24B7AED70034FC8C /* ReaperRenderQueParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577424B7AED70034FC8C /* ReaperRenderQueParser.cpp */; };
-		9E1D577C24B7AED70034FC8C /* WaapiConnect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577524B7AED70034FC8C /* WaapiConnect.cpp */; };
-		9E1D577D24B7AED70034FC8C /* WaapiFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577624B7AED70034FC8C /* WaapiFunctions.cpp */; };
-		9E1D577E24B7AED70034FC8C /* ConfigFileHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577724B7AED70034FC8C /* ConfigFileHandler.cpp */; };
-		9E1D577F24B7AED70034FC8C /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D577824B7AED70034FC8C /* Main.cpp */; };
-		9EE14E5F24B66DF8005F3A17 /* include_juce_events.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5824B66DF8005F3A17 /* include_juce_events.mm */; };
-		9EE14E6024B66DF8005F3A17 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5A24B66DF8005F3A17 /* include_juce_graphics.mm */; };
-		9EE14E6124B66DF8005F3A17 /* include_juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5B24B66DF8005F3A17 /* include_juce_data_structures.mm */; };
-		9EE14E6224B66DF8005F3A17 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5C24B66DF8005F3A17 /* include_juce_gui_basics.mm */; };
-		9EE14E6324B66DF8005F3A17 /* include_juce_gui_extra.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5D24B66DF8005F3A17 /* include_juce_gui_extra.mm */; };
-		9EE14E6424B66DF8005F3A17 /* include_juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9EE14E5E24B66DF8005F3A17 /* include_juce_core.mm */; };
-		F24135C23C01929378C20CB5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C6EF00A7F0A5B13CF9693EE /* WebKit.framework */; };
+		9E78206024C0E904005401E2 /* JuceHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5124C0E8FD005401E2 /* JuceHeader.h */; };
+		9E78206224C0E904005401E2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */; };
+		9E78206324C0E904005401E2 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */; };
+		9E78206524C0E904005401E2 /* AppConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5624C0E8FD005401E2 /* AppConfig.h */; };
+		9E78206624C0E904005401E2 /* include_juce_events.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5724C0E8FD005401E2 /* include_juce_events.mm */; };
+		9E78206924C0E904005401E2 /* include_juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5B24C0E8FD005401E2 /* include_juce_data_structures.mm */; };
+		9E78206A24C0E904005401E2 /* include_juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5C24C0E8FD005401E2 /* include_juce_core.mm */; };
+		9E78206B24C0E904005401E2 /* ReaperRenderQueParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5D24C0E8FD005401E2 /* ReaperRenderQueParser.h */; };
+		9E78206C24C0E904005401E2 /* WaapiFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5E24C0E8FD005401E2 /* WaapiFunctions.h */; };
+		9E78206F24C0E904005401E2 /* WaapiConnect.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E6124C0E8FD005401E2 /* WaapiConnect.h */; };
+		9E78207124C0E904005401E2 /* GUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E6324C0E8FD005401E2 /* GUI.h */; };
+		9E78207224C0E904005401E2 /* ConfigFileHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E6424C0E8FD005401E2 /* ConfigFileHandler.h */; };
+		9E78207324C0E904005401E2 /* reaperHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E6524C0E8FD005401E2 /* reaperHelpers.h */; };
+		9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E78205824C0E904005401E2 /* gui_Transfer.h */; };
+		9E78221024C0E9B2005401E2 /* ConfigFileHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220924C0E9B2005401E2 /* ConfigFileHandler.cpp */; };
+		9E78221124C0E9B2005401E2 /* WaapiConnect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220A24C0E9B2005401E2 /* WaapiConnect.cpp */; };
+		9E78221324C0E9B2005401E2 /* gui_Transfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220C24C0E9B2005401E2 /* gui_Transfer.cpp */; };
+		9E78221424C0E9B2005401E2 /* ReaperRenderQueParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */; };
+		9E78221524C0E9B2005401E2 /* WaapiFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */; };
+		9E78221624C0E9B2005401E2 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220F24C0E9B2005401E2 /* Main.cpp */; };
+		9E893B9F24BE577E00188A61 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893B9E24BE577E00188A61 /* AppKit.framework */; };
+		9E893BA124BE578600188A61 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA024BE578600188A61 /* IOKit.framework */; };
+		9E893BA324BE57C900188A61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA224BE57C900188A61 /* CoreImage.framework */; };
+		C406994E1C39B33800E445F7 /* reaper_plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = C406994D1C39B33800E445F7 /* reaper_plugin.h */; };
+		C40699501C39B34300E445F7 /* reaper_plugin_functions.h in Headers */ = {isa = PBXBuildFile; fileRef = C406994F1C39B34300E445F7 /* reaper_plugin_functions.h */; };
+		C42AC6D31C27AB1D00FAE97E /* lice_textnew.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C42AC6D21C27AB1D00FAE97E /* lice_textnew.cpp */; };
+		C484E68D1C1BAD49005C6CCC /* swell-dlg.mm in Sources */ = {isa = PBXBuildFile; fileRef = C484E6851C1BAD49005C6CCC /* swell-dlg.mm */; };
+		C484E68E1C1BAD49005C6CCC /* swell-gdi.mm in Sources */ = {isa = PBXBuildFile; fileRef = C484E6861C1BAD49005C6CCC /* swell-gdi.mm */; };
+		C484E68F1C1BAD49005C6CCC /* swell-kb.mm in Sources */ = {isa = PBXBuildFile; fileRef = C484E6871C1BAD49005C6CCC /* swell-kb.mm */; };
+		C484E6901C1BAD49005C6CCC /* swell-menu.mm in Sources */ = {isa = PBXBuildFile; fileRef = C484E6881C1BAD49005C6CCC /* swell-menu.mm */; };
+		C484E6911C1BAD49005C6CCC /* swell-misc.mm in Sources */ = {isa = PBXBuildFile; fileRef = C484E6891C1BAD49005C6CCC /* swell-misc.mm */; };
+		C484E6921C1BAD49005C6CCC /* swell-miscdlg.mm in Sources */ = {isa = PBXBuildFile; fileRef = C484E68A1C1BAD49005C6CCC /* swell-miscdlg.mm */; };
+		C484E6931C1BAD49005C6CCC /* swell-wnd.mm in Sources */ = {isa = PBXBuildFile; fileRef = C484E68B1C1BAD49005C6CCC /* swell-wnd.mm */; };
+		C484E6941C1BAD49005C6CCC /* swell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C484E68C1C1BAD49005C6CCC /* swell.cpp */; };
+		C484E69A1C1BAE94005C6CCC /* lice_arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C484E6971C1BAE94005C6CCC /* lice_arc.cpp */; };
+		C484E69B1C1BAE94005C6CCC /* lice_line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C484E6981C1BAE94005C6CCC /* lice_line.cpp */; };
+		C484E69C1C1BAE94005C6CCC /* lice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C484E6991C1BAE94005C6CCC /* lice.cpp */; };
+		C49593F11C4EFCA0007C6C9B /* httpget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C49593F01C4EFCA0007C6C9B /* httpget.cpp */; };
+		C49593F31C4EFCB7007C6C9B /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C49593F21C4EFCB7007C6C9B /* connection.cpp */; };
+		C49593F51C4EFCD1007C6C9B /* asyncdns.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C49593F41C4EFCD1007C6C9B /* asyncdns.cpp */; };
+		C49593F71C4EFCFD007C6C9B /* listen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C49593F61C4EFCFD007C6C9B /* listen.cpp */; };
+		C49593F91C4EFD1A007C6C9B /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C49593F81C4EFD1A007C6C9B /* util.cpp */; };
+		C4D434BA1C1A41E3005DFFD3 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4D434B81C1A41E3005DFFD3 /* Carbon.framework */; };
+		C4D434BB1C1A41E3005DFFD3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4D434B91C1A41E3005DFFD3 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9E1D576B24B7AA640034FC8C /* CopyFiles */ = {
+		9E893C6F24BFB90900188A61 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "/Users/simongumbleton/Library/Application Support/REAPER/UserPlugins";
 			dstSubfolderSpec = 0;
 			files = (
-				9E1D576C24B7AA990034FC8C /* reaper_wwise_csg.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		30AA7EA232DD3AC3E1175AD9 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		325E449EC38A27257915855D /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = /Users/simongumbleton/Projects/JUCE/modules/juce_core; sourceTree = "<absolute>"; };
-		3FFD6378618B452432F015E9 /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = /Users/simongumbleton/Projects/JUCE/modules/juce_events; sourceTree = "<absolute>"; };
-		414881D993229ED2536DD4CD /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		572BB9E9BE8A5D004D55534A /* juce_gui_basics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_basics; path = /Users/simongumbleton/Projects/JUCE/modules/juce_gui_basics; sourceTree = "<absolute>"; };
-		7C6EF00A7F0A5B13CF9693EE /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		87002DFB5C332D23C8153A1C /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
-		900E350431118ADE1D9626E2 /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = /Users/simongumbleton/Projects/JUCE/modules/juce_graphics; sourceTree = "<absolute>"; };
-		972A26C16A9A2684840D1232 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		97F832614AE8137678E79087 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		9E1D576F24B7AC570034FC8C /* reaper_plugin.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = reaper_plugin.h; path = include/reaper_plugin.h; sourceTree = SOURCE_ROOT; };
-		9E1D577024B7ACA50034FC8C /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = src/Main.cpp; sourceTree = SOURCE_ROOT; };
-		9E1D577224B7AED70034FC8C /* gui_Transfer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gui_Transfer.cpp; path = src/gui_Transfer.cpp; sourceTree = SOURCE_ROOT; };
-		9E1D577324B7AED70034FC8C /* WwiseConnectionHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WwiseConnectionHandler.cpp; path = src/WwiseConnectionHandler.cpp; sourceTree = SOURCE_ROOT; };
-		9E1D577424B7AED70034FC8C /* ReaperRenderQueParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ReaperRenderQueParser.cpp; path = src/ReaperRenderQueParser.cpp; sourceTree = SOURCE_ROOT; };
-		9E1D577524B7AED70034FC8C /* WaapiConnect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaapiConnect.cpp; path = src/WaapiConnect.cpp; sourceTree = SOURCE_ROOT; };
-		9E1D577624B7AED70034FC8C /* WaapiFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaapiFunctions.cpp; path = src/WaapiFunctions.cpp; sourceTree = SOURCE_ROOT; };
-		9E1D577724B7AED70034FC8C /* ConfigFileHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConfigFileHandler.cpp; path = src/ConfigFileHandler.cpp; sourceTree = SOURCE_ROOT; };
-		9E1D577824B7AED70034FC8C /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = src/Main.cpp; sourceTree = SOURCE_ROOT; };
-		9E1D578024B7AEF10034FC8C /* ReaperRenderQueParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ReaperRenderQueParser.h; path = include/ReaperRenderQueParser.h; sourceTree = SOURCE_ROOT; };
-		9E1D578124B7AEF10034FC8C /* WaapiFunctions.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = WaapiFunctions.h; path = include/WaapiFunctions.h; sourceTree = SOURCE_ROOT; };
-		9E1D578224B7AEF10034FC8C /* WaapiConnect.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = WaapiConnect.h; path = include/WaapiConnect.h; sourceTree = SOURCE_ROOT; };
-		9E1D578324B7AEF10034FC8C /* reaperHelpers.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = reaperHelpers.h; path = include/reaperHelpers.h; sourceTree = SOURCE_ROOT; };
-		9E1D578424B7AEF10034FC8C /* GUI.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = GUI.h; path = include/GUI.h; sourceTree = SOURCE_ROOT; };
-		9E1D578524B7AEF10034FC8C /* reaper_plugin_functions.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = reaper_plugin_functions.h; path = include/reaper_plugin_functions.h; sourceTree = SOURCE_ROOT; };
-		9E1D578624B7AEF10034FC8C /* WwiseConnectionHandler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = WwiseConnectionHandler.h; path = include/WwiseConnectionHandler.h; sourceTree = SOURCE_ROOT; };
-		9E1D578724B7AEF10034FC8C /* ConfigFileHandler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ConfigFileHandler.h; path = include/ConfigFileHandler.h; sourceTree = SOURCE_ROOT; };
-		9E1D578824B7AEF10034FC8C /* gui_Transfer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = gui_Transfer.h; path = include/gui_Transfer.h; sourceTree = SOURCE_ROOT; };
-		9EE14E5824B66DF8005F3A17 /* include_juce_events.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = include/JUCE/include_juce_events.mm; sourceTree = "<group>"; };
-		9EE14E5924B66DF8005F3A17 /* JuceHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = include/JUCE/JuceHeader.h; sourceTree = "<group>"; };
-		9EE14E5A24B66DF8005F3A17 /* include_juce_graphics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = include/JUCE/include_juce_graphics.mm; sourceTree = "<group>"; };
-		9EE14E5B24B66DF8005F3A17 /* include_juce_data_structures.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_data_structures.mm; path = include/JUCE/include_juce_data_structures.mm; sourceTree = "<group>"; };
-		9EE14E5C24B66DF8005F3A17 /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = include/JUCE/include_juce_gui_basics.mm; sourceTree = "<group>"; };
-		9EE14E5D24B66DF8005F3A17 /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = include/JUCE/include_juce_gui_extra.mm; sourceTree = "<group>"; };
-		9EE14E5E24B66DF8005F3A17 /* include_juce_core.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = include/JUCE/include_juce_core.mm; sourceTree = "<group>"; };
-		D877068A92EB2BD26EAB3B95 /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = /Users/simongumbleton/Projects/JUCE/modules/juce_data_structures; sourceTree = "<absolute>"; };
-		D8F589A7BB761B64EAD7BA20 /* reaper_wwise_csg.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = reaper_wwise_csg.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6D9DE3C33BFFED3DC512BB3 /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = /Users/simongumbleton/Projects/JUCE/modules/juce_gui_extra; sourceTree = "<absolute>"; };
+		9E781E5124C0E8FD005401E2 /* JuceHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JuceHeader.h; sourceTree = "<group>"; };
+		9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_gui_basics.mm; sourceTree = "<group>"; };
+		9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_graphics.mm; sourceTree = "<group>"; };
+		9E781E5624C0E8FD005401E2 /* AppConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppConfig.h; sourceTree = "<group>"; };
+		9E781E5724C0E8FD005401E2 /* include_juce_events.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_events.mm; sourceTree = "<group>"; };
+		9E781E5924C0E8FD005401E2 /* ReadMe.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe.txt; sourceTree = "<group>"; };
+		9E781E5B24C0E8FD005401E2 /* include_juce_data_structures.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_data_structures.mm; sourceTree = "<group>"; };
+		9E781E5C24C0E8FD005401E2 /* include_juce_core.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_core.mm; sourceTree = "<group>"; };
+		9E781E5D24C0E8FD005401E2 /* ReaperRenderQueParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaperRenderQueParser.h; sourceTree = "<group>"; };
+		9E781E5E24C0E8FD005401E2 /* WaapiFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaapiFunctions.h; sourceTree = "<group>"; };
+		9E781E6124C0E8FD005401E2 /* WaapiConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaapiConnect.h; sourceTree = "<group>"; };
+		9E781E6324C0E8FD005401E2 /* GUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUI.h; sourceTree = "<group>"; };
+		9E781E6424C0E8FD005401E2 /* ConfigFileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigFileHandler.h; sourceTree = "<group>"; };
+		9E781E6524C0E8FD005401E2 /* reaperHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reaperHelpers.h; sourceTree = "<group>"; };
+		9E78205824C0E904005401E2 /* gui_Transfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_Transfer.h; sourceTree = "<group>"; };
+		9E78220924C0E9B2005401E2 /* ConfigFileHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigFileHandler.cpp; sourceTree = "<group>"; };
+		9E78220A24C0E9B2005401E2 /* WaapiConnect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaapiConnect.cpp; sourceTree = "<group>"; };
+		9E78220C24C0E9B2005401E2 /* gui_Transfer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_Transfer.cpp; sourceTree = "<group>"; };
+		9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReaperRenderQueParser.cpp; sourceTree = "<group>"; };
+		9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaapiFunctions.cpp; sourceTree = "<group>"; };
+		9E78220F24C0E9B2005401E2 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
+		9E893B8524BE29E800188A61 /* libAkAutobahn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkAutobahn.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Debug/lib/libAkAutobahn.a; sourceTree = "<group>"; };
+		9E893B9E24BE577E00188A61 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		9E893BA024BE578600188A61 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		9E893BA224BE57C900188A61 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		9E893BA424BE57F700188A61 /* libAkAutobahn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkAutobahn.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Release/lib/libAkAutobahn.a; sourceTree = "<group>"; };
+		9E893BA824BE5AE900188A61 /* IBytes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IBytes.h; sourceTree = "<group>"; };
+		9E893BAB24BE5AE900188A61 /* AkTls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkTls.h; sourceTree = "<group>"; };
+		9E893BAC24BE5AE900188A61 /* AkPlatformFuncs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkPlatformFuncs.h; sourceTree = "<group>"; };
+		9E893BAD24BE5AE900188A61 /* AkLock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkLock.h; sourceTree = "<group>"; };
+		9E893BAF24BE5AE900188A61 /* AkPlatformFuncs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkPlatformFuncs.h; sourceTree = "<group>"; };
+		9E893BB124BE5AE900188A61 /* AkVectors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkVectors.h; sourceTree = "<group>"; };
+		9E893BB224BE5AE900188A61 /* AkHeap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkHeap.h; sourceTree = "<group>"; };
+		9E893BB324BE5AE900188A61 /* AkSyncCaller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSyncCaller.h; sourceTree = "<group>"; };
+		9E893BB424BE5AE900188A61 /* AkHashList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkHashList.h; sourceTree = "<group>"; };
+		9E893BB524BE5AE900188A61 /* AkRingBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkRingBuffer.h; sourceTree = "<group>"; };
+		9E893BB624BE5AE900188A61 /* AkTls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkTls.h; sourceTree = "<group>"; };
+		9E893BB724BE5AE900188A61 /* AkKeyArray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkKeyArray.h; sourceTree = "<group>"; };
+		9E893BB824BE5AE900188A61 /* AkKeyDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkKeyDef.h; sourceTree = "<group>"; };
+		9E893BB924BE5AE900188A61 /* AkListBareLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkListBareLight.h; sourceTree = "<group>"; };
+		9E893BBA24BE5AE900188A61 /* AkDynaBlkPool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkDynaBlkPool.h; sourceTree = "<group>"; };
+		9E893BBB24BE5AE900188A61 /* AkBankReadHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkBankReadHelpers.h; sourceTree = "<group>"; };
+		9E893BBC24BE5AE900188A61 /* AkMonitorError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkMonitorError.h; sourceTree = "<group>"; };
+		9E893BBD24BE5AE900188A61 /* AkObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkObject.h; sourceTree = "<group>"; };
+		9E893BBE24BE5AE900188A61 /* AkSmartPtr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSmartPtr.h; sourceTree = "<group>"; };
+		9E893BBF24BE5AE900188A61 /* AkAssert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkAssert.h; sourceTree = "<group>"; };
+		9E893BC024BE5AE900188A61 /* AkString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkString.h; sourceTree = "<group>"; };
+		9E893BC124BE5AE900188A61 /* AkFNVHash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkFNVHash.h; sourceTree = "<group>"; };
+		9E893BC224BE5AE900188A61 /* AkListBare.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkListBare.h; sourceTree = "<group>"; };
+		9E893BC324BE5AE900188A61 /* AkAllocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkAllocator.h; sourceTree = "<group>"; };
+		9E893BC424BE5AE900188A61 /* AkArray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkArray.h; sourceTree = "<group>"; };
+		9E893BC524BE5AE900188A61 /* AkPlatformFuncs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkPlatformFuncs.h; sourceTree = "<group>"; };
+		9E893BC624BE5AE900188A61 /* AkLock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkLock.h; sourceTree = "<group>"; };
+		9E893BC724BE5AE900188A61 /* AkSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSet.h; sourceTree = "<group>"; };
+		9E893BC824BE5AE900188A61 /* AkAutoLock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkAutoLock.h; sourceTree = "<group>"; };
+		9E893BCA24BE5AE900188A61 /* AkTls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkTls.h; sourceTree = "<group>"; };
+		9E893BCB24BE5AE900188A61 /* AkCOMScope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkCOMScope.h; sourceTree = "<group>"; };
+		9E893BCC24BE5AE900188A61 /* AkPlatformFuncs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkPlatformFuncs.h; sourceTree = "<group>"; };
+		9E893BCD24BE5AE900188A61 /* AkLock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkLock.h; sourceTree = "<group>"; };
+		9E893BCF24BE5AE900188A61 /* IXmlTextReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IXmlTextReader.h; sourceTree = "<group>"; };
+		9E893BD024BE5AE900188A61 /* AudioPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioPlugin.h; sourceTree = "<group>"; };
+		9E893BD124BE5AE900188A61 /* PlatformID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlatformID.h; sourceTree = "<group>"; };
+		9E893BD224BE5AE900188A61 /* Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		9E893BD324BE5AE900188A61 /* TargetVer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TargetVer.h; sourceTree = "<group>"; };
+		9E893BD424BE5AE900188A61 /* Undo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Undo.h; sourceTree = "<group>"; };
+		9E893BD524BE5AE900188A61 /* IXmlTextWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IXmlTextWriter.h; sourceTree = "<group>"; };
+		9E893BD724BE5AE900188A61 /* ISourceControlUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISourceControlUtilities.h; sourceTree = "<group>"; };
+		9E893BD824BE5AE900188A61 /* ISourceControlDialogBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISourceControlDialogBase.h; sourceTree = "<group>"; };
+		9E893BD924BE5AE900188A61 /* SourceControlContainers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SourceControlContainers.h; sourceTree = "<group>"; };
+		9E893BDA24BE5AE900188A61 /* ISourceControlOperationProgress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISourceControlOperationProgress.h; sourceTree = "<group>"; };
+		9E893BDB24BE5AE900188A61 /* ISourceControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISourceControl.h; sourceTree = "<group>"; };
+		9E893BDF24BE5AE900188A61 /* AkTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkTypes.h; sourceTree = "<group>"; };
+		9E893BE124BE5AE900188A61 /* AkSimd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimd.h; sourceTree = "<group>"; };
+		9E893BE224BE5AE900188A61 /* AkSimdAvx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimdAvx.h; sourceTree = "<group>"; };
+		9E893BE324BE5AE900188A61 /* AkSimdAvx2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimdAvx2.h; sourceTree = "<group>"; };
+		9E893BE524BE5AE900188A61 /* AkSimd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimd.h; sourceTree = "<group>"; };
+		9E893BE624BE5AE900188A61 /* AkPlatformContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkPlatformContext.h; sourceTree = "<group>"; };
+		9E893BE724BE5AE900188A61 /* AkTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkTypes.h; sourceTree = "<group>"; };
+		9E893BE824BE5AE900188A61 /* AkMacSoundEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkMacSoundEngine.h; sourceTree = "<group>"; };
+		9E893BEA24BE5AE900188A61 /* AkAtomic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkAtomic.h; sourceTree = "<group>"; };
+		9E893BEC24BE5AE900188A61 /* AkSimd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimd.h; sourceTree = "<group>"; };
+		9E893BED24BE5AE900188A61 /* AkSpeakerVolumes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSpeakerVolumes.h; sourceTree = "<group>"; };
+		9E893BEF24BE5AE900188A61 /* AkSimd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimd.h; sourceTree = "<group>"; };
+		9E893BF024BE5AE900188A61 /* AkPlatformContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkPlatformContext.h; sourceTree = "<group>"; };
+		9E893BF124BE5AE900188A61 /* AkTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkTypes.h; sourceTree = "<group>"; };
+		9E893BF224BE5AE900188A61 /* AkWinSoundEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkWinSoundEngine.h; sourceTree = "<group>"; };
+		9E893BF324BE5AE900188A61 /* AkAtomic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkAtomic.h; sourceTree = "<group>"; };
+		9E893BF524BE5AE900188A61 /* AkSimd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimd.h; sourceTree = "<group>"; };
+		9E893BF624BE5AE900188A61 /* AkSimdShuffle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimdShuffle.h; sourceTree = "<group>"; };
+		9E893BF824BE5AE900188A61 /* AkSimd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimd.h; sourceTree = "<group>"; };
+		9E893BF924BE5AE900188A61 /* IAkPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAkPlugin.h; sourceTree = "<group>"; };
+		9E893BFA24BE5AE900188A61 /* AkSpeakerConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSpeakerConfig.h; sourceTree = "<group>"; };
+		9E893BFB24BE5AE900188A61 /* IAkPlatformContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAkPlatformContext.h; sourceTree = "<group>"; };
+		9E893BFC24BE5AE900188A61 /* AkCallback.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkCallback.h; sourceTree = "<group>"; };
+		9E893BFD24BE5AE900188A61 /* AkDynamicDialogue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkDynamicDialogue.h; sourceTree = "<group>"; };
+		9E893BFE24BE5AE900188A61 /* AkVirtualAcoustics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkVirtualAcoustics.h; sourceTree = "<group>"; };
+		9E893BFF24BE5AE900188A61 /* IAkMixerPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAkMixerPlugin.h; sourceTree = "<group>"; };
+		9E893C0024BE5AE900188A61 /* AkFPUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkFPUtilities.h; sourceTree = "<group>"; };
+		9E893C0124BE5AE900188A61 /* AkMidiTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkMidiTypes.h; sourceTree = "<group>"; };
+		9E893C0224BE5AE900188A61 /* AkSimdMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSimdMath.h; sourceTree = "<group>"; };
+		9E893C0324BE5AE900188A61 /* AkTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkTypes.h; sourceTree = "<group>"; };
+		9E893C0424BE5AE900188A61 /* AkSoundEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSoundEngine.h; sourceTree = "<group>"; };
+		9E893C0524BE5AE900188A61 /* AkStreamMgrModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkStreamMgrModule.h; sourceTree = "<group>"; };
+		9E893C0624BE5AE900188A61 /* AkBytesMem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkBytesMem.h; sourceTree = "<group>"; };
+		9E893C0724BE5AE900188A61 /* AkQueryParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkQueryParameters.h; sourceTree = "<group>"; };
+		9E893C0824BE5AE900188A61 /* AkSoundEngineExport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSoundEngineExport.h; sourceTree = "<group>"; };
+		9E893C0924BE5AE900188A61 /* AkBytesCount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkBytesCount.h; sourceTree = "<group>"; };
+		9E893C0A24BE5AE900188A61 /* IAkProcessorFeatures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAkProcessorFeatures.h; sourceTree = "<group>"; };
+		9E893C0B24BE5AE900188A61 /* AkMemoryMgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkMemoryMgr.h; sourceTree = "<group>"; };
+		9E893C0C24BE5AE900188A61 /* AkSpeakerVolumes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSpeakerVolumes.h; sourceTree = "<group>"; };
+		9E893C0D24BE5AE900188A61 /* IAkRTPCSubscriber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAkRTPCSubscriber.h; sourceTree = "<group>"; };
+		9E893C0E24BE5AE900188A61 /* IAkPluginMemAlloc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAkPluginMemAlloc.h; sourceTree = "<group>"; };
+		9E893C0F24BE5AE900188A61 /* AkCommonDefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkCommonDefs.h; sourceTree = "<group>"; };
+		9E893C1024BE5AE900188A61 /* AkAtomic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkAtomic.h; sourceTree = "<group>"; };
+		9E893C1124BE5AE900188A61 /* IAkStreamMgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAkStreamMgr.h; sourceTree = "<group>"; };
+		9E893C1224BE5AE900188A61 /* AkDynamicSequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkDynamicSequence.h; sourceTree = "<group>"; };
+		9E893C1324BE5AE900188A61 /* ak.natvis */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ak.natvis; sourceTree = "<group>"; };
+		9E893C1424BE5AE900188A61 /* AkModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkModule.h; sourceTree = "<group>"; };
+		9E893C1624BE5AE900188A61 /* SFObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFObjects.h; sourceTree = "<group>"; };
+		9E893C1724BE5AE900188A61 /* SF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SF.h; sourceTree = "<group>"; };
+		9E893C1924BE5AE900188A61 /* AkTimeStretchFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkTimeStretchFXFactory.h; sourceTree = "<group>"; };
+		9E893C1A24BE5AE900188A61 /* AkAudioInputSourceFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkAudioInputSourceFactory.h; sourceTree = "<group>"; };
+		9E893C1B24BE5AE900188A61 /* AkGainFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkGainFXFactory.h; sourceTree = "<group>"; };
+		9E893C1C24BE5AE900188A61 /* AllPluginsFactories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllPluginsFactories.h; sourceTree = "<group>"; };
+		9E893C1D24BE5AE900188A61 /* AkCompressorFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkCompressorFXFactory.h; sourceTree = "<group>"; };
+		9E893C1E24BE5AE900188A61 /* AkPitchShifterFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkPitchShifterFXFactory.h; sourceTree = "<group>"; };
+		9E893C1F24BE5AE900188A61 /* AllPluginsRegistrationHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllPluginsRegistrationHelpers.h; sourceTree = "<group>"; };
+		9E893C2024BE5AE900188A61 /* AkRoomVerbFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkRoomVerbFXFactory.h; sourceTree = "<group>"; };
+		9E893C2124BE5AE900188A61 /* AkSineSourceFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSineSourceFactory.h; sourceTree = "<group>"; };
+		9E893C2224BE5AE900188A61 /* AkSinkFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSinkFactory.h; sourceTree = "<group>"; };
+		9E893C2324BE5AE900188A61 /* AkMeterFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkMeterFXFactory.h; sourceTree = "<group>"; };
+		9E893C2424BE5AE900188A61 /* AkToneSourceFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkToneSourceFactory.h; sourceTree = "<group>"; };
+		9E893C2524BE5AE900188A61 /* AkAACFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkAACFactory.h; sourceTree = "<group>"; };
+		9E893C2624BE5AE900188A61 /* AkRecorderFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkRecorderFXFactory.h; sourceTree = "<group>"; };
+		9E893C2724BE5AE900188A61 /* AkStereoDelayFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkStereoDelayFXFactory.h; sourceTree = "<group>"; };
+		9E893C2824BE5AE900188A61 /* AkPeakLimiterFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkPeakLimiterFXFactory.h; sourceTree = "<group>"; };
+		9E893C2924BE5AE900188A61 /* AkVorbisDecoderFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkVorbisDecoderFactory.h; sourceTree = "<group>"; };
+		9E893C2A24BE5AE900188A61 /* AkSilenceSourceFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSilenceSourceFactory.h; sourceTree = "<group>"; };
+		9E893C2B24BE5AE900188A61 /* AkMatrixReverbFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkMatrixReverbFXFactory.h; sourceTree = "<group>"; };
+		9E893C2C24BE5AE900188A61 /* AkHarmonizerFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkHarmonizerFXFactory.h; sourceTree = "<group>"; };
+		9E893C2D24BE5AE900188A61 /* AkAudioInputPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkAudioInputPlugin.h; sourceTree = "<group>"; };
+		9E893C2E24BE5AE900188A61 /* AkReflectGameData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkReflectGameData.h; sourceTree = "<group>"; };
+		9E893C2F24BE5AE900188A61 /* AkOpusDecoderFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkOpusDecoderFactory.h; sourceTree = "<group>"; };
+		9E893C3024BE5AE900188A61 /* AkGuitarDistortionFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkGuitarDistortionFXFactory.h; sourceTree = "<group>"; };
+		9E893C3124BE5AE900188A61 /* AkFlangerFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkFlangerFXFactory.h; sourceTree = "<group>"; };
+		9E893C3224BE5AE900188A61 /* AkExpanderFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkExpanderFXFactory.h; sourceTree = "<group>"; };
+		9E893C3324BE5AE900188A61 /* AkParametricEQFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkParametricEQFXFactory.h; sourceTree = "<group>"; };
+		9E893C3524BE5AE900188A61 /* AkFXParameterChangeHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkFXParameterChangeHandler.h; sourceTree = "<group>"; };
+		9E893C3624BE5AE900188A61 /* AkMixerInputMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkMixerInputMap.h; sourceTree = "<group>"; };
+		9E893C3724BE5AE900188A61 /* AkValueRamp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkValueRamp.h; sourceTree = "<group>"; };
+		9E893C3824BE5AE900188A61 /* AkFXDurationHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkFXDurationHandler.h; sourceTree = "<group>"; };
+		9E893C3924BE5AE900188A61 /* AkVectorValueRamp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkVectorValueRamp.h; sourceTree = "<group>"; };
+		9E893C3A24BE5AE900188A61 /* AkFXTailHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkFXTailHandler.h; sourceTree = "<group>"; };
+		9E893C3B24BE5AE900188A61 /* AkTremoloFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkTremoloFXFactory.h; sourceTree = "<group>"; };
+		9E893C3C24BE5AE900188A61 /* AkDelayFXFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkDelayFXFactory.h; sourceTree = "<group>"; };
+		9E893C3D24BE5AE900188A61 /* AkSynthOneSourceFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSynthOneSourceFactory.h; sourceTree = "<group>"; };
+		9E893C3F24BE5AE900188A61 /* AkCommunication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkCommunication.h; sourceTree = "<group>"; };
+		9E893C4024BE5AE900188A61 /* AkPlatforms.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkPlatforms.h; sourceTree = "<group>"; };
+		9E893C4224BE5AE900188A61 /* AkJsonBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkJsonBase.h; sourceTree = "<group>"; };
+		9E893C4424BE5AE900188A61 /* waapi_uri.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = waapi_uri.py; sourceTree = "<group>"; };
+		9E893C4624BE5AE900188A61 /* FutureUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FutureUtils.h; sourceTree = "<group>"; };
+		9E893C4724BE5AE900188A61 /* JsonProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JsonProvider.h; sourceTree = "<group>"; };
+		9E893C4824BE5AE900188A61 /* civetweb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = civetweb.h; sourceTree = "<group>"; };
+		9E893C4924BE5AE900188A61 /* Client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
+		9E893C4A24BE5AE900188A61 /* AkJson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkJson.h; sourceTree = "<group>"; };
+		9E893C4B24BE5AE900188A61 /* IWebSocketClientHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWebSocketClientHandler.h; sourceTree = "<group>"; };
+		9E893C4C24BE5AE900188A61 /* autobahn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = autobahn.h; sourceTree = "<group>"; };
+		9E893C4D24BE5AE900188A61 /* AkVariant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkVariant.h; sourceTree = "<group>"; };
+		9E893C4E24BE5AE900188A61 /* Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
+		9E893C4F24BE5AE900188A61 /* WebSocketClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebSocketClient.h; sourceTree = "<group>"; };
+		9E893C5124BE5AE900188A61 /* waapi.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = waapi.js; sourceTree = "<group>"; };
+		9E893C5324BE5AE900188A61 /* WaapiUri.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = WaapiUri.cs; sourceTree = "<group>"; };
+		9E893C5424BE5AE900188A61 /* waapi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = waapi.h; sourceTree = "<group>"; };
+		9E893C5524BE5AE900188A61 /* AkVariantBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkVariantBase.h; sourceTree = "<group>"; };
+		9E893C5724BE5AE900188A61 /* waapi.ts */ = {isa = PBXFileReference; lastKnownFileType = text; path = waapi.ts; sourceTree = "<group>"; };
+		9E893C5824BE5AE900188A61 /* AkGuid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkGuid.h; sourceTree = "<group>"; };
+		9E893C5B24BE5AE900188A61 /* AkMusicEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkMusicEngine.h; sourceTree = "<group>"; };
+		9E893C5E24BE5AE900188A61 /* AkSpatialAudioTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSpatialAudioTypes.h; sourceTree = "<group>"; };
+		9E893C5F24BE5AE900188A61 /* AkSpatialAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkSpatialAudio.h; sourceTree = "<group>"; };
+		9E893C6024BE5AE900188A61 /* AkWwiseSDKVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkWwiseSDKVersion.h; sourceTree = "<group>"; };
+		9E893C6224BE5AE900188A61 /* AkApplyGain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkApplyGain.h; sourceTree = "<group>"; };
+		9E893C6324BE5AE900188A61 /* AkDelayLineMemory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkDelayLineMemory.h; sourceTree = "<group>"; };
+		9E893C6424BE5AE900188A61 /* AkVolAutomation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkVolAutomation.h; sourceTree = "<group>"; };
+		9E893C6524BE5AE900188A61 /* AkModulatorProcess.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkModulatorProcess.h; sourceTree = "<group>"; };
+		9E893C6624BE5AE900188A61 /* AkDelayLineMemoryStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkDelayLineMemoryStream.h; sourceTree = "<group>"; };
+		9E893C6824BE5AE900188A61 /* AkDelayLineMemory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkDelayLineMemory.h; sourceTree = "<group>"; };
+		9E893C6924BE5AE900188A61 /* AkDelayLineMemoryStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AkDelayLineMemoryStream.h; sourceTree = "<group>"; };
+		9E893C6A24BE5AE900188A61 /* AkWwiseSDKVersion.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AkWwiseSDKVersion.cs; sourceTree = "<group>"; };
+		9E893C6B24BE5CCA00188A61 /* libAkSoundEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkSoundEngine.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Release/lib/libAkSoundEngine.a; sourceTree = "<group>"; };
+		9E893C6D24BFB39D00188A61 /* libAkSoundEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkSoundEngine.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Debug/lib/libAkSoundEngine.a; sourceTree = "<group>"; };
+		C406994D1C39B33800E445F7 /* reaper_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reaper_plugin.h; path = ../library/reaper_plugin/reaper_plugin.h; sourceTree = "<group>"; };
+		C406994F1C39B34300E445F7 /* reaper_plugin_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reaper_plugin_functions.h; path = ../library/reaper_plugin/reaper_plugin_functions.h; sourceTree = "<group>"; };
+		C42AC6D21C27AB1D00FAE97E /* lice_textnew.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lice_textnew.cpp; path = ../library/WDL/WDL/lice/lice_textnew.cpp; sourceTree = "<group>"; };
+		C484E6851C1BAD49005C6CCC /* swell-dlg.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "swell-dlg.mm"; path = "../library/WDL/WDL/swell/swell-dlg.mm"; sourceTree = "<group>"; };
+		C484E6861C1BAD49005C6CCC /* swell-gdi.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "swell-gdi.mm"; path = "../library/WDL/WDL/swell/swell-gdi.mm"; sourceTree = "<group>"; };
+		C484E6871C1BAD49005C6CCC /* swell-kb.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "swell-kb.mm"; path = "../library/WDL/WDL/swell/swell-kb.mm"; sourceTree = "<group>"; };
+		C484E6881C1BAD49005C6CCC /* swell-menu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "swell-menu.mm"; path = "../library/WDL/WDL/swell/swell-menu.mm"; sourceTree = "<group>"; };
+		C484E6891C1BAD49005C6CCC /* swell-misc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "swell-misc.mm"; path = "../library/WDL/WDL/swell/swell-misc.mm"; sourceTree = "<group>"; };
+		C484E68A1C1BAD49005C6CCC /* swell-miscdlg.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "swell-miscdlg.mm"; path = "../library/WDL/WDL/swell/swell-miscdlg.mm"; sourceTree = "<group>"; };
+		C484E68B1C1BAD49005C6CCC /* swell-wnd.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "swell-wnd.mm"; path = "../library/WDL/WDL/swell/swell-wnd.mm"; sourceTree = "<group>"; };
+		C484E68C1C1BAD49005C6CCC /* swell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = swell.cpp; path = ../library/WDL/WDL/swell/swell.cpp; sourceTree = "<group>"; };
+		C484E6971C1BAE94005C6CCC /* lice_arc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lice_arc.cpp; path = ../library/WDL/WDL/lice/lice_arc.cpp; sourceTree = "<group>"; };
+		C484E6981C1BAE94005C6CCC /* lice_line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lice_line.cpp; path = ../library/WDL/WDL/lice/lice_line.cpp; sourceTree = "<group>"; };
+		C484E6991C1BAE94005C6CCC /* lice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lice.cpp; path = ../library/WDL/WDL/lice/lice.cpp; sourceTree = "<group>"; };
+		C49593F01C4EFCA0007C6C9B /* httpget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = httpget.cpp; path = /Users/simongumbleton/Projects/ReaperPluginMAC/library/WDL/WDL/jnetlib/httpget.cpp; sourceTree = "<absolute>"; };
+		C49593F21C4EFCB7007C6C9B /* connection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = connection.cpp; path = ../library/WDL/WDL/jnetlib/connection.cpp; sourceTree = "<group>"; };
+		C49593F41C4EFCD1007C6C9B /* asyncdns.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = asyncdns.cpp; path = ../library/WDL/WDL/jnetlib/asyncdns.cpp; sourceTree = "<group>"; };
+		C49593F61C4EFCFD007C6C9B /* listen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = listen.cpp; path = ../library/WDL/WDL/jnetlib/listen.cpp; sourceTree = "<group>"; };
+		C49593F81C4EFD1A007C6C9B /* util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = util.cpp; path = ../library/WDL/WDL/jnetlib/util.cpp; sourceTree = "<group>"; };
+		C4D434B81C1A41E3005DFFD3 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		C4D434B91C1A41E3005DFFD3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		E3E1DB161C18C67100D648F5 /* reaper_wwise_csg.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = reaper_wwise_csg.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		96F41723F19227EB6C3FB1E0 /* Frameworks */ = {
+		E3E1DB0E1C18C67100D648F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9531AF92A27CD6E6A9C1252F /* Carbon.framework in Frameworks */,
-				752D5D1A5C586A16EBCBB078 /* Cocoa.framework in Frameworks */,
-				11636DA9169DC78289E66CF4 /* IOKit.framework in Frameworks */,
-				72AAF1C63CE3318981181F09 /* QuartzCore.framework in Frameworks */,
-				F24135C23C01929378C20CB5 /* WebKit.framework in Frameworks */,
+				9E893BA324BE57C900188A61 /* CoreImage.framework in Frameworks */,
+				9E893BA124BE578600188A61 /* IOKit.framework in Frameworks */,
+				9E893B9F24BE577E00188A61 /* AppKit.framework in Frameworks */,
+				C4D434BA1C1A41E3005DFFD3 /* Carbon.framework in Frameworks */,
+				C4D434BB1C1A41E3005DFFD3 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0753F1804577EE09287EBD73 /* Products */ = {
+		9E781E4E24C0E8FD005401E2 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				D8F589A7BB761B64EAD7BA20 /* reaper_wwise_csg.dylib */,
+				9E781E4F24C0E8FD005401E2 /* JUCE */,
+				9E781E5D24C0E8FD005401E2 /* ReaperRenderQueParser.h */,
+				9E781E5E24C0E8FD005401E2 /* WaapiFunctions.h */,
+				9E781E6124C0E8FD005401E2 /* WaapiConnect.h */,
+				9E781E6324C0E8FD005401E2 /* GUI.h */,
+				9E781E6424C0E8FD005401E2 /* ConfigFileHandler.h */,
+				9E781E6524C0E8FD005401E2 /* reaperHelpers.h */,
+				9E78205824C0E904005401E2 /* gui_Transfer.h */,
 			);
-			name = Products;
+			path = include;
 			sourceTree = "<group>";
 		};
-		0C7E7AAE1F805FD3EDE3E680 /* Source */ = {
+		9E781E4F24C0E8FD005401E2 /* JUCE */ = {
 			isa = PBXGroup;
 			children = (
-				9E1D576E24B7AC330034FC8C /* include */,
-				9E1D576D24B7AC2C0034FC8C /* src */,
-				82A90D9C182BDACD4CF33859 /* JUCE Modules */,
-				439F3CD80117AED21C67D5B4 /* JUCE */,
-				450090B35B429F51ABE0D889 /* Resources */,
-				61D2747302221CD58FF53236 /* Frameworks */,
-				0753F1804577EE09287EBD73 /* Products */,
+				9E781E5124C0E8FD005401E2 /* JuceHeader.h */,
+				9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */,
+				9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */,
+				9E781E5624C0E8FD005401E2 /* AppConfig.h */,
+				9E781E5724C0E8FD005401E2 /* include_juce_events.mm */,
+				9E781E5924C0E8FD005401E2 /* ReadMe.txt */,
+				9E781E5B24C0E8FD005401E2 /* include_juce_data_structures.mm */,
+				9E781E5C24C0E8FD005401E2 /* include_juce_core.mm */,
 			);
-			name = Source;
+			path = JUCE;
 			sourceTree = "<group>";
 		};
-		439F3CD80117AED21C67D5B4 /* JUCE */ = {
+		9E78220824C0E9B2005401E2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				9EE14E5E24B66DF8005F3A17 /* include_juce_core.mm */,
-				9EE14E5B24B66DF8005F3A17 /* include_juce_data_structures.mm */,
-				9EE14E5824B66DF8005F3A17 /* include_juce_events.mm */,
-				9EE14E5A24B66DF8005F3A17 /* include_juce_graphics.mm */,
-				9EE14E5C24B66DF8005F3A17 /* include_juce_gui_basics.mm */,
-				9EE14E5D24B66DF8005F3A17 /* include_juce_gui_extra.mm */,
-				9EE14E5924B66DF8005F3A17 /* JuceHeader.h */,
+				9E78220924C0E9B2005401E2 /* ConfigFileHandler.cpp */,
+				9E78220A24C0E9B2005401E2 /* WaapiConnect.cpp */,
+				9E78220C24C0E9B2005401E2 /* gui_Transfer.cpp */,
+				9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */,
+				9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */,
+				9E78220F24C0E9B2005401E2 /* Main.cpp */,
 			);
-			name = JUCE;
+			path = src;
 			sourceTree = "<group>";
 		};
-		450090B35B429F51ABE0D889 /* Resources */ = {
+		9E893B8424BE29E700188A61 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				87002DFB5C332D23C8153A1C /* RecentFilesMenuTemplate.nib */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		61D2747302221CD58FF53236 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				30AA7EA232DD3AC3E1175AD9 /* Carbon.framework */,
-				97F832614AE8137678E79087 /* Cocoa.framework */,
-				414881D993229ED2536DD4CD /* IOKit.framework */,
-				972A26C16A9A2684840D1232 /* QuartzCore.framework */,
-				7C6EF00A7F0A5B13CF9693EE /* WebKit.framework */,
+				9E893C6B24BE5CCA00188A61 /* libAkSoundEngine.a */,
+				9E893C6D24BFB39D00188A61 /* libAkSoundEngine.a */,
+				9E893BA424BE57F700188A61 /* libAkAutobahn.a */,
+				9E893BA224BE57C900188A61 /* CoreImage.framework */,
+				9E893BA024BE578600188A61 /* IOKit.framework */,
+				9E893B9E24BE577E00188A61 /* AppKit.framework */,
+				9E893B8524BE29E800188A61 /* libAkAutobahn.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		82A90D9C182BDACD4CF33859 /* JUCE Modules */ = {
+		9E893BA724BE5AE900188A61 /* AK */ = {
 			isa = PBXGroup;
 			children = (
-				325E449EC38A27257915855D /* juce_core */,
-				D877068A92EB2BD26EAB3B95 /* juce_data_structures */,
-				3FFD6378618B452432F015E9 /* juce_events */,
-				900E350431118ADE1D9626E2 /* juce_graphics */,
-				572BB9E9BE8A5D004D55534A /* juce_gui_basics */,
-				E6D9DE3C33BFFED3DC512BB3 /* juce_gui_extra */,
+				9E893BA824BE5AE900188A61 /* IBytes.h */,
+				9E893BA924BE5AE900188A61 /* Tools */,
+				9E893BCE24BE5AE900188A61 /* Wwise */,
+				9E893BDC24BE5AE900188A61 /* SoundEngine */,
+				9E893C1524BE5AE900188A61 /* SoundFrame */,
+				9E893C1824BE5AE900188A61 /* Plugin */,
+				9E893C3E24BE5AE900188A61 /* Comm */,
+				9E893C4024BE5AE900188A61 /* AkPlatforms.h */,
+				9E893C4124BE5AE900188A61 /* WwiseAuthoringAPI */,
+				9E893C5924BE5AE900188A61 /* MusicEngine */,
+				9E893C5C24BE5AE900188A61 /* SpatialAudio */,
+				9E893C6024BE5AE900188A61 /* AkWwiseSDKVersion.h */,
+				9E893C6124BE5AE900188A61 /* DSP */,
+				9E893C6A24BE5AE900188A61 /* AkWwiseSDKVersion.cs */,
 			);
-			name = "JUCE Modules";
+			name = AK;
+			path = ../../Wwise/WwiseIncludeFiles/include/AK;
 			sourceTree = "<group>";
 		};
-		9E1D576D24B7AC2C0034FC8C /* src */ = {
+		9E893BA924BE5AE900188A61 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				9E1D577724B7AED70034FC8C /* ConfigFileHandler.cpp */,
-				9E1D577224B7AED70034FC8C /* gui_Transfer.cpp */,
-				9E1D577824B7AED70034FC8C /* Main.cpp */,
-				9E1D577424B7AED70034FC8C /* ReaperRenderQueParser.cpp */,
-				9E1D577524B7AED70034FC8C /* WaapiConnect.cpp */,
-				9E1D577624B7AED70034FC8C /* WaapiFunctions.cpp */,
-				9E1D577324B7AED70034FC8C /* WwiseConnectionHandler.cpp */,
-				9E1D577024B7ACA50034FC8C /* Main.cpp */,
+				9E893BAA24BE5AE900188A61 /* POSIX */,
+				9E893BAE24BE5AE900188A61 /* Mac */,
+				9E893BB024BE5AE900188A61 /* Common */,
+				9E893BC924BE5AE900188A61 /* Win32 */,
 			);
-			name = src;
-			path = source;
+			path = Tools;
 			sourceTree = "<group>";
 		};
-		9E1D576E24B7AC330034FC8C /* include */ = {
+		9E893BAA24BE5AE900188A61 /* POSIX */ = {
 			isa = PBXGroup;
 			children = (
-				9E1D578724B7AEF10034FC8C /* ConfigFileHandler.h */,
-				9E1D578824B7AEF10034FC8C /* gui_Transfer.h */,
-				9E1D578424B7AEF10034FC8C /* GUI.h */,
-				9E1D578524B7AEF10034FC8C /* reaper_plugin_functions.h */,
-				9E1D578324B7AEF10034FC8C /* reaperHelpers.h */,
-				9E1D578024B7AEF10034FC8C /* ReaperRenderQueParser.h */,
-				9E1D578224B7AEF10034FC8C /* WaapiConnect.h */,
-				9E1D578124B7AEF10034FC8C /* WaapiFunctions.h */,
-				9E1D578624B7AEF10034FC8C /* WwiseConnectionHandler.h */,
-				9E1D576F24B7AC570034FC8C /* reaper_plugin.h */,
+				9E893BAB24BE5AE900188A61 /* AkTls.h */,
+				9E893BAC24BE5AE900188A61 /* AkPlatformFuncs.h */,
+				9E893BAD24BE5AE900188A61 /* AkLock.h */,
 			);
-			name = include;
-			path = "New Group";
+			path = POSIX;
+			sourceTree = "<group>";
+		};
+		9E893BAE24BE5AE900188A61 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BAF24BE5AE900188A61 /* AkPlatformFuncs.h */,
+			);
+			path = Mac;
+			sourceTree = "<group>";
+		};
+		9E893BB024BE5AE900188A61 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BB124BE5AE900188A61 /* AkVectors.h */,
+				9E893BB224BE5AE900188A61 /* AkHeap.h */,
+				9E893BB324BE5AE900188A61 /* AkSyncCaller.h */,
+				9E893BB424BE5AE900188A61 /* AkHashList.h */,
+				9E893BB524BE5AE900188A61 /* AkRingBuffer.h */,
+				9E893BB624BE5AE900188A61 /* AkTls.h */,
+				9E893BB724BE5AE900188A61 /* AkKeyArray.h */,
+				9E893BB824BE5AE900188A61 /* AkKeyDef.h */,
+				9E893BB924BE5AE900188A61 /* AkListBareLight.h */,
+				9E893BBA24BE5AE900188A61 /* AkDynaBlkPool.h */,
+				9E893BBB24BE5AE900188A61 /* AkBankReadHelpers.h */,
+				9E893BBC24BE5AE900188A61 /* AkMonitorError.h */,
+				9E893BBD24BE5AE900188A61 /* AkObject.h */,
+				9E893BBE24BE5AE900188A61 /* AkSmartPtr.h */,
+				9E893BBF24BE5AE900188A61 /* AkAssert.h */,
+				9E893BC024BE5AE900188A61 /* AkString.h */,
+				9E893BC124BE5AE900188A61 /* AkFNVHash.h */,
+				9E893BC224BE5AE900188A61 /* AkListBare.h */,
+				9E893BC324BE5AE900188A61 /* AkAllocator.h */,
+				9E893BC424BE5AE900188A61 /* AkArray.h */,
+				9E893BC524BE5AE900188A61 /* AkPlatformFuncs.h */,
+				9E893BC624BE5AE900188A61 /* AkLock.h */,
+				9E893BC724BE5AE900188A61 /* AkSet.h */,
+				9E893BC824BE5AE900188A61 /* AkAutoLock.h */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9E893BC924BE5AE900188A61 /* Win32 */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BCA24BE5AE900188A61 /* AkTls.h */,
+				9E893BCB24BE5AE900188A61 /* AkCOMScope.h */,
+				9E893BCC24BE5AE900188A61 /* AkPlatformFuncs.h */,
+				9E893BCD24BE5AE900188A61 /* AkLock.h */,
+			);
+			path = Win32;
+			sourceTree = "<group>";
+		};
+		9E893BCE24BE5AE900188A61 /* Wwise */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BCF24BE5AE900188A61 /* IXmlTextReader.h */,
+				9E893BD024BE5AE900188A61 /* AudioPlugin.h */,
+				9E893BD124BE5AE900188A61 /* PlatformID.h */,
+				9E893BD224BE5AE900188A61 /* Utilities.h */,
+				9E893BD324BE5AE900188A61 /* TargetVer.h */,
+				9E893BD424BE5AE900188A61 /* Undo.h */,
+				9E893BD524BE5AE900188A61 /* IXmlTextWriter.h */,
+				9E893BD624BE5AE900188A61 /* SourceControl */,
+			);
+			path = Wwise;
+			sourceTree = "<group>";
+		};
+		9E893BD624BE5AE900188A61 /* SourceControl */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BD724BE5AE900188A61 /* ISourceControlUtilities.h */,
+				9E893BD824BE5AE900188A61 /* ISourceControlDialogBase.h */,
+				9E893BD924BE5AE900188A61 /* SourceControlContainers.h */,
+				9E893BDA24BE5AE900188A61 /* ISourceControlOperationProgress.h */,
+				9E893BDB24BE5AE900188A61 /* ISourceControl.h */,
+			);
+			path = SourceControl;
+			sourceTree = "<group>";
+		};
+		9E893BDC24BE5AE900188A61 /* SoundEngine */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BDD24BE5AE900188A61 /* Platforms */,
+				9E893BF724BE5AE900188A61 /* Common */,
+			);
+			path = SoundEngine;
+			sourceTree = "<group>";
+		};
+		9E893BDD24BE5AE900188A61 /* Platforms */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BDE24BE5AE900188A61 /* POSIX */,
+				9E893BE024BE5AE900188A61 /* SSE */,
+				9E893BE424BE5AE900188A61 /* Mac */,
+				9E893BE924BE5AE900188A61 /* Linux */,
+				9E893BEB24BE5AE900188A61 /* Generic */,
+				9E893BEE24BE5AE900188A61 /* Windows */,
+				9E893BF424BE5AE900188A61 /* arm_neon */,
+			);
+			path = Platforms;
+			sourceTree = "<group>";
+		};
+		9E893BDE24BE5AE900188A61 /* POSIX */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BDF24BE5AE900188A61 /* AkTypes.h */,
+			);
+			path = POSIX;
+			sourceTree = "<group>";
+		};
+		9E893BE024BE5AE900188A61 /* SSE */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BE124BE5AE900188A61 /* AkSimd.h */,
+				9E893BE224BE5AE900188A61 /* AkSimdAvx.h */,
+				9E893BE324BE5AE900188A61 /* AkSimdAvx2.h */,
+			);
+			path = SSE;
+			sourceTree = "<group>";
+		};
+		9E893BE424BE5AE900188A61 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BE524BE5AE900188A61 /* AkSimd.h */,
+				9E893BE624BE5AE900188A61 /* AkPlatformContext.h */,
+				9E893BE724BE5AE900188A61 /* AkTypes.h */,
+				9E893BE824BE5AE900188A61 /* AkMacSoundEngine.h */,
+			);
+			path = Mac;
+			sourceTree = "<group>";
+		};
+		9E893BE924BE5AE900188A61 /* Linux */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BEA24BE5AE900188A61 /* AkAtomic.h */,
+			);
+			path = Linux;
+			sourceTree = "<group>";
+		};
+		9E893BEB24BE5AE900188A61 /* Generic */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BEC24BE5AE900188A61 /* AkSimd.h */,
+				9E893BED24BE5AE900188A61 /* AkSpeakerVolumes.h */,
+			);
+			path = Generic;
+			sourceTree = "<group>";
+		};
+		9E893BEE24BE5AE900188A61 /* Windows */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BEF24BE5AE900188A61 /* AkSimd.h */,
+				9E893BF024BE5AE900188A61 /* AkPlatformContext.h */,
+				9E893BF124BE5AE900188A61 /* AkTypes.h */,
+				9E893BF224BE5AE900188A61 /* AkWinSoundEngine.h */,
+				9E893BF324BE5AE900188A61 /* AkAtomic.h */,
+			);
+			path = Windows;
+			sourceTree = "<group>";
+		};
+		9E893BF424BE5AE900188A61 /* arm_neon */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BF524BE5AE900188A61 /* AkSimd.h */,
+				9E893BF624BE5AE900188A61 /* AkSimdShuffle.h */,
+			);
+			path = arm_neon;
+			sourceTree = "<group>";
+		};
+		9E893BF724BE5AE900188A61 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9E893BF824BE5AE900188A61 /* AkSimd.h */,
+				9E893BF924BE5AE900188A61 /* IAkPlugin.h */,
+				9E893BFA24BE5AE900188A61 /* AkSpeakerConfig.h */,
+				9E893BFB24BE5AE900188A61 /* IAkPlatformContext.h */,
+				9E893BFC24BE5AE900188A61 /* AkCallback.h */,
+				9E893BFD24BE5AE900188A61 /* AkDynamicDialogue.h */,
+				9E893BFE24BE5AE900188A61 /* AkVirtualAcoustics.h */,
+				9E893BFF24BE5AE900188A61 /* IAkMixerPlugin.h */,
+				9E893C0024BE5AE900188A61 /* AkFPUtilities.h */,
+				9E893C0124BE5AE900188A61 /* AkMidiTypes.h */,
+				9E893C0224BE5AE900188A61 /* AkSimdMath.h */,
+				9E893C0324BE5AE900188A61 /* AkTypes.h */,
+				9E893C0424BE5AE900188A61 /* AkSoundEngine.h */,
+				9E893C0524BE5AE900188A61 /* AkStreamMgrModule.h */,
+				9E893C0624BE5AE900188A61 /* AkBytesMem.h */,
+				9E893C0724BE5AE900188A61 /* AkQueryParameters.h */,
+				9E893C0824BE5AE900188A61 /* AkSoundEngineExport.h */,
+				9E893C0924BE5AE900188A61 /* AkBytesCount.h */,
+				9E893C0A24BE5AE900188A61 /* IAkProcessorFeatures.h */,
+				9E893C0B24BE5AE900188A61 /* AkMemoryMgr.h */,
+				9E893C0C24BE5AE900188A61 /* AkSpeakerVolumes.h */,
+				9E893C0D24BE5AE900188A61 /* IAkRTPCSubscriber.h */,
+				9E893C0E24BE5AE900188A61 /* IAkPluginMemAlloc.h */,
+				9E893C0F24BE5AE900188A61 /* AkCommonDefs.h */,
+				9E893C1024BE5AE900188A61 /* AkAtomic.h */,
+				9E893C1124BE5AE900188A61 /* IAkStreamMgr.h */,
+				9E893C1224BE5AE900188A61 /* AkDynamicSequence.h */,
+				9E893C1324BE5AE900188A61 /* ak.natvis */,
+				9E893C1424BE5AE900188A61 /* AkModule.h */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9E893C1524BE5AE900188A61 /* SoundFrame */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C1624BE5AE900188A61 /* SFObjects.h */,
+				9E893C1724BE5AE900188A61 /* SF.h */,
+			);
+			path = SoundFrame;
+			sourceTree = "<group>";
+		};
+		9E893C1824BE5AE900188A61 /* Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C1924BE5AE900188A61 /* AkTimeStretchFXFactory.h */,
+				9E893C1A24BE5AE900188A61 /* AkAudioInputSourceFactory.h */,
+				9E893C1B24BE5AE900188A61 /* AkGainFXFactory.h */,
+				9E893C1C24BE5AE900188A61 /* AllPluginsFactories.h */,
+				9E893C1D24BE5AE900188A61 /* AkCompressorFXFactory.h */,
+				9E893C1E24BE5AE900188A61 /* AkPitchShifterFXFactory.h */,
+				9E893C1F24BE5AE900188A61 /* AllPluginsRegistrationHelpers.h */,
+				9E893C2024BE5AE900188A61 /* AkRoomVerbFXFactory.h */,
+				9E893C2124BE5AE900188A61 /* AkSineSourceFactory.h */,
+				9E893C2224BE5AE900188A61 /* AkSinkFactory.h */,
+				9E893C2324BE5AE900188A61 /* AkMeterFXFactory.h */,
+				9E893C2424BE5AE900188A61 /* AkToneSourceFactory.h */,
+				9E893C2524BE5AE900188A61 /* AkAACFactory.h */,
+				9E893C2624BE5AE900188A61 /* AkRecorderFXFactory.h */,
+				9E893C2724BE5AE900188A61 /* AkStereoDelayFXFactory.h */,
+				9E893C2824BE5AE900188A61 /* AkPeakLimiterFXFactory.h */,
+				9E893C2924BE5AE900188A61 /* AkVorbisDecoderFactory.h */,
+				9E893C2A24BE5AE900188A61 /* AkSilenceSourceFactory.h */,
+				9E893C2B24BE5AE900188A61 /* AkMatrixReverbFXFactory.h */,
+				9E893C2C24BE5AE900188A61 /* AkHarmonizerFXFactory.h */,
+				9E893C2D24BE5AE900188A61 /* AkAudioInputPlugin.h */,
+				9E893C2E24BE5AE900188A61 /* AkReflectGameData.h */,
+				9E893C2F24BE5AE900188A61 /* AkOpusDecoderFactory.h */,
+				9E893C3024BE5AE900188A61 /* AkGuitarDistortionFXFactory.h */,
+				9E893C3124BE5AE900188A61 /* AkFlangerFXFactory.h */,
+				9E893C3224BE5AE900188A61 /* AkExpanderFXFactory.h */,
+				9E893C3324BE5AE900188A61 /* AkParametricEQFXFactory.h */,
+				9E893C3424BE5AE900188A61 /* PluginServices */,
+				9E893C3B24BE5AE900188A61 /* AkTremoloFXFactory.h */,
+				9E893C3C24BE5AE900188A61 /* AkDelayFXFactory.h */,
+				9E893C3D24BE5AE900188A61 /* AkSynthOneSourceFactory.h */,
+			);
+			path = Plugin;
+			sourceTree = "<group>";
+		};
+		9E893C3424BE5AE900188A61 /* PluginServices */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C3524BE5AE900188A61 /* AkFXParameterChangeHandler.h */,
+				9E893C3624BE5AE900188A61 /* AkMixerInputMap.h */,
+				9E893C3724BE5AE900188A61 /* AkValueRamp.h */,
+				9E893C3824BE5AE900188A61 /* AkFXDurationHandler.h */,
+				9E893C3924BE5AE900188A61 /* AkVectorValueRamp.h */,
+				9E893C3A24BE5AE900188A61 /* AkFXTailHandler.h */,
+			);
+			path = PluginServices;
+			sourceTree = "<group>";
+		};
+		9E893C3E24BE5AE900188A61 /* Comm */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C3F24BE5AE900188A61 /* AkCommunication.h */,
+			);
+			path = Comm;
+			sourceTree = "<group>";
+		};
+		9E893C4124BE5AE900188A61 /* WwiseAuthoringAPI */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C4224BE5AE900188A61 /* AkJsonBase.h */,
+				9E893C4324BE5AE900188A61 /* py */,
+				9E893C4524BE5AE900188A61 /* AkAutobahn */,
+				9E893C5024BE5AE900188A61 /* js */,
+				9E893C5224BE5AE900188A61 /* cs */,
+				9E893C5424BE5AE900188A61 /* waapi.h */,
+				9E893C5524BE5AE900188A61 /* AkVariantBase.h */,
+				9E893C5624BE5AE900188A61 /* ts */,
+				9E893C5824BE5AE900188A61 /* AkGuid.h */,
+			);
+			path = WwiseAuthoringAPI;
+			sourceTree = "<group>";
+		};
+		9E893C4324BE5AE900188A61 /* py */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C4424BE5AE900188A61 /* waapi_uri.py */,
+			);
+			path = py;
+			sourceTree = "<group>";
+		};
+		9E893C4524BE5AE900188A61 /* AkAutobahn */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C4624BE5AE900188A61 /* FutureUtils.h */,
+				9E893C4724BE5AE900188A61 /* JsonProvider.h */,
+				9E893C4824BE5AE900188A61 /* civetweb.h */,
+				9E893C4924BE5AE900188A61 /* Client.h */,
+				9E893C4A24BE5AE900188A61 /* AkJson.h */,
+				9E893C4B24BE5AE900188A61 /* IWebSocketClientHandler.h */,
+				9E893C4C24BE5AE900188A61 /* autobahn.h */,
+				9E893C4D24BE5AE900188A61 /* AkVariant.h */,
+				9E893C4E24BE5AE900188A61 /* Logger.h */,
+				9E893C4F24BE5AE900188A61 /* WebSocketClient.h */,
+			);
+			path = AkAutobahn;
+			sourceTree = "<group>";
+		};
+		9E893C5024BE5AE900188A61 /* js */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C5124BE5AE900188A61 /* waapi.js */,
+			);
+			path = js;
+			sourceTree = "<group>";
+		};
+		9E893C5224BE5AE900188A61 /* cs */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C5324BE5AE900188A61 /* WaapiUri.cs */,
+			);
+			path = cs;
+			sourceTree = "<group>";
+		};
+		9E893C5624BE5AE900188A61 /* ts */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C5724BE5AE900188A61 /* waapi.ts */,
+			);
+			path = ts;
+			sourceTree = "<group>";
+		};
+		9E893C5924BE5AE900188A61 /* MusicEngine */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C5A24BE5AE900188A61 /* Common */,
+			);
+			path = MusicEngine;
+			sourceTree = "<group>";
+		};
+		9E893C5A24BE5AE900188A61 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C5B24BE5AE900188A61 /* AkMusicEngine.h */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9E893C5C24BE5AE900188A61 /* SpatialAudio */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C5D24BE5AE900188A61 /* Common */,
+			);
+			path = SpatialAudio;
+			sourceTree = "<group>";
+		};
+		9E893C5D24BE5AE900188A61 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C5E24BE5AE900188A61 /* AkSpatialAudioTypes.h */,
+				9E893C5F24BE5AE900188A61 /* AkSpatialAudio.h */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9E893C6124BE5AE900188A61 /* DSP */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C6224BE5AE900188A61 /* AkApplyGain.h */,
+				9E893C6324BE5AE900188A61 /* AkDelayLineMemory.h */,
+				9E893C6424BE5AE900188A61 /* AkVolAutomation.h */,
+				9E893C6524BE5AE900188A61 /* AkModulatorProcess.h */,
+				9E893C6624BE5AE900188A61 /* AkDelayLineMemoryStream.h */,
+				9E893C6724BE5AE900188A61 /* Generic */,
+			);
+			path = DSP;
+			sourceTree = "<group>";
+		};
+		9E893C6724BE5AE900188A61 /* Generic */ = {
+			isa = PBXGroup;
+			children = (
+				9E893C6824BE5AE900188A61 /* AkDelayLineMemory.h */,
+				9E893C6924BE5AE900188A61 /* AkDelayLineMemoryStream.h */,
+			);
+			path = Generic;
+			sourceTree = "<group>";
+		};
+		C479315B1BE9799D00C024D1 = {
+			isa = PBXGroup;
+			children = (
+				9E78220824C0E9B2005401E2 /* src */,
+				9E781E4E24C0E8FD005401E2 /* include */,
+				9E893BA724BE5AE900188A61 /* AK */,
+				C4D434B81C1A41E3005DFFD3 /* Carbon.framework */,
+				C4D434B91C1A41E3005DFFD3 /* Cocoa.framework */,
+				E3EAC6781C1C989900F619AA /* library */,
+				C47931651BE9799D00C024D1 /* Products */,
+				9E893B8424BE29E700188A61 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+			usesTabs = 1;
+		};
+		C47931651BE9799D00C024D1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E3E1DB161C18C67100D648F5 /* reaper_wwise_csg.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E3EAC6781C1C989900F619AA /* library */ = {
+			isa = PBXGroup;
+			children = (
+				E3EAC6861C1C9C5A00F619AA /* reaper_plugin */,
+				E3EAC67A1C1C98D200F619AA /* WDL */,
+			);
+			name = library;
+			path = /Users/simongumbleton/Projects/ReaperPluginMAC/Xcode;
+			sourceTree = "<absolute>";
+		};
+		E3EAC67A1C1C98D200F619AA /* WDL */ = {
+			isa = PBXGroup;
+			children = (
+				C49593F01C4EFCA0007C6C9B /* httpget.cpp */,
+				C49593F41C4EFCD1007C6C9B /* asyncdns.cpp */,
+				C49593F21C4EFCB7007C6C9B /* connection.cpp */,
+				C49593F81C4EFD1A007C6C9B /* util.cpp */,
+				C49593F61C4EFCFD007C6C9B /* listen.cpp */,
+				E3EAC67C1C1C990100F619AA /* Lice */,
+				E3EAC67B1C1C98D700F619AA /* swell */,
+			);
+			name = WDL;
+			path = /Users/simongumbleton/Projects/ReaperPluginMAC/Xcode;
+			sourceTree = "<absolute>";
+		};
+		E3EAC67B1C1C98D700F619AA /* swell */ = {
+			isa = PBXGroup;
+			children = (
+				C484E6861C1BAD49005C6CCC /* swell-gdi.mm */,
+				C484E6871C1BAD49005C6CCC /* swell-kb.mm */,
+				C484E6881C1BAD49005C6CCC /* swell-menu.mm */,
+				C484E6891C1BAD49005C6CCC /* swell-misc.mm */,
+				C484E68A1C1BAD49005C6CCC /* swell-miscdlg.mm */,
+				C484E68B1C1BAD49005C6CCC /* swell-wnd.mm */,
+				C484E68C1C1BAD49005C6CCC /* swell.cpp */,
+				C484E6851C1BAD49005C6CCC /* swell-dlg.mm */,
+			);
+			name = swell;
+			sourceTree = "<group>";
+		};
+		E3EAC67C1C1C990100F619AA /* Lice */ = {
+			isa = PBXGroup;
+			children = (
+				C484E6971C1BAE94005C6CCC /* lice_arc.cpp */,
+				C42AC6D21C27AB1D00FAE97E /* lice_textnew.cpp */,
+				C484E6981C1BAE94005C6CCC /* lice_line.cpp */,
+				C484E6991C1BAE94005C6CCC /* lice.cpp */,
+			);
+			name = Lice;
+			sourceTree = "<group>";
+		};
+		E3EAC6861C1C9C5A00F619AA /* reaper_plugin */ = {
+			isa = PBXGroup;
+			children = (
+				C406994F1C39B34300E445F7 /* reaper_plugin_functions.h */,
+				C406994D1C39B33800E445F7 /* reaper_plugin.h */,
+			);
+			name = reaper_plugin;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		E3E1DB0F1C18C67100D648F5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E78207224C0E904005401E2 /* ConfigFileHandler.h in Headers */,
+				9E78206C24C0E904005401E2 /* WaapiFunctions.h in Headers */,
+				C406994E1C39B33800E445F7 /* reaper_plugin.h in Headers */,
+				9E78206524C0E904005401E2 /* AppConfig.h in Headers */,
+				9E78206024C0E904005401E2 /* JuceHeader.h in Headers */,
+				C40699501C39B34300E445F7 /* reaper_plugin_functions.h in Headers */,
+				9E78207324C0E904005401E2 /* reaperHelpers.h in Headers */,
+				9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */,
+				9E78206F24C0E904005401E2 /* WaapiConnect.h in Headers */,
+				9E78207124C0E904005401E2 /* GUI.h in Headers */,
+				9E78206B24C0E904005401E2 /* ReaperRenderQueParser.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		4F479B626692F08194462442 /* reaper_wwise_csg */ = {
+		E3E1DB0B1C18C67100D648F5 /* reaper_wwise_csg */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6CA9A9E919AD0135481CC9B5 /* Build configuration list for PBXNativeTarget "reaper_wwise_csg" */;
+			buildConfigurationList = E3E1DB131C18C67100D648F5 /* Build configuration list for PBXNativeTarget "reaper_wwise_csg" */;
 			buildPhases = (
-				FF7DCF870BEF27BBE17BBD27 /* Resources */,
-				0B9166A65AD7C5D065354E84 /* Sources */,
-				96F41723F19227EB6C3FB1E0 /* Frameworks */,
-				9E1D576B24B7AA640034FC8C /* CopyFiles */,
+				E3E1DB0C1C18C67100D648F5 /* Sources */,
+				E3E1DB0E1C18C67100D648F5 /* Frameworks */,
+				E3E1DB0F1C18C67100D648F5 /* Headers */,
+				9E893C6F24BFB90900188A61 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = reaper_wwise_csg;
-			productName = NewProject;
-			productReference = D8F589A7BB761B64EAD7BA20 /* reaper_wwise_csg.dylib */;
+			productName = reaper_example_plugin;
+			productReference = E3E1DB161C18C67100D648F5 /* reaper_wwise_csg.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		55FCD04F0B818B4E55715CA8 /* Project object */ = {
+		C479315C1BE9799D00C024D1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1100;
-				ORGANIZATIONNAME = "";
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = "My Company";
 			};
-			buildConfigurationList = 2F2462BD35A5A46B588BA652 /* Build configuration list for PBXProject "reaper_wwise_csg" */;
+			buildConfigurationList = C479315F1BE9799D00C024D1 /* Build configuration list for PBXProject "reaper_wwise_csg" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = en;
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
-				Base,
 				English,
+				en,
 			);
-			mainGroup = 0C7E7AAE1F805FD3EDE3E680 /* Source */;
+			mainGroup = C479315B1BE9799D00C024D1;
+			productRefGroup = C47931651BE9799D00C024D1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4F479B626692F08194462442 /* reaper_wwise_csg */,
+				E3E1DB0B1C18C67100D648F5 /* reaper_wwise_csg */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		FF7DCF870BEF27BBE17BBD27 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2FC76915D99E1B8F15C32EF8 /* RecentFilesMenuTemplate.nib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		0B9166A65AD7C5D065354E84 /* Sources */ = {
+		E3E1DB0C1C18C67100D648F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EE14E5F24B66DF8005F3A17 /* include_juce_events.mm in Sources */,
-				9E1D577124B7ACA50034FC8C /* Main.cpp in Sources */,
-				9E1D577924B7AED70034FC8C /* gui_Transfer.cpp in Sources */,
-				9E1D577C24B7AED70034FC8C /* WaapiConnect.cpp in Sources */,
-				9EE14E6124B66DF8005F3A17 /* include_juce_data_structures.mm in Sources */,
-				9E1D577E24B7AED70034FC8C /* ConfigFileHandler.cpp in Sources */,
-				9EE14E6324B66DF8005F3A17 /* include_juce_gui_extra.mm in Sources */,
-				9E1D577B24B7AED70034FC8C /* ReaperRenderQueParser.cpp in Sources */,
-				9E1D577F24B7AED70034FC8C /* Main.cpp in Sources */,
-				9EE14E6224B66DF8005F3A17 /* include_juce_gui_basics.mm in Sources */,
-				9EE14E6024B66DF8005F3A17 /* include_juce_graphics.mm in Sources */,
-				9EE14E6424B66DF8005F3A17 /* include_juce_core.mm in Sources */,
-				9E1D577D24B7AED70034FC8C /* WaapiFunctions.cpp in Sources */,
-				9E1D577A24B7AED70034FC8C /* WwiseConnectionHandler.cpp in Sources */,
+				C484E6931C1BAD49005C6CCC /* swell-wnd.mm in Sources */,
+				9E78206224C0E904005401E2 /* include_juce_gui_basics.mm in Sources */,
+				C484E6941C1BAD49005C6CCC /* swell.cpp in Sources */,
+				C49593F31C4EFCB7007C6C9B /* connection.cpp in Sources */,
+				9E78206324C0E904005401E2 /* include_juce_graphics.mm in Sources */,
+				9E78221124C0E9B2005401E2 /* WaapiConnect.cpp in Sources */,
+				9E78221524C0E9B2005401E2 /* WaapiFunctions.cpp in Sources */,
+				C484E68E1C1BAD49005C6CCC /* swell-gdi.mm in Sources */,
+				C49593F71C4EFCFD007C6C9B /* listen.cpp in Sources */,
+				C484E69A1C1BAE94005C6CCC /* lice_arc.cpp in Sources */,
+				C49593F51C4EFCD1007C6C9B /* asyncdns.cpp in Sources */,
+				9E78206A24C0E904005401E2 /* include_juce_core.mm in Sources */,
+				C484E68D1C1BAD49005C6CCC /* swell-dlg.mm in Sources */,
+				9E78221024C0E9B2005401E2 /* ConfigFileHandler.cpp in Sources */,
+				9E78221324C0E9B2005401E2 /* gui_Transfer.cpp in Sources */,
+				C484E6901C1BAD49005C6CCC /* swell-menu.mm in Sources */,
+				C42AC6D31C27AB1D00FAE97E /* lice_textnew.cpp in Sources */,
+				C484E68F1C1BAD49005C6CCC /* swell-kb.mm in Sources */,
+				9E78221424C0E9B2005401E2 /* ReaperRenderQueParser.cpp in Sources */,
+				C49593F91C4EFD1A007C6C9B /* util.cpp in Sources */,
+				9E78206624C0E904005401E2 /* include_juce_events.mm in Sources */,
+				9E78206924C0E904005401E2 /* include_juce_data_structures.mm in Sources */,
+				9E78221624C0E9B2005401E2 /* Main.cpp in Sources */,
+				C49593F11C4EFCA0007C6C9B /* httpget.cpp in Sources */,
+				C484E6911C1BAD49005C6CCC /* swell-misc.mm in Sources */,
+				C484E69C1C1BAE94005C6CCC /* lice.cpp in Sources */,
+				C484E69B1C1BAE94005C6CCC /* lice_line.cpp in Sources */,
+				C484E6921C1BAD49005C6CCC /* swell-miscdlg.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		456FD168B4B5BBE3A606E984 /* Debug */ = {
+		C47931761BE9799D00C024D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "";
+				DYLIB_INSTALL_NAME_BASE = /;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 1;
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
-				PRODUCT_NAME = NewProject;
-				SDKROOT = macosx;
-				WARNING_CFLAGS = "-Wreorder";
-				ZERO_LINK = NO;
-			};
-			name = Debug;
-		};
-		56ED626F53C342A674A262B1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_LINK_OBJC_RUNTIME = NO;
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
-				DEAD_CODE_STRIPPING = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"_NDEBUG=1",
-					"NDEBUG=1",
-					"JUCER_XCODE_MAC_F6D2F4CF=1",
-					"JUCE_APP_VERSION=1.0.0",
-					"JUCE_APP_VERSION_HEX=0x10000",
-					"JucePlugin_Build_VST=0",
-					"JucePlugin_Build_VST3=0",
-					"JucePlugin_Build_AU=0",
-					"JucePlugin_Build_AUv3=0",
-					"JucePlugin_Build_RTAS=0",
-					"JucePlugin_Build_AAX=0",
-					"JucePlugin_Build_Standalone=0",
-					"JucePlugin_Build_Unity=0",
-					"JUCE_DISPLAY_SPLASH_SCREEN=1",
-					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x60000",
-					"JUCE_MODULE_AVAILABLE_juce_core=1",
-					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
-					"JUCE_MODULE_AVAILABLE_juce_events=1",
-					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
-					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
-					"JUCE_MODULE_AVAILABLE_juce_gui_extra=1",
-					"JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1",
-					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
-					"JUCE_STANDALONE_APPLICATION=0",
-				);
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					/Users/simongumbleton/Projects/JUCE/modules,
-					"$(inherited)",
-					"\"$(SRCROOT)/include\"",
-					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/include\"",
-				);
-				INSTALL_PATH = "/Users/simongumbleton/Library/Application Support/REAPER/UserPlugins";
-				LIBRARY_SEARCH_PATHS = (
-					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/Mac/Debug/lib\"",
-					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/Mac/Release/lib\"",
-				);
-				LLVM_LTO = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NewProject;
-				PRODUCT_NAME = reaper_wwise_csg;
-				USE_HEADERMAP = NO;
-			};
-			name = Release;
-		};
-		5FD608EC797EB7344D2898FE /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
-				PRODUCT_NAME = NewProject;
-				SDKROOT = macosx;
-				WARNING_CFLAGS = "-Wreorder";
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
-		68706947E3D4328A6A357784 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_LINK_OBJC_RUNTIME = NO;
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
-				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				EXECUTABLE_PREFIX = /;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"_DEBUG=1",
-					"DEBUG=1",
-					"JUCER_XCODE_MAC_F6D2F4CF=1",
-					"JUCE_APP_VERSION=1.0.0",
-					"JUCE_APP_VERSION_HEX=0x10000",
-					"JucePlugin_Build_VST=0",
-					"JucePlugin_Build_VST3=0",
-					"JucePlugin_Build_AU=0",
-					"JucePlugin_Build_AUv3=0",
-					"JucePlugin_Build_RTAS=0",
-					"JucePlugin_Build_AAX=0",
-					"JucePlugin_Build_Standalone=0",
-					"JucePlugin_Build_Unity=0",
-					"JUCE_DISPLAY_SPLASH_SCREEN=1",
-					"JUCE_USE_DARK_SPLASH_SCREEN=1",
-					"JUCE_PROJUCER_VERSION=0x60000",
-					"JUCE_MODULE_AVAILABLE_juce_core=1",
-					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
-					"JUCE_MODULE_AVAILABLE_juce_events=1",
-					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
-					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
-					"JUCE_MODULE_AVAILABLE_juce_gui_extra=1",
-					"JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1",
-					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
-					"JUCE_STANDALONE_APPLICATION=0",
+					NOMINMAX,
+					REAPERAPI_NO_LICE,
 				);
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					/Users/simongumbleton/Projects/JUCE/modules,
-					"$(inherited)",
-					"\"$(SRCROOT)/include\"",
-					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/include\"",
+					$SRCROOT/../header,
+					$SRCROOT/../source,
+					$SRCROOT/../library,
+					$SRCROOT/../library/WDL/WDL/swell,
+					$SRCROOT/../,
+					$SRCROOT,
 				);
-				INSTALL_PATH = "/Users/simongumbleton/Library/Application Support/REAPER/UserPlugins";
-				LIBRARY_SEARCH_PATHS = (
-					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/Mac/Debug/lib\"",
-					"\"/Applications/Audiokinetic/Wwise 2019.1.6.7110/SDK/Mac/Release/lib\"",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NewProject;
-				PRODUCT_NAME = reaper_wwise_csg;
-				USE_HEADERMAP = NO;
+				INSTALL_PATH = /;
+				LD_DYLIB_INSTALL_NAME = reaper_MyReaperPlugin.dylib;
+				LIBRARY_SEARCH_PATHS = "";
+				MACH_O_TYPE = mh_dylib;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = Debug;
+		};
+		C47931771BE9799D00C024D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "";
+				DYLIB_INSTALL_NAME_BASE = /;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = /;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NOMINMAX,
+					REAPERAPI_NO_LICE,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					$SRCROOT/../header,
+					$SRCROOT/../source,
+					$SRCROOT/../library,
+					$SRCROOT/../library/WDL/WDL/swell,
+					$SRCROOT/../,
+					$SRCROOT,
+				);
+				INSTALL_PATH = /;
+				LD_DYLIB_INSTALL_NAME = reaper_MyReaperPlugin.dylib;
+				LIBRARY_SEARCH_PATHS = "";
+				MACH_O_TYPE = mh_dylib;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+			};
+			name = Release;
+		};
+		E3E1DB141C18C67100D648F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				COMBINE_HIDPI_IMAGES = YES;
+				DSTROOT = "/Users/simongumbleton/Library/Application Support/REAPER/UserPlugins";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = /;
+				ENABLE_NS_ASSERTIONS = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NOMINMAX,
+					REAPERAPI_NO_LICE,
+					"_DEBUG=1",
+					"DEBUG=1",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
+					"DEBUG=1",
+					"_DEBUG=1",
+				);
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				HEADER_SEARCH_PATHS = (
+					$SRCROOT/../include,
+					$SRCROOT/../src,
+					$SRCROOT/../library,
+					$SRCROOT/../,
+					$SRCROOT,
+					"\"$(SRCROOT)/../JUCE/modules\"",
+					"\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/include\"",
+					"\"$(SRCROOT)/../ReaperPluginMAC/library/reaper_plugin\"",
+					"\"$(SRCROOT)/../ReaperPluginMAC/library/WDL\"",
+				);
+				LD_DYLIB_INSTALL_NAME = "$(TARGET_NAME).dylib";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/Mac/Debug/lib\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OBJROOT = /Users/simongumbleton/Projects/ReaperPluginMAC/Xcode/Build;
+				OTHER_LDFLAGS = (
+					"-L$(SRCROOT)/../../Wwise/WwiseIncludeFiles/Mac/Debug/lib",
+					"-lAkAutobahn",
+				);
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = /Users/simongumbleton/Projects/ReaperPluginMAC/Xcode/Build;
+				VALID_ARCHS = x86_64;
+			};
+			name = Debug;
+		};
+		E3E1DB151C18C67100D648F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				COMBINE_HIDPI_IMAGES = YES;
+				DSTROOT = "/Users/simongumbleton/Library/Application Support/REAPER/UserPlugins";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = /;
+				EXECUTABLE_PREFIX = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NOMINMAX,
+					REAPERAPI_NO_LICE,
+					"_NDEBUG=1",
+					"NDEBUG=1",
+				);
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				HEADER_SEARCH_PATHS = (
+					$SRCROOT/../include,
+					$SRCROOT/../src,
+					$SRCROOT/../library,
+					$SRCROOT/../,
+					$SRCROOT,
+					"\"$(SRCROOT)/../JUCE/modules\"",
+					"\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/include\"",
+					"\"$(SRCROOT)/../ReaperPluginMAC/library/reaper_plugin\"",
+					"\"$(SRCROOT)/../ReaperPluginMAC/library/WDL\"",
+				);
+				LD_DYLIB_INSTALL_NAME = "$(TARGET_NAME).dylib";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/Mac/Release/lib\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				OBJROOT = /Users/simongumbleton/Projects/ReaperPluginMAC/Xcode/Build;
+				OTHER_LDFLAGS = (
+					"-L$(SRCROOT)/../../Wwise/WwiseIncludeFiles/Mac/Release/lib",
+					"-lAkAutobahn",
+				);
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = /Users/simongumbleton/Projects/ReaperPluginMAC/Xcode/Build;
+				VALID_ARCHS = x86_64;
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2F2462BD35A5A46B588BA652 /* Build configuration list for PBXProject "reaper_wwise_csg" */ = {
+		C479315F1BE9799D00C024D1 /* Build configuration list for PBXProject "reaper_wwise_csg" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				456FD168B4B5BBE3A606E984 /* Debug */,
-				5FD608EC797EB7344D2898FE /* Release */,
+				C47931761BE9799D00C024D1 /* Debug */,
+				C47931771BE9799D00C024D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		6CA9A9E919AD0135481CC9B5 /* Build configuration list for PBXNativeTarget "reaper_wwise_csg" */ = {
+		E3E1DB131C18C67100D648F5 /* Build configuration list for PBXNativeTarget "reaper_wwise_csg" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				68706947E3D4328A6A357784 /* Debug */,
-				56ED626F53C342A674A262B1 /* Release */,
+				E3E1DB141C18C67100D648F5 /* Debug */,
+				E3E1DB151C18C67100D648F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 55FCD04F0B818B4E55715CA8 /* Project object */;
+	rootObject = C479315C1BE9799D00C024D1 /* Project object */;
 }

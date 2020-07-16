@@ -1,0 +1,93 @@
+cmake_minimum_required(VERSION 3.16)
+project(CSGReaperWwisePlugin)
+
+set(CMAKE_CXX_STANDARD 14)
+
+include_directories(include)
+include_directories(include/JUCE)
+include_directories(include/WDL)
+include_directories(include/WDL/swell)
+
+add_executable(CSGReaperWwisePlugin
+        include/JUCE/AppConfig.h
+        include/JUCE/include_juce_audio_basics.cpp
+        include/JUCE/include_juce_audio_basics.mm
+        include/JUCE/include_juce_audio_devices.cpp
+        include/JUCE/include_juce_audio_devices.mm
+        include/JUCE/include_juce_audio_formats.cpp
+        include/JUCE/include_juce_audio_formats.mm
+        include/JUCE/include_juce_audio_processors.cpp
+        include/JUCE/include_juce_audio_processors.mm
+        include/JUCE/include_juce_core.cpp
+        include/JUCE/include_juce_core.mm
+        include/JUCE/include_juce_cryptography.cpp
+        include/JUCE/include_juce_cryptography.mm
+        include/JUCE/include_juce_data_structures.cpp
+        include/JUCE/include_juce_data_structures.mm
+        include/JUCE/include_juce_events.cpp
+        include/JUCE/include_juce_events.mm
+        include/JUCE/include_juce_graphics.cpp
+        include/JUCE/include_juce_graphics.mm
+        include/JUCE/include_juce_gui_basics.cpp
+        include/JUCE/include_juce_gui_basics.mm
+        include/JUCE/include_juce_gui_extra.cpp
+        include/JUCE/include_juce_gui_extra.mm
+        include/JUCE/include_juce_opengl.cpp
+        include/JUCE/include_juce_opengl.mm
+        include/JUCE/JuceHeader.h
+        include/WDL/swell/commctrl.h
+        include/WDL/swell/shlobj.h
+        include/WDL/swell/swell-appstub-generic.cpp
+        include/WDL/swell/swell-appstub.mm
+        include/WDL/swell/swell-dlg-generic.cpp
+        include/WDL/swell/swell-dlg.mm
+        include/WDL/swell/swell-dlggen.h
+        include/WDL/swell/swell-functions.h
+        include/WDL/swell/swell-gdi-generic.cpp
+        include/WDL/swell/swell-gdi-internalpool.h
+        include/WDL/swell/swell-gdi-lice.cpp
+        include/WDL/swell/swell-gdi.mm
+        include/WDL/swell/swell-generic-gdk.cpp
+        include/WDL/swell/swell-generic-headless.cpp
+        include/WDL/swell/swell-ini.cpp
+        include/WDL/swell/swell-internal.h
+        include/WDL/swell/swell-kb-generic.cpp
+        include/WDL/swell/swell-kb.mm
+        include/WDL/swell/swell-menu-generic.cpp
+        include/WDL/swell/swell-menu.mm
+        include/WDL/swell/swell-menugen.h
+        include/WDL/swell/swell-misc-generic.cpp
+        include/WDL/swell/swell-misc.mm
+        include/WDL/swell/swell-miscdlg-generic.cpp
+        include/WDL/swell/swell-miscdlg.mm
+        include/WDL/swell/swell-modstub-generic.cpp
+        include/WDL/swell/swell-modstub.mm
+        include/WDL/swell/swell-types.h
+        include/WDL/swell/swell-wnd-generic.cpp
+        include/WDL/swell/swell-wnd.mm
+        include/WDL/swell/swell.cpp
+        include/WDL/swell/swell.h
+        include/WDL/swell/swellappmain.h
+        include/WDL/swell/swellappmain.mm
+        include/WDL/swell/test.cpp
+        include/WDL/swell/windows.h
+        include/WDL/heapbuf.h
+        include/WDL/ptrlist.h
+        include/WDL/wdltypes.h
+        include/ConfigFileHandler.h
+        include/GUI.h
+        include/gui_Transfer.h
+        include/reaper_plugin.h
+        include/reaper_plugin_functions.h
+        include/reaperHelpers.h
+        include/ReaperRenderQueParser.h
+        include/WaapiConnect.h
+        include/WaapiFunctions.h
+        include/WwiseConnectionHandler.h
+        src/ConfigFileHandler.cpp
+        src/gui_Transfer.cpp
+        src/Main.cpp
+        src/ReaperRenderQueParser.cpp
+        src/WaapiConnect.cpp
+        src/WaapiFunctions.cpp
+        src/WwiseConnectionHandler.cpp)

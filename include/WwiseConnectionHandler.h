@@ -1,7 +1,7 @@
 #pragma once
-#include <windows.h>
-#include <windowsx.h>
-#include <tchar.h>    //string and other mapping macros
+//#include <windows.h>
+//#include <windowsx.h>
+//#include <tchar.h>    //string and other mapping macros
 #include <string>
 #include <map>
 #include "ConfigFileHandler.h"
@@ -61,9 +61,9 @@ public:
 
 	CurrentWwiseConnection MyCurrentWwiseConnection;
 
-	bool StartGUI_Get(HINSTANCE &myhInst);
+	//bool StartGUI_Get(HINSTANCE &myhInst);
 
-	bool StartGUI_Transfer(HINSTANCE &myhInst);
+	//bool StartGUI_Transfer(HINSTANCE &myhInst);
 
 	bool handle_GUI_Connect();
 
@@ -112,24 +112,24 @@ public:
 	PluginWindow();
 	~PluginWindow();
 
-	static HWND m_hWindow;
+	//static HWND m_hWindow;
 	static long m_lSaveThis;
 	PluginWindow* saveThis;
 
 	int DoModal(void);
 
-	static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+	//static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 	static WwiseConnectionHandler* parentWwiseConnectionHnd;
 
 	void SetupPluginParent(WwiseConnectionHandler *parent);
 
 	////=============================================================================
-	int CreatePluginWindow(HINSTANCE hInst, HINSTANCE, LPSTR, int);
+	//int CreatePluginWindow(HINSTANCE hInst, HINSTANCE, LPSTR, int);
 
 private:
 
-	HWND m_hParent;
+	//HWND m_hParent;
 	int m_nResId;
 
 	PluginWindow* thisPluginWindow;

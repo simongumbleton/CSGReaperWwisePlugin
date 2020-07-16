@@ -1,4 +1,4 @@
-#pragma once
+
 
 #include "stdlib.h"
 #include <string>
@@ -8,7 +8,6 @@
 
 
 #include <AK/WwiseAuthoringAPI/AkAutobahn/AkJson.h>
-
 
 
 struct WwiseProjectGlobals {
