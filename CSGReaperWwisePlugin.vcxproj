@@ -59,43 +59,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\JUCE\include_juce_audio_basics.cpp" />
-    <ClCompile Include="include\JUCE\include_juce_audio_devices.cpp" />
-    <ClCompile Include="include\JUCE\include_juce_audio_formats.cpp" />
-    <ClCompile Include="include\JUCE\include_juce_audio_processors.cpp" />
     <ClCompile Include="include\JUCE\include_juce_core.cpp" />
-    <ClCompile Include="include\JUCE\include_juce_cryptography.cpp" />
     <ClCompile Include="include\JUCE\include_juce_data_structures.cpp" />
     <ClCompile Include="include\JUCE\include_juce_events.cpp" />
     <ClCompile Include="include\JUCE\include_juce_graphics.cpp" />
     <ClCompile Include="include\JUCE\include_juce_gui_basics.cpp" />
-    <ClCompile Include="include\JUCE\include_juce_gui_extra.cpp" />
-    <ClCompile Include="include\JUCE\include_juce_opengl.cpp" />
     <ClCompile Include="src\ConfigFileHandler.cpp" />
     <ClCompile Include="src\gui_Transfer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\ReaperRenderQueParser.cpp" />
     <ClCompile Include="src\WaapiConnect.cpp" />
     <ClCompile Include="src\WaapiFunctions.cpp" />
-    <ClCompile Include="src\WwiseConnectionHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\AkAutobahn.lib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\AkAutobahn.pdb" />
-    <None Include="include\JUCE\include_juce_audio_basics.mm" />
-    <None Include="include\JUCE\include_juce_audio_devices.mm" />
-    <None Include="include\JUCE\include_juce_audio_formats.mm" />
-    <None Include="include\JUCE\include_juce_audio_processors.mm" />
     <None Include="include\JUCE\include_juce_core.mm" />
-    <None Include="include\JUCE\include_juce_cryptography.mm" />
     <None Include="include\JUCE\include_juce_data_structures.mm" />
     <None Include="include\JUCE\include_juce_events.mm" />
     <None Include="include\JUCE\include_juce_graphics.mm" />
     <None Include="include\JUCE\include_juce_gui_basics.mm" />
-    <None Include="include\JUCE\include_juce_gui_extra.mm" />
-    <None Include="include\JUCE\include_juce_opengl.mm" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ConfigFileHandler.h" />
@@ -109,7 +94,6 @@
     <ClInclude Include="include\reaper_plugin_functions.h" />
     <ClInclude Include="include\WaapiConnect.h" />
     <ClInclude Include="include\WaapiFunctions.h" />
-    <ClInclude Include="include\WwiseConnectionHandler.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{a6ede66c-9f09-446a-8fe4-5ee4f3cbedb9}</ProjectGuid>
