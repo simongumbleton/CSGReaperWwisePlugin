@@ -1,8 +1,5 @@
 #include "gui_Transfer.h"
 
-
-
-
 StringArray TransferToWwiseComponent::ToJuceStringArray(std::vector<std::string> strings)
 {
 	StringArray output;
@@ -27,18 +24,23 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	InitComboBox(dd_OnNameConflict,myCreateChoices.waapiCREATEchoices_NAMECONFLICT);
 
 
-
-	tree_RenderJobTree->setRootItem(nullptr);
+	
+	tree_RenderJobTree.reset (new TreeView ("new treeview"));
+	addAndMakeVisible(tree_RenderJobTree.get());
+	
+	tree_RenderJobTree->setColour(juce::TreeView::backgroundColourId, juce::Colours::green);
+	tree_RenderJobTree->setColour(juce::TreeView::linesColourId, juce::Colours::red);
+	tree_RenderJobTree->setColour(juce::TreeView::selectedItemBackgroundColourId, juce::Colours::blue);
+	
+	tree_RenderJobTree->setRootItem(new RenderQueTreeItem("A render que job"));
+	
+	RenderQueTreeItem* root = dynamic_cast<RenderQueTreeItem*>(tree_RenderJobTree->getRootItem());
+	root->addAudioFileToRenderJobTree("MyWavFile");
+	root->addAudioFileToRenderJobTree("MyWavFile2");
+	
 	tree_RenderJobTree->setDefaultOpenness(true);
 	tree_RenderJobTree->setMultiSelectEnabled(true);
-
-	juce::Identifier renderJobType("ARenderJob");
-	juce::ValueTree renderJobNode(renderJobType);
-
-	//tree_RenderJobTree->setRootItem(renderJobNode);
-
-
-	addAndMakeVisible(tree_RenderJobTree);
+	
 
 	addAndMakeVisible(txt_ConnectionStatus);
 
@@ -89,7 +91,7 @@ void TransferToWwiseComponent::resized()
 		cb->setBounds(RightHalf.removeFromTop(comboHeight).reduced(border));
 	}
 
-	auto treeHeight = 50;
+	auto treeHeight = 200;
 
 	tree_RenderJobTree->setBounds(LeftHalf.removeFromTop(treeHeight).reduced(border));
 

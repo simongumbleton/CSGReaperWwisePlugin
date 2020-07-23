@@ -359,3 +359,6 @@ reaper_wwise_csg.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xc
 reaper_wwise_csg.xcodeproj/project.xcworkspace/xcuserdata/simongumbleton.xcuserdatad/UserInterfaceState.xcuserstate
 reaper_wwise_csg.xcodeproj/xcuserdata/simongumbleton.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
 reaper_wwise_csg.xcodeproj/xcuserdata/simongumbleton.xcuserdatad/xcschemes/xcschememanagement.plist
+*.xcbuild
+*.db
+build/XCBuildData/BuildDescriptionCacheIndex-15486ff459d1ea551331c2eaf9902797

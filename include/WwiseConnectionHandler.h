@@ -141,9 +141,9 @@ private:
 
 	////non-message function declarations
 	////=============================================================================
-	void OnCommand(const HWND hwnd, int id, int notifycode, const HWND hCntrl);
+	//void OnCommand(const HWND hwnd, int id, int notifycode, const HWND hCntrl);
 	////=============================================================================
-	INT_PTR OnInitDlg(const HWND hwnd, LPARAM lParam);
+	//INT_PTR OnInitDlg(const HWND hwnd, LPARAM lParam);
 	////=============================================================================
 	inline int ErrMsg(const std::string& s);
 
@@ -158,11 +158,11 @@ private:
 	void handleUI_B_WwiseTree();
 
 	/////Initialise dialogue boxes
-	bool init_ALL_OPTIONS(HWND hwnd);
-	bool init_ComboBox_A(HWND hwnd_combo, std::vector<std::string> choices);
-	bool init_ListBox_A(HWND hwnd_list, std::vector<std::string> choices);
+	bool init_ALL_OPTIONS();
+	bool init_ComboBox_A(std::vector<std::string> choices);
+	bool init_ListBox_A(std::vector<std::string> choices);
 
-	INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
 
 
@@ -177,23 +177,23 @@ public:
 	CreateImportWindow();
 	~CreateImportWindow();
 
-	static HWND m_hWindow;
+	//static HWND m_hWindow;
 	static long m_lSaveThis;
 	CreateImportWindow* saveThis;
 
 
-	static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+	//static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 	static WwiseConnectionHandler* parentWwiseConnectionHnd;
 
 	void SetupPluginParent(WwiseConnectionHandler *parent);
 
 	////=============================================================================
-	int CreateTransferWindow(HINSTANCE hInst, HINSTANCE, LPSTR, int);
+	//int CreateTransferWindow(HINSTANCE hInst, HINSTANCE, LPSTR, int);
 
 private:
 
-	HWND m_hParent;
+	//HWND m_hParent;
 	int m_nResId;
 
 	CreateImportWindow* thisPluginWindow;
@@ -211,9 +211,9 @@ private:
 
 	////non-message function declarations
 	////=============================================================================
-	void OnCommand(const HWND hwnd, int id, int notifycode, const HWND hCntrl);
+	void OnCommand(int id, int notifycode);
 	////=============================================================================
-	INT_PTR OnInitDlg(const HWND hwnd, LPARAM lParam);
+	void OnInitDlg();
 	////=============================================================================
 	inline int ErrMsg(const std::string& s);
 
@@ -221,12 +221,12 @@ private:
 
 
 	/////Initialise dialogue boxes
-	bool init_ALL_OPTIONS(HWND hwnd);
-	bool init_ComboBox_A(HWND hwnd_combo, std::vector<std::string> choices);
-	bool init_ListBox_A(HWND hwnd_list, std::vector<std::string> choices);
+	bool init_ALL_OPTIONS();
+	bool init_ComboBox_A(std::vector<std::string> choices);
+	bool init_ListBox_A(std::vector<std::string> choices);
 
-	void FillRenderQueList(HWND hwnd);
-	void UpdateRenderJob_TreeView(HWND hwnd);
+	void FillRenderQueList();
+	void UpdateRenderJob_TreeView();
 	void HandleUI_SetParentForRenderJob(WwiseObject selectedParent);
 	bool GetCreateEvent();
 	bool GetIsVoice();
@@ -253,7 +253,7 @@ private:
 	void SetWwiseAutomationMode(bool enable);
 
 
-	INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
 
 

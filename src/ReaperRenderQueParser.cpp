@@ -1,5 +1,6 @@
 #include "reaperHelpers.h"
 #include "ReaperRenderQueParser.h"
+#include "waapi_structs.h"
 
 #include <vector>
 #include <sstream>

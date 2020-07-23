@@ -1,4 +1,4 @@
-
+#pragma once
 #include <iostream> 
 #include <sstream>
 #include <vector>
@@ -29,37 +29,7 @@ void WwiseConnectionHandler::ReportConnectionError(CurrentWwiseConnection attemp
 	PrintToConsole(errorLog);
 }
 
-bool WwiseConnectionHandler::StartGUI_Get(HINSTANCE &myhInst)
-{
-	//myPluginWindow.SetupPluginParent(this);
 
-	//if (myPluginWindow.CreatePluginWindow(myhInst, NULL, "Hello World", 0) == 0)
-	//{
-	//	
-	//	return true;	
-	//}
-	//else
-	//{	
-	//	return false;	// Somethig Failed in the window creation
-	//};
-	return false;
-}
-
-bool WwiseConnectionHandler::StartGUI_Transfer(HINSTANCE &myhInst)
-{
-//	myCreateImportWindow.SetupPluginParent(this);
-//
-//	if (myCreateImportWindow.CreateTransferWindow(myhInst, NULL, "Hello World", 0) == 0)
-//	{
-//
-//		return true;
-//	}
-//	else
-//	{
-//		return false;	// Somethig Failed in the window creation
-//	};
-	return false;
-}
 
 bool WwiseConnectionHandler::handle_GUI_Connect()
 {
@@ -304,8 +274,8 @@ bool WwiseConnectionHandler::GetWwiseProjectGlobals(bool suppressOutputMessages,
 
 	if (Results.size() != 0)
 	{
-		WwiseProjGlobals.DefaultLanguage = Results[0]["@DefaultLanguage"].GetVariant();
-		WwiseProjGlobals.Project = Results[0]["filePath"].GetVariant();
+		WwiseProjGlobals.DefaultLanguage = string(Results[0]["@DefaultLanguage"].GetVariant());
+		WwiseProjGlobals.Project = string(Results[0]["filePath"].GetVariant());
 	}
 
 	ObjectGetArgs langs;

@@ -6,6 +6,61 @@
 class CurrentWwiseConnection;
 class CreateObjectChoices;
 
+class renderJobAudioFile : public TreeViewItem
+{
+	std::string renderWav;
+public:
+	renderJobAudioFile(std::string audioFile)
+	{
+		renderWav = audioFile;
+	}
+	
+	bool mightContainSubItems() override
+	{
+		return getNumSubItems() != 0;
+	}
+
+	void paintItem(Graphics& g, int width, int height) override
+	{
+		//g.fillAll(Colours::grey);
+		g.setColour(Colours::black);
+		g.drawText(renderWav, 0, 0, width, height, Justification::left);
+	}
+
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(renderJobAudioFile)
+};
+
+
+class RenderQueTreeItem : public TreeViewItem
+{
+	std::string renderJobPath;
+public:
+	RenderQueTreeItem(std::string renderJob)
+	{
+		renderJobPath = renderJob;
+		
+	}
+	
+	void addAudioFileToRenderJobTree(std::string audioFile)
+	{
+		addSubItem(new renderJobAudioFile(audioFile));
+	}
+
+	bool mightContainSubItems() override
+	{
+		return getNumSubItems() != 0;
+	}
+
+	void paintItem(Graphics& g, int width, int height) override
+	{
+		//g.fillAll(Colours::grey);
+		g.setColour(Colours::black);
+		g.drawText(renderJobPath, 0, 0, width, height, Justification::left);
+	}
+
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RenderQueTreeItem)
+};
+
 //==============================================================================
 class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
 {
@@ -72,8 +127,9 @@ private:
 
 	juce::Label * debugLabel = new Label("INtxt_OriginalsSubDir");
 
-	juce::TreeView * tree_RenderJobTree = new TreeView("tree_RenderJobTree");	//Tree view
+	std::unique_ptr<TreeView> tree_RenderJobTree; //= new TreeView("tree_RenderJobTree");	//Tree view
 	
+	std::unique_ptr<TreeView> treeView;
 
 	double transferProgress = 0.0f;
 

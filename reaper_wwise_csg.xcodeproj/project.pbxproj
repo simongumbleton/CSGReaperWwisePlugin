@@ -16,13 +16,11 @@
 		9E78206A24C0E904005401E2 /* include_juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5C24C0E8FD005401E2 /* include_juce_core.mm */; };
 		9E78206B24C0E904005401E2 /* ReaperRenderQueParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5D24C0E8FD005401E2 /* ReaperRenderQueParser.h */; };
 		9E78206C24C0E904005401E2 /* WaapiFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5E24C0E8FD005401E2 /* WaapiFunctions.h */; };
-		9E78206F24C0E904005401E2 /* WaapiConnect.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E6124C0E8FD005401E2 /* WaapiConnect.h */; };
 		9E78207124C0E904005401E2 /* GUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E6324C0E8FD005401E2 /* GUI.h */; };
 		9E78207224C0E904005401E2 /* ConfigFileHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E6424C0E8FD005401E2 /* ConfigFileHandler.h */; };
 		9E78207324C0E904005401E2 /* reaperHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E6524C0E8FD005401E2 /* reaperHelpers.h */; };
 		9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E78205824C0E904005401E2 /* gui_Transfer.h */; };
 		9E78221024C0E9B2005401E2 /* ConfigFileHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220924C0E9B2005401E2 /* ConfigFileHandler.cpp */; };
-		9E78221124C0E9B2005401E2 /* WaapiConnect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220A24C0E9B2005401E2 /* WaapiConnect.cpp */; };
 		9E78221324C0E9B2005401E2 /* gui_Transfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220C24C0E9B2005401E2 /* gui_Transfer.cpp */; };
 		9E78221424C0E9B2005401E2 /* ReaperRenderQueParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */; };
 		9E78221524C0E9B2005401E2 /* WaapiFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */; };
@@ -30,6 +28,10 @@
 		9E893B9F24BE577E00188A61 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893B9E24BE577E00188A61 /* AppKit.framework */; };
 		9E893BA124BE578600188A61 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA024BE578600188A61 /* IOKit.framework */; };
 		9E893BA324BE57C900188A61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA224BE57C900188A61 /* CoreImage.framework */; };
+		9EBC0E9E24C346800068154E /* waapi_structs.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EBC0E9D24C346800068154E /* waapi_structs.h */; };
+		9EE4E5DD24CA16A0006BC020 /* WwiseConnectionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */; };
+		9EE4E5DE24CA16A3006BC020 /* WwiseConnectionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */; };
+		9EE4E5E024CA1FC5006BC020 /* CreateImportWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */; };
 		C406994E1C39B33800E445F7 /* reaper_plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = C406994D1C39B33800E445F7 /* reaper_plugin.h */; };
 		C40699501C39B34300E445F7 /* reaper_plugin_functions.h in Headers */ = {isa = PBXBuildFile; fileRef = C406994F1C39B34300E445F7 /* reaper_plugin_functions.h */; };
 		C42AC6D31C27AB1D00FAE97E /* lice_textnew.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C42AC6D21C27AB1D00FAE97E /* lice_textnew.cpp */; };
@@ -76,13 +78,11 @@
 		9E781E5C24C0E8FD005401E2 /* include_juce_core.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_core.mm; sourceTree = "<group>"; };
 		9E781E5D24C0E8FD005401E2 /* ReaperRenderQueParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaperRenderQueParser.h; sourceTree = "<group>"; };
 		9E781E5E24C0E8FD005401E2 /* WaapiFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaapiFunctions.h; sourceTree = "<group>"; };
-		9E781E6124C0E8FD005401E2 /* WaapiConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaapiConnect.h; sourceTree = "<group>"; };
 		9E781E6324C0E8FD005401E2 /* GUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUI.h; sourceTree = "<group>"; };
 		9E781E6424C0E8FD005401E2 /* ConfigFileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigFileHandler.h; sourceTree = "<group>"; };
 		9E781E6524C0E8FD005401E2 /* reaperHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reaperHelpers.h; sourceTree = "<group>"; };
 		9E78205824C0E904005401E2 /* gui_Transfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_Transfer.h; sourceTree = "<group>"; };
 		9E78220924C0E9B2005401E2 /* ConfigFileHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigFileHandler.cpp; sourceTree = "<group>"; };
-		9E78220A24C0E9B2005401E2 /* WaapiConnect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaapiConnect.cpp; sourceTree = "<group>"; };
 		9E78220C24C0E9B2005401E2 /* gui_Transfer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_Transfer.cpp; sourceTree = "<group>"; };
 		9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReaperRenderQueParser.cpp; sourceTree = "<group>"; };
 		9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaapiFunctions.cpp; sourceTree = "<group>"; };
@@ -256,6 +256,10 @@
 		9E893C6A24BE5AE900188A61 /* AkWwiseSDKVersion.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AkWwiseSDKVersion.cs; sourceTree = "<group>"; };
 		9E893C6B24BE5CCA00188A61 /* libAkSoundEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkSoundEngine.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Release/lib/libAkSoundEngine.a; sourceTree = "<group>"; };
 		9E893C6D24BFB39D00188A61 /* libAkSoundEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkSoundEngine.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Debug/lib/libAkSoundEngine.a; sourceTree = "<group>"; };
+		9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WwiseConnectionHandler.cpp; path = src/WwiseConnectionHandler.cpp; sourceTree = SOURCE_ROOT; };
+		9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WwiseConnectionHandler.h; path = include/WwiseConnectionHandler.h; sourceTree = SOURCE_ROOT; };
+		9EBC0E9D24C346800068154E /* waapi_structs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = waapi_structs.h; sourceTree = "<group>"; };
+		9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CreateImportWindow.cpp; path = src/CreateImportWindow.cpp; sourceTree = SOURCE_ROOT; };
 		C406994D1C39B33800E445F7 /* reaper_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reaper_plugin.h; path = ../library/reaper_plugin/reaper_plugin.h; sourceTree = "<group>"; };
 		C406994F1C39B34300E445F7 /* reaper_plugin_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reaper_plugin_functions.h; path = ../library/reaper_plugin/reaper_plugin_functions.h; sourceTree = "<group>"; };
 		C42AC6D21C27AB1D00FAE97E /* lice_textnew.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lice_textnew.cpp; path = ../library/WDL/WDL/lice/lice_textnew.cpp; sourceTree = "<group>"; };
@@ -302,11 +306,11 @@
 				9E781E4F24C0E8FD005401E2 /* JUCE */,
 				9E781E5D24C0E8FD005401E2 /* ReaperRenderQueParser.h */,
 				9E781E5E24C0E8FD005401E2 /* WaapiFunctions.h */,
-				9E781E6124C0E8FD005401E2 /* WaapiConnect.h */,
 				9E781E6324C0E8FD005401E2 /* GUI.h */,
 				9E781E6424C0E8FD005401E2 /* ConfigFileHandler.h */,
 				9E781E6524C0E8FD005401E2 /* reaperHelpers.h */,
 				9E78205824C0E904005401E2 /* gui_Transfer.h */,
+				9EBC0E9D24C346800068154E /* waapi_structs.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -330,7 +334,6 @@
 			isa = PBXGroup;
 			children = (
 				9E78220924C0E9B2005401E2 /* ConfigFileHandler.cpp */,
-				9E78220A24C0E9B2005401E2 /* WaapiConnect.cpp */,
 				9E78220C24C0E9B2005401E2 /* gui_Transfer.cpp */,
 				9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */,
 				9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */,
@@ -787,9 +790,20 @@
 			path = Generic;
 			sourceTree = "<group>";
 		};
+		9EBC0E9A24C345990068154E /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */,
+				9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */,
+				9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */,
+			);
+			path = Old;
+			sourceTree = "<group>";
+		};
 		C479315B1BE9799D00C024D1 = {
 			isa = PBXGroup;
 			children = (
+				9EBC0E9A24C345990068154E /* Old */,
 				9E78220824C0E9B2005401E2 /* src */,
 				9E781E4E24C0E8FD005401E2 /* include */,
 				9E893BA724BE5AE900188A61 /* AK */,
@@ -880,14 +894,15 @@
 				9E78207224C0E904005401E2 /* ConfigFileHandler.h in Headers */,
 				9E78206C24C0E904005401E2 /* WaapiFunctions.h in Headers */,
 				C406994E1C39B33800E445F7 /* reaper_plugin.h in Headers */,
+				9EE4E5DE24CA16A3006BC020 /* WwiseConnectionHandler.h in Headers */,
 				9E78206524C0E904005401E2 /* AppConfig.h in Headers */,
 				9E78206024C0E904005401E2 /* JuceHeader.h in Headers */,
 				C40699501C39B34300E445F7 /* reaper_plugin_functions.h in Headers */,
 				9E78207324C0E904005401E2 /* reaperHelpers.h in Headers */,
 				9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */,
-				9E78206F24C0E904005401E2 /* WaapiConnect.h in Headers */,
 				9E78207124C0E904005401E2 /* GUI.h in Headers */,
 				9E78206B24C0E904005401E2 /* ReaperRenderQueParser.h in Headers */,
+				9EBC0E9E24C346800068154E /* waapi_structs.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -945,11 +960,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C484E6931C1BAD49005C6CCC /* swell-wnd.mm in Sources */,
+				9EE4E5E024CA1FC5006BC020 /* CreateImportWindow.cpp in Sources */,
 				9E78206224C0E904005401E2 /* include_juce_gui_basics.mm in Sources */,
 				C484E6941C1BAD49005C6CCC /* swell.cpp in Sources */,
 				C49593F31C4EFCB7007C6C9B /* connection.cpp in Sources */,
 				9E78206324C0E904005401E2 /* include_juce_graphics.mm in Sources */,
-				9E78221124C0E9B2005401E2 /* WaapiConnect.cpp in Sources */,
 				9E78221524C0E9B2005401E2 /* WaapiFunctions.cpp in Sources */,
 				C484E68E1C1BAD49005C6CCC /* swell-gdi.mm in Sources */,
 				C49593F71C4EFCFD007C6C9B /* listen.cpp in Sources */,
@@ -957,6 +972,7 @@
 				C49593F51C4EFCD1007C6C9B /* asyncdns.cpp in Sources */,
 				9E78206A24C0E904005401E2 /* include_juce_core.mm in Sources */,
 				C484E68D1C1BAD49005C6CCC /* swell-dlg.mm in Sources */,
+				9EE4E5DD24CA16A0006BC020 /* WwiseConnectionHandler.cpp in Sources */,
 				9E78221024C0E9B2005401E2 /* ConfigFileHandler.cpp in Sources */,
 				9E78221324C0E9B2005401E2 /* gui_Transfer.cpp in Sources */,
 				C484E6901C1BAD49005C6CCC /* swell-menu.mm in Sources */,
