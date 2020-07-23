@@ -27,25 +27,7 @@
     <ClCompile Include="src\WaapiFunctions.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\WwiseConnectionHandler.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="include\JUCE\include_juce_audio_basics.cpp">
-      <Filter>include\JUCE</Filter>
-    </ClCompile>
-    <ClCompile Include="include\JUCE\include_juce_audio_devices.cpp">
-      <Filter>include\JUCE</Filter>
-    </ClCompile>
-    <ClCompile Include="include\JUCE\include_juce_audio_formats.cpp">
-      <Filter>include\JUCE</Filter>
-    </ClCompile>
-    <ClCompile Include="include\JUCE\include_juce_audio_processors.cpp">
-      <Filter>include\JUCE</Filter>
-    </ClCompile>
     <ClCompile Include="include\JUCE\include_juce_core.cpp">
-      <Filter>include\JUCE</Filter>
-    </ClCompile>
-    <ClCompile Include="include\JUCE\include_juce_cryptography.cpp">
       <Filter>include\JUCE</Filter>
     </ClCompile>
     <ClCompile Include="include\JUCE\include_juce_data_structures.cpp">
@@ -58,12 +40,6 @@
       <Filter>include\JUCE</Filter>
     </ClCompile>
     <ClCompile Include="include\JUCE\include_juce_gui_basics.cpp">
-      <Filter>include\JUCE</Filter>
-    </ClCompile>
-    <ClCompile Include="include\JUCE\include_juce_gui_extra.cpp">
-      <Filter>include\JUCE</Filter>
-    </ClCompile>
-    <ClCompile Include="include\JUCE\include_juce_opengl.cpp">
       <Filter>include\JUCE</Filter>
     </ClCompile>
     <ClCompile Include="src\gui_Transfer.cpp">
@@ -79,22 +55,7 @@
     <None Include="include\AkAutobahn.pdb">
       <Filter>include</Filter>
     </None>
-    <None Include="include\JUCE\include_juce_audio_basics.mm">
-      <Filter>include\JUCE</Filter>
-    </None>
-    <None Include="include\JUCE\include_juce_audio_devices.mm">
-      <Filter>include\JUCE</Filter>
-    </None>
-    <None Include="include\JUCE\include_juce_audio_formats.mm">
-      <Filter>include\JUCE</Filter>
-    </None>
-    <None Include="include\JUCE\include_juce_audio_processors.mm">
-      <Filter>include\JUCE</Filter>
-    </None>
     <None Include="include\JUCE\include_juce_core.mm">
-      <Filter>include\JUCE</Filter>
-    </None>
-    <None Include="include\JUCE\include_juce_cryptography.mm">
       <Filter>include\JUCE</Filter>
     </None>
     <None Include="include\JUCE\include_juce_data_structures.mm">
@@ -107,12 +68,6 @@
       <Filter>include\JUCE</Filter>
     </None>
     <None Include="include\JUCE\include_juce_gui_basics.mm">
-      <Filter>include\JUCE</Filter>
-    </None>
-    <None Include="include\JUCE\include_juce_gui_extra.mm">
-      <Filter>include\JUCE</Filter>
-    </None>
-    <None Include="include\JUCE\include_juce_opengl.mm">
       <Filter>include\JUCE</Filter>
     </None>
   </ItemGroup>
@@ -139,9 +94,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\WaapiFunctions.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\WwiseConnectionHandler.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\JUCE\AppConfig.h">
