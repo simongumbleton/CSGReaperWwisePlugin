@@ -9,6 +9,11 @@
 #include <algorithm>
 
 #include <filesystem>
+#if defined(WIN32) || defined(_WIN32)
+#define PATH_SEPARATOR "\\"
+#else
+#define PATH_SEPARATOR "/"
+#endif
 
 using namespace std;
 
@@ -33,7 +38,7 @@ using namespace std;
 void TestReadRenderQue()
 {
 	string resourcePath = GetReaperResourcePath();
-	string QrenderPath = resourcePath + "\\QueuedRenders";
+	string QrenderPath = resourcePath + PATH_SEPARATOR +"QueuedRenders";
 	std::vector<string> renderQueFiles;
 
 	for (const auto & p : filesystem::directory_iterator(QrenderPath))
@@ -54,7 +59,7 @@ void TestReadRenderQue()
 std::vector<std::string> GetListOfRenderQues()
 {
 	string resourcePath = GetReaperResourcePath();
-	string QrenderPath = resourcePath + "\\QueuedRenders";
+	string QrenderPath = resourcePath + PATH_SEPARATOR + "QueuedRenders";
 	std::vector<string> renderQueFiles;
 
 	//TODO add some saftey checks here. It can crash if it finds a file it doesn't know what to do with. Reaper crashed and left a file with no extension and Japanese characters, which crashed the plugin here
@@ -63,8 +68,13 @@ std::vector<std::string> GetListOfRenderQues()
 	{
 		filesystem::path resourceFile = p.path();
 		string s_resourceFile = resourceFile.string();
-		if (s_resourceFile.find(".rpp") != s_resourceFile.npos)
+		//make a lower case version to search for .rpp extension
+		string s_resourceFile_ToLower = s_resourceFile;
+		transform(s_resourceFile_ToLower.begin(), s_resourceFile_ToLower.end(), s_resourceFile_ToLower.begin(), [](unsigned char c){ return std::tolower(c); });
+		
+		if (s_resourceFile_ToLower.find(".rpp") != s_resourceFile_ToLower.npos)
 		{
+			//Push back the original file name
 			renderQueFiles.push_back(s_resourceFile);
 		}
 	}

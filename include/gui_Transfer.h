@@ -1,18 +1,21 @@
 #pragma once
 
 #include "JUCE/JuceHeader.h"
-#include "WaapiFunctions.h"
+#include "WwiseConnectionHandler.h"
 
 class CurrentWwiseConnection;
 class CreateObjectChoices;
 
-class renderJobAudioFile : public TreeViewItem
+class renderJobAudioFileTreeItem : public TreeViewItem
 {
 	std::string renderWav;
+	std::string displayName;
+	int textWidth = -1;
 public:
-	renderJobAudioFile(std::string audioFile)
+	renderJobAudioFileTreeItem(std::string audioFile)
 	{
 		renderWav = audioFile;
+		displayName = audioFile.substr(audioFile.find_last_of("/\\") + 1);
 	}
 	
 	bool mightContainSubItems() override
@@ -23,27 +26,33 @@ public:
 	void paintItem(Graphics& g, int width, int height) override
 	{
 		//g.fillAll(Colours::grey);
+		textWidth = g.getCurrentFont().getStringWidth(displayName);
 		g.setColour(Colours::black);
-		g.drawText(renderWav, 0, 0, width, height, Justification::left);
+		g.drawText(displayName, 0, 0, width, height, Justification::left);
+	}
+	int getItemWidth()
+	{
+		return textWidth;
 	}
 
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(renderJobAudioFile)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(renderJobAudioFileTreeItem)
 };
 
 
-class RenderQueTreeItem : public TreeViewItem
+class RenderQueJobTreeItem : public TreeViewItem
 {
 	std::string renderJobPath;
+	std::string displayName;
 public:
-	RenderQueTreeItem(std::string renderJob)
+	RenderQueJobTreeItem(std::string renderJob)
 	{
 		renderJobPath = renderJob;
-		
+		displayName = renderJob.substr(renderJob.find_last_of("/\\") + 1);
 	}
 	
-	void addAudioFileToRenderJobTree(std::string audioFile)
+	void addAudioFileToRenderJobTree(renderJobAudioFileTreeItem * audioFile)
 	{
-		addSubItem(new renderJobAudioFile(audioFile));
+		addSubItem(audioFile);
 	}
 
 	bool mightContainSubItems() override
@@ -55,10 +64,36 @@ public:
 	{
 		//g.fillAll(Colours::grey);
 		g.setColour(Colours::black);
-		g.drawText(renderJobPath, 0, 0, width, height, Justification::left);
+		g.drawText(displayName, 0, 0, width, height, Justification::left);
 	}
 
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RenderQueTreeItem)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RenderQueJobTreeItem)
+};
+class RenderQueTreeRoot : public TreeViewItem
+{
+public:
+	RenderQueTreeRoot()
+	{
+	}
+	
+	void addRenderQueJobToTree(RenderQueJobTreeItem * renderJob,int index)
+	{
+		addSubItem(renderJob,index);
+	}
+
+	bool mightContainSubItems() override
+	{
+		return getNumSubItems() != 0;
+	}
+
+	void paintItem(Graphics& g, int width, int height) override
+	{
+		//g.fillAll(Colours::grey);
+		g.setColour(Colours::black);
+		g.drawText("ROOT", 0, 0, width, height, Justification::left);
+	}
+
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RenderQueTreeRoot)
 };
 
 //==============================================================================
@@ -66,12 +101,17 @@ class TransferToWwiseComponent : public juce::Component, public juce::Button::Li
 {
 public:
 
-	CurrentWwiseConnection MyCurrentWwiseConnection;
+	CreateImportWindow * thisCreateImportWindow;
+	
+	CurrentWwiseConnection * MyCurrentWwiseConnection;
 
 	TransferToWwiseComponent();
+	~TransferToWwiseComponent();
 
 	void resized() override;
 
+	void extracted(juce::Button *pButton);
+	
 	void buttonClicked(juce::Button* pButton)override;
 
 	void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override;
@@ -80,21 +120,27 @@ public:
 
 	void InitAllButtons(std::vector<juce::Button *> buttons);
 
-	void InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices);
+	void InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices, string displayText);
+	
+	void InitTreeView();
+	
+	void RefreshRenderJobTree();
+	
+	void CheckIsVoice();
 
 
 private:
 
 	CreateObjectChoices myCreateChoices;
 
-	juce::TextButton * btn_RenderAndImport = new TextButton("btn_RenderAndImport"); //button
-	juce::TextButton * btn_RefreshJobList = new TextButton("btn_RefreshJobList");
-	juce::TextButton * btn_CreateWwiseObject = new TextButton("btn_CreateWwiseObject");
-	juce::TextButton * btn_ApplySettingsToJobs = new TextButton("btn_ApplySettingsToJobs");
-	juce::TextButton * btn_ConnectToWwise = new TextButton("btn_ConnectToWwise");
-	juce::ToggleButton * btn_isVoice = new ToggleButton("btn_isVoice");
-	juce::ToggleButton * btn_OriginalsMatchesWwise = new ToggleButton("btn_OriginalsMatchesWwise");
-	juce::ToggleButton * btn_CreatePlayEvent = new ToggleButton("btn_CreatePlayEvent");
+	juce::TextButton * btn_RenderAndImport = new TextButton("Render And Import"); //button
+	juce::TextButton * btn_RefreshJobList = new TextButton("Refresh Job List");
+	juce::TextButton * btn_CreateWwiseObject = new TextButton("Create A Wwise Object");
+	juce::TextButton * btn_ApplySettingsToJobs = new TextButton("Apply Import Settings To Selection");
+	juce::TextButton * btn_ConnectToWwise = new TextButton("Connect To Wwise");
+	juce::ToggleButton * btn_isVoice = new ToggleButton("Is Voice?");
+	juce::ToggleButton * btn_OriginalsMatchesWwise = new ToggleButton("Originals Dir Matches Wwise?");
+	juce::ToggleButton * btn_CreatePlayEvent = new ToggleButton("Create Play Event?");
 
 	std::vector<juce::Button*> buttons{
 	btn_RenderAndImport,
@@ -108,9 +154,13 @@ private:
 	};
 
 	juce::ComboBox * dd_Language = new ComboBox("dd_Language"); //drop down
+	juce::Label * info_Language = new Label();
 	juce::ComboBox * dd_EventOption = new ComboBox("dd_EventOption");
+	juce::Label * info_EventOption = new Label();
 	juce::ComboBox * dd_CreateType = new ComboBox("dd_CreateType");
+	juce::Label * info_CreateType = new Label();
 	juce::ComboBox * dd_OnNameConflict = new ComboBox("dd_OnNameConflict");
+	juce::Label * info_NameConflict = new Label();
 
 	std::vector<juce::ComboBox *> comboBoxes{
 		dd_Language,
@@ -120,16 +170,23 @@ private:
 	};
 
 
-	juce::Label * INtxt_OriginalsSubDir = new Label("INtxt_OriginalsSubDir");	// INPUT text - editable label
-	juce::Label * INtxt_CreateName = new Label("INtxt_OriginalsSubDir");
-	juce::Label * INtxt_CreateNotes = new Label("INtxt_OriginalsSubDir");
-	juce::Label * txt_ConnectionStatus = new Label("INtxt_OriginalsSubDir"); // text
-
-	juce::Label * debugLabel = new Label("INtxt_OriginalsSubDir");
-
-	std::unique_ptr<TreeView> tree_RenderJobTree; //= new TreeView("tree_RenderJobTree");	//Tree view
+	juce::Label * INtxt_OriginalsSubDir = new Label();
+	juce::Label * info_OriginalsSubDir = new Label();
 	
-	std::unique_ptr<TreeView> treeView;
+	juce::Label * INtxt_CreateName = new Label();
+	juce::Label * info_CreateName = new Label();
+	
+	juce::Label * INtxt_CreateNotes = new Label();
+	juce::Label * info_CreateNotes = new Label();
+	
+	juce::Label * txt_ConnectionStatus = new Label(); // text
+
+	juce::Label * debugLabel = new Label();
+
+	//std::unique_ptr<TreeView> tree_RenderJobTree; //= new TreeView("tree_RenderJobTree");	//Tree view
+	juce::TreeView * tree_RenderJobTree = new TreeView("tree_RenderJobTree");
+	
+	std::vector<juce::TreeViewItem *> RenderTreeSelectedItems;
 
 	double transferProgress = 0.0f;
 

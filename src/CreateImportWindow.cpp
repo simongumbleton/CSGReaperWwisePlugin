@@ -41,10 +41,9 @@ CreateObjectChoices myCreateChoices;
 
 //int CreateImportWindow::m_hWindow = NULL;
 long CreateImportWindow::m_lSaveThis = 0;
-WwiseConnectionHandler* CreateImportWindow::parentWwiseConnectionHnd = NULL;
 
-std::vector<RenderQueJob> GlobalListOfRenderQueJobs;
-std::vector<std::string> RenderFilesBackup;
+//std::vector<RenderQueJob> GlobalListOfRenderQueJobs;
+//std::vector<std::string> RenderFilesBackup;
 
 bool AllDone = false;
 std::mutex mtx;
@@ -54,7 +53,7 @@ int numOfRendersDone = 0;
 
 void CreateImportWindow::SetupPluginParent(WwiseConnectionHandler * parent)
 {
-	parentWwiseConnectionHnd = parent;
+	WwiseConnectionHnd = parent;
 	thisPluginWindow = this;
 }
 
@@ -63,6 +62,7 @@ void CreateImportWindow::SetupPluginParent(WwiseConnectionHandler * parent)
 
 CreateImportWindow::CreateImportWindow()
 {
+	WwiseConnectionHnd = new WwiseConnectionHandler();
 	m_lSaveThis = (long)this;
 	saveThis = this;
 }
@@ -131,7 +131,7 @@ void CreateImportWindow::OnInitDlg()
 
 	config myConfig;
 	ReadConfigFile(myConfig);
-	parentWwiseConnectionHnd->SetOptionsFromConfig(myConfig);
+	WwiseConnectionHnd->SetOptionsFromConfig(myConfig);
 
 
 	//init Wwise Connection
@@ -153,7 +153,7 @@ inline int CreateImportWindow::ErrMsg(const std::string& s)
 
 void CreateImportWindow::handleUI_B_Connect()
 {
-	if (parentWwiseConnectionHnd->handle_GUI_Connect())
+	if (WwiseConnectionHnd->handle_GUI_Connect())
 	{
 		SetStatusMessageText("Ready");
 		//SetDlgItemText(m_hWindow, IDC_WwiseConnection, "Wwise Connection Established");
@@ -171,7 +171,7 @@ void CreateImportWindow::handleUI_B_CreateObject()
 {
 
 	/// Get selected wwise object first
-	WwiseObject selectedParent = parentWwiseConnectionHnd->GetSelectedObject();
+	WwiseObject selectedParent = WwiseConnectionHnd->GetSelectedObject();
 
 	//PrintToConsole("Creating New Wwise Object");
 	CreateObjectArgs myCreateObjectArgs;
@@ -207,7 +207,7 @@ void CreateImportWindow::handleUI_B_CreateObject()
 
 
 	AK::WwiseAuthoringAPI::AkJson::Array results;
-	if (!parentWwiseConnectionHnd->CreateWwiseObjects(false, myCreateObjectArgs, results))
+	if (!WwiseConnectionHnd->CreateWwiseObjects(false, myCreateObjectArgs, results))
 	{
 		//ERROR
 		SetStatusMessageText("Error");
@@ -228,7 +228,7 @@ void CreateImportWindow::handleUI_B_CreateObject()
 
 void CreateImportWindow::handleUI_B_GetSelectedParent()
 {
-	WwiseObject selectedParent = parentWwiseConnectionHnd->GetSelectedObject();
+	WwiseObject selectedParent = WwiseConnectionHnd->GetSelectedObject();
 	std::string parID = selectedParent.properties["id"];
 	std::string parNameType = selectedParent.properties["name"] + " (" + selectedParent.properties["type"] + ")";
 	//SetDlgItemText(m_hWindow, IDC_ImportParent_ID, parID.c_str());
@@ -620,7 +620,7 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name)
 
 
 	AK::WwiseAuthoringAPI::AkJson::Array results;
-	if (!parentWwiseConnectionHnd->CreateWwiseObjects(false, args, results))
+	if (!WwiseConnectionHnd->CreateWwiseObjects(false, args, results))
 	{
 		//PrintToConsole("Error creating Play event");
 	}
@@ -683,7 +683,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 {
 	bool success;
 	AK::WwiseAuthoringAPI::AkJson::Array results;
-	success = parentWwiseConnectionHnd->ImportAudioToWwise(false, curJobImportArgs, results);
+	success = WwiseConnectionHnd->ImportAudioToWwise(false, curJobImportArgs, results);
 	
 	if (curJobImportArgs.eventCreateOption == 1)
 	{
@@ -719,7 +719,7 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	std::vector<WwiseObject> MyWwiseObjects;
 	try {
-		MyWwiseObjects = parentWwiseConnectionHnd->GetWwiseObjects(false, getArgs, results);
+		MyWwiseObjects = WwiseConnectionHnd->GetWwiseObjects(false, getArgs, results);
 	}
 	catch (std::string e) {
 		//PrintToConsole(e);
@@ -744,7 +744,7 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 			AK::WwiseAuthoringAPI::AkJson::Array results;
 			std::vector<WwiseObject> MyWwiseObjects;
 			try {
-				MyWwiseObjects = parentWwiseConnectionHnd->GetWwiseObjects(false, getPArgs, results);
+				MyWwiseObjects = WwiseConnectionHnd->GetWwiseObjects(false, getPArgs, results);
 			}
 			catch (std::string e) {
 				//PrintToConsole(e);
@@ -838,7 +838,7 @@ void CreateImportWindow::restoreRenderQueFiles()
 
 void CreateImportWindow::SetWwiseAutomationMode(bool enable)
 {
-	parentWwiseConnectionHnd->SetWwiseAutomationMode(enable);
+	WwiseConnectionHnd->SetWwiseAutomationMode(enable);
 }
 
 
@@ -897,30 +897,7 @@ bool CreateImportWindow::init_ALL_OPTIONS()
 	return true;
 }
 
-///Initialise dialogue boxes
-bool CreateImportWindow::init_ComboBox_A(std::vector<std::string> choices)
-{
-	//SendMessage(hwnd_combo, CB_RESETCONTENT,0,0);
-	int i = 0;
-	for (auto choice : choices)
-	{
-		//SendMessage(hwnd_combo, CB_ADDSTRING, i, (LPARAM)choice.c_str());
-		//SendMessage(hwnd_combo, CB_SETCURSEL, 0, 0);
-		i++;
-	}
-	return true;
-}
 
-bool CreateImportWindow::init_ListBox_A( std::vector<std::string> choices)
-{
-	int i = 0;
-	for (auto choice : choices)
-	{
-		//SendMessage(hwnd_list, LB_ADDSTRING, i, (LPARAM)choice.c_str());
-		i++;
-	}
-	return true;
-}
 
 
 void CreateImportWindow::FillRenderQueList()
@@ -937,13 +914,12 @@ void CreateImportWindow::FillRenderQueList()
 			GlobalListOfRenderQueJobs.push_back(MyrenderQueJob);
 		}
 	}
-
-	UpdateRenderJob_TreeView();
-
 }
 
 void CreateImportWindow::UpdateRenderJob_TreeView()
 {
+	FillRenderQueList();
+	
 	//TreeView_DeleteAllItems(tr_Tree_RenderJobTree);
 /*
 	for (auto RenderJob : GlobalListOfRenderQueJobs)
@@ -1237,7 +1213,7 @@ std::string CreateImportWindow::GetLanguage()
 	char buffer[256];
 	//GetDlgItemTextA(m_hWindow, IDC_Language, buffer, 256);
 	int x = 0;//SendMessage(txt_Language, CB_GETCURSEL, 0, 0);
-	std::string lang = parentWwiseConnectionHnd->MyCurrentWwiseConnection.projectGlobals.Languages[x];
+	std::string lang = WwiseConnectionHnd->MyCurrentWwiseConnection.projectGlobals.Languages[x];
 	return lang;
 }
 

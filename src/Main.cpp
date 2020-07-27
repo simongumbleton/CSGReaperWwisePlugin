@@ -27,6 +27,8 @@
 REAPER_PLUGIN_HINSTANCE g_hInst;
 
 
+
+
 //define globals
 HWND g_parentWindow;
 char reaperProjectName[256];
@@ -53,6 +55,19 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		rec->Register;
 		HWND main = rec->hwnd_main;
 		//MessageBox(main, "Hello World","Reaper Basic Extension", MB_OK);
+
+		// load all Reaper API functions in one go, byebye ugly IMPAPI macro!
+		int error_count = REAPERAPI_LoadAPI(rec->GetFunc);
+		if (error_count > 0)
+		{
+			char errbuf[256];
+			sprintf(errbuf, "Failed to load %d expected API function(s)", error_count);
+			MessageBox(main, errbuf, "MRP extension error", MB_OK);
+			return 0;
+		}
+		
+		
+		
 
 		String wName = "JUCE test window";
 		initialiseJuce_GUI();

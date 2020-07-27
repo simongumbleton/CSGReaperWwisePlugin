@@ -99,73 +99,6 @@ private:
 };
 
 
-///////////////////////////////////
-/////Plugin Window - Implements Object GET
-//////////////////////////////////
-
-class PluginWindow
-{
-	/////Try this approach from https://www.codeguru.com/cpp/w-d/dislog/win32/article.php/c5073/Creating-a-Reusable-Dialog-Class-without-MFC.htm
-
-public:
-
-	PluginWindow();
-	~PluginWindow();
-
-	//static HWND m_hWindow;
-	static long m_lSaveThis;
-	PluginWindow* saveThis;
-
-	int DoModal(void);
-
-	//static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
-
-	static WwiseConnectionHandler* parentWwiseConnectionHnd;
-
-	void SetupPluginParent(WwiseConnectionHandler *parent);
-
-	////=============================================================================
-	//int CreatePluginWindow(HINSTANCE hInst, HINSTANCE, LPSTR, int);
-
-private:
-
-	//HWND m_hParent;
-	int m_nResId;
-
-	PluginWindow* thisPluginWindow;
-
-
-	////=============================================================================
-	////message processing function declarations
-
-
-	////non-message function declarations
-	////=============================================================================
-	//void OnCommand(const HWND hwnd, int id, int notifycode, const HWND hCntrl);
-	////=============================================================================
-	//INT_PTR OnInitDlg(const HWND hwnd, LPARAM lParam);
-	////=============================================================================
-	inline int ErrMsg(const std::string& s);
-
-	/////Handle the various UsI elements
-	void handleUI_GetFrom(int notifCode);
-	void handleUI_GetSelect(int notifCode);
-	void handleUI_GetWhere(int notifCode);
-	void handleUI_GetReturnOptions(int notifCode);
-	void handleUI_B_Connect();
-	void handleUI_B_GO();
-
-	void handleUI_B_WwiseTree();
-
-	/////Initialise dialogue boxes
-	bool init_ALL_OPTIONS();
-	bool init_ComboBox_A(std::vector<std::string> choices);
-	bool init_ListBox_A(std::vector<std::string> choices);
-
-	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-};
-
-
 
 ///////////////////////////////////
 /////Create Import Window - Implements Object Create and Import
@@ -173,7 +106,14 @@ private:
 
 class CreateImportWindow
 {
+	
+
 public:
+	
+	WwiseConnectionHandler * WwiseConnectionHnd;
+	std::vector<RenderQueJob> GlobalListOfRenderQueJobs;
+	std::vector<std::string> RenderFilesBackup;
+	
 	CreateImportWindow();
 	~CreateImportWindow();
 
@@ -184,14 +124,11 @@ public:
 
 	//static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
-	static WwiseConnectionHandler* parentWwiseConnectionHnd;
-
+	
 	void SetupPluginParent(WwiseConnectionHandler *parent);
 
 	////=============================================================================
 	//int CreateTransferWindow(HINSTANCE hInst, HINSTANCE, LPSTR, int);
-
-private:
 
 	//HWND m_hParent;
 	int m_nResId;
