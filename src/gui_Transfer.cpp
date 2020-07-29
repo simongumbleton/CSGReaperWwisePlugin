@@ -61,16 +61,27 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	info_CreateName->attachToComponent(INtxt_CreateName, true);
 	info_CreateName->setText("New Object Name:", juce::NotificationType::dontSendNotification);
 	INtxt_CreateName->setEditable(true);
-	INtxt_CreateName->setColour(juce::Label::backgroundColourId, Colours::lightgrey);
+	INtxt_CreateName->setColour(juce::Label::backgroundColourId, Colours::darkgrey);
 	
 	addAndMakeVisible(INtxt_CreateNotes);
 	addAndMakeVisible(info_CreateNotes);
 	info_CreateNotes->attachToComponent(INtxt_CreateNotes, true);
 	info_CreateNotes->setText("Notes:", juce::NotificationType::dontSendNotification);
 	INtxt_CreateNotes->setEditable(true);
-	INtxt_CreateNotes->setColour(juce::Label::backgroundColourId, Colours::lightgrey);
+	INtxt_CreateNotes->setColour(juce::Label::backgroundColourId, Colours::darkgrey);
 	
 	
+	addAndMakeVisible(Title_CreateWwiseObject);
+	Title_CreateWwiseObject->setFont(Font(16.0f,Font::bold));
+	Title_CreateWwiseObject->setText("Create a new Wwise object under current selection", dontSendNotification);
+	Title_CreateWwiseObject->setColour(Label::textColourId, Colours::white);
+	Title_CreateWwiseObject->setJustificationType(Justification::centred);
+	
+	addAndMakeVisible(Title_RenderImport);
+	Title_RenderImport->setFont(Font(16.0f,Font::bold));
+	Title_RenderImport->setText("Select a Wwise parent, apply settings to jobs and render/import", dontSendNotification);
+	Title_RenderImport->setColour(Label::textColourId, Colours::white);
+	Title_RenderImport->setJustificationType(Justification::centred);
 	
 	addAndMakeVisible(txt_ConnectionStatus);
 
@@ -81,6 +92,7 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	setSize(1000, 500);
 	
 	CheckIsVoice();
+	RefreshRenderJobTree();
 
 }
 
@@ -125,41 +137,49 @@ void TransferToWwiseComponent::InitTreeView()
 void TransferToWwiseComponent::resized()
 {
 	auto border = 4;
+	auto buttonHeight = 40;
+	auto comboHeight = 30;
+	auto treeHeight = 250;
+	auto labelHeight = 30;
+	auto titleHeight = 60;
 	auto area = getLocalBounds();
 
 	auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
 	auto RightHalf = area;
 
-	auto buttonHeight = 30;
-	auto comboHeight = 30;
-	auto treeHeight = 200;
-	auto labelHeight = 30;
+	
 	
 	auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
-	auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/2);
+	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
 	
-	dd_CreateType->setBounds(CreateCorner.removeFromTop(comboHeight).reduced(border));
-	INtxt_CreateName->setBounds(CreateCorner.removeFromTop(labelHeight).reduced(border));
-	
-	INtxt_CreateNotes->setBounds(CreateCorner.removeFromTop(labelHeight).reduced(border));
-	dd_OnNameConflict->setBounds(CreateCorner.removeFromTop(comboHeight).reduced(border));
-	
-	btn_CreatePlayEvent->setBounds(CreateCorner.removeFromTop(buttonHeight).reduced(border));
-	btn_CreateWwiseObject->setBounds(CreateCorner.removeFromTop(buttonHeight).reduced(border));
+	Title_CreateWwiseObject->setBounds(TopRightQtr.removeFromTop(titleHeight).reduced(border));
 	
 	
+	dd_CreateType->setBounds(TopRightQtr.removeFromTop(comboHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
+	//dd_CreateType->setJustificationType(Justification::right);
+	
+	INtxt_CreateName->setBounds(TopRightQtr.removeFromTop(labelHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
+	//INtxt_CreateName->setJustificationType(Justification::right);
+	
+	INtxt_CreateNotes->setBounds(TopRightQtr.removeFromTop(labelHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
+	//INtxt_CreateNotes->setJustificationType(Justification::right);
+	dd_OnNameConflict->setBounds(TopRightQtr.removeFromTop(comboHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
+	//dd_OnNameConflict->setJustificationType(Justification::right);
 	
 	
-	for (auto button : buttons)
-	{
-		//button->setBounds(LeftHalf.removeFromTop(buttonHeight).reduced(border));
-	}
-
+	btn_CreatePlayEvent->setBounds(TopRightQtr.removeFromTop(buttonHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
 	
-	for (auto cb : comboBoxes)
-	{
-	//	cb->setBounds(RightHalf.removeFromTop(comboHeight).reduced(border));
-	}
+	auto buttonArea = TopRightQtr.removeFromTop(buttonHeight).reduced(border);
+	auto edgesize = buttonArea.getWidth()*0.1;
+	auto offsetL = buttonArea.removeFromLeft(edgesize);
+	auto offsetR = buttonArea.removeFromRight(edgesize);
+	btn_CreateWwiseObject->setBounds(buttonArea);
+	
+	
+	//auto TopLeftQtr = LeftHalf.removeFromTop(LeftHalf.getHeight()/2);
+	
+	Title_RenderImport->setBounds(LeftHalf.removeFromTop(titleHeight).reduced(border));
+	
 
 	
 
@@ -171,6 +191,22 @@ void TransferToWwiseComponent::resized()
 }
 
 
+
+void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
+	RenderTreeSelectedItems.clear();
+	int selectedCount = tree_RenderJobTree->getNumSelectedItems();
+	for (int i = 0; i<selectedCount;i++)
+	{
+		RenderTreeSelectedItems.push_back(tree_RenderJobTree->getSelectedItem(i));
+	}
+	
+	String text = ("Num of selected items: " + String(RenderTreeSelectedItems.size()));
+	debugLabel->setText(text, juce::NotificationType::dontSendNotification);
+
+
+
+
+}
 
 void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 {
@@ -203,15 +239,7 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	}
 	else if (pButton == btn_ApplySettingsToJobs)
 	{
-		RenderTreeSelectedItems.clear();
-		int selectedCount = tree_RenderJobTree->getNumSelectedItems();
-		for (int i = 0; i<selectedCount;i++)
-		{
-			RenderTreeSelectedItems.push_back(tree_RenderJobTree->getSelectedItem(i));
-		}
-		
-		String text = ("Num of selected items: " + String(RenderTreeSelectedItems.size()));
-		debugLabel->setText(text, juce::NotificationType::dontSendNotification);
+		ApplySettingsToSelectedJobs();
 	}
 	
 	

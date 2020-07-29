@@ -112,6 +112,8 @@ public:
 
 	void extracted(juce::Button *pButton);
 	
+	void extracted();
+	
 	void buttonClicked(juce::Button* pButton)override;
 
 	void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override;
@@ -127,6 +129,8 @@ public:
 	void RefreshRenderJobTree();
 	
 	void CheckIsVoice();
+	
+	void ApplySettingsToSelectedJobs();
 
 
 private:
@@ -168,7 +172,9 @@ private:
 		dd_CreateType,
 		dd_OnNameConflict
 	};
-
+	
+	juce::Label * Title_CreateWwiseObject = new Label();
+	juce::Label * Title_RenderImport = new Label();
 
 	juce::Label * INtxt_OriginalsSubDir = new Label();
 	juce::Label * info_OriginalsSubDir = new Label();
