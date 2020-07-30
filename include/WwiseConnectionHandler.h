@@ -139,7 +139,7 @@ public:
 	////=============================================================================
 	////message processing function declarations
 	void handleUI_B_Connect();
-	void handleUI_B_CreateObject();
+	void handleUI_B_CreateObject(CreateObjectArgs myCreateObjectArgs);
 	void handleUI_B_GetSelectedParent();
 	void handleUI_GetType(int notifCode);
 	void handleUI_GetImportEventOptions(int notifCode);

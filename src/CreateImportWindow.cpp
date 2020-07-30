@@ -167,17 +167,15 @@ void CreateImportWindow::handleUI_B_Connect()
 	}
 }
 
-void CreateImportWindow::handleUI_B_CreateObject()
+void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObjectArgs)
 {
 
 	/// Get selected wwise object first
 	WwiseObject selectedParent = WwiseConnectionHnd->GetSelectedObject();
 
 	//PrintToConsole("Creating New Wwise Object");
-	CreateObjectArgs myCreateObjectArgs;
 
-	handleUI_GetType(1);
-	handleUI_GetNameConflict(1);
+	
 
 	if (selectedParent.properties.empty())
 	{
@@ -187,23 +185,6 @@ void CreateImportWindow::handleUI_B_CreateObject()
 
 	myCreateObjectArgs.ParentID = selectedParent.properties["id"];
 	myCreateObjectArgs.Workunit = selectedParent.properties["workunit"];
-
-	///Get the par text fields
-	char buffer[256];
-
-	//GetDlgItemTextA(m_hWindow, IDC_text_CreateName, buffer, 256);
-	std::string s_name = buffer;
-	myCreateObjectArgs.Name = s_name;
-
-	//GetDlgItemTextA(m_hWindow, IDC_Text_CreateNotes, buffer, 256);
-	std::string s_notes = buffer;
-	myCreateObjectArgs.Notes = s_notes;
-
-	myCreateObjectArgs.Type = s_CreateType;
-	myCreateObjectArgs.onNameConflict = s_CreateNameConflict;
-	myCreateObjectArgs.createPlayEvent = GetCreateEvent();
-
-
 
 
 	AK::WwiseAuthoringAPI::AkJson::Array results;

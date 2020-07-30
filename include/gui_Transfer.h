@@ -109,10 +109,6 @@ public:
 	~TransferToWwiseComponent();
 
 	void resized() override;
-
-	void extracted(juce::Button *pButton);
-	
-	void extracted();
 	
 	void buttonClicked(juce::Button* pButton)override;
 
@@ -131,6 +127,16 @@ public:
 	void CheckIsVoice();
 	
 	void ApplySettingsToSelectedJobs();
+	
+	void handleUI_B_CreateObject();
+	
+	void CreatePlayEventForID(string id, string name);
+	
+	std::string GetDropDownValue(juce::ComboBox * dropdown);
+	
+	std::string GetLabelValue(juce::Label * label);
+	
+	bool GetToggleValue(juce::ToggleButton * btn);
 
 
 private:

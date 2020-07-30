@@ -1,4 +1,4 @@
-#pragma once
+
 #include "gui_Transfer.h"
 
 
@@ -137,7 +137,7 @@ void TransferToWwiseComponent::InitTreeView()
 void TransferToWwiseComponent::resized()
 {
 	auto border = 4;
-	auto buttonHeight = 40;
+	auto buttonHeight = 30;
 	auto comboHeight = 30;
 	auto treeHeight = 250;
 	auto labelHeight = 30;
@@ -174,7 +174,7 @@ void TransferToWwiseComponent::resized()
 	auto offsetL = buttonArea.removeFromLeft(edgesize);
 	auto offsetR = buttonArea.removeFromRight(edgesize);
 	btn_CreateWwiseObject->setBounds(buttonArea);
-	
+	btn_CreateWwiseObject->setSize(buttonArea.getWidth(), buttonHeight);
 	
 	//auto TopLeftQtr = LeftHalf.removeFromTop(LeftHalf.getHeight()/2);
 	
@@ -241,7 +241,10 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	{
 		ApplySettingsToSelectedJobs();
 	}
-	
+	else if (pButton == btn_CreateWwiseObject)
+	{
+		handleUI_B_CreateObject();
+	}
 	
 }
 
@@ -289,4 +292,41 @@ void TransferToWwiseComponent::RefreshRenderJobTree()
 		root->addRenderQueJobToTree(job,jobIndex);
 		jobIndex++;
 	}
+}
+
+void TransferToWwiseComponent::handleUI_B_CreateObject()
+{
+
+	//PrintToConsole("Creating New Wwise Object");
+	CreateObjectArgs myCreateObjectArgs;
+	
+	myCreateObjectArgs.Type = GetDropDownValue(dd_CreateType);
+	myCreateObjectArgs.onNameConflict = GetDropDownValue(dd_OnNameConflict);
+	
+	myCreateObjectArgs.Name = GetLabelValue(INtxt_CreateName);
+	myCreateObjectArgs.Notes = GetLabelValue(INtxt_CreateNotes);
+
+	myCreateObjectArgs.createPlayEvent = GetToggleValue(btn_CreatePlayEvent);
+	
+	//TODO notes doesnt work needs changing in waapi code
+	//TODO creating a voice object doesnt work either
+	thisCreateImportWindow->handleUI_B_CreateObject(myCreateObjectArgs);
+
+}
+
+
+std::string TransferToWwiseComponent::GetDropDownValue(juce::ComboBox * dropdown)
+{
+	int Index = dropdown->getSelectedItemIndex();
+	return dropdown->getItemText(Index).toStdString();
+}
+
+std::string TransferToWwiseComponent::GetLabelValue(juce::Label * label)
+{
+	return label->getText().toStdString();
+}
+
+bool TransferToWwiseComponent::GetToggleValue(juce::ToggleButton * btn)
+{
+	return btn->getToggleState();
 }
