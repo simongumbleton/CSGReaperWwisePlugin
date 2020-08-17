@@ -70,7 +70,7 @@ std::vector<std::string> GetListOfRenderQues()
 		string s_resourceFile = resourceFile.string();
 		//make a lower case version to search for .rpp extension
 		string s_resourceFile_ToLower = s_resourceFile;
-		transform(s_resourceFile_ToLower.begin(), s_resourceFile_ToLower.end(), s_resourceFile_ToLower.begin(), [](unsigned char c){ return std::tolower(c); });
+		transform(s_resourceFile_ToLower.begin(), s_resourceFile_ToLower.end(), s_resourceFile_ToLower.begin(), [](unsigned char c){ return tolower(c); });
 		
 		if (s_resourceFile_ToLower.find(".rpp") != s_resourceFile_ToLower.npos)
 		{
