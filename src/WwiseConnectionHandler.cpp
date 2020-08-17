@@ -421,7 +421,10 @@ void WwiseConnectionHandler::SetWwiseAutomationMode(bool enable)
 	waapi_SetAutomationMode(enable);
 }
 
-
+bool WwiseConnectionHandler::SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results)
+{
+	return waapi_SetNotesForObject(id, notes, results);
+}
 
 
 

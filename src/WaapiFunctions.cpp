@@ -306,6 +306,31 @@ bool waapi_CreateObjectFromArgs(CreateObjectArgs & createArgs, AK::WwiseAuthorin
 	return my_client->Call(ak::wwise::core::object::create, args, options, results,0);
 }
 
+bool waapi_SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results)
+{
+	using namespace AK::WwiseAuthoringAPI;
+
+	//Check for missing inputs
+	if (id == "" || notes == "")
+	{
+		PrintToConsole("!ERROR! - One or more required inputs are missing from Set Notes call");
+		return false;
+	}
+
+	// Do Source control operations
+	waapi_DoWorkgoupOperation(CheckoutWWU, id);
+
+
+	AkJson args; //"@RandomOrSequence"
+	args = (AkJson::Map{
+		{ "object",AkVariant(id)},
+		{ "value", AkVariant(notes)}
+		});
+	
+	AkJson options = AkJson(AkJson::Map());
+	return my_client->Call(ak::wwise::core::object::setNotes, args, options, results,0);
+}
+
 
 bool wappi_ImportFromArgs(ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::AkJson & results)
 {

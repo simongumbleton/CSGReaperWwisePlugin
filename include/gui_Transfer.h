@@ -130,8 +130,6 @@ public:
 	
 	void handleUI_B_CreateObject();
 	
-	void CreatePlayEventForID(string id, string name);
-	
 	std::string GetDropDownValue(juce::ComboBox * dropdown);
 	
 	std::string GetLabelValue(juce::Label * label);

@@ -201,6 +201,13 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 		std::string name = results[0]["name"].GetVariant();
 		CreatePlayEventForID(id,name);
 	}
+	if (myCreateObjectArgs.Notes != "")
+	{
+		std::string id = results[0]["id"].GetVariant();
+		std::string notes = myCreateObjectArgs.Notes;
+		AK::WwiseAuthoringAPI::AkJson results;
+		WwiseConnectionHnd->SetNotesForObject(id, notes, results);
+	}
 
 	SetStatusMessageText("Ready");
 

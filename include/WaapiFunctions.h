@@ -170,6 +170,8 @@ bool waapi_CreateObjectFromArgs(CreateObjectArgs & createArgs, AK::WwiseAuthorin
 
 bool wappi_ImportFromArgs(ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::AkJson & results);
 
+bool waapi_SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results);
+
 ///////////////////////////////
 ////     Get the results array for calls to Waapi functions
 ///////////////////////////////

@@ -12,6 +12,7 @@
 
 #include <iostream> 
 #include <sstream>
+#include <thread>
 
 #define REAPERAPI_IMPLEMENT
 #define REAPERAPI_DECL
@@ -45,6 +46,7 @@ gaccel_register_t action01 = { { 0, 0, 0 }, "Do action 01." };
 //std::unique_ptr<MainWindow> mainWindow2;
 //std::unique_ptr<TransferWindow> mainWindow2;
 
+void LaunchTransferWindow();
 
 extern "C"
 {
@@ -68,19 +70,10 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		}
 		
 		
+		//std::thread (LaunchTransferWindow).detach();
+		LaunchTransferWindow();
+
 		
-
-		String wName = "JUCE test window";
-		initialiseJuce_GUI();
-
-		MessageManagerLock mml(Thread::getCurrentThread());
-		//mainWindow.reset( new BasicWindow(wName,Colour::Colour(255,0,0),DocumentWindow::TitleBarButtons::allButtons));
-		TransferWindow* mainWindow2 = new TransferWindow(wName, new TransferToWwiseComponent);
-        //mainWindow2->reset(new TransferWindow(wName, new TransferToWwiseComponent));
-
-
-		//mainWindow->setVisible(true);
-		//mainWindow->centreWithSize(500, 500);
 	}
 	return 1;
 }
@@ -126,4 +119,19 @@ void PrintToConsole(int text)
 		std::string debugText = std::to_string(text) + "\n";
 		ShowConsoleMsg(debugText.c_str());
 
+}
+
+void LaunchTransferWindow()
+{
+	String wName = "JUCE test window";
+	initialiseJuce_GUI();
+
+	MessageManagerLock mml(Thread::getCurrentThread());
+	//mainWindow.reset( new BasicWindow(wName,Colour::Colour(255,0,0),DocumentWindow::TitleBarButtons::allButtons));
+	TransferWindow* mainWindow2 = new TransferWindow(wName, new TransferToWwiseComponent);
+	//mainWindow2->reset(new TransferWindow(wName, new TransferToWwiseComponent));
+
+
+	//mainWindow->setVisible(true);
+	//mainWindow->centreWithSize(500, 500);
 }

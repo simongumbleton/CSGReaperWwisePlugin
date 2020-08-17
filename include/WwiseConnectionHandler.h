@@ -90,6 +90,8 @@ public:
 	void SetOptionsFromConfig(config myConfig);
 
 	void SetWwiseAutomationMode(bool enable);
+	
+	bool SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results);
 
 
 private:
