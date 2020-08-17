@@ -1,10 +1,9 @@
 #pragma once
 
 #include "JUCE/JuceHeader.h"
+#include "waapi_structs.h"
 #include "WwiseConnectionHandler.h"
 
-class CurrentWwiseConnection;
-class CreateObjectChoices;
 
 class renderJobAudioFileTreeItem : public TreeViewItem
 {

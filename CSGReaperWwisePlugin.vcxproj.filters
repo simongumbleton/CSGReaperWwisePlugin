@@ -45,6 +45,12 @@
     <ClCompile Include="src\gui_Transfer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\WwiseConnectionHandler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CreateImportWindow.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="include\AkAutobahn.lib">
@@ -103,6 +109,9 @@
       <Filter>include\JUCE</Filter>
     </ClInclude>
     <ClInclude Include="include\gui_Transfer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\waapi_structs.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
