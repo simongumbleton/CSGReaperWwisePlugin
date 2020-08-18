@@ -26,9 +26,6 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	InitAllButtons(buttons);
 	
 	InitComboBox(dd_Language, MyCurrentWwiseConnection->projectGlobals.Languages, "Language..");
-	addAndMakeVisible(info_Language);
-	info_Language->attachToComponent(dd_Language, true);
-	info_Language->setText("Language: ", juce::NotificationType::dontSendNotification);
 	
 	InitComboBox(dd_EventOption, myCreateChoices.waapiCREATEchoices_EVENTOPTIONS,"Event Options..");
 	addAndMakeVisible(info_EventOption);
@@ -50,9 +47,6 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	
 	
 	addAndMakeVisible(INtxt_OriginalsSubDir);
-	addAndMakeVisible(info_OriginalsSubDir);
-	info_OriginalsSubDir->attachToComponent(INtxt_OriginalsSubDir, true);
-	info_OriginalsSubDir->setText("Originals Sub Directory: ", juce::NotificationType::dontSendNotification);
 	INtxt_OriginalsSubDir->setEditable(true);
 	INtxt_OriginalsSubDir->setColour(juce::Label::backgroundColourId, Colours::lightgrey);
 	
@@ -88,6 +82,29 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	debugLabel->setText("debug", juce::NotificationType::dontSendNotification);
 	addAndMakeVisible(debugLabel);
 
+	
+	addAndMakeVisible(btn_isVoice);
+	addAndMakeVisible(dd_Language);
+	
+	addAndMakeVisible(btn_OriginalsMatchesWwise);
+	
+	addAndMakeVisible(dd_EventOption);
+	addAndMakeVisible(info_EventOption);
+	info_EventOption->setText("Create events?", juce::NotificationType::dontSendNotification);
+	info_EventOption->attachToComponent(dd_EventOption, true);
+	addAndMakeVisible(INtxt_OriginalsSubDir);
+
+	
+	addAndMakeVisible(btn_RenderAndImport);
+	
+	addAndMakeVisible(btn_RefreshJobList);
+	
+	addAndMakeVisible(btn_ApplySettingsToJobs);
+	
+	addAndMakeVisible(selectedParentLabel);
+	selectedParentLabel->setText("Parent Name (Type):", juce::NotificationType::dontSendNotification);
+	
+	
 
 	setSize(1000, 500);
 	
@@ -139,7 +156,7 @@ void TransferToWwiseComponent::resized()
 	auto border = 4;
 	auto buttonHeight = 30;
 	auto comboHeight = 30;
-	auto treeHeight = 250;
+	auto treeHeight = 200;
 	auto labelHeight = 30;
 	auto titleHeight = 60;
 	auto area = getLocalBounds();
@@ -180,11 +197,34 @@ void TransferToWwiseComponent::resized()
 	
 	Title_RenderImport->setBounds(LeftHalf.removeFromTop(titleHeight).reduced(border));
 	
-
+	selectedParentLabel->setBounds(LeftHalf.removeFromTop(labelHeight).reduced(border));
 	
-
+	auto optionsArea1 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
+	
+	auto optionsArea2 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
+	
+	auto o1qtrsize = optionsArea1.getWidth()/4;
+	
+	btn_isVoice->setBounds(optionsArea1.removeFromLeft(o1qtrsize).reduced(border/2));
+	
+	dd_Language->setBounds(optionsArea1.removeFromLeft(o1qtrsize).reduced(border/2));
+	
+	dd_EventOption->setBounds(optionsArea1.removeFromRight(o1qtrsize).reduced(border/2));
+	
+	btn_OriginalsMatchesWwise->setBounds(optionsArea2.removeFromLeft(o1qtrsize).reduced(border/2));
+	
+	INtxt_OriginalsSubDir->setBounds(optionsArea2.reduced(border/2));
+	
+	
+	btn_ApplySettingsToJobs->setBounds(LeftHalf.removeFromTop(labelHeight).reduced(border));
+	
 	tree_RenderJobTree->setBounds(LeftHalf.removeFromTop(treeHeight).reduced(border));
 
+	auto RenderButtonArea = LeftHalf.removeFromTop(buttonHeight*2).reduced(border);
+	
+	btn_RefreshJobList->setBounds(RenderButtonArea.removeFromLeft(RenderButtonArea.getWidth()/2).reduced(border));
+	
+	btn_RenderAndImport->setBounds(RenderButtonArea.reduced(border));
 	
 	txt_ConnectionStatus->setBounds(RightHalf.removeFromBottom(labelHeight));
 	debugLabel->setBounds(RightHalf.removeFromBottom(labelHeight));

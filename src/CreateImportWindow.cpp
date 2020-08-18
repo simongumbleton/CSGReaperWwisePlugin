@@ -1,4 +1,4 @@
-#pragma once
+
 #include "WwiseConnectionHandler.h"
 #include "ReaperRenderQueParser.h"
 #include <filesystem>
@@ -39,9 +39,6 @@ std::string importEventOption;
 
 CreateObjectChoices myCreateChoices;
 
-//int CreateImportWindow::m_hWindow = NULL;
-long CreateImportWindow::m_lSaveThis = 0;
-
 //std::vector<RenderQueJob> GlobalListOfRenderQueJobs;
 //std::vector<std::string> RenderFilesBackup;
 
@@ -63,8 +60,6 @@ void CreateImportWindow::SetupPluginParent(WwiseConnectionHandler * parent)
 CreateImportWindow::CreateImportWindow()
 {
 	WwiseConnectionHnd = new WwiseConnectionHandler();
-	m_lSaveThis = (long)this;
-	saveThis = this;
 }
 
 CreateImportWindow::~CreateImportWindow()

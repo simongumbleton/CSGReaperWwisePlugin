@@ -81,10 +81,6 @@ public:
 	CreateImportWindow();
 	~CreateImportWindow();
 
-	//static HWND m_hWindow;
-	static long m_lSaveThis;
-	CreateImportWindow* saveThis;
-
 
 	//static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 

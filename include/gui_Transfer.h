@@ -161,7 +161,6 @@ private:
 	};
 
 	juce::ComboBox * dd_Language = new ComboBox("dd_Language"); //drop down
-	juce::Label * info_Language = new Label();
 	juce::ComboBox * dd_EventOption = new ComboBox("dd_EventOption");
 	juce::Label * info_EventOption = new Label();
 	juce::ComboBox * dd_CreateType = new ComboBox("dd_CreateType");
@@ -180,7 +179,6 @@ private:
 	juce::Label * Title_RenderImport = new Label();
 
 	juce::Label * INtxt_OriginalsSubDir = new Label();
-	juce::Label * info_OriginalsSubDir = new Label();
 	
 	juce::Label * INtxt_CreateName = new Label();
 	juce::Label * info_CreateName = new Label();
@@ -191,6 +189,10 @@ private:
 	juce::Label * txt_ConnectionStatus = new Label(); // text
 
 	juce::Label * debugLabel = new Label();
+	
+	juce::Label * selectedParentLabel = new Label();
+	
+	
 
 	//std::unique_ptr<TreeView> tree_RenderJobTree; //= new TreeView("tree_RenderJobTree");	//Tree view
 	juce::TreeView * tree_RenderJobTree = new TreeView("tree_RenderJobTree");
