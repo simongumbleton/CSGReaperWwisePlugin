@@ -109,6 +109,8 @@ public:
 
 	void resized() override;
 	
+	void TryConnectToWwise();
+	
 	void buttonClicked(juce::Button* pButton)override;
 
 	void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override;
@@ -124,6 +126,8 @@ public:
 	void RefreshRenderJobTree();
 	
 	void CheckIsVoice();
+	
+	void CheckOriginalsDirectory();
 	
 	void ApplySettingsToSelectedJobs();
 	

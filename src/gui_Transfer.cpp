@@ -104,11 +104,14 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	addAndMakeVisible(selectedParentLabel);
 	selectedParentLabel->setText("Parent Name (Type):", juce::NotificationType::dontSendNotification);
 	
-	
+	addAndMakeVisible(txt_ConnectionStatus);
+	txt_ConnectionStatus->setText("Wwise Connection Status:", juce::NotificationType::dontSendNotification);
 
 	setSize(1000, 500);
 	
+	TryConnectToWwise();
 	CheckIsVoice();
+	CheckOriginalsDirectory();
 	RefreshRenderJobTree();
 
 }
@@ -211,9 +214,10 @@ void TransferToWwiseComponent::resized()
 	
 	dd_EventOption->setBounds(optionsArea1.removeFromRight(o1qtrsize).reduced(border/2));
 	
-	btn_OriginalsMatchesWwise->setBounds(optionsArea2.removeFromLeft(o1qtrsize).reduced(border/2));
+	btn_OriginalsMatchesWwise->setBounds(optionsArea2.removeFromLeft(o1qtrsize * 1.5).reduced(border/2));
 	
 	INtxt_OriginalsSubDir->setBounds(optionsArea2.reduced(border/2));
+	INtxt_OriginalsSubDir->setText("ImportedFromReaper/", juce::NotificationType::dontSendNotification);
 	
 	
 	btn_ApplySettingsToJobs->setBounds(LeftHalf.removeFromTop(labelHeight).reduced(border));
@@ -226,7 +230,12 @@ void TransferToWwiseComponent::resized()
 	
 	btn_RenderAndImport->setBounds(RenderButtonArea.reduced(border));
 	
-	txt_ConnectionStatus->setBounds(RightHalf.removeFromBottom(labelHeight));
+	auto bottomRow = LeftHalf.removeFromBottom(buttonHeight).reduced(border);
+	
+	btn_ConnectToWwise->setBounds(bottomRow.removeFromLeft(bottomRow.getWidth()/2));
+	
+	txt_ConnectionStatus->setBounds(bottomRow);
+	
 	debugLabel->setBounds(RightHalf.removeFromBottom(labelHeight));
 }
 
@@ -248,6 +257,20 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 
 }
 
+void TransferToWwiseComponent::TryConnectToWwise() {
+	thisCreateImportWindow->handleUI_B_Connect();
+	bool connected = MyCurrentWwiseConnection->connected;
+	if (connected)
+	{
+		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->Version);
+		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
+	}
+	else
+	{
+		txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
+	}
+}
+
 void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 {
 	pButton->setColour(juce::Label::textColourId, juce::Colours::aqua);
@@ -257,17 +280,7 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 
 	if (pButton == btn_ConnectToWwise)
 	{
-		thisCreateImportWindow->handleUI_B_Connect();
-		bool connected = MyCurrentWwiseConnection->connected;
-		if (connected)
-		{
-			String text = ("Wwise Connected: " + MyCurrentWwiseConnection->Version);
-			txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
-		}
-		else
-		{
-			txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
-		}
+		TryConnectToWwise();
 	}
 	else if (pButton == btn_RefreshJobList)
 	{
@@ -284,6 +297,10 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	else if (pButton == btn_CreateWwiseObject)
 	{
 		handleUI_B_CreateObject();
+	}
+	else if (pButton == btn_OriginalsMatchesWwise)
+	{
+		CheckOriginalsDirectory();
 	}
 	
 }
@@ -305,6 +322,18 @@ void TransferToWwiseComponent::CheckIsVoice() {
 	}
 	else{
 		dd_Language->setEnabled(false);
+	}
+}
+
+void TransferToWwiseComponent::CheckOriginalsDirectory() {
+	if (btn_OriginalsMatchesWwise->getToggleState())
+	{
+		INtxt_OriginalsSubDir->setEnabled(false);
+		INtxt_OriginalsSubDir->setColour(juce::Label::backgroundColourId, juce::Colours::darkgrey);
+	}
+	else{
+		INtxt_OriginalsSubDir->setEnabled(true);
+		INtxt_OriginalsSubDir->setColour(juce::Label::backgroundColourId, juce::Colours::dimgrey);
 	}
 }
 

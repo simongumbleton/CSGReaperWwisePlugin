@@ -49,13 +49,13 @@ bool WwiseConnectionHandler::ConnectToWwise(bool suppressOuputMessages, int port
 			status << " - " + MyCurrentWwiseConnection.Version;
 			std::string WwiseConnectionStatus = status.str();
 			//MessageBox(NULL, WwiseConnectionStatus.c_str(), "Wwise Connection Status", MB_OK);
-			PrintToConsole(WwiseConnectionStatus);
+			//PrintToConsole(WwiseConnectionStatus);
 		}
 		if (MyCurrentWwiseConnection.useAutomationMode)
 		{
 			if (!waapi_SetAutomationMode(true))
 			{
-				PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
+				//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
 			}
 		}
 
