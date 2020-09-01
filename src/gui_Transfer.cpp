@@ -1,7 +1,6 @@
 
 #include "gui_Transfer.h"
-
-
+#include <mutex>
 
 StringArray TransferToWwiseComponent::ToJuceStringArray(std::vector<std::string> strings)
 {
@@ -13,14 +12,18 @@ StringArray TransferToWwiseComponent::ToJuceStringArray(std::vector<std::string>
 	return output;
 }
 
+TransferToWwiseComponent * TransferToWwiseComponent::currentTransferComponent = nullptr;
+std::mutex mx_t;
 
 TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 {
 	
 	thisCreateImportWindow = new CreateImportWindow();
-	thisCreateImportWindow->handleUI_B_Connect();
+	WwiseCntnHndlr = thisCreateImportWindow->WwiseConnectionHnd;
 	
 	MyCurrentWwiseConnection = &thisCreateImportWindow->WwiseConnectionHnd->MyCurrentWwiseConnection;
+	
+	TransferToWwiseComponent::currentTransferComponent = this;
 	
 	// Init buttons and combo boxes
 	InitAllButtons(buttons);
@@ -91,7 +94,7 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	addAndMakeVisible(dd_EventOption);
 	addAndMakeVisible(info_EventOption);
 	info_EventOption->setText("Create events?", juce::NotificationType::dontSendNotification);
-	info_EventOption->attachToComponent(dd_EventOption, true);
+	//info_EventOption->attachToComponent(dd_EventOption, true);
 	addAndMakeVisible(INtxt_OriginalsSubDir);
 
 	
@@ -113,12 +116,15 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	CheckIsVoice();
 	CheckOriginalsDirectory();
 	RefreshRenderJobTree();
+	
 
 }
 
 TransferToWwiseComponent::~TransferToWwiseComponent()
 {
 	tree_RenderJobTree->deleteRootItem();
+	WwiseCntnHndlr->UnsubscribeFromTopicByID(1);
+	WwiseCntnHndlr->UnsubscribeFromTopicByID(2);
 }
 
 void TransferToWwiseComponent::InitAllButtons(std::vector<juce::Button *> buttons)
@@ -135,6 +141,7 @@ void TransferToWwiseComponent::InitAllButtons(std::vector<juce::Button *> button
 
 void TransferToWwiseComponent::InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices,string displayText)
 {
+	comboBox->clear();
 	comboBox->addItemList(ToJuceStringArray(choices),1);
 	comboBox->setTextWhenNothingSelected(displayText);
 	comboBox->addListener(this);
@@ -212,7 +219,9 @@ void TransferToWwiseComponent::resized()
 	
 	dd_Language->setBounds(optionsArea1.removeFromLeft(o1qtrsize).reduced(border/2));
 	
-	dd_EventOption->setBounds(optionsArea1.removeFromRight(o1qtrsize).reduced(border/2));
+	info_EventOption->setBounds(optionsArea1.removeFromLeft(o1qtrsize).reduced(border/2));
+	
+	dd_EventOption->setBounds(optionsArea1.reduced(border/2));
 	
 	btn_OriginalsMatchesWwise->setBounds(optionsArea2.removeFromLeft(o1qtrsize * 1.5).reduced(border/2));
 	
@@ -260,14 +269,21 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 void TransferToWwiseComponent::TryConnectToWwise() {
 	thisCreateImportWindow->handleUI_B_Connect();
 	bool connected = MyCurrentWwiseConnection->connected;
-	if (connected)
+	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.Project != ""))
 	{
 		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->Version);
 		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
+		WwiseCntnHndlr->SubscribeOnSelectionChanged(TransferToWwiseComponent::callback_OnSelectionChanged, 1);
+		WwiseCntnHndlr->SubscribeOnProjectClosed(TransferToWwiseComponent::callback_OnProjectClosed, 2);
+		InitComboBox(dd_Language, MyCurrentWwiseConnection->projectGlobals.Languages, "Language..");
 	}
 	else
 	{
 		txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(1);
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(2);
+		WwiseCntnHndlr->DisconnectFromWwise();
+		
 	}
 }
 
@@ -399,3 +415,26 @@ bool TransferToWwiseComponent::GetToggleValue(juce::ToggleButton * btn)
 {
 	return btn->getToggleState();
 }
+
+void TransferToWwiseComponent::handle_OnSelectedParentChanged()
+{
+	const std::lock_guard<std::mutex> lock(mx_t);
+	std::cout << "_____Callback 1______" << std::endl;
+	WwiseObject newParent = WwiseCntnHndlr->GetSelectedObject();
+	//std::cout << newParent.properties["name"] << std::endl;
+	//std::string display = "Selected Parent: " + newParent.properties["name"];
+	//MessageManagerLock mml(Thread::getCurrentThread());
+	std::string display = "Selected Parent: " +newParent.properties["name"] + " ("+newParent.properties["type"]+")";
+	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
+}
+
+void TransferToWwiseComponent::handle_OnWwiseProjectClosed()
+{
+	const std::lock_guard<std::mutex> lock(mx_t);
+	std::cout << "_____Callback 2______" << std::endl;
+	txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
+	WwiseCntnHndlr->UnsubscribeFromTopicByID(1);
+	WwiseCntnHndlr->UnsubscribeFromTopicByID(2);
+	WwiseCntnHndlr->DisconnectFromWwise();
+}
+

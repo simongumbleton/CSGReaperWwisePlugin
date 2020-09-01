@@ -1,18 +1,20 @@
-#pragma once
+
 #include <iostream> 
 #include <sstream>
 #include <vector>
+#include <mutex>
 
 #include "WwiseConnectionHandler.h"
 
 #include "reaperHelpers.h"
-
+#include <AK/WwiseAuthoringAPI/waapi.h>
 
 #include "ReaperRenderQueParser.h"
 
 
 //static PluginWindow myPluginWindow = PluginWindow();
 //static CreateImportWindow myCreateImportWindow = CreateImportWindow();
+std::mutex mx_w;
 
 WwiseConnectionHandler::WwiseConnectionHandler()
 {
@@ -70,6 +72,11 @@ bool WwiseConnectionHandler::ConnectToWwise(bool suppressOuputMessages, int port
 	}
 }
 
+void WwiseConnectionHandler::DisconnectFromWwise()
+{
+	waapi_Disconnect(MyCurrentWwiseConnection);
+}
+
 bool WwiseConnectionHandler::GetSelectedWwiseObjects(bool suppressOuputMessages)
 {
 	return false;
@@ -78,7 +85,7 @@ bool WwiseConnectionHandler::GetSelectedWwiseObjects(bool suppressOuputMessages)
 WwiseObject WwiseConnectionHandler::GetSelectedObject()
 {
 	WwiseObject mySelectedObject;
-	if (!waapi_Connect(MyCurrentWwiseConnection))
+	if (!MyCurrentWwiseConnection.connected)
 	{
 		/// WWise connection not found!
 		ReportConnectionError(MyCurrentWwiseConnection);
@@ -119,13 +126,14 @@ void WwiseConnectionHandler::GetChildrenFromSelectedParent(bool suppressOuputMes
 
 std::vector<WwiseObject> WwiseConnectionHandler::GetWwiseObjects(bool suppressOuputMessages, ObjectGetArgs& getargs, AK::WwiseAuthoringAPI::AkJson::Array& Results)
 {
-	if (!waapi_Connect(MyCurrentWwiseConnection))
+	if (!MyCurrentWwiseConnection.connected)
 	{
 		/// WWise connection not found!
 		ReportConnectionError(MyCurrentWwiseConnection);
 		throw std::string("Wwise connection not found!");
 	}
 	using namespace AK::WwiseAuthoringAPI;
+	const std::lock_guard<std::mutex> lock(mx_w);
 
 	if (getargs.fromSelected)	/// Need to get the selected object first
 	{
@@ -156,13 +164,14 @@ std::vector<WwiseObject> WwiseConnectionHandler::GetWwiseObjects(bool suppressOu
 
 bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, CreateObjectArgs & createArgs, AK::WwiseAuthoringAPI::AkJson::Array & Results)
 {
-	if (!waapi_Connect(MyCurrentWwiseConnection))
+	if (!MyCurrentWwiseConnection.connected)
 	{
 		/// WWise connection not found!
 		ReportConnectionError(MyCurrentWwiseConnection);
 		return false;
 	}
 	using namespace AK::WwiseAuthoringAPI;
+	const std::lock_guard<std::mutex> lock(mx_w);
 
 	//Sort the inputs  "ActorMixer","Blend", "Random", "Sequence", "Switch"			RandomOrSequence 0 or 1
 	if (createArgs.Type == "Blend")
@@ -207,12 +216,14 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 
 bool WwiseConnectionHandler::ImportAudioToWwise(bool suppressOutputMessages, ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::AkJson::Array & Results)
 {
-	if (!waapi_Connect(MyCurrentWwiseConnection))
+	if (!MyCurrentWwiseConnection.connected)
 	{
 		/// WWise connection not found!
 		ReportConnectionError(MyCurrentWwiseConnection);
 		return false;
 	}
+	
+	const std::lock_guard<std::mutex> lock(mx_w);
 	bool autoAddToSourceControl = false;
 
 	if (MyCurrentWwiseConnection.year > 2017)
@@ -249,13 +260,14 @@ bool WwiseConnectionHandler::ImportAudioToWwise(bool suppressOutputMessages, Imp
 
 bool WwiseConnectionHandler::GetWwiseProjectGlobals(bool suppressOutputMessages, WwiseProjectGlobals & WwiseProjGlobals)
 {
-	if (!waapi_Connect(MyCurrentWwiseConnection))
+	if (!MyCurrentWwiseConnection.connected)
 	{
 		/// WWise connection not found!
 		ReportConnectionError(MyCurrentWwiseConnection);
 		return false;
 	}
 	using namespace AK::WwiseAuthoringAPI;
+	const std::lock_guard<std::mutex> lock(mx_w);
 
 	ObjectGetArgs Project;
 	Project.From = { std::string("ofType"),std::string("Project") };
@@ -312,7 +324,8 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 	using namespace AK::WwiseAuthoringAPI;
 	WwiseObject returnWwiseObject;
 
-
+	const std::lock_guard<std::mutex> lock(mx_w);
+	
 	for (const auto i : Result.GetMap()) {
 		AkJson::Type type;
 		std::string stringKey = i.first;
@@ -375,7 +388,11 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 		}
 		else if (type == AK::WwiseAuthoringAPI::AkJson::Type::Array)
 		{
-			///Not implemented
+			auto x = Result[stringKey].GetArray()[0];
+			{
+				returnWwiseObject = ResultToWwiseObject(x);
+				return returnWwiseObject;
+			}
 		}
 		else
 		{
@@ -387,7 +404,8 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 }
 
 bool WwiseConnectionHandler::LinkParentChildObjects(std::vector<WwiseObject>& objects)
-{	
+{
+	const std::lock_guard<std::mutex> lock(mx_w);
 	//get parent links
 	for (auto &childobj : objects) {
 		std::string parentID;
@@ -412,6 +430,7 @@ bool WwiseConnectionHandler::LinkParentChildObjects(std::vector<WwiseObject>& ob
 
 void WwiseConnectionHandler::SetOptionsFromConfig(config myConfig)
 {
+	const std::lock_guard<std::mutex> lock(mx_w);
 	MyCurrentWwiseConnection.port = myConfig.waapiPort;
 	MyCurrentWwiseConnection.useAutomationMode = myConfig.useAutomationMode;
 }
@@ -424,6 +443,20 @@ void WwiseConnectionHandler::SetWwiseAutomationMode(bool enable)
 bool WwiseConnectionHandler::SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results)
 {
 	return waapi_SetNotesForObject(id, notes, results);
+}
+
+bool WwiseConnectionHandler::SubscribeOnSelectionChanged
+ (AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,
+	uint64_t subscriptionID)
+{
+	return waapi_SetupSubscription(ak::wwise::ui::selectionChanged, in_callback, subscriptionID);
+}
+
+bool WwiseConnectionHandler::SubscribeOnProjectClosed
+ (AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,
+	uint64_t subscriptionID)
+{
+	return waapi_SetupSubscription(ak::wwise::core::project::preClosed, in_callback, subscriptionID);
 }
 
 

@@ -131,7 +131,6 @@ void LaunchTransferWindow()
 	TransferWindow* mainWindow2 = new TransferWindow(wName, new TransferToWwiseComponent);
 	//mainWindow2->reset(new TransferWindow(wName, new TransferToWwiseComponent));
 
-
 	//mainWindow->setVisible(true);
 	//mainWindow->centreWithSize(500, 500);
 }

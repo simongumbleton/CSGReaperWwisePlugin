@@ -1236,6 +1236,7 @@ void CreateImportWindow::SetStatusMessageText(std::string message)
 }
 
 
+
 void CreateImportWindow::OpenHelp()
 {
 	std::string help = "https://github.com/simongumbleton/SimonsReaperPlugin/raw/master/help/SimonsReaperPlugin_Help.docx";

@@ -30,6 +30,8 @@ public:
 	bool handle_GUI_Connect();
 
 	bool ConnectToWwise(bool suppressOuputMessages, int port);
+	
+	void DisconnectFromWwise();
 
 	bool GetSelectedWwiseObjects(bool suppressOuputMessages);
 
@@ -54,6 +56,15 @@ public:
 	void SetWwiseAutomationMode(bool enable);
 	
 	bool SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results);
+	
+	bool SubscribeOnSelectionChanged(AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,uint64_t subscriptionID);
+	
+	bool SubscribeOnProjectClosed(AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,uint64_t subscriptionID);
+	
+	bool UnsubscribeFromTopicByID(uint64_t subscriptionID)
+	{
+		return waapi_Unsubscribe(subscriptionID);
+	}
 
 
 private:
@@ -148,7 +159,9 @@ public:
 	void restoreRenderQueFiles();
 
 	void SetWwiseAutomationMode(bool enable);
-
+	
+	
+	
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };

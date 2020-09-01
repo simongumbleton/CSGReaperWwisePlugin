@@ -96,13 +96,49 @@ public:
 };
 
 //==============================================================================
+
+
+
+
 class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
 {
+	static TransferToWwiseComponent * currentTransferComponent;
+	
+	static void callback_OnSelectionChanged(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider)
+	{
+		if (TransferToWwiseComponent::currentTransferComponent)
+		{
+			///AK::WwiseAuthoringAPI::AkJson result = in_jsonProvider.GetAkJson();
+			//WwiseObject obj = TransferToWwiseComponent::currentTransferComponent->WwiseCntnHndlr->ResultToWwiseObject(result);
+			
+			TransferToWwiseComponent::currentTransferComponent->postCommandMessage(1);
+			
+			//std::cout << obj.properties["name"] << std::endl;
+			//MessageManager::callAsync (TransferToWwiseComponent::currentTransferComponent->asyncTest());
+			//TransferToWwiseComponent::currentTransferComponent->handle_OnSelectedParentChanged(obj);
+		}
+	}
+	
+	static void callback_OnProjectClosed(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider)
+	{
+		
+		if (TransferToWwiseComponent::currentTransferComponent)
+		{
+			//std::cout << "Project closed" << std::endl;
+			TransferToWwiseComponent::currentTransferComponent->postCommandMessage(2);
+			//TransferToWwiseComponent::currentTransferComponent->handle_OnWwiseProjectClosed();
+		}
+	}
+	
+	
+	
 public:
 
 	CreateImportWindow * thisCreateImportWindow;
 	
 	CurrentWwiseConnection * MyCurrentWwiseConnection;
+	
+	WwiseConnectionHandler * WwiseCntnHndlr;
 
 	TransferToWwiseComponent();
 	~TransferToWwiseComponent();
@@ -138,6 +174,26 @@ public:
 	std::string GetLabelValue(juce::Label * label);
 	
 	bool GetToggleValue(juce::ToggleButton * btn);
+	
+	void handle_OnSelectedParentChanged();
+	
+	void handle_OnWwiseProjectClosed();
+	
+	//void postCommandMessage(int commandId);
+	//https://docs.juce.com/master/classComponent.html#a9ba6fa31d1397c7e90050b2cd4f2089b
+	
+	void handleCommandMessage (int commandId) override
+	{
+		switch(commandId) {
+			case 1 : handle_OnSelectedParentChanged();
+					 break;       // and exits the switch
+			case 2 : handle_OnWwiseProjectClosed();
+					 break;
+		}
+	}
+
+
+
 
 
 private:
@@ -212,6 +268,10 @@ private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferToWwiseComponent)
 };
 
+
+static void callback_OnSelectionChanged(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider);
+
+
 class TransferWindow : public juce::DocumentWindow
 {
 public:
@@ -220,6 +280,8 @@ public:
 	{
 		setUsingNativeTitleBar(true);
 		setContentOwned(component, true);
+		
+		
 
 		setResizable(true, false);
 		setResizeLimits(500, 500, 10000, 10000);

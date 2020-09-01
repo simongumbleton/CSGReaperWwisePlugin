@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <sstream>
+#include <mutex>
 
 #include "WaapiFunctions.h"
 #include <AK/WwiseAuthoringAPI/AkVariantBase.h>
@@ -10,26 +11,26 @@
 
 ///Socket client for Waapi connection
 AK::WwiseAuthoringAPI::Client * my_client = new AK::WwiseAuthoringAPI::Client();
-CurrentWwiseConnection myWwiseConnection;
+CurrentWwiseConnection * myWwiseConnection;
 
-
+std::mutex mx_waapi;
 
 bool waapi_Connect(CurrentWwiseConnection &wwiseConnectionReturn)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson wwiseInfo;
 	bool success = false;
-	int my_Waapi_Port = wwiseConnectionReturn.port;
-	int My_WAAPI_CLIENT_TIMEOUT_MS = wwiseConnectionReturn.timeoutMS;
-	if (success = my_client->Connect("127.0.0.1", my_Waapi_Port))
+	
+	if ((success = my_client->Connect("127.0.0.1", wwiseConnectionReturn.port,waapi_DisconnectHandler)))
 	{
+		std::cout << "Connection Success" << std::endl;
 		//Get Wwise info
-		if (success = my_client->Call(ak::wwise::core::getInfo,
-			AkJson(AkJson::Type::Map),
-			AkJson(AkJson::Type::Map),
-			wwiseInfo))
+		if ((success = my_client->Call(ak::wwise::core::getInfo,
+									   AkJson(AkJson::Type::Map),
+									   AkJson(AkJson::Type::Map),
+									   wwiseInfo)))
 		{
-			wwiseConnectionReturn.port = my_Waapi_Port;
 			wwiseConnectionReturn.Version = wwiseInfo["version"]["displayName"].GetVariant().GetString();
 			wwiseConnectionReturn.year = wwiseInfo["version"]["year"].GetVariant().GetInt32();
 			wwiseConnectionReturn.connected = true;
@@ -37,15 +38,41 @@ bool waapi_Connect(CurrentWwiseConnection &wwiseConnectionReturn)
 	}
 	if (!success)
 	{
+		std::cout << "Connection failed" << std::endl;
 		//MessageBox(NULL, "! ERROR - Failed to Connect to Wwise. !", "Wwise Connection Status", MB_OK);
 		wwiseConnectionReturn.connected = false;
+		wwiseConnectionReturn.projectGlobals = WwiseProjectGlobals();//if not connected clear the project globals
 	}
-	myWwiseConnection = wwiseConnectionReturn;
+	myWwiseConnection = &wwiseConnectionReturn;
 	return success;
 }
 
+void waapi_DisconnectHandler()
+{
+	std::cout << "Disconnected" << std::endl;
+	waapi_Disconnect(*myWwiseConnection);
+}
+
+void waapi_Disconnect(CurrentWwiseConnection &wwiseConnectionReturn)
+{
+	const std::lock_guard<std::mutex> lock(mx_waapi);
+	using namespace AK::WwiseAuthoringAPI;
+	
+	if (wwiseConnectionReturn.connected)
+	{
+		my_client->Disconnect();
+		wwiseConnectionReturn.Version = "";
+		wwiseConnectionReturn.year = 0;
+		wwiseConnectionReturn.connected = false;
+		wwiseConnectionReturn.projectGlobals = WwiseProjectGlobals();
+	}
+	myWwiseConnection = &wwiseConnectionReturn;
+}
+
+
 bool waapi_SetAutomationMode(bool enable)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson automationMode = AkJson(AkJson::Map{ {"enable", AkVariant(enable)} });
 	AkJson out = AkJson(AkJson::Map());
@@ -57,6 +84,7 @@ bool waapi_SetAutomationMode(bool enable)
 
 bool waapi_GetSelectedWwiseObjects(AK::WwiseAuthoringAPI::AkJson & resultsOut, bool getNotes)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson ReturnResults;
 	AkJson options(AkJson::Map{
@@ -78,6 +106,7 @@ bool waapi_GetSelectedWwiseObjects(AK::WwiseAuthoringAPI::AkJson & resultsOut, b
 
 bool waapi_GetChildrenFromGUID(const AK::WwiseAuthoringAPI::AkVariant &id,AK::WwiseAuthoringAPI::AkJson &results)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson query;
 	AkJson args(AkJson::Map{
@@ -104,6 +133,7 @@ bool waapi_GetChildrenFromGUID(const AK::WwiseAuthoringAPI::AkVariant &id,AK::Ww
 
 bool waapi_GetParentFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, AK::WwiseAuthoringAPI::AkJson & results)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson query;
 	AkJson args(AkJson::Map{
@@ -130,6 +160,7 @@ bool waapi_GetParentFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, AK::Ww
 
 bool waapi_GetObjectFromArgs(ObjectGetArgs & getArgs, AK::WwiseAuthoringAPI::AkJson & results)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	//Check for missing inputs
@@ -221,6 +252,7 @@ bool waapi_GetObjectFromArgs(ObjectGetArgs & getArgs, AK::WwiseAuthoringAPI::AkJ
 
 std::string GetPropertyFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, std::string property, bool usePath)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson query;
 	AkJson args;
@@ -254,6 +286,7 @@ std::string GetPropertyFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, std
 
 bool waapi_CreateObjectFromArgs(CreateObjectArgs & createArgs, AK::WwiseAuthoringAPI::AkJson & results)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	//Check for missing inputs
@@ -282,7 +315,7 @@ bool waapi_CreateObjectFromArgs(CreateObjectArgs & createArgs, AK::WwiseAuthorin
 	{
 		args.GetMap().insert(std::make_pair("@RandomOrSequence", AkVariant(createArgs.RandomOrSequence)));
 	}
-	if (myWwiseConnection.year > 2017 && createArgs.Type !="Event") // Events cant have this property
+	if (myWwiseConnection->year > 2017 && createArgs.Type !="Event") // Events cant have this property
 	{
 		args.GetMap().insert(std::make_pair("autoAddToSourceControl", AkVariant(autoAddSC)));
 	}
@@ -308,6 +341,7 @@ bool waapi_CreateObjectFromArgs(CreateObjectArgs & createArgs, AK::WwiseAuthorin
 
 bool waapi_SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	//Check for missing inputs
@@ -334,6 +368,7 @@ bool waapi_SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthorin
 
 bool wappi_ImportFromArgs(ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::AkJson & results)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	// Do Source control operations
@@ -362,7 +397,7 @@ bool wappi_ImportFromArgs(ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::
 		{ "imports", items }
 		});
 
-	if (myWwiseConnection.year > 2017)
+	if (myWwiseConnection->year > 2017)
 	{
 		args.GetMap().insert(std::make_pair("autoAddToSourceControl", AkVariant(autoAddSC)));
 	}
@@ -383,6 +418,7 @@ bool wappi_ImportFromArgs(ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::
 
 void waapi_GetWaapiResultsArray(AK::WwiseAuthoringAPI::AkJson::Array & arrayIn, AK::WwiseAuthoringAPI::AkJson & results)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	switch (results.GetType())
 	{
@@ -433,6 +469,7 @@ void waapi_HELPER_Print_AkJson_Map(AK::WwiseAuthoringAPI::AkJson::Map & printRes
 
 bool waapi_TranslateJSONResults(std::map<std::string,std::string>& INstringResults, std::map<std::string, double>& INnumberResults, AK::WwiseAuthoringAPI::AkJson result, std::string stringKey)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	int resultCount = 1;
 	//std::string argsToString = JSONHelpers::GetAkJsonString(result);
@@ -548,6 +585,7 @@ bool waapi_TranslateJSONResults(std::map<std::string,std::string>& INstringResul
 
 bool waapi_SaveWwiseProject()
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson in;
 	AkJson out;
@@ -562,6 +600,7 @@ bool waapi_OpenWwiseProject(std::string proj)
 
 bool waapi_UndoHandler(undoStep undoStep, std::string undoTag)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson in = AkJson(AkJson::Map());
 	AkJson akj_undoTag = AkJson(AkJson::Map{ {"displayName", AkVariant(undoTag)} });
@@ -587,6 +626,7 @@ bool waapi_UndoHandler(undoStep undoStep, std::string undoTag)
 
 bool waapi_DoWorkgoupOperation(SourceControlOperation operation, std::string target)
 {
+	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	std::string s_operation;
@@ -623,3 +663,25 @@ bool waapi_DoWorkgoupOperation(SourceControlOperation operation, std::string tar
 
 	return my_client->Call(ak::wwise::ui::commands::execute, args, options, results);
 }
+
+bool waapi_SetupSubscription(const char *subscription,
+							 AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,
+							 uint64_t subscriptionID)
+{
+	const std::lock_guard<std::mutex> lock(mx_waapi);
+	using namespace AK::WwiseAuthoringAPI;
+	
+	AkJson options = AkJson(AkJson::Map());
+	AkJson results = AkJson(AkJson::Map());
+	
+	return my_client->Subscribe(subscription, options, in_callback, subscriptionID, results);
+}
+
+bool waapi_Unsubscribe(const uint64_t& in_subscriptionId)
+{
+	using namespace AK::WwiseAuthoringAPI;
+	
+	AkJson results = AkJson(AkJson::Map());
+	
+	return my_client->Unsubscribe(in_subscriptionId, results);
+}//bool Unsubscribe(const uint64_t& in_subscriptionId, AkJson& out_result, int in_timeoutMs = -1);
