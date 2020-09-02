@@ -30,6 +30,7 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	
 	InitComboBox(dd_Language, MyCurrentWwiseConnection->projectGlobals.Languages, "Language..");
 	
+	
 	InitComboBox(dd_EventOption, myCreateChoices.waapiCREATEchoices_EVENTOPTIONS,"Event Options..");
 	addAndMakeVisible(info_EventOption);
 	info_EventOption->attachToComponent(dd_EventOption, true);
@@ -44,6 +45,7 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	addAndMakeVisible(info_NameConflict);
 	info_NameConflict->attachToComponent(dd_OnNameConflict, true);
 	info_NameConflict->setText("On Name Conflict: ", juce::NotificationType::dontSendNotification);
+	dd_OnNameConflict->setSelectedItemIndex(0, false);
 
 	// Init render job tree view
 	InitTreeView();
@@ -145,6 +147,7 @@ void TransferToWwiseComponent::InitComboBox(juce::ComboBox * comboBox, std::vect
 	comboBox->addItemList(ToJuceStringArray(choices),1);
 	comboBox->setTextWhenNothingSelected(displayText);
 	comboBox->addListener(this);
+	comboBox->setSelectedItemIndex(0, false);
 	addAndMakeVisible(comboBox);
 }
 

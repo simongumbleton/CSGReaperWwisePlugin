@@ -17,7 +17,7 @@ std::mutex mx_waapi;
 
 bool waapi_Connect(CurrentWwiseConnection &wwiseConnectionReturn)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson wwiseInfo;
 	bool success = false;
@@ -55,7 +55,7 @@ void waapi_DisconnectHandler()
 
 void waapi_Disconnect(CurrentWwiseConnection &wwiseConnectionReturn)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	
 	if (wwiseConnectionReturn.connected)
@@ -72,7 +72,7 @@ void waapi_Disconnect(CurrentWwiseConnection &wwiseConnectionReturn)
 
 bool waapi_SetAutomationMode(bool enable)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson automationMode = AkJson(AkJson::Map{ {"enable", AkVariant(enable)} });
 	AkJson out = AkJson(AkJson::Map());
@@ -84,7 +84,7 @@ bool waapi_SetAutomationMode(bool enable)
 
 bool waapi_GetSelectedWwiseObjects(AK::WwiseAuthoringAPI::AkJson & resultsOut, bool getNotes)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson ReturnResults;
 	AkJson options(AkJson::Map{
@@ -106,7 +106,7 @@ bool waapi_GetSelectedWwiseObjects(AK::WwiseAuthoringAPI::AkJson & resultsOut, b
 
 bool waapi_GetChildrenFromGUID(const AK::WwiseAuthoringAPI::AkVariant &id,AK::WwiseAuthoringAPI::AkJson &results)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson query;
 	AkJson args(AkJson::Map{
@@ -133,7 +133,7 @@ bool waapi_GetChildrenFromGUID(const AK::WwiseAuthoringAPI::AkVariant &id,AK::Ww
 
 bool waapi_GetParentFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, AK::WwiseAuthoringAPI::AkJson & results)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson query;
 	AkJson args(AkJson::Map{
@@ -160,7 +160,7 @@ bool waapi_GetParentFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, AK::Ww
 
 bool waapi_GetObjectFromArgs(ObjectGetArgs & getArgs, AK::WwiseAuthoringAPI::AkJson & results)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	//Check for missing inputs
@@ -252,7 +252,7 @@ bool waapi_GetObjectFromArgs(ObjectGetArgs & getArgs, AK::WwiseAuthoringAPI::AkJ
 
 std::string GetPropertyFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, std::string property, bool usePath)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson query;
 	AkJson args;
@@ -286,7 +286,7 @@ std::string GetPropertyFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, std
 
 bool waapi_CreateObjectFromArgs(CreateObjectArgs & createArgs, AK::WwiseAuthoringAPI::AkJson & results)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	//Check for missing inputs
@@ -341,7 +341,7 @@ bool waapi_CreateObjectFromArgs(CreateObjectArgs & createArgs, AK::WwiseAuthorin
 
 bool waapi_SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	//Check for missing inputs
@@ -368,7 +368,7 @@ bool waapi_SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthorin
 
 bool wappi_ImportFromArgs(ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::AkJson & results)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
+	//const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	// Do Source control operations
@@ -585,7 +585,6 @@ bool waapi_TranslateJSONResults(std::map<std::string,std::string>& INstringResul
 
 bool waapi_SaveWwiseProject()
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson in;
 	AkJson out;
@@ -600,7 +599,6 @@ bool waapi_OpenWwiseProject(std::string proj)
 
 bool waapi_UndoHandler(undoStep undoStep, std::string undoTag)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	AkJson in = AkJson(AkJson::Map());
 	AkJson akj_undoTag = AkJson(AkJson::Map{ {"displayName", AkVariant(undoTag)} });
@@ -626,7 +624,6 @@ bool waapi_UndoHandler(undoStep undoStep, std::string undoTag)
 
 bool waapi_DoWorkgoupOperation(SourceControlOperation operation, std::string target)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 
 	std::string s_operation;
@@ -668,7 +665,6 @@ bool waapi_SetupSubscription(const char *subscription,
 							 AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,
 							 uint64_t subscriptionID)
 {
-	const std::lock_guard<std::mutex> lock(mx_waapi);
 	using namespace AK::WwiseAuthoringAPI;
 	
 	AkJson options = AkJson(AkJson::Map());

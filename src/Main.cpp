@@ -123,7 +123,7 @@ void PrintToConsole(int text)
 
 void LaunchTransferWindow()
 {
-	String wName = "JUCE test window";
+	String wName = "CSG Reaper Transfer to Wwise Extension";
 	initialiseJuce_GUI();
 
 	MessageManagerLock mml(Thread::getCurrentThread());

@@ -191,10 +191,13 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 	}
 	if (myCreateObjectArgs.createPlayEvent)
 	{
-		//create play event for the object we just created
-		std::string id = results[0]["id"].GetVariant();
-		std::string name = results[0]["name"].GetVariant();
-		CreatePlayEventForID(id,name);
+		if (myCreateObjectArgs.Type != "ActorMixer")
+		{
+			//create play event for the object we just created
+			std::string id = results[0]["id"].GetVariant();
+			std::string name = results[0]["name"].GetVariant();
+			CreatePlayEventForID(id, name);
+		}
 	}
 	if (myCreateObjectArgs.Notes != "")
 	{

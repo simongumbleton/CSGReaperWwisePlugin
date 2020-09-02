@@ -305,10 +305,11 @@ bool WwiseConnectionHandler::GetWwiseProjectGlobals(bool suppressOutputMessages,
 	waapi_GetWaapiResultsArray(langResults, langRawReturnResults);
 
 	WwiseProjGlobals.Languages.clear();
+	WwiseProjGlobals.Languages.push_back(WwiseProjGlobals.DefaultLanguage);
 	for (auto language : langResults)
 	{
 		std::string lang = language["name"].GetVariant();
-		if (lang == "SFX" || lang == "External" || lang == "Mixed")
+		if (lang == "SFX" || lang == "External" || lang == "Mixed" || lang == WwiseProjGlobals.DefaultLanguage)
 		{
 			continue;
 		}
