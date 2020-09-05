@@ -1,5 +1,6 @@
 
 #include "gui_Transfer.h"
+#include "reaperHelpers.h"
 #include <mutex>
 
 StringArray TransferToWwiseComponent::ToJuceStringArray(std::vector<std::string> strings)
@@ -263,8 +264,142 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 	
 	String text = ("Num of selected items: " + String(RenderTreeSelectedItems.size()));
 	debugLabel->setText(text, juce::NotificationType::dontSendNotification);
+	
+	WwiseObject selectedParent = WwiseCntnHndlr->GetSelectedObject();
+	std::string parentWwiseID = selectedParent.properties["id"];
+	std::string parentWwiseName = selectedParent.properties["name"];
+	std::string parentWwiseType = selectedParent.properties["type"];
+	std::string parentWwisePath = selectedParent.properties["path"];
 
+	if (parentWwiseID == "")
+	{
+		PrintToConsole("Error - No valid Wwise Parent");
+		return;	// Invalid wwise parent selection!
+	}
 
+	if (parentWwisePath.find("Actor-Mixer Hierarchy\\") == parentWwisePath.npos)
+	{
+		PrintToConsole("Import parent must be in Actor-Mixer hierarchy");
+		return;	// Invalid wwise parent selection!
+	}
+	if (RenderTreeSelectedItems.size() == 0) // Nothing selected
+	{
+		PrintToConsole("No render job or file selected");
+		return;
+	}
+	
+	for (auto selectedItem : RenderTreeSelectedItems)
+	{
+		//RenderQueJobTreeItem
+		//renderJobAudioFileTreeItem
+		bool isItemWav;
+		std::string currentName;
+		RenderQueJobTreeItem *jobItem = dynamic_cast<RenderQueJobTreeItem *>(selectedItem);
+		renderJobAudioFileTreeItem *wavItem = dynamic_cast<renderJobAudioFileTreeItem *>(selectedItem);
+		if (jobItem)
+		{
+			isItemWav = false;
+			currentName = jobItem->renderJobPath;
+			jobItem->importText = "";
+		}
+		else if (wavItem)
+		{
+			isItemWav = true;
+			currentName = wavItem->renderWav;
+			wavItem->importText = "";
+		}
+		else
+		{
+			PrintToConsole("Error");
+			return;
+		}
+		
+		std::string jobName = "";
+		if (isItemWav) {
+			RenderQueJobTreeItem *parent = dynamic_cast<RenderQueJobTreeItem *>(wavItem->getParentItem());
+			if (parent)
+			{
+				jobName = parent->renderJobPath;
+			}
+			
+		}
+		else {
+			jobName = jobItem->renderJobPath;
+		}
+		int count = 0;
+		for (auto &renderJob : thisCreateImportWindow->GlobalListOfRenderQueJobs)
+		{
+			std::filesystem::path filePath = renderJob.RenderQueFilePath;
+			std::string filename = filePath.filename().string();
+			if (jobName.find(filename) != jobName.npos)
+			{
+				//Found a match
+				//PrintToConsole("Found a match");
+				if (isItemWav) {
+					renderJob.hasPerFileOverrides = true;
+					RenderJobFileOverride fileOverride;
+					fileOverride.RenderJobFile = currentName;
+					fileOverride.parentWwiseObject = selectedParent;
+					fileOverride.isVoice = CheckIsVoice();
+					fileOverride.createEventOption = dd_EventOption->getText().toStdString();
+					fileOverride.OrigDirMatchesWwise = CheckOriginalsDirectory();
+					if (!fileOverride.OrigDirMatchesWwise)
+					{
+						fileOverride.userOrigsSubDir = INtxt_OriginalsSubDir->getText().toStdString();
+					}
+
+					std::string language;
+					if (fileOverride.isVoice)
+					{
+						fileOverride.ImportLanguage = dd_Language->getText().toStdString();
+						language = fileOverride.ImportLanguage;
+					}
+					else
+					{
+						fileOverride.ImportLanguage = "SFX";
+						language = "SFX";
+					}
+
+					renderJob.perFileOverridesmap[fileOverride.RenderJobFile] = fileOverride;
+					
+					wavItem->importText = " -> " + parentWwiseName + " (" + parentWwiseType + ")";
+				}
+				else
+				{
+
+					renderJob.parentWwiseObject = selectedParent;
+
+					renderJob.isVoice = CheckIsVoice();
+
+					renderJob.createEventOption = dd_EventOption->getText().toStdString();
+
+					renderJob.OrigDirMatchesWwise = CheckOriginalsDirectory();
+
+					if (!renderJob.OrigDirMatchesWwise)
+					{
+						renderJob.userOrigsSubDir = INtxt_OriginalsSubDir->getText().toStdString();
+					}
+
+					std::string language;
+					if (renderJob.isVoice)
+					{
+						renderJob.ImportLanguage = dd_Language->getText().toStdString();
+						language = renderJob.ImportLanguage;
+					}
+					else
+					{
+						renderJob.ImportLanguage = "SFX";
+						language = "SFX";
+					}
+					jobItem->importText = parentWwiseName + "(" + parentWwiseType + ") - ";
+				}
+			}
+		}
+		
+	}
+	
+	//Set status ready to import
+	tree_RenderJobTree->clearSelectedItems();
 
 
 }
@@ -321,6 +456,12 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	{
 		CheckOriginalsDirectory();
 	}
+	else if (pButton == btn_RenderAndImport)
+	{
+		//thisCreateImportWindow->backupRenderQueFiles();
+		thisCreateImportWindow->handleUI_RenderImport();
+		//thisCreateImportWindow->restoreRenderQueFiles();
+	}
 	
 }
 
@@ -334,25 +475,29 @@ void TransferToWwiseComponent::labelTextChanged(Label * labelThatHasChanged)
 {
 }
 
-void TransferToWwiseComponent::CheckIsVoice() {
+bool TransferToWwiseComponent::CheckIsVoice() {
 	if (btn_isVoice->getToggleState())
 	{
 		dd_Language->setEnabled(true);
+		return true;
 	}
 	else{
 		dd_Language->setEnabled(false);
+		return false;
 	}
 }
 
-void TransferToWwiseComponent::CheckOriginalsDirectory() {
+bool TransferToWwiseComponent::CheckOriginalsDirectory() {
 	if (btn_OriginalsMatchesWwise->getToggleState())
 	{
 		INtxt_OriginalsSubDir->setEnabled(false);
 		INtxt_OriginalsSubDir->setColour(juce::Label::backgroundColourId, juce::Colours::darkgrey);
+		return true;
 	}
 	else{
 		INtxt_OriginalsSubDir->setEnabled(true);
 		INtxt_OriginalsSubDir->setColour(juce::Label::backgroundColourId, juce::Colours::dimgrey);
+		return false;
 	}
 }
 

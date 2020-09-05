@@ -7,10 +7,13 @@
 
 class renderJobAudioFileTreeItem : public TreeViewItem
 {
+	
+public:
 	std::string renderWav;
 	std::string displayName;
+	std::string importText;
 	int textWidth = -1;
-public:
+	
 	renderJobAudioFileTreeItem(std::string audioFile)
 	{
 		renderWav = audioFile;
@@ -27,7 +30,14 @@ public:
 		//g.fillAll(Colours::grey);
 		textWidth = g.getCurrentFont().getStringWidth(displayName);
 		g.setColour(Colours::black);
-		g.drawText(displayName, 0, 0, width, height, Justification::left);
+		if (importText == "")
+		{
+			g.drawText(displayName, 0, 0, width, height, Justification::left);
+		}
+		else
+		{
+			g.drawText(displayName+" "+importText, 0, 0, width, height, Justification::left);
+		}
 	}
 	int getItemWidth()
 	{
@@ -40,9 +50,12 @@ public:
 
 class RenderQueJobTreeItem : public TreeViewItem
 {
+	
+public:
 	std::string renderJobPath;
 	std::string displayName;
-public:
+	std::string importText;
+	
 	RenderQueJobTreeItem(std::string renderJob)
 	{
 		renderJobPath = renderJob;
@@ -63,7 +76,15 @@ public:
 	{
 		//g.fillAll(Colours::grey);
 		g.setColour(Colours::black);
-		g.drawText(displayName, 0, 0, width, height, Justification::left);
+		if (importText == "")
+		{
+			g.drawText(displayName, 0, 0, width, height, Justification::left);
+		}
+		else
+		{
+			g.drawText(importText+" "+displayName, 0, 0, width, height, Justification::left);
+		}
+		
 	}
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RenderQueJobTreeItem)
@@ -161,9 +182,9 @@ public:
 	
 	void RefreshRenderJobTree();
 	
-	void CheckIsVoice();
+	bool CheckIsVoice();
 	
-	void CheckOriginalsDirectory();
+	bool CheckOriginalsDirectory();
 	
 	void ApplySettingsToSelectedJobs();
 	

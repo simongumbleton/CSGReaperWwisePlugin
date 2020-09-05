@@ -1,12 +1,14 @@
 
 #include "WwiseConnectionHandler.h"
 #include "ReaperRenderQueParser.h"
+#include "reaperHelpers.h"
 #include <filesystem>
 #include <thread>
 #include <iostream>
 #include <chrono>
 #include <mutex>
 #include <future>
+
 
 #include "ConfigFileHandler.h"
 
@@ -45,6 +47,7 @@ CreateObjectChoices myCreateChoices;
 bool AllDone = false;
 std::mutex mtx;
 int numOfRendersDone = 0;
+bool CreateImportWindow::isReaperRendering = false;
 
 //=============================================================================
 
@@ -70,55 +73,7 @@ CreateImportWindow::~CreateImportWindow()
 //=============================================================================
 void CreateImportWindow::OnCommand(int id, int notifycode)
 {
-	//handles WM_COMMAND message of the modal dialogbox
-	/*switch (id)
-	{
-	case ID_B_GO:        //RETURN key pressed or 'GO' button selected				 //MessageBox(NULL, "Ok buttor", _T("DEBUG"), MB_OK | MB_ICONEXCLAMATION);
-		break;
-	case IDC_B_ConnectWwise:
-		handleUI_B_Connect();
-		break;
-	case IDC_B_CreateObject:
-		handleUI_B_CreateObject();
-		break;
-	case IDC_B_GetSelectedParent:
-		handleUI_B_GetSelectedParent();
-		break;
-	case IDC_C_Create_Type:
-		handleUI_GetType(notifycode);
-		break;
-	case IDC_LIST_EventOptions:
-		handleUI_GetImportEventOptions(notifycode);
-		break;
-	case IDC_C_CreateOnNameConflict:
-		handleUI_GetNameConflict(notifycode);
-		break;
-	case IDC_B_RenderImport:
-		handleUI_RenderImport();
-		break;
-	case ID_B_CANCEL:    //ESC key pressed or 'cancel' button selected
-		SetWwiseAutomationMode(false);
-		m_hWindow = NULL;
-		//EndDialog(hwnd, id);
-		break;
-	case ID_B_OK:
-		SetWwiseAutomationMode(false);
-		m_hWindow = NULL;
-		//EndDialog(hwnd, id);
-		break;
-	case IDC_B_RefreshTree:
-		FillRenderQueList();
-		break;
-	case IDC_OrigsMatchWwise:
-		GetOrigsDirMatchesWwise();
-		break;
-	case IDC_IsVoice:
-		GetIsVoice();
-		break;
-	case IDC_B_Help:
-		OpenHelp();
-		break;
-	}*/
+
 }
 //=============================================================================
 void CreateImportWindow::OnInitDlg()
@@ -270,6 +225,7 @@ bool CreateImportWindow::UpdateProgressDuringRender(int numJobs)
 {
 	AllDone = false;
 	numOfRendersDone = 0;
+	bool finalCheckAfterRenderDone = false;
 	
 	while (!AllDone)
 	{
@@ -277,36 +233,51 @@ bool CreateImportWindow::UpdateProgressDuringRender(int numJobs)
 		if (numOfRendersDone == numJobs) {
 			AllDone = true;
 			//PrintToConsole("ALL Renders complete");
+			std::cout << "All renders complete" << std::endl;
 			return true;
 		}
-/*
+		
+		else
+		{
+			
+		}
+
 		int jobIndex = 0;
 		for (auto job : GlobalListOfRenderQueJobs)
 		{
 			if (!GlobalListOfRenderQueJobs[jobIndex].hasRendered)
 			{
-				WIN32_FIND_DATA FindFileData;
-				HANDLE hFind = FindFirstFile(job.RenderQueFilePath.c_str(), &FindFileData);
-
-				if (hFind == INVALID_HANDLE_VALUE)
+				if (!std::filesystem::exists(job.RenderQueFilePath))
 				{
-					if (GetLastError() == ERROR_FILE_NOT_FOUND)
-					{
-						if (!GlobalListOfRenderQueJobs[jobIndex].hasRendered)
+					//std::cout << "File not found!" << std::endl;
+				
+					if (!GlobalListOfRenderQueJobs[jobIndex].hasRendered)
 						{
-							PostMessage(tr_Progress_Import, PBM_STEPIT, 0, 0);
+							//PostMessage(tr_Progress_Import, PBM_STEPIT, 0, 0);
 							//SendMessage(tr_Progress_Import, PBM_STEPIT, 0, 0);
 
 							GlobalListOfRenderQueJobs[jobIndex].hasRendered = true;
 							numOfRendersDone++;
 						}
-					}
 				}
 				jobIndex++;
 			}
 		
 		}
-*/
+		
+		mtx.lock();
+		if (CreateImportWindow::isReaperRendering == false)
+		{
+			mtx.unlock();
+			if ((numOfRendersDone != numJobs) && (finalCheckAfterRenderDone))
+			{
+				std::cout << "Reaper stopped rendering, but not all render jobs are accounted for" << std::endl;
+				return false;
+			}
+			finalCheckAfterRenderDone = true;
+		}
+		mtx.unlock();
+
 	}
 	
 	return false;;
@@ -340,11 +311,14 @@ void CreateImportWindow::handleUI_RenderImport()
 	//backup render que files in case of errors
 	backupRenderQueFiles();
 
-	bool startedRender = false;
+	bool success = false;
 
 	//SendMessage(tr_Progress_Import, PBM_SETRANGE, 0, MAKELPARAM(0, numJobs));
 
 	//SendMessage(tr_Progress_Import, PBM_SETSTEP, (WPARAM)1, 0);
+	mtx.lock();
+	CreateImportWindow::isReaperRendering = true;
+	mtx.unlock();
 
 	std::future<bool> fut = std::async(std::launch::async,&CreateImportWindow::UpdateProgressDuringRender,this,numJobs);
 
@@ -353,26 +327,32 @@ void CreateImportWindow::handleUI_RenderImport()
 
 	//PrintToConsole("Render done. Waiting for second thread");
 	//SendMessage(tr_Progress_Import, PBM_SETPOS, numJobs, 0);
-
+	mtx.lock();
+	CreateImportWindow::isReaperRendering = false;
+	mtx.unlock();
+	
 	std::future_status status;
 
 	status = fut.wait_for(std::chrono::seconds(4));
-	//bool ret = fut.get();
 
 	//PrintToConsole("Rejoined main");
+	
+	success = fut.get();
 
 	//MSG msg;	//Clears the message que for the progress bar
 	//PeekMessage(&msg,tr_Progress_Import,0,0,PM_REMOVE);
 	
-	if (status == std::future_status::ready)
+	if ((status == std::future_status::ready) && (success))
 	{
 		SetStatusMessageText("Importing into Wwise");
 		//SendMessage(tr_Progress_Import, PBM_SETPOS, 0, 0);
+		std::cout << "Render complete - attempting wwise import" << std::endl;
 		
 		if (!ImportJobsIntoWwise())
 		{
 			// something went wrong, restore render que files
 			//PrintToConsole("Something went wrong, restoring Reaper Render Que files.....");
+			std::cout << "Error in wwise import stage" << std::endl;
 			restoreRenderQueFiles();
 			return;
 
@@ -381,9 +361,10 @@ void CreateImportWindow::handleUI_RenderImport()
 		FillRenderQueList();
 		return;
 	}
-	else if (status == std::future_status::timeout)
+	else if ((status == std::future_status::timeout) || (!success))
 	{
 		//PrintToConsole("Timeout error. Something went wrong in Render. Reaper did not remove all render que files after processing.");
+		std::cout << "Error in Reaper Render stage" << std::endl;
 		SetStatusMessageText("Error");
 		restoreRenderQueFiles();
 		return;
@@ -775,8 +756,8 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 
 void CreateImportWindow::backupRenderQueFiles()
 {
-	std::string resourcePath = "";// GetReaperResourcePath();
-	std::filesystem::path backupPath = resourcePath + "\\QueuedRenders\\_backup";
+	std::string resourcePath = GetReaperResourcePath();
+	std::filesystem::path backupPath = resourcePath + "/QueuedRenders/_backup";
 
 	for (auto RenderJob : GlobalListOfRenderQueJobs)
 	{
@@ -799,9 +780,9 @@ void CreateImportWindow::backupRenderQueFiles()
 
 void CreateImportWindow::restoreRenderQueFiles()
 {
-	std::string resourcePath = "";//GetReaperResourcePath();
-	std::filesystem::path backupPath = resourcePath + "\\QueuedRenders\\_backup";
-	std::filesystem::path restorePath = resourcePath + "\\QueuedRenders";
+	std::string resourcePath = GetReaperResourcePath();
+	std::filesystem::path backupPath = resourcePath + "/QueuedRenders/_backup";
+	std::filesystem::path restorePath = resourcePath + "/QueuedRenders";
 
 	for (auto RenderQueFile : RenderFilesBackup)
 	{
@@ -832,47 +813,8 @@ void CreateImportWindow::SetWwiseAutomationMode(bool enable)
 /// INIT ALL OPTIONS
 
 bool CreateImportWindow::init_ALL_OPTIONS()
-{/*
-	tr_buttonConnect = GetDlgItem(hwnd, IDC_B_ConnectWwise);
-	tr_textConnectionStatus = GetDlgItem(hwnd, IDC_WwiseConnection);
-	tr_B_GetSelectedParent = GetDlgItem(hwnd, IDC_B_GetSelectedParent);
-	tr_s_ImportParentID = GetDlgItem(hwnd, IDC_ImportParent_ID);
-	tr_s_ImportParentNameType = GetDlgItem(hwnd, IDC_ImportParent_NameType);
-	tr_B_CreateObject = GetDlgItem(hwnd, IDC_B_CreateObject);
-	tr_c_CreateType = GetDlgItem(hwnd, IDC_C_Create_Type);
-	tr_c_CreateNameConflict = GetDlgItem(hwnd, IDC_C_CreateOnNameConflict);
-	tr_txt_CreateName = GetDlgItem(hwnd, IDC_text_CreateName);
-	tr_txt_CreateNotes = GetDlgItem(hwnd, IDC_Text_CreateNotes);
-	tr_Tree_RenderJobTree = GetDlgItem(hwnd, IDC_TREE_RenderJobTree);
+{
 
-	UINT mask = TVS_EX_MULTISELECT;
-	DWORD dWord = TVS_EX_MULTISELECT;
-	TreeView_SetExtendedStyle(tr_Tree_RenderJobTree, dWord, mask);
-
-	tr_Progress_Import = GetDlgItem(hwnd, IDC_PROGRESS_Import);
-	B_RenderImport = GetDlgItem(hwnd, IDC_B_RenderImport);
-	txt_status = GetDlgItem(hwnd, IDC_Txt_Status);
-	txt_Language = GetDlgItem(hwnd, IDC_Language);
-	//Edit_SetText(txt_Language, defaultLanguage.c_str());
-	check_IsVoice = GetDlgItem(hwnd, IDC_IsVoice);
-	SendDlgItemMessage(m_hWindow, IDC_IsVoice, BM_SETCHECK, BST_UNCHECKED, 0);
-	check_OrigDirMatchWwise = GetDlgItem(hwnd, IDC_OrigsMatchWwise);
-	SendDlgItemMessage(m_hWindow, IDC_OrigsMatchWwise, BM_SETCHECK, BST_CHECKED, 0);
-	B_RefreshTree = GetDlgItem(hwnd, IDC_B_RefreshTree);
-	txt_OriginalsSubDir = GetDlgItem(hwnd, IDC_txt_OrigsDir);
-	Edit_SetText(txt_OriginalsSubDir, "ImportedFromReaper/");
-	check_CreateEvent = GetDlgItem(hwnd, IDC_Create_Event);
-	l_eventOptions = GetDlgItem(hwnd, IDC_LIST_EventOptions);
-
-	init_ComboBox_A(tr_c_CreateType, myCreateChoices.waapiCREATEchoices_TYPE);
-	init_ComboBox_A(tr_c_CreateNameConflict, myCreateChoices.waapiCREATEchoices_NAMECONFLICT);
-	init_ComboBox_A(l_eventOptions, myCreateChoices.waapiCREATEchoices_EVENTOPTIONS);
-
-	init_ComboBox_A(
-		txt_Language,
-		parentWwiseConnectionHnd->MyCurrentWwiseConnection.projectGlobals.Languages
-	);
-*/
 	GetOrigsDirMatchesWwise();
 	GetIsVoice();
 

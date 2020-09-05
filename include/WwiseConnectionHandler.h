@@ -81,7 +81,7 @@ private:
 
 class CreateImportWindow
 {
-	
+	static bool isReaperRendering;
 
 public:
 	
@@ -94,7 +94,7 @@ public:
 
 
 	//static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
-
+	
 	
 	void SetupPluginParent(WwiseConnectionHandler *parent);
 

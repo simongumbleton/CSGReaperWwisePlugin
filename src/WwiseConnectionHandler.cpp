@@ -133,7 +133,6 @@ std::vector<WwiseObject> WwiseConnectionHandler::GetWwiseObjects(bool suppressOu
 		throw std::string("Wwise connection not found!");
 	}
 	using namespace AK::WwiseAuthoringAPI;
-	const std::lock_guard<std::mutex> lock(mx_w);
 
 	if (getargs.fromSelected)	/// Need to get the selected object first
 	{
@@ -171,7 +170,6 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 		return false;
 	}
 	using namespace AK::WwiseAuthoringAPI;
-	const std::lock_guard<std::mutex> lock(mx_w);
 
 	//Sort the inputs  "ActorMixer","Blend", "Random", "Sequence", "Switch"			RandomOrSequence 0 or 1
 	if (createArgs.Type == "Blend")
@@ -223,7 +221,6 @@ bool WwiseConnectionHandler::ImportAudioToWwise(bool suppressOutputMessages, Imp
 		return false;
 	}
 	
-	const std::lock_guard<std::mutex> lock(mx_w);
 	bool autoAddToSourceControl = false;
 
 	if (MyCurrentWwiseConnection.year > 2017)
@@ -267,7 +264,6 @@ bool WwiseConnectionHandler::GetWwiseProjectGlobals(bool suppressOutputMessages,
 		return false;
 	}
 	using namespace AK::WwiseAuthoringAPI;
-	const std::lock_guard<std::mutex> lock(mx_w);
 
 	ObjectGetArgs Project;
 	Project.From = { std::string("ofType"),std::string("Project") };
@@ -324,8 +320,6 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 {
 	using namespace AK::WwiseAuthoringAPI;
 	WwiseObject returnWwiseObject;
-
-	const std::lock_guard<std::mutex> lock(mx_w);
 	
 	for (const auto i : Result.GetMap()) {
 		AkJson::Type type;
@@ -406,7 +400,6 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 
 bool WwiseConnectionHandler::LinkParentChildObjects(std::vector<WwiseObject>& objects)
 {
-	const std::lock_guard<std::mutex> lock(mx_w);
 	//get parent links
 	for (auto &childobj : objects) {
 		std::string parentID;
@@ -431,7 +424,6 @@ bool WwiseConnectionHandler::LinkParentChildObjects(std::vector<WwiseObject>& ob
 
 void WwiseConnectionHandler::SetOptionsFromConfig(config myConfig)
 {
-	const std::lock_guard<std::mutex> lock(mx_w);
 	MyCurrentWwiseConnection.port = myConfig.waapiPort;
 	MyCurrentWwiseConnection.useAutomationMode = myConfig.useAutomationMode;
 }
