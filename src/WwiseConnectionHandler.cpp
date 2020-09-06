@@ -8,6 +8,9 @@
 
 #include "reaperHelpers.h"
 #include <AK/WwiseAuthoringAPI/waapi.h>
+//#include "RapidJsonUtils.h"
+//#include "rapidjson/document.h"
+
 
 #include "ReaperRenderQueParser.h"
 
@@ -236,7 +239,30 @@ bool WwiseConnectionHandler::ImportAudioToWwise(bool suppressOutputMessages, Imp
 	if (!wappi_ImportFromArgs(importArgs, MoreRawReturnResults))
 	{
 		//Something went wrong!
-		PrintToConsole("ERROR. Import Failed. Exiting.");
+		
+		//rapidjson::Document RJresults;
+		std::map<std::string,std::string> errorRes;
+		std::map<std::string, double> errorResNum;
+		waapi_TranslateJSONResults(errorRes,errorResNum,MoreRawReturnResults,"details");
+		std::string message;
+		std::string uri;
+		for (auto res : errorRes)
+		{
+			if (res.first == "message")
+			{
+				message = res.second;
+				continue;
+			}else if (res.first == "uri")
+			{
+				uri = res.second;
+				continue;
+			}
+		}
+		
+		//std::string akJsonResults = RapidJsonUtils::GetAkJsonString(MoreRawReturnResults);
+		//RJresults.Parse(stringRes.c_str());
+		
+		PrintToConsole("ERROR. Import Failed. Exiting. "+message+" : "+uri);
 		waapi_UndoHandler(Cancel, "Auto Import");
 		return false;
 	}

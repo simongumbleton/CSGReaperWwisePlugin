@@ -462,6 +462,10 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 
 			for (auto file : job.RenderQueJobFileList)
 			{
+				if (file == "")
+				{
+					continue;
+				}
 				std::string existingOriginalsPath = "";
 				std::string existingWwisePath = "";
 				// file is the full path in this context, need to get the just the filename

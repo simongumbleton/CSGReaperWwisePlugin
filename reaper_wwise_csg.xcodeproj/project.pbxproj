@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E185DD125051AEA0034F026 /* RapidJsonUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E185DD025051AEA0034F026 /* RapidJsonUtils.h */; };
 		9E78206024C0E904005401E2 /* JuceHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5124C0E8FD005401E2 /* JuceHeader.h */; };
 		9E78206224C0E904005401E2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */; };
 		9E78206324C0E904005401E2 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */; };
@@ -68,6 +69,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9E185DD025051AEA0034F026 /* RapidJsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidJsonUtils.h; sourceTree = "<group>"; };
 		9E781E5124C0E8FD005401E2 /* JuceHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JuceHeader.h; sourceTree = "<group>"; };
 		9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_gui_basics.mm; sourceTree = "<group>"; };
 		9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_graphics.mm; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 		9E781E4E24C0E8FD005401E2 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				9E185DD025051AEA0034F026 /* RapidJsonUtils.h */,
 				9E781E4F24C0E8FD005401E2 /* JUCE */,
 				9E781E5D24C0E8FD005401E2 /* ReaperRenderQueParser.h */,
 				9E781E5E24C0E8FD005401E2 /* WaapiFunctions.h */,
@@ -902,6 +905,7 @@
 				9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */,
 				9E78207124C0E904005401E2 /* GUI.h in Headers */,
 				9E78206B24C0E904005401E2 /* ReaperRenderQueParser.h in Headers */,
+				9E185DD125051AEA0034F026 /* RapidJsonUtils.h in Headers */,
 				9EBC0E9E24C346800068154E /* waapi_structs.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1098,6 +1102,7 @@
 					$SRCROOT/../library/WDL/WDL/swell,
 					$SRCROOT/../,
 					$SRCROOT,
+					"$(SRCROOT)/include",
 				);
 				INSTALL_PATH = /;
 				LD_DYLIB_INSTALL_NAME = reaper_MyReaperPlugin.dylib;
@@ -1141,6 +1146,8 @@
 					"\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/include\"",
 					"\"$(SRCROOT)/../ReaperPluginMAC/library/reaper_plugin\"",
 					"\"$(SRCROOT)/../ReaperPluginMAC/library/WDL\"",
+					"\"$(SRCROOT)/include\"",
+					"\"$(SRCROOT)/include/rapidjson\"",
 				);
 				LD_DYLIB_INSTALL_NAME = "$(TARGET_NAME).dylib";
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/Mac/Debug/lib\"";
@@ -1185,6 +1192,8 @@
 					"\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/include\"",
 					"\"$(SRCROOT)/../ReaperPluginMAC/library/reaper_plugin\"",
 					"\"$(SRCROOT)/../ReaperPluginMAC/library/WDL\"",
+					"\"$(SRCROOT)/include\"",
+					"\"$(SRCROOT)/include/rapidjson\"",
 				);
 				LD_DYLIB_INSTALL_NAME = "$(TARGET_NAME).dylib";
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/Mac/Release/lib\"";
