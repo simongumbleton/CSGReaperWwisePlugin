@@ -10,7 +10,7 @@
 #include "WaapiFunctions.h"
 //#include "PluginWindow.h"
 
-
+class TransferToWwiseComponent;
 
 class WwiseConnectionHandler
 {	
@@ -89,6 +89,8 @@ public:
 	std::vector<RenderQueJob> GlobalListOfRenderQueJobs;
 	std::vector<std::string> RenderFilesBackup;
 	
+	TransferToWwiseComponent * owningGUIWindow;
+	
 	CreateImportWindow();
 	~CreateImportWindow();
 
@@ -115,7 +117,7 @@ public:
 	void handleUI_GetType(int notifCode);
 	void handleUI_GetImportEventOptions(int notifCode);
 	void handleUI_GetNameConflict(int notifCode);
-	void handleUI_RenderImport();
+	bool handleUI_RenderImport();
 
 	////non-message function declarations
 	////=============================================================================
@@ -129,18 +131,14 @@ public:
 
 
 	/////Initialise dialogue boxes
-	bool init_ALL_OPTIONS();
 	bool init_ComboBox_A(std::vector<std::string> choices);
 	bool init_ListBox_A(std::vector<std::string> choices);
 
 	void FillRenderQueList();
 	void UpdateRenderJob_TreeView();
-	void HandleUI_SetParentForRenderJob(WwiseObject selectedParent);
 	bool GetCreateEvent();
-	bool GetIsVoice();
 	std::string GetLanguage();
 	std::string GetImportEventOption();
-	bool GetOrigsDirMatchesWwise();
 	std::string GetUserOriginalsSubDir();
 	void SetStatusMessageText(std::string message);
 

@@ -309,7 +309,8 @@ bool WwiseConnectionHandler::GetWwiseProjectGlobals(bool suppressOutputMessages,
 	if (Results.size() != 0)
 	{
 		WwiseProjGlobals.DefaultLanguage = string(Results[0]["@DefaultLanguage"].GetVariant());
-		WwiseProjGlobals.Project = string(Results[0]["filePath"].GetVariant());
+		WwiseProjGlobals.ProjectPath = string(Results[0]["filePath"].GetVariant());
+		WwiseProjGlobals.ProjectName = string(Results[0]["name"].GetVariant());
 	}
 
 	ObjectGetArgs langs;

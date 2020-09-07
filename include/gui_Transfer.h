@@ -129,14 +129,7 @@ class TransferToWwiseComponent : public juce::Component, public juce::Button::Li
 	{
 		if (TransferToWwiseComponent::currentTransferComponent)
 		{
-			///AK::WwiseAuthoringAPI::AkJson result = in_jsonProvider.GetAkJson();
-			//WwiseObject obj = TransferToWwiseComponent::currentTransferComponent->WwiseCntnHndlr->ResultToWwiseObject(result);
-			
 			TransferToWwiseComponent::currentTransferComponent->postCommandMessage(1);
-			
-			//std::cout << obj.properties["name"] << std::endl;
-			//MessageManager::callAsync (TransferToWwiseComponent::currentTransferComponent->asyncTest());
-			//TransferToWwiseComponent::currentTransferComponent->handle_OnSelectedParentChanged(obj);
 		}
 	}
 	
@@ -145,9 +138,7 @@ class TransferToWwiseComponent : public juce::Component, public juce::Button::Li
 		
 		if (TransferToWwiseComponent::currentTransferComponent)
 		{
-			//std::cout << "Project closed" << std::endl;
 			TransferToWwiseComponent::currentTransferComponent->postCommandMessage(2);
-			//TransferToWwiseComponent::currentTransferComponent->handle_OnWwiseProjectClosed();
 		}
 	}
 	
@@ -199,6 +190,8 @@ public:
 	void handle_OnSelectedParentChanged();
 	
 	void handle_OnWwiseProjectClosed();
+	
+	void setStatusText(std::string message);
 	
 	//void postCommandMessage(int commandId);
 	//https://docs.juce.com/master/classComponent.html#a9ba6fa31d1397c7e90050b2cd4f2089b
@@ -273,7 +266,7 @@ private:
 	
 	juce::Label * selectedParentLabel = new Label();
 	
-	
+	juce::Label * statusLabel = new Label();
 
 	//std::unique_ptr<TreeView> tree_RenderJobTree; //= new TreeView("tree_RenderJobTree");	//Tree view
 	juce::TreeView * tree_RenderJobTree = new TreeView("tree_RenderJobTree");

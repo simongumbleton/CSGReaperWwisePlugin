@@ -2,6 +2,7 @@
 #include "WwiseConnectionHandler.h"
 #include "ReaperRenderQueParser.h"
 #include "reaperHelpers.h"
+#include "gui_Transfer.h"
 #include <filesystem>
 #include <thread>
 #include <iostream>
@@ -67,6 +68,7 @@ CreateImportWindow::CreateImportWindow()
 
 CreateImportWindow::~CreateImportWindow()
 {
+	owningGUIWindow = nullptr;
 }
 
 
@@ -83,12 +85,6 @@ void CreateImportWindow::OnInitDlg()
 	ReadConfigFile(myConfig);
 	WwiseConnectionHnd->SetOptionsFromConfig(myConfig);
 
-
-	//init Wwise Connection
-	handleUI_B_Connect();
-
-	//Init options
-	init_ALL_OPTIONS();
 }
 //=============================================================================
 inline int CreateImportWindow::ErrMsg(const std::string& s)
@@ -165,18 +161,6 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 	SetStatusMessageText("Ready");
 
 	//waapi_CreateObjectFromArgs(myCreateObjectArgs, results);
-}
-
-void CreateImportWindow::handleUI_B_GetSelectedParent()
-{
-	WwiseObject selectedParent = WwiseConnectionHnd->GetSelectedObject();
-	std::string parID = selectedParent.properties["id"];
-	std::string parNameType = selectedParent.properties["name"] + " (" + selectedParent.properties["type"] + ")";
-	//SetDlgItemText(m_hWindow, IDC_ImportParent_ID, parID.c_str());
-	//SetDlgItemText(m_hWindow, IDC_ImportParent_NameType, parNameType.c_str());
-
-	HandleUI_SetParentForRenderJob(selectedParent);
-
 }
 
 void CreateImportWindow::handleUI_GetType(int notifCode)
@@ -285,21 +269,29 @@ bool CreateImportWindow::UpdateProgressDuringRender(int numJobs)
 
 
 
-void CreateImportWindow::handleUI_RenderImport()
+bool CreateImportWindow::handleUI_RenderImport()
 {
 	/// Render and import from que list
 
 	//For each job in the global render que
 	//check it has valid wwise parent and report errors/exit if not
+	
+	if (GlobalListOfRenderQueJobs.size() == 0)
+	{
+		//There are no render jobs!
+		PrintToConsole("  ERROR! There are no render jobs! Add items to a render que to use them with this tool..   \n");
+		SetStatusMessageText("Error");
+		return false;
+	}
 
 	for (auto job : GlobalListOfRenderQueJobs)
 	{
 		if (job.parentWwiseObject.properties.size() == 0 && job.hasPerFileOverrides==false)
 		{
-			//PrintToConsole("  ERROR! A render job has no import settings!   \n");
-			//PrintToConsole(job.RenderQueFilePath);
+			PrintToConsole("  ERROR! A render job has no import settings!   \n");
+			PrintToConsole(job.RenderQueFilePath);
 			SetStatusMessageText("Error");
-			return;
+			return false;
 		}
 
 	}
@@ -354,12 +346,10 @@ void CreateImportWindow::handleUI_RenderImport()
 			//PrintToConsole("Something went wrong, restoring Reaper Render Que files.....");
 			std::cout << "Error in wwise import stage" << std::endl;
 			restoreRenderQueFiles();
-			return;
+			return false;
 
 		}
-
-		FillRenderQueList();
-		return;
+		return true;
 	}
 	else if ((status == std::future_status::timeout) || (!success))
 	{
@@ -367,10 +357,10 @@ void CreateImportWindow::handleUI_RenderImport()
 		std::cout << "Error in Reaper Render stage" << std::endl;
 		SetStatusMessageText("Error");
 		restoreRenderQueFiles();
-		return;
+		return false;
 	}
 	
-
+	return false; // Shouldnt ever get here, if we do something has gone wrong so return false
 }
 
 
@@ -814,21 +804,6 @@ void CreateImportWindow::SetWwiseAutomationMode(bool enable)
 
 
 
-/// INIT ALL OPTIONS
-
-bool CreateImportWindow::init_ALL_OPTIONS()
-{
-
-	GetOrigsDirMatchesWwise();
-	GetIsVoice();
-
-	FillRenderQueList();
-
-	SetStatusMessageText("Ready");
-
-	return true;
-}
-
 
 
 
@@ -848,340 +823,16 @@ void CreateImportWindow::FillRenderQueList()
 	}
 }
 
-void CreateImportWindow::UpdateRenderJob_TreeView()
-{
-	FillRenderQueList();
-	
-	//TreeView_DeleteAllItems(tr_Tree_RenderJobTree);
-/*
-	for (auto RenderJob : GlobalListOfRenderQueJobs)
-	{
-		std::filesystem::path filePath = RenderJob.RenderQueFilePath;
-		std::string filename = filePath.filename().string();
-
-		TV_INSERTSTRUCT tvInsert;
-		HTREEITEM Parent;
-		HTREEITEM Child;
-
-		tvInsert.hParent = NULL;
-		tvInsert.hInsertAfter = TVI_ROOT;
-		tvInsert.item.mask = TVIF_TEXT;	// tvinsert.item.mask=TVIF_TEXT|TVIF_IMAGE|TVIF_SELECTEDIMAGE;
-		tvInsert.item.pszText = &filename[0];	//(LPARAM)choice.c_str()
-		Parent = (HTREEITEM)SendDlgItemMessage(m_hWindow, IDC_TREE_RenderJobTree, TVM_INSERTITEM, 0, (LPARAM)&tvInsert);
-
-		//Children = WAV files in this render que job
-		for (auto renderFile : RenderJob.RenderQueJobFileList)
-		{
-			std::filesystem::path filePath = renderFile;
-			std::string filename = filePath.filename().string();
-			tvInsert.hParent = Parent;
-			tvInsert.hInsertAfter = TVI_LAST;
-			tvInsert.item.pszText = &filename[0];
-			Child = (HTREEITEM)SendDlgItemMessage(m_hWindow, IDC_TREE_RenderJobTree, TVM_INSERTITEM, 0, (LPARAM)&tvInsert);
-		}
-
-
-	}
-*/
-}
-
-
-void CreateImportWindow::HandleUI_SetParentForRenderJob(WwiseObject selectedParent)
-{
-	std::string parentWwiseID = selectedParent.properties["id"];
-	std::string parentWwiseName = selectedParent.properties["name"];
-	std::string parentWwiseType = selectedParent.properties["type"];
-	std::string parentWwisePath = selectedParent.properties["path"];
-	
-/*
-	TVITEM item;
-	TVITEM parentItem;
-
-	if (parentWwiseID == "")
-	{
-		PrintToConsole("Error - No valid Wwise Parent");
-		return;	// Invalid wwise parent selection!
-	}
-
-	if (parentWwisePath.find("Actor-Mixer Hierarchy\\") == parentWwisePath.npos)
-	{
-		PrintToConsole("Import parent must be in Actor-Mixer hierarchy");
-		return;	// Invalid wwise parent selection!
-	}
-
-	// if type is Work Unit - Need to check if it's a folder
-
-	int selectedcount = TreeView_GetSelectedCount(tr_Tree_RenderJobTree);
-
-	HTREEITEM hSelectedItem = TreeView_GetSelection(tr_Tree_RenderJobTree);
-	if (hSelectedItem == NULL) // Nothing selected
-	{
-		PrintToConsole("No render job or file selected");
-		return;
-	}
-	std::vector<HTREEITEM> selectedItems;
-	selectedItems.push_back(hSelectedItem);
-
-	if (selectedcount > 1)
-	{	
-		for (int i = 1; i < selectedcount; i++)
-		{
-			HTREEITEM nextSelected = TreeView_GetNextSelected(tr_Tree_RenderJobTree, hSelectedItem);
-			selectedItems.push_back(nextSelected);
-			hSelectedItem = nextSelected;
-		}
-	}
-
-	for (auto &selectedItem : selectedItems)
-	{
-
-		TCHAR buffer[256];
-		item.hItem = selectedItem;
-		item.mask = TVIF_TEXT | TVIF_CHILDREN;
-		item.cchTextMax = 256;
-		item.pszText = buffer;
-		bool isItemWav = false;
-		if (TreeView_GetItem(tr_Tree_RenderJobTree, &item))
-		{
-			/// need to clean the nammes IF they contain % (they have been double set)
-
-			std::string curName = item.pszText;
-			size_t pos = curName.find("%");
-			if (pos != curName.npos)
-			{
-				curName.erase(curName.begin(), curName.begin() + pos+1);
-				std::string newItemName = curName;
-				//item.mask = TVIF_TEXT;
-				item.pszText = &newItemName[0];
-				TreeView_SetItem(tr_Tree_RenderJobTree, &item);
-			}
-			
-			TreeView_GetItem(tr_Tree_RenderJobTree, &item);
-
-			if (item.cChildren != 1)
-			{
-				// Check if selected thing is wav?
-				// Support overriding Wwise imports for child wavs of a render job?
-				std::string itemName = item.pszText;
-				if (itemName.find(".wav") != itemName.npos)
-				{
-					//Selected thing is a wav file! This render job has overrides
-
-					isItemWav = true;
-
-
-				}
-				else {
-					PrintToConsole("Render Job selected has no children");
-					return;
-
-				}
-
-			}
-			//Find the matching Render Que Job that we selected OR find the parent job of the selected wav
-			if (isItemWav) {
-
-				HTREEITEM hparentItem = TreeView_GetParent(tr_Tree_RenderJobTree, item.hItem);
-				if (hparentItem == NULL) // Nothing selected
-				{
-					return;
-				}
-				TCHAR buffer[256];
-				parentItem.hItem = hparentItem;
-				parentItem.mask = TVIF_TEXT;
-				parentItem.cchTextMax = 256;
-				parentItem.pszText = buffer;
-				if (TreeView_GetItem(tr_Tree_RenderJobTree, &parentItem))
-				{
-					std::string itemName = parentItem.pszText;
-				}
-
-
-			}
-			std::string jobName = "";
-			if (isItemWav) {
-				jobName = parentItem.pszText;
-			}
-			else {
-				jobName = item.pszText;
-			}
-			int count = 0;
-			for (auto &renderJob : GlobalListOfRenderQueJobs)
-			{
-				std::filesystem::path filePath = renderJob.RenderQueFilePath;
-				std::string filename = filePath.filename().string();
-
-				if (jobName.find(filename) != jobName.npos)
-				{
-					//Found a match
-					//PrintToConsole("Found a match");
-
-					if (isItemWav) {
-						renderJob.hasPerFileOverrides = true;
-						RenderJobFileOverride fileOverride;
-						fileOverride.RenderJobFile = item.pszText;
-						fileOverride.parentWwiseObject = selectedParent;
-						fileOverride.isVoice = GetIsVoice();
-						fileOverride.createEventOption = GetImportEventOption();
-						fileOverride.OrigDirMatchesWwise = GetOrigsDirMatchesWwise();
-						if (!fileOverride.OrigDirMatchesWwise)
-						{
-							fileOverride.userOrigsSubDir = GetUserOriginalsSubDir();
-						}
-
-						std::string language;
-						if (fileOverride.isVoice)
-						{
-							fileOverride.ImportLanguage = GetLanguage();
-							language = fileOverride.ImportLanguage;
-						}
-						else
-						{
-							fileOverride.ImportLanguage = "SFX";
-							language = "SFX";
-						}
-
-						renderJob.perFileOverridesmap[fileOverride.RenderJobFile] = fileOverride;
-
-
-						//Set the display Text to include wwise parent name and type
-						std::string newItemName = parentWwiseName + "(" + parentWwiseType + ")  - " + "%" + fileOverride.RenderJobFile;
-						item.mask = TVIF_TEXT;
-						item.pszText = &newItemName[0];
-						TreeView_SetItem(tr_Tree_RenderJobTree, &item);
-						PrintToConsole(fileOverride.RenderJobFile + " Imports into " + renderJob.parentWwiseObject.properties["name"]);
-
-					}
-					else {
-
-						renderJob.parentWwiseObject = selectedParent;
-
-						renderJob.isVoice = GetIsVoice();
-
-						renderJob.createEventOption = GetImportEventOption();
-
-						renderJob.OrigDirMatchesWwise = GetOrigsDirMatchesWwise();
-
-						if (!renderJob.OrigDirMatchesWwise)
-						{
-							renderJob.userOrigsSubDir = GetUserOriginalsSubDir();
-						}
-
-						std::string language;
-						if (renderJob.isVoice)
-						{
-							renderJob.ImportLanguage = GetLanguage();
-							language = renderJob.ImportLanguage;
-						}
-						else
-						{
-							renderJob.ImportLanguage = "SFX";
-							language = "SFX";
-						}
-						//Set the display Text to include wwise parent name and type
-						std::string newItemName = parentWwiseName + "(" + parentWwiseType + " : " + ")  - " + "%" + filename;
-						item.mask = TVIF_TEXT;
-						item.pszText = &newItemName[0];
-						TreeView_SetItem(tr_Tree_RenderJobTree, &item);
-						PrintToConsole(renderJob.RenderQueFilePath + " Imports into " + renderJob.parentWwiseObject.properties["name"]);
-					}
-
-				}
-				count++;
-			}
-
-		}
-	}
-
-
-	for (auto &selectedItem : selectedItems)
-	{
-		TVITEM clearitem;
-		clearitem.hItem = selectedItem;
-		clearitem.stateMask = TVIS_SELECTED;
-		clearitem.state = 0;
-		if (TreeView_GetItem(tr_Tree_RenderJobTree, &item))
-		{
-			TreeView_SetItemState(tr_Tree_RenderJobTree, clearitem.hItem, clearitem.state, TVIS_SELECTED);
-		}
-
-	}
-	TreeView_SelectItem(tr_Tree_RenderJobTree, NULL);
-
-	SetStatusMessageText("Ready");
-*/
-}
-
-bool CreateImportWindow::GetIsVoice()
-{
-
-	if (0)//SendDlgItemMessage(m_hWindow, IDC_IsVoice, BM_GETCHECK, 0, 0))
-	{
-		//Edit_Enable(txt_Language, true);
-		return true;
-	}
-	else
-	{
-		//Edit_Enable(txt_Language, false);
-		return false;
-	}
-}
-bool CreateImportWindow::GetCreateEvent()
-{
-
-	if (0)//SendDlgItemMessage(m_hWindow, IDC_Create_Event, BM_GETCHECK, 0, 0))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-std::string CreateImportWindow::GetLanguage()
-{
-	///Get the par ID text
-	char buffer[256];
-	//GetDlgItemTextA(m_hWindow, IDC_Language, buffer, 256);
-	int x = 0;//SendMessage(txt_Language, CB_GETCURSEL, 0, 0);
-	std::string lang = WwiseConnectionHnd->MyCurrentWwiseConnection.projectGlobals.Languages[x];
-	return lang;
-}
-
-std::string CreateImportWindow::GetImportEventOption()
-{
-	int x = 0;//SendMessage(l_eventOptions, CB_GETCURSEL, 0, 0);
-	return myCreateChoices.waapiCREATEchoices_EVENTOPTIONS[x];
-}
-
-bool CreateImportWindow::GetOrigsDirMatchesWwise()
-{
-	if (0)//SendDlgItemMessage(m_hWindow, IDC_OrigsMatchWwise, BM_GETCHECK, 0, 0))
-	{
-		//IDC_txt_OrigsDir
-		//Edit_Enable(txt_OriginalsSubDir, false);
-		return true;
-	}
-	else
-	{
-		//Edit_Enable(txt_OriginalsSubDir, true);
-		return false;
-	}
-}
-
-std::string CreateImportWindow::GetUserOriginalsSubDir()
-{
-	char buffer[256];
-
-	//GetDlgItemTextA(m_hWindow, IDC_txt_OrigsDir, buffer, 256);
-	std::string userOrigsDir = buffer;
-	return userOrigsDir;
-}
 
 void CreateImportWindow::SetStatusMessageText(std::string message)
 {
 	//SetDlgItemText(m_hWindow, IDC_Txt_Status, message.c_str());
+	if (owningGUIWindow)
+	{
+		owningGUIWindow->setStatusText(message);
+	}
+	
+	
 }
 
 

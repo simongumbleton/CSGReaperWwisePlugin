@@ -20,6 +20,10 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 {
 	
 	thisCreateImportWindow = new CreateImportWindow();
+	if (thisCreateImportWindow)
+	{
+		thisCreateImportWindow->owningGUIWindow = this;
+	}
 	WwiseCntnHndlr = thisCreateImportWindow->WwiseConnectionHnd;
 	
 	MyCurrentWwiseConnection = &thisCreateImportWindow->WwiseConnectionHnd->MyCurrentWwiseConnection;
@@ -112,6 +116,9 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	
 	addAndMakeVisible(txt_ConnectionStatus);
 	txt_ConnectionStatus->setText("Wwise Connection Status:", juce::NotificationType::dontSendNotification);
+	
+	addAndMakeVisible(statusLabel);
+	statusLabel->setText("Status: ", juce::NotificationType::dontSendNotification);
 
 	setSize(1000, 500);
 	
@@ -249,7 +256,10 @@ void TransferToWwiseComponent::resized()
 	
 	txt_ConnectionStatus->setBounds(bottomRow);
 	
-	debugLabel->setBounds(RightHalf.removeFromBottom(labelHeight));
+	auto statusRow = RightHalf.removeFromBottom(labelHeight).reduced(border);
+	
+	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth()/2).reduced(border));
+	debugLabel->setBounds(statusRow);
 }
 
 
@@ -407,13 +417,14 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 void TransferToWwiseComponent::TryConnectToWwise() {
 	thisCreateImportWindow->handleUI_B_Connect();
 	bool connected = MyCurrentWwiseConnection->connected;
-	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.Project != ""))
+	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
 	{
-		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->Version);
+		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->projectGlobals.ProjectName);
 		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
 		WwiseCntnHndlr->SubscribeOnSelectionChanged(TransferToWwiseComponent::callback_OnSelectionChanged, 1);
 		WwiseCntnHndlr->SubscribeOnProjectClosed(TransferToWwiseComponent::callback_OnProjectClosed, 2);
 		InitComboBox(dd_Language, MyCurrentWwiseConnection->projectGlobals.Languages, "Language..");
+		handle_OnSelectedParentChanged();
 	}
 	else
 	{
@@ -459,7 +470,10 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	else if (pButton == btn_RenderAndImport)
 	{
 		//thisCreateImportWindow->backupRenderQueFiles();
-		thisCreateImportWindow->handleUI_RenderImport();
+		if (thisCreateImportWindow->handleUI_RenderImport())
+		{
+			RefreshRenderJobTree();
+		}
 		//thisCreateImportWindow->restoreRenderQueFiles();
 	}
 	
@@ -567,7 +581,7 @@ bool TransferToWwiseComponent::GetToggleValue(juce::ToggleButton * btn)
 void TransferToWwiseComponent::handle_OnSelectedParentChanged()
 {
 	const std::lock_guard<std::mutex> lock(mx_t);
-	std::cout << "_____Callback 1______" << std::endl;
+	//std::cout << "_____Callback 1______" << std::endl;
 	WwiseObject newParent = WwiseCntnHndlr->GetSelectedObject();
 	//std::cout << newParent.properties["name"] << std::endl;
 	//std::string display = "Selected Parent: " + newParent.properties["name"];
@@ -584,5 +598,11 @@ void TransferToWwiseComponent::handle_OnWwiseProjectClosed()
 	WwiseCntnHndlr->UnsubscribeFromTopicByID(1);
 	WwiseCntnHndlr->UnsubscribeFromTopicByID(2);
 	WwiseCntnHndlr->DisconnectFromWwise();
+	std::string display = "Selected Parent: ";
+	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
 }
 
+void TransferToWwiseComponent::setStatusText(std::string message)
+{
+	statusLabel->setText("Status: "+message, juce::NotificationType::dontSendNotification);
+}

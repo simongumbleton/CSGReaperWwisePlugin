@@ -53,7 +53,8 @@ struct RenderQueJob
 };
 
 struct WwiseProjectGlobals {
-	std::string Project;
+	std::string ProjectPath;
+	std::string ProjectName;
 	std::vector<std::string> Languages;
 	std::string DefaultLanguage;
 };
