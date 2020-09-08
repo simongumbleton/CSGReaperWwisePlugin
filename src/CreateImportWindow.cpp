@@ -371,6 +371,16 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 
 	int jobIndex = 0;
 	int importSuccesses = 0;
+	double importProgress = 0;
+	int numFilesToImport  = 0;
+	
+	//get the size of the list of render files in order to display progress
+	for (auto &job : GlobalListOfRenderQueJobs)
+	{
+		numFilesToImport += job.RenderQueJobFileList.size();
+	}
+	
+	
 	for (auto &job : GlobalListOfRenderQueJobs)
 	{
 		if (job.hasRendered)
@@ -441,6 +451,11 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 					if (ImportCurrentRenderJob(curFileOverrideImportArgs))
 					{
 						fileOverride.second.hasImported = true;
+						importProgress++;
+						if (owningGUIWindow)
+						{
+							owningGUIWindow->updateProgressValue(numFilesToImport/importProgress);
+						}
 					}
 
 				}
@@ -500,6 +515,11 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 							if (renderJobFile == fullPath)
 							{
 								renderJobFile = "";
+								importProgress++;
+								if (owningGUIWindow)
+								{
+									owningGUIWindow->updateProgressValue(numFilesToImport/importProgress);
+								}
 							}
 						}
 					}
@@ -541,11 +561,17 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 			{
 				GlobalListOfRenderQueJobs[jobIndex].hasImported = true;
 				importSuccesses++;
+				importProgress += curJobImportArgs.ImportFileList.size();
+				if (owningGUIWindow)
+				{
+					owningGUIWindow->updateProgressValue(numFilesToImport/importProgress);
+				}
 				//SendMessage(tr_Progress_Import, PBM_SETPOS, importSuccesses, 0);
 			}
 			
 		}
 		jobIndex++;
+		//owningGUIWindow->updateProgressValue(GlobalListOfRenderQueJobs.size()/importSuccesses);
 	}
 
 	if (importSuccesses == GlobalListOfRenderQueJobs.size())

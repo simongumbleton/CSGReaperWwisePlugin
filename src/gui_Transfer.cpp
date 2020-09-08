@@ -119,6 +119,8 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	
 	addAndMakeVisible(statusLabel);
 	statusLabel->setText("Status: ", juce::NotificationType::dontSendNotification);
+	
+	addAndMakeVisible(progressBar);
 
 	setSize(1000, 500);
 	
@@ -249,6 +251,8 @@ void TransferToWwiseComponent::resized()
 	btn_RefreshJobList->setBounds(RenderButtonArea.removeFromLeft(RenderButtonArea.getWidth()/2).reduced(border));
 	
 	btn_RenderAndImport->setBounds(RenderButtonArea.reduced(border));
+	
+	progressBar->setBounds(LeftHalf.removeFromTop(buttonHeight).reduced(border));
 	
 	auto bottomRow = LeftHalf.removeFromBottom(buttonHeight).reduced(border);
 	
@@ -605,4 +609,9 @@ void TransferToWwiseComponent::handle_OnWwiseProjectClosed()
 void TransferToWwiseComponent::setStatusText(std::string message)
 {
 	statusLabel->setText("Status: "+message, juce::NotificationType::dontSendNotification);
+}
+
+void TransferToWwiseComponent::updateProgressValue(double newProgress)
+{
+	transferProgress = newProgress;
 }

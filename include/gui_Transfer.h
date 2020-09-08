@@ -193,6 +193,8 @@ public:
 	
 	void setStatusText(std::string message);
 	
+	void updateProgressValue(double newProgress);
+	
 	//void postCommandMessage(int commandId);
 	//https://docs.juce.com/master/classComponent.html#a9ba6fa31d1397c7e90050b2cd4f2089b
 	
@@ -274,6 +276,8 @@ private:
 	std::vector<juce::TreeViewItem *> RenderTreeSelectedItems;
 
 	double transferProgress = 0.0f;
+	juce::ProgressBar * progressBar = new ProgressBar(transferProgress);
+	
 
 	StringArray ToJuceStringArray(std::vector<std::string>strings);
 
