@@ -1,6 +1,7 @@
 
 #include "gui_Transfer.h"
 #include "reaperHelpers.h"
+#include <filesystem>
 #include <mutex>
 
 StringArray TransferToWwiseComponent::ToJuceStringArray(std::vector<std::string> strings)

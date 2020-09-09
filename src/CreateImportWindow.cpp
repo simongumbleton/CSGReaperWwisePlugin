@@ -9,6 +9,7 @@
 #include <chrono>
 #include <mutex>
 #include <future>
+#include <thread>
 
 
 #include "ConfigFileHandler.h"
@@ -231,7 +232,8 @@ bool CreateImportWindow::UpdateProgressDuringRender(int numJobs)
 		{
 			if (!GlobalListOfRenderQueJobs[jobIndex].hasRendered)
 			{
-				if (!std::filesystem::exists(job.RenderQueFilePath))
+				std::error_code ec;
+				if (!std::filesystem::exists(job.RenderQueFilePath,ec))
 				{
 					//std::cout << "File not found!" << std::endl;
 				
@@ -314,21 +316,29 @@ bool CreateImportWindow::handleUI_RenderImport()
 
 	std::future<bool> fut = std::async(std::launch::async,&CreateImportWindow::UpdateProgressDuringRender,this,numJobs);
 
+	//std::thread progressThread(&CreateImportWindow::UpdateProgressDuringRender, this, numJobs);
+
 	ReaperRenderObj renderObj;
 	renderObj.RenderAllQues();
+
+	//std::this_thread::sleep_for(std::chrono::seconds(20));
 
 	//PrintToConsole("Render done. Waiting for second thread");
 	//SendMessage(tr_Progress_Import, PBM_SETPOS, numJobs, 0);
 	mtx.lock();
 	CreateImportWindow::isReaperRendering = false;
 	mtx.unlock();
+
+
+	//progressThread.join();
 	
 	std::future_status status;
 
-	status = fut.wait_for(std::chrono::seconds(4));
+	status = fut.wait_for(std::chrono::seconds(1));
 
 	//PrintToConsole("Rejoined main");
 	
+
 	success = fut.get();
 
 	//MSG msg;	//Clears the message que for the progress bar
@@ -784,11 +794,12 @@ void CreateImportWindow::backupRenderQueFiles()
 		RenderFilesBackup.push_back(RenderJob.RenderQueFilePath);
 		std::filesystem::path source = RenderJob.RenderQueFilePath;
 		std::filesystem::path target = backupPath / source.filename();
+		std::error_code ec;
 
 		try // If you want to avoid exception handling, then use the error code overload of the following functions.
 		{
-			std::filesystem::create_directories(backupPath); // Recursively create target directory if not existing.
-			std::filesystem::copy_file(source, target, std::filesystem::copy_options::overwrite_existing);
+			std::filesystem::create_directories(backupPath,ec); // Recursively create target directory if not existing.
+			std::filesystem::copy_file(source, target, std::filesystem::copy_options::overwrite_existing,ec);
 		}
 		catch (std::exception& e) // Not using fs::filesystem_error since std::bad_alloc can throw too.  
 		{
@@ -810,11 +821,12 @@ void CreateImportWindow::restoreRenderQueFiles()
 		std::filesystem::path sourceFile = source.filename();
 		source = backupPath / sourceFile;
 		std::filesystem::path target = restorePath / sourceFile;
+		std::error_code ec;
 
 		try // If you want to avoid exception handling, then use the error code overload of the following functions.
 		{
-			std::filesystem::copy_file(source, target, std::filesystem::copy_options::overwrite_existing);
-			remove(source);
+			std::filesystem::copy_file(source, target, std::filesystem::copy_options::overwrite_existing,ec);
+			remove(source,ec);
 		}
 		catch (std::exception& e) // Not using fs::filesystem_error since std::bad_alloc can throw too.  
 		{
