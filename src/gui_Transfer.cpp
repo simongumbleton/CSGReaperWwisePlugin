@@ -614,4 +614,5 @@ void TransferToWwiseComponent::setStatusText(std::string message)
 void TransferToWwiseComponent::updateProgressValue(double newProgress)
 {
 	transferProgress = newProgress;
+	this->repaint();
 }
