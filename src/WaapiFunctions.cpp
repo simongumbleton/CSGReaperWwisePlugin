@@ -78,7 +78,7 @@ bool waapi_SetAutomationMode(bool enable)
 	AkJson out = AkJson(AkJson::Map());
 	AkJson res = AkJson(AkJson::Map());
 
-	return my_client->Call(ak::wwise::debug::enableAutomationMode, automationMode, out, res, 0);
+	return my_client->Call(ak::wwise::debug::enableAutomationMode, automationMode, out, res);
 }
 
 
@@ -155,7 +155,7 @@ bool waapi_GetParentFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, AK::Ww
 		} }
 		});
 
-	return my_client->Call(ak::wwise::core::object::get, args, options, results);;
+	return my_client->Call(ak::wwise::core::object::get, args, options, results);
 }
 
 bool waapi_GetObjectFromArgs(ObjectGetArgs & getArgs, AK::WwiseAuthoringAPI::AkJson & results)
@@ -247,7 +247,7 @@ bool waapi_GetObjectFromArgs(ObjectGetArgs & getArgs, AK::WwiseAuthoringAPI::AkJ
 		}
 	}
 
-	return my_client->Call(ak::wwise::core::object::get, args, options, results);;
+	return my_client->Call(ak::wwise::core::object::get, args, options, results);
 }
 
 std::string GetPropertyFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, std::string property, bool usePath)
@@ -336,7 +336,7 @@ bool waapi_CreateObjectFromArgs(CreateObjectArgs & createArgs, AK::WwiseAuthorin
 
 
 	AkJson options = AkJson(AkJson::Map());
-	return my_client->Call(ak::wwise::core::object::create, args, options, results,0);
+	return my_client->Call(ak::wwise::core::object::create, args, options, results);
 }
 
 bool waapi_SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results)
@@ -362,7 +362,7 @@ bool waapi_SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthorin
 		});
 	
 	AkJson options = AkJson(AkJson::Map());
-	return my_client->Call(ak::wwise::core::object::setNotes, args, options, results,0);
+	return my_client->Call(ak::wwise::core::object::setNotes, args, options, results);
 }
 
 
@@ -413,7 +413,7 @@ bool wappi_ImportFromArgs(ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::
 	} }
 		});
 
-	return my_client->Call(ak::wwise::core::audio::import, args, options, results, 0);
+	return my_client->Call(ak::wwise::core::audio::import, args, options, results);
 }
 
 void waapi_GetWaapiResultsArray(AK::WwiseAuthoringAPI::AkJson::Array & arrayIn, AK::WwiseAuthoringAPI::AkJson & results)
@@ -589,7 +589,7 @@ bool waapi_SaveWwiseProject()
 	AkJson in;
 	AkJson out;
 	AkJson res;
-	return my_client->Call(ak::wwise::core::project::save, in, out, res, 0);
+	return my_client->Call(ak::wwise::core::project::save, in, out, res);
 }
 
 bool waapi_OpenWwiseProject(std::string proj)
@@ -608,13 +608,13 @@ bool waapi_UndoHandler(undoStep undoStep, std::string undoTag)
 	switch (undoStep)
 	{
 	case Begin:
-		return my_client->Call(ak::wwise::core::undo::beginGroup, in, out, res, 0);
+		return my_client->Call(ak::wwise::core::undo::beginGroup, in, out, res);
 		break;
 	case End:
-		return my_client->Call(ak::wwise::core::undo::endGroup, akj_undoTag, out, res, 0);
+		return my_client->Call(ak::wwise::core::undo::endGroup, akj_undoTag, out, res);
 		break;
 	case Cancel:
-		return my_client->Call(ak::wwise::core::undo::cancelGroup, in, out, res, 0);
+		return my_client->Call(ak::wwise::core::undo::cancelGroup, in, out, res);
 		break;
 	default:
 		break;
