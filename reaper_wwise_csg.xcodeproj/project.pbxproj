@@ -29,6 +29,7 @@
 		9E893B9F24BE577E00188A61 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893B9E24BE577E00188A61 /* AppKit.framework */; };
 		9E893BA124BE578600188A61 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA024BE578600188A61 /* IOKit.framework */; };
 		9E893BA324BE57C900188A61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA224BE57C900188A61 /* CoreImage.framework */; };
+		9EA5479A2534FEFC005FE490 /* platformhelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EA547992534FEFC005FE490 /* platformhelpers.h */; };
 		9EBC0E9E24C346800068154E /* waapi_structs.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EBC0E9D24C346800068154E /* waapi_structs.h */; };
 		9EE4E5DD24CA16A0006BC020 /* WwiseConnectionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */; };
 		9EE4E5DE24CA16A3006BC020 /* WwiseConnectionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */; };
@@ -258,6 +259,7 @@
 		9E893C6A24BE5AE900188A61 /* AkWwiseSDKVersion.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AkWwiseSDKVersion.cs; sourceTree = "<group>"; };
 		9E893C6B24BE5CCA00188A61 /* libAkSoundEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkSoundEngine.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Release/lib/libAkSoundEngine.a; sourceTree = "<group>"; };
 		9E893C6D24BFB39D00188A61 /* libAkSoundEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkSoundEngine.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Debug/lib/libAkSoundEngine.a; sourceTree = "<group>"; };
+		9EA547992534FEFC005FE490 /* platformhelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platformhelpers.h; sourceTree = "<group>"; };
 		9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WwiseConnectionHandler.cpp; path = src/WwiseConnectionHandler.cpp; sourceTree = SOURCE_ROOT; };
 		9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WwiseConnectionHandler.h; path = include/WwiseConnectionHandler.h; sourceTree = SOURCE_ROOT; };
 		9EBC0E9D24C346800068154E /* waapi_structs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = waapi_structs.h; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				9E781E6524C0E8FD005401E2 /* reaperHelpers.h */,
 				9E78205824C0E904005401E2 /* gui_Transfer.h */,
 				9EBC0E9D24C346800068154E /* waapi_structs.h */,
+				9EA547992534FEFC005FE490 /* platformhelpers.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -905,6 +908,7 @@
 				9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */,
 				9E78207124C0E904005401E2 /* GUI.h in Headers */,
 				9E78206B24C0E904005401E2 /* ReaperRenderQueParser.h in Headers */,
+				9EA5479A2534FEFC005FE490 /* platformhelpers.h in Headers */,
 				9E185DD125051AEA0034F026 /* RapidJsonUtils.h in Headers */,
 				9EBC0E9E24C346800068154E /* waapi_structs.h in Headers */,
 			);

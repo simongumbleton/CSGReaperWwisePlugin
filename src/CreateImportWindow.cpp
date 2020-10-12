@@ -3,6 +3,7 @@
 #include "ReaperRenderQueParser.h"
 #include "reaperHelpers.h"
 #include "gui_Transfer.h"
+#include "platformhelpers.h"
 #include <filesystem>
 #include <thread>
 #include <iostream>
@@ -403,7 +404,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 				for (auto &fileOverride : job.perFileOverridesmap)
 				{
 
-					std::string file = fileOverride.second.RenderJobFile;	// file is just the filename here
+					std::string file = fileOverride.second.RenderJobFile;
 
 					// the RenderQueJob filelist is the whole path to the file, need to get this from the render job and use it for the import step
 
@@ -423,6 +424,12 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 
 					std::string existingOriginalsPath = "";
 					std::string existingWwisePath = "";
+					//strip file at the os seperator to get just the filename
+					std::string fullPath = file;
+					if (file.rfind(kPathSeparator) != file.npos)
+					{
+						file.erase(0, file.rfind(kPathSeparator)+1);
+					}
 
 					if (AudioFileExistsInWwise(file,fileOverride.second.parentWwiseObject, existingOriginalsPath, existingWwisePath))
 					{
@@ -430,10 +437,10 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 					//If file is not SFX (is localised) then need to strip out the top level language dir from the existing originals path, as it is handled by the import Language
 						if (job.ImportLanguage != "SFX")
 						{
-
-							if (existingOriginalsPath.find("\\") != existingOriginalsPath.npos)
+							
+							if (existingOriginalsPath.find(kPathSeparator) != existingOriginalsPath.npos)
 							{
-								existingOriginalsPath.erase(0, existingOriginalsPath.find("\\") + 1);
+								existingOriginalsPath.erase(0, existingOriginalsPath.find(kPathSeparator) + 1);
 							}
 
 						}
@@ -485,9 +492,9 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 				std::string existingWwisePath = "";
 				// file is the full path in this context, need to get the just the filename
 				std::string fullPath = file;
-				if (file.rfind("\\") != file.npos)
+				if (file.rfind(kPathSeparator) != file.npos)
 				{
-					file.erase(0, file.rfind("\\")+1);
+					file.erase(0, file.rfind(kPathSeparator)+1);
 				}
 
 				WwiseObject originalJobWwiseParent = job.parentWwiseObject;
@@ -499,9 +506,9 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 					if (job.ImportLanguage != "SFX")
 					{
 					
-						if (existingOriginalsPath.find("\\") != existingOriginalsPath.npos)
+						if (existingOriginalsPath.find(kPathSeparator) != existingOriginalsPath.npos)
 						{
-							existingOriginalsPath.erase(0, existingOriginalsPath.find("\\") + 1);
+							existingOriginalsPath.erase(0, existingOriginalsPath.find(kPathSeparator) + 1);
 						}
 
 					}
@@ -709,7 +716,8 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 	std::string id = parent.properties["id"];
 	getArgs.From = { "id",id };
 	getArgs.Select = "descendants";
-	getArgs.Where = { "type:isIn","Sound" };
+	getArgs.Where = { "type:isIn","Sound" }; //perhaps this should be audio file source instead, if we are searching for the wav (we could rename the sound object)
+	getArgs.Where = { "type:isIn","AudioFileSource" };
 	getArgs.customReturnArgs.push_back("sound:originalWavFilePath"); 
 	getArgs.customReturnArgs.push_back("path");
 
