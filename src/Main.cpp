@@ -28,7 +28,8 @@
 REAPER_PLUGIN_HINSTANCE g_hInst;
 
 
-
+#define GET_FUNC_AND_CHKERROR(x) if (!((*((void **)&(x)) = (void *)rec->GetFunc(#x)))) ++funcerrcnt
+#define REGISTER_AND_CHKERROR(variable, name, info) if(!(variable = rec->Register(name, (void*)info))) ++regerrcnt
 
 //define globals
 HWND g_parentWindow;
@@ -40,13 +41,14 @@ char currentProject[256];
 
 
 
-gaccel_register_t action01 = { { 0, 0, 0 }, "Do action 01." };
+gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "Do action 03." };
 
 //std::unique_ptr<BasicWindow> mainWindow;
 //std::unique_ptr<MainWindow> mainWindow2;
 //std::unique_ptr<TransferWindow> mainWindow2;
 
 void LaunchTransferWindow();
+bool HookCommandProc(int command, int flag);
 
 extern "C"
 {
@@ -68,10 +70,34 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 			MessageBox(main, errbuf, "MRP extension error", MB_OK);
 			return 0;
 		}
+		int regerrcnt = 0;
+		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "action03");
+		
+		//register actions
+		plugin_register("gaccel", &Transfer_To_Wwise.accel);
+
+		rec->Register("hookcommand", (void*)HookCommandProc);
+
+		AddExtensionsMainMenu();
+
+		HMENU hMenu = GetSubMenu(GetMenu(GetMainHwnd()), 9);
+		
+		//SWELL_Menu_AddMenuItem(hMenu, "CSG", 0, 999);
 		
 		
-		//std::thread (LaunchTransferWindow).detach();
-		LaunchTransferWindow();
+			{
+				MENUITEMINFO mi = { sizeof(MENUITEMINFO), };
+				mi.fMask = MIIM_TYPE | MIIM_ID;
+				mi.fType = MFT_STRING;
+				mi.wID = Transfer_To_Wwise.accel.cmd;
+				mi.dwTypeData = (char *)"CSG - Transfer To Wwise";
+				InsertMenuItem(hMenu, 0, true, &mi);
+			}
+		
+		
+		
+		
+		//LaunchTransferWindow();
 
 		
 	}
@@ -133,4 +159,16 @@ void LaunchTransferWindow()
 
 	//mainWindow->setVisible(true);
 	//mainWindow->centreWithSize(500, 500);
+}
+
+bool HookCommandProc(int command, int flag)
+{
+	GetReaperGlobals();
+	
+	if (command == Transfer_To_Wwise.accel.cmd)
+	{
+		LaunchTransferWindow();
+		return true;
+	}
+	return false;
 }
