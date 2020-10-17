@@ -481,6 +481,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 
 
 			// import the remaining files from the job that are not overrideen
+			std::string existingSiblingOriginalsPath = "";
 
 			for (auto file : job.RenderQueJobFileList)
 			{
@@ -512,6 +513,8 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						}
 
 					}
+					//store the existing originals path, we might use it if we add extra files into this parent
+					existingSiblingOriginalsPath = existingOriginalsPath;
 					std::vector<std::string> importfiles;
 					importfiles.push_back(fullPath);
 
@@ -545,6 +548,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 
 			}
 
+			
 			ImportObjectArgs curJobImportArgs = SetupImportArgs
 			(
 				job.parentWwiseObject,
@@ -555,6 +559,11 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 				job.RenderQueJobFileList,
 				job.createEventOption
 			);
+			if ((existingSiblingOriginalsPath != "") && (job.OrigDirMatchesWwise))
+			{
+				//We had some sibling audio in this parent already, so use the same originals path for new files
+				curJobImportArgs.OriginalsSubFolder = existingSiblingOriginalsPath;
+			}
 			if (curJobImportArgs.ImportFileList.empty())
 			{
 				int numOfOverrides = job.perFileOverridesmap.size();
@@ -716,7 +725,6 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 	std::string id = parent.properties["id"];
 	getArgs.From = { "id",id };
 	getArgs.Select = "descendants";
-	getArgs.Where = { "type:isIn","Sound" }; //perhaps this should be audio file source instead, if we are searching for the wav (we could rename the sound object)
 	getArgs.Where = { "type:isIn","AudioFileSource" };
 	getArgs.customReturnArgs.push_back("sound:originalWavFilePath"); 
 	getArgs.customReturnArgs.push_back("path");
@@ -745,6 +753,7 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 			getPArgs.Select = "parent";
 			getPArgs.customReturnArgs.push_back("type");
 			getPArgs.customReturnArgs.push_back("path");
+			getPArgs.customReturnArgs.push_back("parent");
 
 			AK::WwiseAuthoringAPI::AkJson::Array results;
 			std::vector<WwiseObject> MyWwiseObjects;
