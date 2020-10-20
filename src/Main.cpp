@@ -41,7 +41,8 @@ char currentProject[256];
 
 
 
-gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "Do action 03." };
+gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise" };
+
 
 //std::unique_ptr<BasicWindow> mainWindow;
 //std::unique_ptr<MainWindow> mainWindow2;
@@ -71,10 +72,12 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 			return 0;
 		}
 		int regerrcnt = 0;
-		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "action03");
+		//Register a custom command ID for an action
+		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise");
 		
 		//register actions
 		plugin_register("gaccel", &Transfer_To_Wwise.accel);
+		//plugin_register("custom_action",&Transfer_To_Wwise.accel.cmd);
 
 		rec->Register("hookcommand", (void*)HookCommandProc);
 
