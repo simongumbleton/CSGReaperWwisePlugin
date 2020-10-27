@@ -80,11 +80,6 @@ void WwiseConnectionHandler::DisconnectFromWwise()
 	waapi_Disconnect(MyCurrentWwiseConnection);
 }
 
-bool WwiseConnectionHandler::GetSelectedWwiseObjects(bool suppressOuputMessages)
-{
-	return false;
-}
-
 WwiseObject WwiseConnectionHandler::GetSelectedObject()
 {
 	WwiseObject mySelectedObject;
@@ -121,11 +116,6 @@ WwiseObject WwiseConnectionHandler::GetSelectedObject()
 	return mySelectedObject;
 }
 
-
-void WwiseConnectionHandler::GetChildrenFromSelectedParent(bool suppressOuputMessages)
-{
-
-}
 
 std::vector<WwiseObject> WwiseConnectionHandler::GetWwiseObjects(bool suppressOuputMessages, ObjectGetArgs& getargs, AK::WwiseAuthoringAPI::AkJson::Array& Results)
 {

@@ -33,11 +33,7 @@ public:
 	
 	void DisconnectFromWwise();
 
-	bool GetSelectedWwiseObjects(bool suppressOuputMessages);
-
 	WwiseObject GetSelectedObject();
-
-	void GetChildrenFromSelectedParent(bool suppressOuputMessages);
 
 	std::vector<WwiseObject> GetWwiseObjects(bool suppressOuputMessages, ObjectGetArgs& getargs, AK::WwiseAuthoringAPI::AkJson::Array& Results);
 

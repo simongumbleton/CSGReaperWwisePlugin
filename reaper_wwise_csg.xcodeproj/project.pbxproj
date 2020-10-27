@@ -307,6 +307,7 @@
 		9E781E4E24C0E8FD005401E2 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */,
 				9E185DD025051AEA0034F026 /* RapidJsonUtils.h */,
 				9E781E4F24C0E8FD005401E2 /* JUCE */,
 				9E781E5D24C0E8FD005401E2 /* ReaperRenderQueParser.h */,
@@ -339,6 +340,8 @@
 		9E78220824C0E9B2005401E2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */,
+				9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */,
 				9E78220924C0E9B2005401E2 /* ConfigFileHandler.cpp */,
 				9E78220C24C0E9B2005401E2 /* gui_Transfer.cpp */,
 				9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */,
@@ -799,9 +802,6 @@
 		9EBC0E9A24C345990068154E /* Old */ = {
 			isa = PBXGroup;
 			children = (
-				9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */,
-				9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */,
-				9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */,
 			);
 			path = Old;
 			sourceTree = "<group>";
