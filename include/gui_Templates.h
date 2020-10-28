@@ -6,24 +6,24 @@
 #include "gui_RenderTree.h"
 
 
-class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
+class WwiseTemplateComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
 {
-	static TransferToWwiseComponent * currentTransferComponent;
+	static WwiseTemplateComponent * currentWwiseTemplateComponent;
 	
 	static void callback_OnSelectionChanged(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider)
 	{
-		if (TransferToWwiseComponent::currentTransferComponent)
+		if (WwiseTemplateComponent::currentWwiseTemplateComponent)
 		{
-			TransferToWwiseComponent::currentTransferComponent->postCommandMessage(1);
+			WwiseTemplateComponent::currentWwiseTemplateComponent->postCommandMessage(1);
 		}
 	}
 	
 	static void callback_OnProjectClosed(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider)
 	{
 		
-		if (TransferToWwiseComponent::currentTransferComponent)
+		if (WwiseTemplateComponent::currentWwiseTemplateComponent)
 		{
-			TransferToWwiseComponent::currentTransferComponent->postCommandMessage(2);
+			WwiseTemplateComponent::currentWwiseTemplateComponent->postCommandMessage(2);
 		}
 	}
 	
@@ -37,8 +37,8 @@ public:
 	
 	WwiseConnectionHandler * WwiseCntnHndlr;
 
-	TransferToWwiseComponent();
-	~TransferToWwiseComponent();
+	WwiseTemplateComponent();
+	~WwiseTemplateComponent();
 
 	void resized() override;
 	
@@ -168,17 +168,17 @@ private:
 
 
 	//==============================================================================
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferToWwiseComponent)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WwiseTemplateComponent)
 };
 
 
 static void callback_OnSelectionChanged(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider);
 
 
-class TransferWindow : public juce::DocumentWindow
+class TemplateWindow : public juce::DocumentWindow
 {
 public:
-	TransferWindow(const juce::String& name, juce::Component* component)
+	TemplateWindow(const juce::String& name, juce::Component* component)
 		: DocumentWindow(name, juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), juce::DocumentWindow::allButtons)
 	{
 		setUsingNativeTitleBar(true);
@@ -201,6 +201,6 @@ public:
 private:
 
 	//==============================================================================
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferWindow)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TemplateWindow)
 };
 

@@ -86,6 +86,7 @@ public:
 	std::vector<std::string> RenderFilesBackup;
 	
 	TransferToWwiseComponent * owningGUIWindow;
+	//juce::Component * owningGUIWindow;
 	
 	CreateImportWindow();
 	~CreateImportWindow();

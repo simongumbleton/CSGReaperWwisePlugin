@@ -5,7 +5,7 @@
 //  Created by Simon Gumbleton on 12/10/2020.
 //  Copyright © 2020 My Company. All rights reserved.
 //
-
+#pragma once
 #ifndef platformhelpers_h
 #define platformhelpers_h
 

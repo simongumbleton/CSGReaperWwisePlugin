@@ -22,6 +22,7 @@
 
 #include "GUI.h"
 #include "gui_Transfer.h"
+#include "gui_Templates.h"
 
 #include "reaperHelpers.h"
 
@@ -42,13 +43,14 @@ char currentProject[256];
 
 
 gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise" };
-
+gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise - Template" };
 
 //std::unique_ptr<BasicWindow> mainWindow;
 //std::unique_ptr<MainWindow> mainWindow2;
 //std::unique_ptr<TransferWindow> mainWindow2;
 
 void LaunchTransferWindow();
+void LaunchTemplateWindow();
 bool HookCommandProc(int command, int flag);
 
 extern "C"
@@ -74,9 +76,11 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		int regerrcnt = 0;
 		//Register a custom command ID for an action
 		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise");
+		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise_Template");
 		
 		//register actions
 		plugin_register("gaccel", &Transfer_To_Wwise.accel);
+		plugin_register("gaccel", &Template_To_Wwise.accel);
 		//plugin_register("custom_action",&Transfer_To_Wwise.accel.cmd);
 
 		rec->Register("hookcommand", (void*)HookCommandProc);
@@ -88,15 +92,22 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		//SWELL_Menu_AddMenuItem(hMenu, "CSG", 0, 999);
 		
 		
-			{
-				MENUITEMINFO mi = { sizeof(MENUITEMINFO), };
-				mi.fMask = MIIM_TYPE | MIIM_ID;
-				mi.fType = MFT_STRING;
-				mi.wID = Transfer_To_Wwise.accel.cmd;
-				mi.dwTypeData = (char *)"CSG - Transfer To Wwise";
-				InsertMenuItem(hMenu, 0, true, &mi);
-			}
-		
+		{
+			MENUITEMINFO mi = { sizeof(MENUITEMINFO), };
+			mi.fMask = MIIM_TYPE | MIIM_ID;
+			mi.fType = MFT_STRING;
+			mi.wID = Transfer_To_Wwise.accel.cmd;
+			mi.dwTypeData = (char *)"CSG - Transfer To Wwise";
+			InsertMenuItem(hMenu, 0, true, &mi);
+		}
+		{
+			MENUITEMINFO mi = { sizeof(MENUITEMINFO), };
+			mi.fMask = MIIM_TYPE | MIIM_ID;
+			mi.fType = MFT_STRING;
+			mi.wID = Template_To_Wwise.accel.cmd;
+			mi.dwTypeData = (char *)"CSG - Transfer To Wwise - Template";
+			InsertMenuItem(hMenu, 0, true, &mi);
+		}
 		
 		
 		
@@ -154,14 +165,16 @@ void LaunchTransferWindow()
 {
 	String wName = "CSG Reaper Transfer to Wwise Extension";
 	initialiseJuce_GUI();
-
 	MessageManagerLock mml(Thread::getCurrentThread());
-	//mainWindow.reset( new BasicWindow(wName,Colour::Colour(255,0,0),DocumentWindow::TitleBarButtons::allButtons));
 	TransferWindow* mainWindow2 = new TransferWindow(wName, new TransferToWwiseComponent);
-	//mainWindow2->reset(new TransferWindow(wName, new TransferToWwiseComponent));
+}
 
-	//mainWindow->setVisible(true);
-	//mainWindow->centreWithSize(500, 500);
+void LaunchTemplateWindow()
+{
+	String wName = "CSG Reaper Transfer to Wwise Extension";
+	initialiseJuce_GUI();
+	MessageManagerLock mml(Thread::getCurrentThread());
+	TemplateWindow* mainWindow3 = new TemplateWindow(wName, new WwiseTemplateComponent);
 }
 
 bool HookCommandProc(int command, int flag)
@@ -171,6 +184,11 @@ bool HookCommandProc(int command, int flag)
 	if (command == Transfer_To_Wwise.accel.cmd)
 	{
 		LaunchTransferWindow();
+		return true;
+	}
+	else if (command == Template_To_Wwise.accel.cmd)
+	{
+		LaunchTemplateWindow();
 		return true;
 	}
 	return false;

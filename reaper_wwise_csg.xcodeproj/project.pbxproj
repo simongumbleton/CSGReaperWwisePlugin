@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9E185DD125051AEA0034F026 /* RapidJsonUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E185DD025051AEA0034F026 /* RapidJsonUtils.h */; };
+		9E5B444A254A0B4500382C38 /* gui_RenderTree.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E5B4449254A0B4500382C38 /* gui_RenderTree.h */; };
+		9E5B444D254A0D1A00382C38 /* gui_Templates.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E5B444C254A0D1A00382C38 /* gui_Templates.h */; };
+		9E5B4453254A14F000382C38 /* gui_Templates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E5B444F254A112D00382C38 /* gui_Templates.cpp */; };
 		9E78206024C0E904005401E2 /* JuceHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5124C0E8FD005401E2 /* JuceHeader.h */; };
 		9E78206224C0E904005401E2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */; };
 		9E78206324C0E904005401E2 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */; };
@@ -71,6 +74,9 @@
 
 /* Begin PBXFileReference section */
 		9E185DD025051AEA0034F026 /* RapidJsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidJsonUtils.h; sourceTree = "<group>"; };
+		9E5B4449254A0B4500382C38 /* gui_RenderTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_RenderTree.h; sourceTree = "<group>"; };
+		9E5B444C254A0D1A00382C38 /* gui_Templates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_Templates.h; sourceTree = "<group>"; };
+		9E5B444F254A112D00382C38 /* gui_Templates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_Templates.cpp; sourceTree = "<group>"; };
 		9E781E5124C0E8FD005401E2 /* JuceHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JuceHeader.h; sourceTree = "<group>"; };
 		9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_gui_basics.mm; sourceTree = "<group>"; };
 		9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_graphics.mm; sourceTree = "<group>"; };
@@ -307,6 +313,7 @@
 		9E781E4E24C0E8FD005401E2 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				9E5B444C254A0D1A00382C38 /* gui_Templates.h */,
 				9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */,
 				9E185DD025051AEA0034F026 /* RapidJsonUtils.h */,
 				9E781E4F24C0E8FD005401E2 /* JUCE */,
@@ -318,6 +325,7 @@
 				9E78205824C0E904005401E2 /* gui_Transfer.h */,
 				9EBC0E9D24C346800068154E /* waapi_structs.h */,
 				9EA547992534FEFC005FE490 /* platformhelpers.h */,
+				9E5B4449254A0B4500382C38 /* gui_RenderTree.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -340,6 +348,7 @@
 		9E78220824C0E9B2005401E2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				9E5B444F254A112D00382C38 /* gui_Templates.cpp */,
 				9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */,
 				9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */,
 				9E78220924C0E9B2005401E2 /* ConfigFileHandler.cpp */,
@@ -904,6 +913,8 @@
 				9E78206524C0E904005401E2 /* AppConfig.h in Headers */,
 				9E78206024C0E904005401E2 /* JuceHeader.h in Headers */,
 				C40699501C39B34300E445F7 /* reaper_plugin_functions.h in Headers */,
+				9E5B444A254A0B4500382C38 /* gui_RenderTree.h in Headers */,
+				9E5B444D254A0D1A00382C38 /* gui_Templates.h in Headers */,
 				9E78207324C0E904005401E2 /* reaperHelpers.h in Headers */,
 				9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */,
 				9E78207124C0E904005401E2 /* GUI.h in Headers */,
@@ -988,6 +999,7 @@
 				C484E68F1C1BAD49005C6CCC /* swell-kb.mm in Sources */,
 				9E78221424C0E9B2005401E2 /* ReaperRenderQueParser.cpp in Sources */,
 				C49593F91C4EFD1A007C6C9B /* util.cpp in Sources */,
+				9E5B4453254A14F000382C38 /* gui_Templates.cpp in Sources */,
 				9E78206624C0E904005401E2 /* include_juce_events.mm in Sources */,
 				9E78206924C0E904005401E2 /* include_juce_data_structures.mm in Sources */,
 				9E78221624C0E9B2005401E2 /* Main.cpp in Sources */,
