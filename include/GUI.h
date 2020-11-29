@@ -117,3 +117,40 @@ private:
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
 };
+
+
+//Base class for the main component for transfer behaviour to wwise
+
+class BaseWwiseGuiComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
+{
+public:
+	
+	BaseWwiseGuiComponent()
+	{
+		
+	};
+	~BaseWwiseGuiComponent()
+	{
+		
+	};
+	
+	double transferProgress = 0.0f;
+	juce::ProgressBar * progressBar = new ProgressBar(transferProgress);
+	
+	juce::Label * statusLabel = new Label();
+	
+	
+	void setStatusText(std::string message)
+	{
+		statusLabel->setText("Status: "+message, juce::NotificationType::dontSendNotification);
+	}
+
+	void updateProgressValue(double newProgress)
+	{
+		transferProgress = newProgress;
+		this->repaint();
+	}
+	
+	//==============================================================================
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BaseWwiseGuiComponent)
+};

@@ -23,7 +23,7 @@ WwiseTemplateComponent::WwiseTemplateComponent() //constructor
 	thisCreateImportWindow = new CreateImportWindow();
 	if (thisCreateImportWindow)
 	{
-		//thisCreateImportWindow->owningGUIWindow = this;
+		thisCreateImportWindow->owningGUIWindow = this;
 	}
 	WwiseCntnHndlr = thisCreateImportWindow->WwiseConnectionHnd;
 	
@@ -607,13 +607,3 @@ void WwiseTemplateComponent::handle_OnWwiseProjectClosed()
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
 }
 
-void WwiseTemplateComponent::setStatusText(std::string message)
-{
-	statusLabel->setText("Status: "+message, juce::NotificationType::dontSendNotification);
-}
-
-void WwiseTemplateComponent::updateProgressValue(double newProgress)
-{
-	transferProgress = newProgress;
-	this->repaint();
-}

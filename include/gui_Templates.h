@@ -3,10 +3,12 @@
 #include "JUCE/JuceHeader.h"
 #include "waapi_structs.h"
 #include "WwiseConnectionHandler.h"
+#include "GUI.h"
 #include "gui_RenderTree.h"
 
 
-class WwiseTemplateComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
+//class WwiseTemplateComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
+class WwiseTemplateComponent : public BaseWwiseGuiComponent
 {
 	static WwiseTemplateComponent * currentWwiseTemplateComponent;
 	
@@ -75,10 +77,6 @@ public:
 	void handle_OnSelectedParentChanged();
 	
 	void handle_OnWwiseProjectClosed();
-	
-	void setStatusText(std::string message);
-	
-	void updateProgressValue(double newProgress);
 	
 	//void postCommandMessage(int commandId);
 	//https://docs.juce.com/master/classComponent.html#a9ba6fa31d1397c7e90050b2cd4f2089b
@@ -153,15 +151,13 @@ private:
 	
 	juce::Label * selectedParentLabel = new Label();
 	
-	juce::Label * statusLabel = new Label();
+	
 
 	//std::unique_ptr<TreeView> tree_RenderJobTree; //= new TreeView("tree_RenderJobTree");	//Tree view
 	juce::TreeView * tree_RenderJobTree = new TreeView("tree_RenderJobTree");
 	
 	std::vector<juce::TreeViewItem *> RenderTreeSelectedItems;
 
-	double transferProgress = 0.0f;
-	juce::ProgressBar * progressBar = new ProgressBar(transferProgress);
 	
 
 	StringArray ToJuceStringArray(std::vector<std::string>strings);

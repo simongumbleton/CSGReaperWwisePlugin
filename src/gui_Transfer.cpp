@@ -607,13 +607,3 @@ void TransferToWwiseComponent::handle_OnWwiseProjectClosed()
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
 }
 
-void TransferToWwiseComponent::setStatusText(std::string message)
-{
-	statusLabel->setText("Status: "+message, juce::NotificationType::dontSendNotification);
-}
-
-void TransferToWwiseComponent::updateProgressValue(double newProgress)
-{
-	transferProgress = newProgress;
-	this->repaint();
-}

@@ -10,7 +10,7 @@
 #include "WaapiFunctions.h"
 //#include "PluginWindow.h"
 
-class TransferToWwiseComponent;
+class BaseWwiseGuiComponent;
 
 class WwiseConnectionHandler
 {	
@@ -85,7 +85,8 @@ public:
 	std::vector<RenderQueJob> GlobalListOfRenderQueJobs;
 	std::vector<std::string> RenderFilesBackup;
 	
-	TransferToWwiseComponent * owningGUIWindow;
+	//TransferToWwiseComponent * owningGUIWindow;
+	BaseWwiseGuiComponent * owningGUIWindow;
 	//juce::Component * owningGUIWindow;
 	
 	CreateImportWindow();
