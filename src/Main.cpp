@@ -40,14 +40,13 @@ int WaapiPort = 8095;
 
 char currentProject[256];
 
-
+//std::unique_ptr<juce::DocumentWindow>currentActiveWindow;
+bool transferWindowStatus = false;
+juce::DocumentWindow * currentTransferWindow = nullptr;
 
 gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise" };
-gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise - Template" };
+gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "DEV WIP -  Window" };
 
-//std::unique_ptr<BasicWindow> mainWindow;
-//std::unique_ptr<MainWindow> mainWindow2;
-//std::unique_ptr<TransferWindow> mainWindow2;
 
 void LaunchTransferWindow();
 void LaunchTemplateWindow();
@@ -76,7 +75,7 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		int regerrcnt = 0;
 		//Register a custom command ID for an action
 		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise");
-		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise_Template");
+		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "DEV WIP -  Window");
 		
 		//register actions
 		plugin_register("gaccel", &Transfer_To_Wwise.accel);
@@ -105,7 +104,7 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 			mi.fMask = MIIM_TYPE | MIIM_ID;
 			mi.fType = MFT_STRING;
 			mi.wID = Template_To_Wwise.accel.cmd;
-			mi.dwTypeData = (char *)"CSG - Transfer To Wwise - Template";
+			mi.dwTypeData = (char *)"DEV WIP -  Window";
 			InsertMenuItem(hMenu, 0, true, &mi);
 		}
 		
@@ -166,15 +165,31 @@ void LaunchTransferWindow()
 	String wName = "CSG Reaper Transfer to Wwise Extension";
 	initialiseJuce_GUI();
 	MessageManagerLock mml(Thread::getCurrentThread());
-	TransferWindow* mainWindow2 = new TransferWindow(wName, new TransferToWwiseComponent);
+	if (transferWindowStatus)
+	{
+		currentTransferWindow->toFront(true);
+	}
+	else
+	{
+		TransferWindow* mainWindow2 = new TransferWindow(wName, new TransferToWwiseComponent,&transferWindowStatus);
+		currentTransferWindow = mainWindow2;
+	}
 }
 
 void LaunchTemplateWindow()
 {
-	String wName = "CSG Reaper Transfer to Wwise Extension";
+	//Testing set markers
+	//SetProjectMarker(1,true,10.0,110.0,"TestRegion");
+	
+	String wName = "DEV WIP -  Window";
 	initialiseJuce_GUI();
 	MessageManagerLock mml(Thread::getCurrentThread());
 	TemplateWindow* mainWindow3 = new TemplateWindow(wName, new WwiseTemplateComponent);
+}
+
+void ClearCurrentWindowPtr()
+{
+	currentTransferWindow = nullptr;
 }
 
 bool HookCommandProc(int command, int flag)

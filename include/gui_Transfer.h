@@ -5,6 +5,7 @@
 #include "WwiseConnectionHandler.h"
 #include "GUI.h"
 #include "gui_RenderTree.h"
+#include <stdio.h>
 
 
 //class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
@@ -175,14 +176,16 @@ static void callback_OnSelectionChanged(uint64_t in_subscriptionId, const AK::Ww
 
 class TransferWindow : public juce::DocumentWindow
 {
+	bool * mWindowState;
 public:
-	TransferWindow(const juce::String& name, juce::Component* component)
+	TransferWindow(const juce::String& name, juce::Component* component, bool *windowStatus)
 		: DocumentWindow(name, juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), juce::DocumentWindow::allButtons)
 	{
 		setUsingNativeTitleBar(true);
 		setContentOwned(component, true);
 		
-		
+		mWindowState = windowStatus;
+		*mWindowState = true;
 
 		setResizable(true, false);
 		setResizeLimits(500, 500, 10000, 10000);
@@ -193,6 +196,7 @@ public:
 
 	void closeButtonPressed() override
 	{
+		*mWindowState = false;
 		delete this;
 	}
 

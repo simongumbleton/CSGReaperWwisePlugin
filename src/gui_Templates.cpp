@@ -478,6 +478,7 @@ void WwiseTemplateComponent::buttonClicked(juce::Button * pButton)
 		if (thisCreateImportWindow->handleUI_RenderImport())
 		{
 			RefreshRenderJobTree();
+			PrintToConsole("Success! All jobs imported.");
 		}
 		//thisCreateImportWindow->restoreRenderQueFiles();
 	}

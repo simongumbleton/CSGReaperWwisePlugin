@@ -548,7 +548,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 
 			}
 
-			
+			// The job "should" be empty at this point, as we have handled all the overrides and looped through all the remaining import files. Not sure this last import step is needed here?
 			ImportObjectArgs curJobImportArgs = SetupImportArgs
 			(
 				job.parentWwiseObject,
@@ -703,6 +703,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 		for (auto obj : results)
 		{
 			std::string type = obj["type"].GetVariant();
+			std::string name = obj["name"].GetVariant();
 			if (type == "AudioFileSource") { continue; }
 
 			CreatePlayEventForID(obj["id"].GetVariant(), obj["name"].GetVariant());
