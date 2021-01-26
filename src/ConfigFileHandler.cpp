@@ -33,7 +33,7 @@ bool ReadConfigFile(config & outConfig)
 	ifstream configFile;
 	CheckConfigExists();
 
-	configFile.open("csg_reaperwwise.config");
+	configFile.open(configFileDir + kPathSeparator + "csg_reaperwwise.config");
 
 	//std::istringstream is_file(dummyconfig);
 
@@ -60,7 +60,7 @@ bool ReadConfigFile(config & outConfig)
 
 bool CheckConfigExists()
 {
-	ifstream outFile("csg_reaperwwise.config");
+	ifstream outFile(configFileDir + kPathSeparator +"csg_reaperwwise.config");
 	if (!outFile.is_open())
 	{
 		CreateConfigFile();
@@ -71,7 +71,7 @@ bool CheckConfigExists()
 bool CreateConfigFile()
 {
 	ofstream newFile;
-	newFile.open("csg_reaperwwise.config");
+	newFile.open(configFileDir + kPathSeparator + "csg_reaperwwise.config");
 	newFile << defaults; //dummyconfig;
 	newFile.close();
 	return true;
