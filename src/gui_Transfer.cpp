@@ -125,6 +125,8 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 
 	setSize(1000, 500);
 	
+	thisCreateImportWindow->OnInitDlg();
+	
 	TryConnectToWwise();
 	CheckIsVoice();
 	CheckOriginalsDirectory();
@@ -245,21 +247,28 @@ void TransferToWwiseComponent::resized()
 	
 	btn_ApplySettingsToJobs->setBounds(LeftHalf.removeFromTop(labelHeight).reduced(border));
 	
-	tree_RenderJobTree->setBounds(LeftHalf.removeFromTop(treeHeight).reduced(border));
-
-	auto RenderButtonArea = LeftHalf.removeFromTop(buttonHeight*2).reduced(border);
-	
-	btn_RefreshJobList->setBounds(RenderButtonArea.removeFromLeft(RenderButtonArea.getWidth()/2).reduced(border));
-	
-	btn_RenderAndImport->setBounds(RenderButtonArea.reduced(border));
-	
-	progressBar->setBounds(LeftHalf.removeFromTop(buttonHeight).reduced(border));
 	
 	auto bottomRow = LeftHalf.removeFromBottom(buttonHeight).reduced(border);
 	
 	btn_ConnectToWwise->setBounds(bottomRow.removeFromLeft(bottomRow.getWidth()/2));
 	
 	txt_ConnectionStatus->setBounds(bottomRow);
+	
+	progressBar->setBounds(LeftHalf.removeFromBottom(buttonHeight).reduced(border));
+	
+	
+	auto RenderButtonArea = LeftHalf.removeFromBottom(buttonHeight*2).reduced(border);
+	
+	btn_RefreshJobList->setBounds(RenderButtonArea.removeFromLeft(RenderButtonArea.getWidth()/2).reduced(border));
+	
+	btn_RenderAndImport->setBounds(RenderButtonArea.reduced(border));
+	
+	//tree_RenderJobTree->setBounds(LeftHalf.removeFromTop(treeHeight).reduced(border));
+	
+	tree_RenderJobTree->setBounds(LeftHalf.reduced(border));
+	
+	
+	
 	
 	auto statusRow = RightHalf.removeFromBottom(labelHeight).reduced(border);
 	

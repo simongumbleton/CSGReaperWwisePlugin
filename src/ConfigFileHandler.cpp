@@ -10,6 +10,7 @@
 
 #include <filesystem>
 #include "ConfigFileHandler.h"
+#include "platformhelpers.h"
 
 using namespace std;
 
@@ -27,7 +28,7 @@ map<string, string> rawConfigData;
 bool ReadConfigFile(config & outConfig)
 {
 	string reaperPath = GetReaperResourcePath();
-	configFileDir = reaperPath + "\\UserPlugins";
+	configFileDir = reaperPath + kPathSeparator + "UserPlugins";
 
 	ifstream configFile;
 	CheckConfigExists();
