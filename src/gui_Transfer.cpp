@@ -131,6 +131,8 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	CheckIsVoice();
 	CheckOriginalsDirectory();
 	RefreshRenderJobTree();
+	updateProgressValue(0);
+	setStatusText("Ready..");
 	
 
 }
@@ -464,6 +466,8 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	else if (pButton == btn_RefreshJobList)
 	{
 		RefreshRenderJobTree();
+		updateProgressValue(0);
+		setStatusText("Ready..");
 	}
 	else if (pButton == btn_isVoice)
 	{
