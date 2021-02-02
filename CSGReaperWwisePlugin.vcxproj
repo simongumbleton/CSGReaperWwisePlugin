@@ -69,6 +69,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\gui_Templates.cpp" />
     <ClCompile Include="src\gui_Transfer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\ReaperRenderQueParser.cpp" />
@@ -77,10 +78,6 @@
     <ClCompile Include="src\WwiseConnectionHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="include\AkAutobahn.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="include\AkAutobahn.pdb" />
     <None Include="include\JUCE\include_juce_core.mm" />
     <None Include="include\JUCE\include_juce_data_structures.mm" />
     <None Include="include\JUCE\include_juce_events.mm" />
@@ -90,9 +87,50 @@
   <ItemGroup>
     <ClInclude Include="include\ConfigFileHandler.h" />
     <ClInclude Include="include\GUI.h" />
+    <ClInclude Include="include\gui_RenderTree.h" />
+    <ClInclude Include="include\gui_Templates.h" />
     <ClInclude Include="include\gui_Transfer.h" />
     <ClInclude Include="include\JUCE\AppConfig.h" />
     <ClInclude Include="include\JUCE\JuceHeader.h" />
+    <ClInclude Include="include\platformhelpers.h" />
+    <ClInclude Include="include\RapidJsonUtils.h" />
+    <ClInclude Include="include\rapidjson\allocators.h" />
+    <ClInclude Include="include\rapidjson\cursorstreamwrapper.h" />
+    <ClInclude Include="include\rapidjson\document.h" />
+    <ClInclude Include="include\rapidjson\encodedstream.h" />
+    <ClInclude Include="include\rapidjson\encodings.h" />
+    <ClInclude Include="include\rapidjson\error\en.h" />
+    <ClInclude Include="include\rapidjson\error\error.h" />
+    <ClInclude Include="include\rapidjson\filereadstream.h" />
+    <ClInclude Include="include\rapidjson\filewritestream.h" />
+    <ClInclude Include="include\rapidjson\fwd.h" />
+    <ClInclude Include="include\rapidjson\internal\biginteger.h" />
+    <ClInclude Include="include\rapidjson\internal\clzll.h" />
+    <ClInclude Include="include\rapidjson\internal\diyfp.h" />
+    <ClInclude Include="include\rapidjson\internal\dtoa.h" />
+    <ClInclude Include="include\rapidjson\internal\ieee754.h" />
+    <ClInclude Include="include\rapidjson\internal\itoa.h" />
+    <ClInclude Include="include\rapidjson\internal\meta.h" />
+    <ClInclude Include="include\rapidjson\internal\pow10.h" />
+    <ClInclude Include="include\rapidjson\internal\regex.h" />
+    <ClInclude Include="include\rapidjson\internal\stack.h" />
+    <ClInclude Include="include\rapidjson\internal\strfunc.h" />
+    <ClInclude Include="include\rapidjson\internal\strtod.h" />
+    <ClInclude Include="include\rapidjson\internal\swap.h" />
+    <ClInclude Include="include\rapidjson\istreamwrapper.h" />
+    <ClInclude Include="include\rapidjson\memorybuffer.h" />
+    <ClInclude Include="include\rapidjson\memorystream.h" />
+    <ClInclude Include="include\rapidjson\msinttypes\inttypes.h" />
+    <ClInclude Include="include\rapidjson\msinttypes\stdint.h" />
+    <ClInclude Include="include\rapidjson\ostreamwrapper.h" />
+    <ClInclude Include="include\rapidjson\pointer.h" />
+    <ClInclude Include="include\rapidjson\prettywriter.h" />
+    <ClInclude Include="include\rapidjson\rapidjson.h" />
+    <ClInclude Include="include\rapidjson\reader.h" />
+    <ClInclude Include="include\rapidjson\schema.h" />
+    <ClInclude Include="include\rapidjson\stream.h" />
+    <ClInclude Include="include\rapidjson\stringbuffer.h" />
+    <ClInclude Include="include\rapidjson\writer.h" />
     <ClInclude Include="include\reaperHelpers.h" />
     <ClInclude Include="include\ReaperRenderQueParser.h" />
     <ClInclude Include="include\reaper_plugin.h" />
@@ -100,6 +138,7 @@
     <ClInclude Include="include\WaapiConnect.h" />
     <ClInclude Include="include\WaapiFunctions.h" />
     <ClInclude Include="include\waapi_structs.h" />
+    <ClInclude Include="include\WwiseConnectionHandler.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{a6ede66c-9f09-446a-8fe4-5ee4f3cbedb9}</ProjectGuid>
@@ -107,7 +146,7 @@
     <Platform>Win32</Platform>
     <ProjectName>CSGReaperWwisePlugin</ProjectName>
     <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -531,10 +570,11 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;VALIDATE_WAMP;USE_WEBSOCKET;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Debug";SimonsReaperPlugin_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;VALIDATE_WAMP;USE_WEBSOCKET;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Debug";SimonsReaperPlugin_EXPORTS;AK_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;C:\Program Files (x86)\Audiokinetic\Wwise 2019.2.1.7250\SDK\include;C:\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;C:\Program Files (x86)\Audiokinetic\Wwise 2019.2.9.7459\SDK\include;C:\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalOptions>/bigobj</AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;VALIDATE_WAMP;USE_WEBSOCKET;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Debug\";SimonsReaperPlugin_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -553,7 +593,7 @@
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>AkAutobahn.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Program Files %28x86%29\Audiokinetic\Wwise 2019.2.9.7459\SDK\x64_vc160\Debug\lib;$(ProjectDir)include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>$(ProjectDir)$(TargetName).pdb</ProgramDatabaseFile>
       <ProfileGuidedDatabase>$(ProjectDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ImportLibrary>$(ProjectDir)$(TargetName).lib</ImportLibrary>
@@ -694,7 +734,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;C:\Program Files (x86)\Audiokinetic\Wwise 2019.2.1.7250\SDK\include;C:\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;C:\Program Files (x86)\Audiokinetic\Wwise 2019.2.9.7459\SDK\include;C:\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -723,7 +763,7 @@
     </Midl>
     <Link>
       <AdditionalDependencies>AkAutobahn.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Program Files %28x86%29\Audiokinetic\Wwise 2019.2.9.7459\SDK\x64_vc160\Release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
