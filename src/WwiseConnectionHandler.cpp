@@ -56,13 +56,6 @@ bool WwiseConnectionHandler::ConnectToWwise(bool suppressOuputMessages, int port
 			//MessageBox(NULL, WwiseConnectionStatus.c_str(), "Wwise Connection Status", MB_OK);
 			//PrintToConsole(WwiseConnectionStatus);
 		}
-		if (MyCurrentWwiseConnection.useAutomationMode)
-		{
-			if (!waapi_SetAutomationMode(true))
-			{
-				//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
-			}
-		}
 
 		GetWwiseProjectGlobals(false, MyCurrentWwiseConnection.projectGlobals);
 
@@ -188,6 +181,15 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 		//Check the type for the event target
 	}
 
+	if (MyCurrentWwiseConnection.useAutomationMode)
+	{
+		if (!waapi_SetAutomationMode(true))
+		{
+			//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
+		}
+	}
+
+
 	waapi_UndoHandler(Begin, "Create Object");
 
 	AkJson MoreRawReturnResults;
@@ -201,7 +203,14 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 	waapi_GetWaapiResultsArray(Results, MoreRawReturnResults);
 
 	waapi_UndoHandler(End, "Create Object");
-	waapi_SaveWwiseProject();	
+	waapi_SaveWwiseProject();
+
+
+	if (!waapi_SetAutomationMode(false))
+	{
+			//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
+	}
+
 	return true;
 }
 
@@ -222,6 +231,14 @@ bool WwiseConnectionHandler::ImportAudioToWwise(bool suppressOutputMessages, Imp
 	}
 
 	using namespace AK::WwiseAuthoringAPI;
+
+	if (MyCurrentWwiseConnection.useAutomationMode)
+	{
+		if (!waapi_SetAutomationMode(true))
+		{
+			//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
+		}
+	}
 
 	waapi_UndoHandler(Begin, "Auto Import");
 	AkJson MoreRawReturnResults;
@@ -267,6 +284,12 @@ bool WwiseConnectionHandler::ImportAudioToWwise(bool suppressOutputMessages, Imp
 
 	waapi_UndoHandler(End, "Auto Import");
 	waapi_SaveWwiseProject();
+
+	if (!waapi_SetAutomationMode(false))
+	{
+		//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
+	}
+
 	return true;
 
 }

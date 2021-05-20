@@ -84,34 +84,28 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 
 		rec->Register("hookcommand", (void*)HookCommandProc);
 
-		AddExtensionsMainMenu();
+		// Create a custom menu and add the available commands
+		HMENU hMenu = CreatePopupMenu();
+		
+		MENUITEMINFO mi = { sizeof(MENUITEMINFO), };
+		mi.fMask = MIIM_TYPE | MIIM_ID;
+		mi.fType = MFT_STRING;
+		
+		// add each command to the popupmenu
+		mi.wID = Transfer_To_Wwise.accel.cmd;
+		mi.dwTypeData = (char *)"CSG - Transfer To Wwise";
+		InsertMenuItem(hMenu, 0, true, &mi);
+		
+		mi.wID = Template_To_Wwise.accel.cmd;
+		mi.dwTypeData = (char *)"DEV WIP -  Window";
+		InsertMenuItem(hMenu, 0, true, &mi);
 
-		HMENU hMenu = GetSubMenu(GetMenu(GetMainHwnd()), 9);
-		
-		//SWELL_Menu_AddMenuItem(hMenu, "CSG", 0, 999);
-		
-		
-		{
-			MENUITEMINFO mi = { sizeof(MENUITEMINFO), };
-			mi.fMask = MIIM_TYPE | MIIM_ID;
-			mi.fType = MFT_STRING;
-			mi.wID = Transfer_To_Wwise.accel.cmd;
-			mi.dwTypeData = (char *)"CSG - Transfer To Wwise";
-			InsertMenuItem(hMenu, 0, true, &mi);
-		}
-		{
-			MENUITEMINFO mi = { sizeof(MENUITEMINFO), };
-			mi.fMask = MIIM_TYPE | MIIM_ID;
-			mi.fType = MFT_STRING;
-			mi.wID = Template_To_Wwise.accel.cmd;
-			mi.dwTypeData = (char *)"DEV WIP -  Window";
-			InsertMenuItem(hMenu, 0, true, &mi);
-		}
-		
-		
-		
-		//LaunchTransferWindow();
-
+		// add the new menu to the main menu bar
+		HMENU hMainMenu = GetMenu(GetMainHwnd());
+		mi.fMask = MIIM_SUBMENU | MIIM_TYPE;
+		mi.hSubMenu = hMenu;
+		mi.dwTypeData = (char*)"CSG";
+		InsertMenuItem(hMainMenu, GetMenuItemCount(hMainMenu) - 1, TRUE, &mi);
 		
 	}
 	return 1;

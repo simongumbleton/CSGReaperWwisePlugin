@@ -363,3 +363,5 @@ reaper_wwise_csg.xcodeproj/xcuserdata/simongumbleton.xcuserdatad/xcschemes/xcsch
 *.db
 build/XCBuildData/BuildDescriptionCacheIndex-15486ff459d1ea551331c2eaf9902797
 reaper_wwise_csg_x64.exp
+reaper_wwise_csg_x64.exp
+reaper_wwise_csg_x64.lib
