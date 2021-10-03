@@ -45,7 +45,7 @@ bool transferWindowStatus = false;
 juce::DocumentWindow * currentTransferWindow = nullptr;
 
 gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise" };
-gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "DEV WIP -  Window" };
+gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - DEV WIP -  Window" };
 
 
 void LaunchTransferWindow();
@@ -75,15 +75,15 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		int regerrcnt = 0;
 		//Register a custom command ID for an action
 		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise");
-		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "DEV WIP -  Window");
+		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "CSG_DEV_WIP_Window");
 		
 		//register actions
 		plugin_register("gaccel", &Transfer_To_Wwise.accel);
 		plugin_register("gaccel", &Template_To_Wwise.accel);
 		//plugin_register("custom_action",&Transfer_To_Wwise.accel.cmd);
-
+		
 		rec->Register("hookcommand", (void*)HookCommandProc);
-
+		
 		// Create a custom menu and add the available commands
 		HMENU hMenu = CreatePopupMenu();
 		
@@ -97,7 +97,7 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		InsertMenuItem(hMenu, 0, true, &mi);
 		
 		mi.wID = Template_To_Wwise.accel.cmd;
-		mi.dwTypeData = (char *)"DEV WIP -  Window";
+		mi.dwTypeData = (char *)"CSG - DEV WIP - Window";
 		InsertMenuItem(hMenu, 0, true, &mi);
 
 		// add the new menu to the main menu bar
@@ -175,7 +175,7 @@ void LaunchTemplateWindow()
 	//Testing set markers
 	//SetProjectMarker(1,true,10.0,110.0,"TestRegion");
 	
-	String wName = "DEV WIP -  Window";
+	String wName = "CSG - DEV WIP - Window";
 	initialiseJuce_GUI();
 	MessageManagerLock mml(Thread::getCurrentThread());
 	TemplateWindow* mainWindow3 = new TemplateWindow(wName, new WwiseTemplateComponent);
