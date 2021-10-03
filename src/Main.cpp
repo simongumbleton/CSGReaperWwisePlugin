@@ -92,8 +92,10 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		
 #ifdef _WIN32
 		// Create a custom menu to the main menu and add the available commands
-		// only do this on windows, on Mac it seems to not work in the main menu, so on mac
-		// we add them to the main extenstions menu instead
+		// only do this on windows, on Mac it seems to not work in the main menu,
+		//so on mac we add them to the main extenstions menu only
+		//(we add them to the main extensions menu anyway, but on windows its
+		//nice to have them in the main menu too
 		AddCustomCSGMenuItems();
 #endif
 		
@@ -197,12 +199,8 @@ static void menuHook(const char *name, HMENU handle, const int f)
 {
 	if(strcmp(name, "Main extensions")==0 and f == 0)
 	{
-#ifndef _WIN32
 		// Create a custom menu and add the available commands
-		// on Mac it seems to not work in the main menu, so
-		// we add them to the main extenstions menu instead when it is initialized
 		AddCustomCSGMenuItems(handle);
-#endif
 	}
 }
 
