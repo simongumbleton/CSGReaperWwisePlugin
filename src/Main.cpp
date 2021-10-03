@@ -51,6 +51,8 @@ gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - DEV WIP -  Windo
 void LaunchTransferWindow();
 void LaunchTemplateWindow();
 bool HookCommandProc(int command, int flag);
+static void menuHook(const char *name, HMENU handle, const int f);
+static void AddCustomCSGMenuItems(HMENU parentMenuHandle = NULL);
 
 extern "C"
 {
@@ -77,35 +79,23 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise");
 		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "CSG_DEV_WIP_Window");
 		
-		//register actions
+		//register our custom actions
 		plugin_register("gaccel", &Transfer_To_Wwise.accel);
 		plugin_register("gaccel", &Template_To_Wwise.accel);
-		//plugin_register("custom_action",&Transfer_To_Wwise.accel.cmd);
 		
+		//hook command is where we process command IDs and launch our custom actions
 		rec->Register("hookcommand", (void*)HookCommandProc);
+		//hook custom menu is where our custom actions are added to the main extensions submenu
+		plugin_register("hookcustommenu", reinterpret_cast<void *>(menuHook));
+		//Reaper API adds the Extensions main menu - we populate this in the hook custom menu
+		AddExtensionsMainMenu();
 		
-		// Create a custom menu and add the available commands
-		HMENU hMenu = CreatePopupMenu();
-		
-		MENUITEMINFO mi = { sizeof(MENUITEMINFO), };
-		mi.fMask = MIIM_TYPE | MIIM_ID;
-		mi.fType = MFT_STRING;
-		
-		// add each command to the popupmenu
-		mi.wID = Transfer_To_Wwise.accel.cmd;
-		mi.dwTypeData = (char *)"CSG - Transfer To Wwise";
-		InsertMenuItem(hMenu, 0, true, &mi);
-		
-		mi.wID = Template_To_Wwise.accel.cmd;
-		mi.dwTypeData = (char *)"CSG - DEV WIP - Window";
-		InsertMenuItem(hMenu, 0, true, &mi);
-
-		// add the new menu to the main menu bar
-		HMENU hMainMenu = GetMenu(GetMainHwnd());
-		mi.fMask = MIIM_SUBMENU | MIIM_TYPE;
-		mi.hSubMenu = hMenu;
-		mi.dwTypeData = (char*)"CSG";
-		InsertMenuItem(hMainMenu, GetMenuItemCount(hMainMenu) - 1, TRUE, &mi);
+#ifdef _WIN32
+		// Create a custom menu to the main menu and add the available commands
+		// only do this on windows, on Mac it seems to not work in the main menu, so on mac
+		// we add them to the main extenstions menu instead
+		AddCustomCSGMenuItems();
+#endif
 		
 	}
 	return 1;
@@ -201,4 +191,45 @@ bool HookCommandProc(int command, int flag)
 		return true;
 	}
 	return false;
+}
+
+static void menuHook(const char *name, HMENU handle, const int f)
+{
+	if(strcmp(name, "Main extensions")==0 and f == 0)
+	{
+#ifndef _WIN32
+		// Create a custom menu and add the available commands
+		// on Mac it seems to not work in the main menu, so
+		// we add them to the main extenstions menu instead when it is initialized
+		AddCustomCSGMenuItems(handle);
+#endif
+	}
+}
+
+static void AddCustomCSGMenuItems(HMENU parentMenuHandle)
+{
+	HMENU hMenu = CreatePopupMenu();
+	
+	MENUITEMINFO mi = { sizeof(MENUITEMINFO), };
+	mi.fMask = MIIM_TYPE | MIIM_ID;
+	mi.fType = MFT_STRING;
+	
+	// add each command to the popupmenu
+	mi.wID = Transfer_To_Wwise.accel.cmd;
+	mi.dwTypeData = (char *)"CSG - Transfer To Wwise";
+	InsertMenuItem(hMenu, 0, true, &mi);
+	
+	mi.wID = Template_To_Wwise.accel.cmd;
+	mi.dwTypeData = (char *)"CSG - DEV WIP - Window";
+	InsertMenuItem(hMenu, 0, true, &mi);
+
+	if (!parentMenuHandle)
+	{
+		parentMenuHandle = GetMenu(GetMainHwnd());
+	}
+	
+	mi.fMask = MIIM_SUBMENU | MIIM_TYPE;
+	mi.hSubMenu = hMenu;
+	mi.dwTypeData = (char*)"CSG";
+	InsertMenuItem(parentMenuHandle, GetMenuItemCount(parentMenuHandle) - 1, TRUE, &mi);
 }
