@@ -426,6 +426,7 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 	
 	//Set status ready to import
 	tree_RenderJobTree->clearSelectedItems();
+	this->toFront(true);
 
 
 }
