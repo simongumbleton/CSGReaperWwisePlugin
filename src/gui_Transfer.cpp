@@ -140,8 +140,10 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 TransferToWwiseComponent::~TransferToWwiseComponent()
 {
 	tree_RenderJobTree->deleteRootItem();
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(1);
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(2);
+	WwiseCntnHndlr->UnsubscribeFromTopicByID(11);
+	WwiseCntnHndlr->UnsubscribeFromTopicByID(12);
+	WwiseCntnHndlr->RemoveActiveComponent(this);
+	TransferToWwiseComponent::currentTransferComponent = nullptr;
 }
 
 void TransferToWwiseComponent::InitAllButtons(std::vector<juce::Button *> buttons)
@@ -438,17 +440,19 @@ void TransferToWwiseComponent::TryConnectToWwise() {
 	{
 		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->projectGlobals.ProjectName);
 		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
-		WwiseCntnHndlr->SubscribeOnSelectionChanged(TransferToWwiseComponent::callback_OnSelectionChanged, 1);
-		WwiseCntnHndlr->SubscribeOnProjectClosed(TransferToWwiseComponent::callback_OnProjectClosed, 2);
+		WwiseCntnHndlr->AddActiveComponent(this);
+		WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, 11);
+		WwiseCntnHndlr->SubscribeOnProjectClosed(WwiseConnectionHandler::callback_OnProjectClosed, 12);
 		InitComboBox(dd_Language, MyCurrentWwiseConnection->projectGlobals.Languages, "Language..");
 		handle_OnSelectedParentChanged();
 	}
 	else
 	{
 		txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
-		WwiseCntnHndlr->UnsubscribeFromTopicByID(1);
-		WwiseCntnHndlr->UnsubscribeFromTopicByID(2);
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(11);
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(12);
 		WwiseCntnHndlr->DisconnectFromWwise();
+		WwiseCntnHndlr->RemoveActiveComponent(this);
 		
 	}
 }
@@ -615,8 +619,8 @@ void TransferToWwiseComponent::handle_OnWwiseProjectClosed()
 	const std::lock_guard<std::mutex> lock(mx_t);
 	std::cout << "_____Callback 2______" << std::endl;
 	txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(1);
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(2);
+	WwiseCntnHndlr->UnsubscribeFromTopicByID(11);
+	WwiseCntnHndlr->UnsubscribeFromTopicByID(12);
 	WwiseCntnHndlr->DisconnectFromWwise();
 	std::string display = "Selected Parent: ";
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);

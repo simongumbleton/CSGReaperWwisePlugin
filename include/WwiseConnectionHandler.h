@@ -6,16 +6,73 @@
 #include <map>
 #include "ConfigFileHandler.h"
 #include "waapi_structs.h"
-
+#include "GUI.h"
 #include "WaapiFunctions.h"
 //#include "PluginWindow.h"
 
 class BaseWwiseGuiComponent;
 
+
 class WwiseConnectionHandler
 {	
-
 public:
+	
+	static std::vector<BaseWwiseGuiComponent*> ActiveComponents;
+	
+	static void AddActiveComponent(BaseWwiseGuiComponent* componentToAdd)
+	{
+		if (componentToAdd)
+		{
+			for (auto & element : ActiveComponents)
+			{
+				if (element == componentToAdd)
+				{
+					return;
+				}
+			}
+			ActiveComponents.push_back(componentToAdd);
+		}
+	}
+	static void RemoveActiveComponent(BaseWwiseGuiComponent* componentToRemove)
+	{
+		if (componentToRemove)
+		{
+			int i = 0;
+			for (auto & element : ActiveComponents) {
+				if (element == componentToRemove)
+				{
+					ActiveComponents.erase(ActiveComponents.begin()+i);
+					return;
+				}
+				i++;
+			}
+		}
+	}
+	
+	static void callback_OnSelectionChanged(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider)
+	{
+		for (auto & element : WwiseConnectionHandler::ActiveComponents)
+		{
+			if (element)
+			{
+				element->postCommandMessage(1);
+			}
+			//TransferToWwiseComponent::currentTransferComponent->postCommandMessage(1);
+		}
+	}
+
+	static void callback_OnProjectClosed(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider)
+	{
+		for (auto & element : WwiseConnectionHandler::ActiveComponents)
+		{
+			if (element)
+			{
+				element->postCommandMessage(2);
+			}
+			//TransferToWwiseComponent::currentTransferComponent->postCommandMessage(2);
+		}
+	}
+	
 	WwiseConnectionHandler();
 	~WwiseConnectionHandler();
 
@@ -68,6 +125,7 @@ private:
 	void ReportConnectionError(CurrentWwiseConnection attemptedConnection);
 
 };
+
 
 
 

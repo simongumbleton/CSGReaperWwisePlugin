@@ -42,7 +42,9 @@ char currentProject[256];
 
 //std::unique_ptr<juce::DocumentWindow>currentActiveWindow;
 bool transferWindowStatus = false;
+bool templateWindowStatus = false;
 juce::DocumentWindow * currentTransferWindow = nullptr;
+juce::DocumentWindow * currentTemplateWindow = nullptr;
 
 gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise" };
 gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - DEV WIP -  Window" };
@@ -170,12 +172,22 @@ void LaunchTemplateWindow()
 	String wName = "CSG - DEV WIP - Window";
 	initialiseJuce_GUI();
 	MessageManagerLock mml(Thread::getCurrentThread());
-	TemplateWindow* mainWindow3 = new TemplateWindow(wName, new WwiseTemplateComponent);
+	if (templateWindowStatus)
+	{
+		currentTemplateWindow->toFront(true);
+	}
+	else
+	{
+		TemplateWindow* mainWindow3 = new TemplateWindow(wName, new WwiseTemplateComponent,&templateWindowStatus);
+		currentTemplateWindow = mainWindow3;
+	}
+	
 }
 
 void ClearCurrentWindowPtr()
 {
 	currentTransferWindow = nullptr;
+	currentTemplateWindow = nullptr;
 }
 
 bool HookCommandProc(int command, int flag)

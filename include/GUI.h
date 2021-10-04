@@ -151,6 +151,10 @@ public:
 		this->repaint();
 	}
 	
+	void handleCommandMessage (int commandId) override
+	{
+	}
+	
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BaseWwiseGuiComponent)
 };

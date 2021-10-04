@@ -18,6 +18,7 @@
 //static PluginWindow myPluginWindow = PluginWindow();
 //static CreateImportWindow myCreateImportWindow = CreateImportWindow();
 std::mutex mx_w;
+std::vector<BaseWwiseGuiComponent*> WwiseConnectionHandler::ActiveComponents;
 
 WwiseConnectionHandler::WwiseConnectionHandler()
 {

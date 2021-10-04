@@ -12,26 +12,7 @@
 class TransferToWwiseComponent : public BaseWwiseGuiComponent
 {
 	static TransferToWwiseComponent * currentTransferComponent;
-	
-	static void callback_OnSelectionChanged(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider)
-	{
-		if (TransferToWwiseComponent::currentTransferComponent)
-		{
-			TransferToWwiseComponent::currentTransferComponent->postCommandMessage(1);
-		}
-	}
-	
-	static void callback_OnProjectClosed(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider)
-	{
-		
-		if (TransferToWwiseComponent::currentTransferComponent)
-		{
-			TransferToWwiseComponent::currentTransferComponent->postCommandMessage(2);
-		}
-	}
-	
-	
-	
+
 public:
 
 	CreateImportWindow * thisCreateImportWindow;
@@ -164,14 +145,12 @@ private:
 	
 
 	StringArray ToJuceStringArray(std::vector<std::string>strings);
-
-
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferToWwiseComponent)
 };
 
 
-static void callback_OnSelectionChanged(uint64_t in_subscriptionId, const AK::WwiseAuthoringAPI::JsonProvider& in_jsonProvider);
+
 
 
 class TransferWindow : public juce::DocumentWindow
