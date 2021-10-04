@@ -494,6 +494,7 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 			RefreshRenderJobTree();
 		}
 		//thisCreateImportWindow->restoreRenderQueFiles();
+		this->toFront(true);
 	}
 	
 }
