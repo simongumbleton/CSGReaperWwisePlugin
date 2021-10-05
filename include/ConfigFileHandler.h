@@ -8,7 +8,7 @@ using namespace std;
 
 struct config
 {
-	int waapiPort = 8095;
+	int waapiPort = 8080;
 	bool useAutomationMode = true;
 };
 

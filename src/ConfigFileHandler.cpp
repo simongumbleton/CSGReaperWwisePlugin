@@ -15,7 +15,7 @@
 using namespace std;
 
 string defaults = 
-"waapiPort=8095\n"
+"waapiPort=8080\n"
 "useAutomationMode=1\n"
 ;
 

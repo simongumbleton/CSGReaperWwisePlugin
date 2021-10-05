@@ -61,7 +61,7 @@ struct WwiseProjectGlobals {
 
 ///struct to hold the current Waapi connection info (version, port etc)
 struct CurrentWwiseConnection {
-	int port = 8095;
+	int port = 8080;
 	std::string Version;
 	int timeoutMS = 2000;
 	bool connected = false;
