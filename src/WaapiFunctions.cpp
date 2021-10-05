@@ -378,9 +378,11 @@ bool wappi_ImportFromArgs(ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::
 
 	for (auto importFile : importArgs.ImportFileList)
 	{
+		std::string notes = "rpp:"+ importArgs.SourceReaperProject + "\nNotes:" +importArgs.Notes;
 		AkJson importItem = AkJson(AkJson::Map{
 			{ "audioFile", AkVariant(importFile.first) },
 			{ "objectPath", AkVariant(importFile.second) },
+			{ "notes",AkVariant(notes)}
 			});
 		items.push_back(importItem);
 	}

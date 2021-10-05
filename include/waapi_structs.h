@@ -107,6 +107,8 @@ struct ImportObjectArgs {
 	std::string objectType;
 	int eventCreateOption = 0; // 0 = no event, 1 = children, 2 = parent
 	std::string Workunit = "";
+	std::string Notes = "";
+	std::string SourceReaperProject = "";
 
 };
 

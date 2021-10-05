@@ -7,13 +7,10 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include "platformhelpers.h"
 
 #include <filesystem>
-#if defined(WIN32) || defined(_WIN32)
-#define PATH_SEPARATOR "\\"
-#else
-#define PATH_SEPARATOR "/"
-#endif
+
 
 using namespace std;
 
@@ -38,7 +35,7 @@ using namespace std;
 void TestReadRenderQue()
 {
 	string resourcePath = GetReaperResourcePath();
-	string QrenderPath = resourcePath + PATH_SEPARATOR +"QueuedRenders";
+	string QrenderPath = resourcePath + kPathSeparator +"QueuedRenders";
 	std::vector<string> renderQueFiles;
 
 	for (const auto & p : filesystem::directory_iterator(QrenderPath))
@@ -59,7 +56,7 @@ void TestReadRenderQue()
 std::vector<std::string> GetListOfRenderQues()
 {
 	string resourcePath = GetReaperResourcePath();
-	string QrenderPath = resourcePath + PATH_SEPARATOR + "QueuedRenders";
+	string QrenderPath = resourcePath + kPathSeparator + "QueuedRenders";
 	std::vector<string> renderQueFiles;
 
 	//TODO add some saftey checks here. It can crash if it finds a file it doesn't know what to do with. Reaper crashed and left a file with no extension and Japanese characters, which crashed the plugin here
@@ -127,9 +124,9 @@ RenderQueJob CreateRenderQueJobFromRenderQueFile(std::string pathToQueFile)
 					string rppfile;
 					while (tkns >> rppfile)
 					{
-						if (rppfile.find(".rpp") != line.npos)
+						if (stringToLower(rppfile).find(".rpp") != line.npos)
 						{
-							RPPfile = rppfile;
+							RPPfile = stringToLower(rppfile);
 						}
 					}
 				}
@@ -146,6 +143,7 @@ RenderQueJob CreateRenderQueJobFromRenderQueFile(std::string pathToQueFile)
 
 	myRenderQueJob.RenderQueFilePath = pathToQueFile;
 	myRenderQueJob.RenderQueJobFileList = RenderFiles;
+	myRenderQueJob.ParentReaperProject = RPPfile;
 	
 	return myRenderQueJob;
 }
@@ -194,9 +192,9 @@ void ParseRenderQueFile(string pathToQueFile)
 				string rppfile;
 				while (tkns >> rppfile)
 				{
-					if (rppfile.find(".rpp") != line.npos)
+					if (stringToLower(rppfile).find(".rpp") != line.npos)
 					{
-						RPPfile = rppfile;
+						RPPfile = stringToLower(rppfile);
 					}
 				}
 			}

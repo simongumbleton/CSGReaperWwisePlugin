@@ -462,7 +462,8 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						fileOverride.second.OrigDirMatchesWwise,
 						fileOverride.second.userOrigsSubDir,
 						audiofile,
-						fileOverride.second.createEventOption
+						fileOverride.second.createEventOption,
+						job.ParentReaperProject
 						
 					);
 					if (ImportCurrentRenderJob(curFileOverrideImportArgs))
@@ -526,7 +527,8 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						false,
 						existingOriginalsPath,
 						importfiles,
-						job.createEventOption
+						job.createEventOption,
+						job.ParentReaperProject
 					);
 					if (ImportCurrentRenderJob(curJobImportArgs))
 					{
@@ -557,7 +559,8 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 				job.OrigDirMatchesWwise,
 				job.userOrigsSubDir,
 				job.RenderQueJobFileList,
-				job.createEventOption
+				job.createEventOption,
+				job.ParentReaperProject
 			);
 			if ((existingSiblingOriginalsPath != "") && (job.OrigDirMatchesWwise))
 			{
@@ -640,13 +643,22 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name)
 
 }
 
-ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent, bool isVoice, std::string ImportLanguage, bool OrigsDirMatchesWwise, std::string userOrigSubDir,std::vector<std::string> ImportFiles,std::string eventCreateOption)
+ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent, bool isVoice, std::string ImportLanguage,
+													 bool OrigsDirMatchesWwise,
+													 std::string userOrigSubDir,
+													 std::vector<std::string> ImportFiles,
+													 std::string eventCreateOption,
+													 std::string SourceReaperProj,
+													 std::string Notes
+													 )
 {
 	std::string originalsPath = parent.properties["path"];
 	std::string remove = "\\Actor-Mixer Hierarchy";
 	originalsPath.erase(0, remove.length());
 
 	ImportObjectArgs importArgs;
+	importArgs.Notes = Notes;
+	importArgs.SourceReaperProject = SourceReaperProj;
 	importArgs.ImportLocation = parent.properties["path"];
 	importArgs.ImportLanguage = ImportLanguage;
 	if (isVoice)
