@@ -96,6 +96,7 @@
 		9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReaperRenderQueParser.cpp; sourceTree = "<group>"; };
 		9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaapiFunctions.cpp; sourceTree = "<group>"; };
 		9E78220F24C0E9B2005401E2 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
+		9E7B946F270E56CB002359AD /* gui_properties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_properties.h; sourceTree = "<group>"; };
 		9E893B8524BE29E800188A61 /* libAkAutobahn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkAutobahn.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Debug/lib/libAkAutobahn.a; sourceTree = "<group>"; };
 		9E893B9E24BE577E00188A61 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		9E893BA024BE578600188A61 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -164,6 +165,7 @@
 				9EBC0E9D24C346800068154E /* waapi_structs.h */,
 				9EA547992534FEFC005FE490 /* platformhelpers.h */,
 				9E5B4449254A0B4500382C38 /* gui_RenderTree.h */,
+				9E7B946F270E56CB002359AD /* gui_properties.h */,
 			);
 			path = include;
 			sourceTree = "<group>";

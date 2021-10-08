@@ -5,6 +5,7 @@
 #include "WwiseConnectionHandler.h"
 #include "GUI.h"
 #include "gui_RenderTree.h"
+#include "gui_properties.h"
 
 
 //class WwiseTemplateComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
@@ -62,10 +63,8 @@ public:
 					 break;
 		}
 	}
-
-
-
-
+	
+	Array<PropertiesComponent*> RegionProperties;
 
 private:
 
@@ -75,16 +74,36 @@ private:
 	btn_ConnectToWwise,
 	};
 
-
-	
-	
 	juce::Label * txt_ConnectionStatus = new Label(); // text
 
 	juce::Label * debugLabel = new Label();
 	
 	juce::Label * selectedParentLabel = new Label();
 	
-
+	Array<juce::String> RegionNames = GetRegionNames();
+	
+	
+	
+	
+	Array<juce::String> GetRegionNames()
+	{
+		//TO DO - get the actual regions
+		return {
+			juce::String("Region 01")
+			,juce::String("Region 02")
+			,juce::String("Region 03")
+		};
+	}
+	
+	Array<PropertiesComponent*> createProperties(int count)
+	{// TO DO - count should be the number of regions
+		Array<PropertiesComponent*> properties;
+		for (int i = 0;i < count;i++)
+		{
+			properties.add(new PropertiesComponent("Region"));
+		}
+		return properties;
+	}
 
 	
 

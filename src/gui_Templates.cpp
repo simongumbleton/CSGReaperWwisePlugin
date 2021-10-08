@@ -44,6 +44,17 @@ WwiseTemplateComponent::WwiseTemplateComponent() //constructor
 	
 	addAndMakeVisible(statusLabel);
 	statusLabel->setText("Status: ", juce::NotificationType::dontSendNotification);
+	
+	int numRegions = 3;
+	RegionProperties = createProperties(numRegions);
+	int i = 0;
+	for (auto region : RegionProperties)
+	{
+		addChildComponent(region);
+		addAndMakeVisible(region);
+		region->SetRegionName(RegionNames[i]);
+		i++;
+	}
 
 	setSize(1000, 500);
 	
@@ -96,7 +107,11 @@ void WwiseTemplateComponent::resized()
 	auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
 	auto RightHalf = area;
 
-	
+	for (auto region : RegionProperties)
+	{
+		auto propertyArea = RightHalf.removeFromTop(40);
+		region->setBounds(propertyArea);
+	}
 	
 	auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
 	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
