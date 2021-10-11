@@ -26,6 +26,11 @@ public:
 	{
 		regionName->setText(name, juce::NotificationType::dontSendNotification);
 	}
+	
+	std::string GetRegionName()
+	{
+		return regionName->getText().toStdString();
+	}
 
 	void paint (Graphics& g) override
 	{
@@ -47,6 +52,16 @@ public:
 			//y += 80;
 		}
 	}
+	std::map<std::string,std::string> GetPropertyValues()
+	{
+		std::map<std::string, std::string> results;
+		for (auto property : properties)
+		{
+			results.emplace(property->getName().toStdString(),property->getText().toStdString());
+		}
+		return results;
+	}
+	
 
 private:
 	

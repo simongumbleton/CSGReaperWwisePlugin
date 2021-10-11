@@ -25,6 +25,7 @@
 #include "gui_Templates.h"
 
 #include "reaperHelpers.h"
+#include "platformhelpers.h"
 
 REAPER_PLUGIN_HINSTANCE g_hInst;
 
@@ -119,6 +120,26 @@ std::string GetCurrentReaperProject()
 	return std::string(projName);
 }
 
+ReaProject* GetCurrentReaProject()
+{
+	return EnumProjects(-1, NULL, NULL);
+}
+
+void SaveProject()
+{
+	Main_SaveProject(GetCurrentReaProject(), false);
+}
+
+void saveProjExState(const char* Key,const char* Value)
+{
+	SetProjExtState(GetCurrentReaProject(), "CSGRegionProperties", Key, Value);
+}
+
+void getProjExState(const char* Key, char* &OutValue,int &OutSize)
+{
+	GetProjExtState(GetCurrentReaProject(), "CSGRegionProperties", Key, OutValue, OutSize);
+}
+
 void Reaper_RenderAllQuedJobs()
 {
 	Main_OnCommand(41207, 0);
@@ -134,10 +155,60 @@ void GetReaperGlobals()
 
 void PrintToConsole(std::string text)
 {
-
 		std::string debugText = text + "\n";
 		ShowConsoleMsg(debugText.c_str());
+}
 
+int countRegions()
+{
+	int markerCount;
+	int regionCount;
+	CountProjectMarkers(GetCurrentReaProject(), &markerCount, &regionCount);
+	return regionCount;
+}
+
+int countMarkers()
+{
+	int markerCount;
+	int regionCount;
+	CountProjectMarkers(GetCurrentReaProject(), &markerCount, &regionCount);
+	return markerCount;
+}
+
+inline bool ends_with(std::string const & value, std::string const & ending)
+{
+	if (ending.size() > value.size()) return false;
+	return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+}
+
+std::vector<std::string> getNonMasterProjectRegions()
+{
+	int total = countRegions() + countMarkers();
+	std::vector<std::string> results;
+	int i = 0;
+	while (i < total)
+	{
+		bool isRegion;
+		double pos;
+		double regEnd;
+		//std::string name;
+		const char* name;
+		int index;
+		EnumProjectMarkers(i, &isRegion,&pos,&regEnd,&name,&index);
+		if (isRegion)
+		{
+			std::string namestr = name;
+			if (!namestr.empty())
+			{
+				if (!ends_with(stringToLower(name), "_master"))
+				{
+					results.push_back(namestr);
+				}
+			}
+		}
+		i++;
+	}
+	return results;
 }
 
 void PrintToConsole(int text)

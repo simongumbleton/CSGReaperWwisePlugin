@@ -52,7 +52,7 @@ WwiseTemplateComponent::WwiseTemplateComponent() //constructor
 	{
 		addChildComponent(region);
 		addAndMakeVisible(region);
-		region->SetRegionName(RegionNames[i]);
+		//region->SetRegionName(RegionNames[i]);
 		i++;
 	}
 
@@ -118,6 +118,9 @@ void WwiseTemplateComponent::resized()
 	
 	
 	auto buttonArea = TopRightQtr.removeFromTop(buttonHeight).reduced(border);
+	
+	btn_Save->setBounds(buttonArea.reduced(border));
+	
 	auto edgesize = buttonArea.getWidth()*0.1;
 	auto offsetL = buttonArea.removeFromLeft(edgesize);
 	auto offsetR = buttonArea.removeFromRight(edgesize);
@@ -180,6 +183,10 @@ void WwiseTemplateComponent::buttonClicked(juce::Button * pButton)
 	{
 		TryConnectToWwise();
 	}
+	else if (pButton == btn_Save)
+	{
+		handle_OnButton_Saved();
+	}
 	
 }
 
@@ -232,4 +239,35 @@ void WwiseTemplateComponent::handle_OnWwiseProjectClosed()
 	std::string display = "Selected Parent: ";
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
 }
+
+void WwiseTemplateComponent::handle_OnButton_Saved() { 
+	//std::vector<std::string>nonMasterRegions = getNonMasterProjectRegions();
+	saveProjExState("", "");
+	std::map< std::string, std::map<std::string, std::string> > savedRegionsWithProperties;
+	for (auto region : RegionProperties)
+	{
+		std::string name = region->GetRegionName();
+		std::map<std::string, std::string> values = region->GetPropertyValues();
+		savedRegionsWithProperties.emplace(name,values);
+		std::stringstream valuesToJson;
+		//"{ 'id': 1234, 'name': 'nandini' }"
+		valuesToJson << "{";
+		for (auto value : values)
+		{
+			valuesToJson << "'";
+			valuesToJson << value.first;
+			valuesToJson << "'";
+			valuesToJson << ":";
+			valuesToJson << "'";
+			valuesToJson << value.second;
+			valuesToJson << "'";
+			valuesToJson << ",";
+		}
+		//PrintToConsole(valuesToJson.str());
+		valuesToJson.seekp(-1,valuesToJson.cur); valuesToJson << '}';
+		saveProjExState(name.c_str(), valuesToJson.str().c_str());
+	}
+	SaveProject();
+}
+
 
