@@ -238,5 +238,8 @@
     <ClInclude Include="include\WwiseConnectionHandler.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\gui_properties.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

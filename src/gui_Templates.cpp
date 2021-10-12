@@ -34,13 +34,13 @@ WwiseTemplateComponent::WwiseTemplateComponent() //constructor
 	// Init buttons and combo boxes
 	InitAllButtons(buttons);
 	
-	addAndMakeVisible(txt_ConnectionStatus);
+	//addAndMakeVisible(txt_ConnectionStatus);
 
 	debugLabel->setText("debug", juce::NotificationType::dontSendNotification);
 	addAndMakeVisible(debugLabel);
 	
-	addAndMakeVisible(txt_ConnectionStatus);
-	txt_ConnectionStatus->setText("Wwise Connection Status:", juce::NotificationType::dontSendNotification);
+	//addAndMakeVisible(txt_ConnectionStatus);
+	//txt_ConnectionStatus->setText("Wwise Connection Status:", juce::NotificationType::dontSendNotification);
 	
 	addAndMakeVisible(statusLabel);
 	statusLabel->setText("Status: ", juce::NotificationType::dontSendNotification);
@@ -53,12 +53,13 @@ WwiseTemplateComponent::WwiseTemplateComponent() //constructor
 		addChildComponent(region);
 		addAndMakeVisible(region);
 		//region->SetRegionName(RegionNames[i]);
+		region->SetPropertyValuesFromExState();
 		i++;
 	}
 
 	setSize(1000, 500);
 	
-	TryConnectToWwise();
+	//TryConnectToWwise();
 }
 
 WwiseTemplateComponent::~WwiseTemplateComponent()
@@ -104,22 +105,25 @@ void WwiseTemplateComponent::resized()
 	auto titleHeight = 60;
 	auto area = getLocalBounds();
 
+	auto titleArea = area.removeFromTop(titleHeight);
+
 	auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
 	auto RightHalf = area;
 
 	for (auto region : RegionProperties)
 	{
-		auto propertyArea = RightHalf.removeFromTop(40);
+		auto propertyArea = LeftHalf.removeFromTop(40);
 		region->setBounds(propertyArea);
 	}
 	
-	auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
+	//auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
 	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
 	
+	auto buttonArea = LeftHalf.removeFromTop(buttonHeight);
+
+	auto savebuttonArea = buttonArea.removeFromLeft(300);
 	
-	auto buttonArea = TopRightQtr.removeFromTop(buttonHeight).reduced(border);
-	
-	btn_Save->setBounds(buttonArea.reduced(border));
+	btn_Save->setBounds(savebuttonArea.reduced(border));
 	
 	auto edgesize = buttonArea.getWidth()*0.1;
 	auto offsetL = buttonArea.removeFromLeft(edgesize);
@@ -251,7 +255,7 @@ void WwiseTemplateComponent::handle_OnButton_Saved() {
 		savedRegionsWithProperties.emplace(name,values);
 		std::stringstream valuesToJson;
 		//"{ 'id': 1234, 'name': 'nandini' }"
-		valuesToJson << "{";
+		valuesToJson << '{';
 		for (auto value : values)
 		{
 			valuesToJson << "'";
@@ -264,8 +268,8 @@ void WwiseTemplateComponent::handle_OnButton_Saved() {
 			valuesToJson << ",";
 		}
 		//PrintToConsole(valuesToJson.str());
-		valuesToJson.seekp(-1,valuesToJson.cur); valuesToJson << '}';
-		saveProjExState(name.c_str(), valuesToJson.str().c_str());
+		valuesToJson.seekp(-1,valuesToJson.cur); valuesToJson << "}";
+		saveProjExState(name, valuesToJson.str());
 	}
 	SaveProject();
 }

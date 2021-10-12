@@ -76,7 +76,7 @@ private:
 	juce::TextButton * btn_Save = new TextButton("Save Changes");
 
 	std::vector<juce::Button*> buttons{
-	btn_ConnectToWwise,
+//	btn_ConnectToWwise,
 	btn_Save
 	};
 

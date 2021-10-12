@@ -27,4 +27,12 @@ static std::string stringToLower(std::string input)
 	return result;
 }
 
+static std::string stringToUpper(std::string input)
+{
+	std::string result = input;
+	std::transform(result.begin(), result.end(), result.begin(),
+		[](unsigned char c) { return std::toupper(c); });
+	return result;
+}
+
 #endif /* platformhelpers_h */

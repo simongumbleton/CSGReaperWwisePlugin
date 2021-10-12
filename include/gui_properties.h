@@ -1,7 +1,12 @@
 #pragma once
 
 #include "JUCE/JuceHeader.h"
-
+#include <string>
+#include <map>
+#include <vector>
+#include "reaperHelpers.h"
+#include "RapidJsonUtils.h"
+#include <algorithm>
 
 //==============================================================================
 class PropertiesComponent   : public Component
@@ -61,12 +66,81 @@ public:
 		}
 		return results;
 	}
+
+	std::map<std::string, std::string> ParseExtStateStringForValues(std::string ExtStateString)
+	{
+		std::map<std::string, std::string> results;
+		//parse string
+		// example svalue:  "{\"Attach\":\"value\",\"Tag\":\"new\"}"
+		std::string str = ExtStateString;
+		char* pch;
+		printf("Splitting string \"%s\" into tokens:\n", str.c_str());
+		//char delims[] = "\n !@#$%^&*)(_+-=][}{|:;'<>?,./\"\\";
+		char delims[] = "!@#$%^&*)(+-=][}{|:;<>?,./\\";
+		pch = strtok(&str[0], delims);
+		std::vector<std::string> tempListValues;
+		while (pch != NULL)
+		{
+			printf("%s\n", pch);
+			tempListValues.push_back(std::string(pch));
+			pch = strtok(NULL, delims);
+		}
+		
+		int size = static_cast<int>(tempListValues.size());
+		if ((size % 2) != 0)
+		{
+			PrintToConsole("Warning! Got an odd number of values when reading GetExtState!");
+			return results;
+		}
+		int index = 0;
+		while (index <= size - 2)
+		{
+			std::string key = tempListValues[index];
+			std::string val = tempListValues[index + 1];
+			key.erase(std::remove(key.begin(), key.end(), '\''), key.end());
+			val.erase(std::remove(val.begin(), val.end(), '\''), val.end());
+			results.emplace(key, val);
+			index += 2;
+		}
+		return results;
+	}
 	
+	void SetPropertyValuesFromExState()
+	{
+		// ANOTHERNEWREGION {'Attach':'','Tag':''}
+		std::string RegionKey = this->GetRegionName();
+		std::string svalue = "";
+		int size;
+		svalue = getProjExState(RegionKey);
+		std::map<std::string, std::string> results;
+		if (!svalue.empty())
+		{	
+			results = ParseExtStateStringForValues(svalue);
+		}
+		for (auto property : properties)
+		{
+			std::string svalue = "";
+			int size;
+			std::map<std::string, std::string>::iterator it;
+			it = results.find(property->getName().toStdString());
+			if (it != results.end())
+			{
+				std::string textValue = results[property->getName().toStdString()];
+				if (!textValue.empty())
+				{
+					property->setText(textValue, false);
+				}
+			}
+		}
+	}
+
 
 private:
 	
 	juce::Label * regionName = new Label();
 	
+	rapidjson::MemoryPoolAllocator<> jsonAllocator;
+
 	Array<TextEditor*> properties;
 	
 	Array<TextEditor*> createTextEditors()

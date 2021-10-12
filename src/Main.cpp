@@ -130,14 +130,40 @@ void SaveProject()
 	Main_SaveProject(GetCurrentReaProject(), false);
 }
 
-void saveProjExState(const char* Key,const char* Value)
+void saveProjExState(std::string Key, std::string Value)
 {
-	SetProjExtState(GetCurrentReaProject(), "CSGRegionProperties", Key, Value);
+	SetProjExtState(GetCurrentReaProject(), "CSGREGIONPROPERTIES", &Key[0], &Value[0]);
 }
 
-void getProjExState(const char* Key, char* &OutValue,int &OutSize)
+std::string getProjExState(std::string Key)
 {
-	GetProjExtState(GetCurrentReaProject(), "CSGRegionProperties", Key, OutValue, OutSize);
+	//std::string KeyOutValue;
+	//char bufferK[256] = "x";
+	//char* K;
+	//int KeyOutSize = 256;
+	//std::string OutValue;
+	//char* V;
+	//char bufferV[256] = "a";
+	//int OutSize = 256;
+
+	//int i = 0;
+	//while (EnumProjExtState(GetCurrentReaProject(), "CSGREGIONPROPERTIES", i, bufferK, KeyOutSize, bufferV, OutSize))
+	//{
+	//	KeyOutValue = std::string(bufferK);
+	//	OutValue = std::string(bufferV);
+	//	PrintToConsole(KeyOutValue);
+	//	PrintToConsole(OutValue);
+	//	i++;
+	//}
+	const int ValOutSize = 256;
+	char bufferValue[ValOutSize] = "";
+	
+	//std::string OutValue;
+	//int OutSize;
+	std::string keyUC = stringToUpper(Key);
+	//needs a char* for outvalue
+	GetProjExtState(GetCurrentReaProject(), "CSGREGIONPROPERTIES", &keyUC[0], bufferValue, ValOutSize);
+	return std::string(bufferValue);
 }
 
 void Reaper_RenderAllQuedJobs()

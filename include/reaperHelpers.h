@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 class ReaProject;
 
@@ -25,6 +26,6 @@ int countRegions();
 
 int countMarkers();
 
-void saveProjExState(const char* Key, const char* Value);
+void saveProjExState(std::string Key, std::string Value);
 
-void getProjExState(const char* Key, char* &OutValue,int &OutSize);
+std::string getProjExState(std::string Key);
