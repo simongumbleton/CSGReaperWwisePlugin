@@ -1,2 +1,22 @@
+Wwise transfer:
 - originals matches wise should match existing file original locations if exists
-- templates
+- templates?
+- expose more properties like loop
+- customise event location
+
+
+
+
+
+
+
+
+
+
+
+
+Region metadata:
+- Needs a refresh button
+- Need to read the current project regions and merge/sync with the ExtState values before displaying/populating the UI
+- UI allign to grid
+- Contain UI in scrollable window/layer
