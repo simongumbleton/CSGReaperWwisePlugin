@@ -6,9 +6,18 @@ Wwise transfer:
 
 
 
+Versioning can we add things as new sources? 
+What is the versioning token?
+
+Better way to choose import location
+Load the originals location from config file - file browser?
+Make apply button BIGGER!
 
 
+Move create component into its own tab/window?
 
+
+Render que open bypassed plugins in disabled state?
 
 
 

@@ -67,7 +67,9 @@ public:
 		}
 	}
 	
-	Array<PropertiesComponent*> RegionProperties;
+	//Array<PropertiesComponent*> RegionProperties;
+	Viewport* myViewport = new Viewport();
+	PropertiesViewportComponent* regionProperties = new PropertiesViewportComponent();
 
 private:
 
@@ -133,6 +135,8 @@ public:
 		*mWindowState = false;
 		delete this;
 	}
+
+	
 
 private:
 

@@ -25,7 +25,7 @@ public:
 			addAndMakeVisible(comp);
 		}
 		
-		setSize (500, 30);
+		setSize (750, 30);
 	}
 	void SetRegionName(const juce::String& name)
 	{
@@ -39,20 +39,25 @@ public:
 
 	void paint (Graphics& g) override
 	{
-		g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+		//g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+		g.fillAll(juce::Colours::darkslategrey);
 	}
 
 	void resized() override
 	{
-		int x = 0;
-		int y = 0;
+		int x = 1;
+		int y = 2;
 		Font f = regionName->getFont();
 		int textWidth = f.getStringWidth(regionName->getText());
-		regionName->setBounds(x, y, textWidth+20, 25);
-		x += textWidth+20;
+
+		regionName->setBounds(x, y, MaxTextWidth, 28);
+		x += MaxTextWidth + 20;
+		auto area = getLocalBounds();
 		for (auto comp : properties)
 		{
-			comp->setBounds(x, y, 100, 25);
+			comp->setBounds(x, y, 100, 26);
+			//auto borderSize = juce::BorderSize(25);
+			//comp->setBoundsInset(borderSize);
 			x += 105;
 			//y += 80;
 		}
@@ -134,7 +139,6 @@ public:
 		}
 	}
 
-
 private:
 	
 	juce::Label * regionName = new Label();
@@ -142,6 +146,8 @@ private:
 	rapidjson::MemoryPoolAllocator<> jsonAllocator;
 
 	Array<TextEditor*> properties;
+
+	int MaxTextWidth = 300;
 	
 	Array<TextEditor*> createTextEditors()
 	{
@@ -153,4 +159,73 @@ private:
 		};
 	}
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PropertiesComponent)
+};
+
+
+//==============================================================================
+
+class PropertiesViewportComponent : public Component
+{
+public:
+	PropertiesViewportComponent()
+	{
+		setOpaque(true);
+
+		RegionProperties = createProperties();
+		for (auto region : RegionProperties)
+		{
+			addChildComponent(region);
+			addAndMakeVisible(region);
+			region->SetPropertyValuesFromExState();
+		}
+
+
+		int sizeY = gridHeight * RegionProperties.size();
+		setSize(750, sizeY);
+		setBounds(0, 0, 750, sizeY);
+		
+	}
+
+	void paint(Graphics& g) override
+	{
+		//g.fillAll(juce::Colours::aquamarine);
+		g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+	}
+
+	void resized() override
+	{
+		auto area = getLocalBounds();
+		for (auto region : RegionProperties)
+		{
+			auto propertyArea = area.removeFromTop(gridHeight);
+			region->setBounds(propertyArea.reduced(1));
+			//auto borderSize = juce::BorderSize(1);
+			//region->setBoundsInset(borderSize);
+		}
+
+	}
+
+
+
+	Array<PropertiesComponent*> RegionProperties;
+
+private:
+	
+	int gridHeight = 30;
+
+	Array<PropertiesComponent*> createProperties()
+	{// TO DO - count should be the number of regions
+		Array<PropertiesComponent*> properties;
+		for (auto region : getNonMasterProjectRegions())
+		{
+			properties.add(new PropertiesComponent(region));
+		}
+		//for (int i = 0;i < count;i++)
+		//{
+		//	properties.add(new PropertiesComponent("Region"));
+		//}
+		return properties;
+	}
+
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PropertiesViewportComponent)
 };

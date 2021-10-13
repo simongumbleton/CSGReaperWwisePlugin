@@ -45,17 +45,24 @@ WwiseTemplateComponent::WwiseTemplateComponent() //constructor
 	addAndMakeVisible(statusLabel);
 	statusLabel->setText("Status: ", juce::NotificationType::dontSendNotification);
 	
-	int numRegions = 3;
-	RegionProperties = createProperties(numRegions);
-	int i = 0;
-	for (auto region : RegionProperties)
-	{
-		addChildComponent(region);
-		addAndMakeVisible(region);
-		//region->SetRegionName(RegionNames[i]);
-		region->SetPropertyValuesFromExState();
-		i++;
-	}
+	//int numRegions = 3;
+	//RegionProperties = createProperties(numRegions);
+	//int i = 0;
+	//for (auto region : RegionProperties)
+	//{
+	//	addChildComponent(region);
+	//	addAndMakeVisible(region);
+	//	//region->SetRegionName(RegionNames[i]);
+	//	region->SetPropertyValuesFromExState();
+	//	i++;
+	//}
+
+	addAndMakeVisible(regionProperties);
+	myViewport->setBounds(0, 0, 750, 300);
+	myViewport->setViewedComponent(regionProperties);
+	addAndMakeVisible(myViewport);
+
+
 
 	setSize(1000, 500);
 	
@@ -107,19 +114,16 @@ void WwiseTemplateComponent::resized()
 
 	auto titleArea = area.removeFromTop(titleHeight);
 
-	auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
-	auto RightHalf = area;
+	//auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
+	//auto RightHalf = area;
 
-	for (auto region : RegionProperties)
-	{
-		auto propertyArea = LeftHalf.removeFromTop(40);
-		region->setBounds(propertyArea);
-	}
-	
+	auto viewportArea = area.removeFromTop(300);
+	myViewport->setBounds(viewportArea);
+
 	//auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
 	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
 	
-	auto buttonArea = LeftHalf.removeFromTop(buttonHeight);
+	auto buttonArea = area.removeFromTop(buttonHeight);
 
 	auto savebuttonArea = buttonArea.removeFromLeft(300);
 	
@@ -129,21 +133,21 @@ void WwiseTemplateComponent::resized()
 	auto offsetL = buttonArea.removeFromLeft(edgesize);
 	auto offsetR = buttonArea.removeFromRight(edgesize);
 	
-	auto optionsArea1 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
+	//auto optionsArea1 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
 	
-	auto optionsArea2 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
+	//auto optionsArea2 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
 	
-	auto o1qtrsize = optionsArea1.getWidth()/4;
+	//auto o1qtrsize = optionsArea1.getWidth()/4;
 
-	auto RenderButtonArea = LeftHalf.removeFromTop(buttonHeight*2).reduced(border);
+	//auto RenderButtonArea = LeftHalf.removeFromTop(buttonHeight*2).reduced(border);
 	
-	auto bottomRow = LeftHalf.removeFromBottom(buttonHeight).reduced(border);
+	//auto bottomRow = LeftHalf.removeFromBottom(buttonHeight).reduced(border);
 	
-	btn_ConnectToWwise->setBounds(bottomRow.removeFromLeft(bottomRow.getWidth()/2));
+	//btn_ConnectToWwise->setBounds(bottomRow.removeFromLeft(bottomRow.getWidth()/2));
 	
-	txt_ConnectionStatus->setBounds(bottomRow);
+	//txt_ConnectionStatus->setBounds(bottomRow);
 	
-	auto statusRow = RightHalf.removeFromBottom(labelHeight).reduced(border);
+	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
 	
 	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth()/2).reduced(border));
 	debugLabel->setBounds(statusRow);
@@ -248,7 +252,7 @@ void WwiseTemplateComponent::handle_OnButton_Saved() {
 	//std::vector<std::string>nonMasterRegions = getNonMasterProjectRegions();
 	saveProjExState("", "");
 	std::map< std::string, std::map<std::string, std::string> > savedRegionsWithProperties;
-	for (auto region : RegionProperties)
+	for (auto region : regionProperties->RegionProperties)
 	{
 		std::string name = region->GetRegionName();
 		std::map<std::string, std::string> values = region->GetPropertyValues();
