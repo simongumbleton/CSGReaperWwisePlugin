@@ -29,6 +29,7 @@
 		9E78221424C0E9B2005401E2 /* ReaperRenderQueParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */; };
 		9E78221524C0E9B2005401E2 /* WaapiFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */; };
 		9E78221624C0E9B2005401E2 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E78220F24C0E9B2005401E2 /* Main.cpp */; };
+		9E8161B52718E3B700216C42 /* gui_create.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E8161B42718E3B700216C42 /* gui_create.cpp */; };
 		9E893B9F24BE577E00188A61 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893B9E24BE577E00188A61 /* AppKit.framework */; };
 		9E893BA124BE578600188A61 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA024BE578600188A61 /* IOKit.framework */; };
 		9E893BA324BE57C900188A61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA224BE57C900188A61 /* CoreImage.framework */; };
@@ -97,6 +98,8 @@
 		9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaapiFunctions.cpp; sourceTree = "<group>"; };
 		9E78220F24C0E9B2005401E2 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		9E7B946F270E56CB002359AD /* gui_properties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_properties.h; sourceTree = "<group>"; };
+		9E8161B32718E24700216C42 /* gui_create.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_create.h; sourceTree = "<group>"; };
+		9E8161B42718E3B700216C42 /* gui_create.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui_create.cpp; sourceTree = "<group>"; };
 		9E893B8524BE29E800188A61 /* libAkAutobahn.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkAutobahn.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Debug/lib/libAkAutobahn.a; sourceTree = "<group>"; };
 		9E893B9E24BE577E00188A61 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		9E893BA024BE578600188A61 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -166,6 +169,7 @@
 				9EA547992534FEFC005FE490 /* platformhelpers.h */,
 				9E5B4449254A0B4500382C38 /* gui_RenderTree.h */,
 				9E7B946F270E56CB002359AD /* gui_properties.h */,
+				9E8161B32718E24700216C42 /* gui_create.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -196,6 +200,7 @@
 				9E78220D24C0E9B2005401E2 /* ReaperRenderQueParser.cpp */,
 				9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */,
 				9E78220F24C0E9B2005401E2 /* Main.cpp */,
+				9E8161B42718E3B700216C42 /* gui_create.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -412,6 +417,7 @@
 				C484E6911C1BAD49005C6CCC /* swell-misc.mm in Sources */,
 				C484E69C1C1BAE94005C6CCC /* lice.cpp in Sources */,
 				C484E69B1C1BAE94005C6CCC /* lice_line.cpp in Sources */,
+				9E8161B52718E3B700216C42 /* gui_create.cpp in Sources */,
 				C484E6921C1BAD49005C6CCC /* swell-miscdlg.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

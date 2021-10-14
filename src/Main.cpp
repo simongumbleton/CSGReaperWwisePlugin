@@ -48,7 +48,7 @@ juce::DocumentWindow * currentTransferWindow = nullptr;
 juce::DocumentWindow * currentTemplateWindow = nullptr;
 
 gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise" };
-gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - DEV WIP -  Window" };
+gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Region Metadata" };
 
 
 void LaunchTransferWindow();
@@ -80,7 +80,7 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		int regerrcnt = 0;
 		//Register a custom command ID for an action
 		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise");
-		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "CSG_DEV_WIP_Window");
+		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "CSG_Ext_RegionMetadata");
 		
 		//register our custom actions
 		plugin_register("gaccel", &Transfer_To_Wwise.accel);
@@ -266,7 +266,7 @@ void LaunchTemplateWindow()
 	//Testing set markers
 	//SetProjectMarker(1,true,10.0,110.0,"TestRegion");
 	
-	String wName = "CSG - DEV WIP - Window";
+	String wName = "CSG Reaper Region Metadata";
 	initialiseJuce_GUI();
 	MessageManagerLock mml(Thread::getCurrentThread());
 	if (templateWindowStatus)
@@ -327,7 +327,7 @@ static void AddCustomCSGMenuItems(HMENU parentMenuHandle)
 	InsertMenuItem(hMenu, 0, true, &mi);
 	
 	mi.wID = Template_To_Wwise.accel.cmd;
-	mi.dwTypeData = (char *)"CSG - DEV WIP - Window";
+	mi.dwTypeData = (char *)"CSG - Region Metadata";
 	InsertMenuItem(hMenu, 0, true, &mi);
 
 	if (!parentMenuHandle)
