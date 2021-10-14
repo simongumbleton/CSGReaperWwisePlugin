@@ -9,8 +9,8 @@ Wwise transfer:
 Versioning can we add things as new sources? 
 What is the versioning token?
 
-Better way to choose import location
-Load the originals location from config file - file browser?
+Better way to choose import location - DONE
+Load the originals location from config file - file browser? - DONE
 Make apply button BIGGER!
 
 

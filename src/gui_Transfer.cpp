@@ -31,6 +31,7 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	
 	TransferToWwiseComponent::currentTransferComponent = this;
 	
+	
 	// Init buttons and combo boxes
 	InitAllButtons(buttons);
 	
@@ -123,7 +124,7 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	
 	addAndMakeVisible(progressBar);
 
-	setSize(1000, 500);
+	setSize(1000, 600);
 	
 	thisCreateImportWindow->OnInitDlg();
 	
@@ -132,6 +133,10 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	CheckOriginalsDirectory();
 	RefreshRenderJobTree();
 	updateProgressValue(0);
+	
+	ReadConfigFile(myConfig);
+	setTransferValuesFromConfig(myConfig);
+	
 	setStatusText("Ready..");
 	
 
@@ -245,11 +250,14 @@ void TransferToWwiseComponent::resized()
 	
 	btn_OriginalsMatchesWwise->setBounds(optionsArea2.removeFromLeft(o1qtrsize * 1.5).reduced(border/2));
 	
-	INtxt_OriginalsSubDir->setBounds(optionsArea2.reduced(border/2));
-	INtxt_OriginalsSubDir->setText("ImportedFromReaper/", juce::NotificationType::dontSendNotification);
+	auto originalsTextArea = optionsArea2.removeFromLeft(optionsArea2.getWidth()*0.7);
 	
+	INtxt_OriginalsSubDir->setBounds(originalsTextArea.reduced(border/2));
+	//INtxt_OriginalsSubDir->setText("ImportedFromReaper/", juce::NotificationType::dontSendNotification);
 	
-	btn_ApplySettingsToJobs->setBounds(LeftHalf.removeFromTop(labelHeight).reduced(border));
+	btn_ChooseWwiseOriginalsDir->setBounds(optionsArea2);
+	
+	btn_ApplySettingsToJobs->setBounds(LeftHalf.removeFromTop(labelHeight*1.5).reduced(border));
 	
 	
 	auto bottomRow = LeftHalf.removeFromBottom(buttonHeight).reduced(border);
@@ -261,7 +269,7 @@ void TransferToWwiseComponent::resized()
 	progressBar->setBounds(LeftHalf.removeFromBottom(buttonHeight).reduced(border));
 	
 	
-	auto RenderButtonArea = LeftHalf.removeFromBottom(buttonHeight*2).reduced(border);
+	auto RenderButtonArea = LeftHalf.removeFromBottom(buttonHeight*1.5).reduced(border);
 	
 	btn_RefreshJobList->setBounds(RenderButtonArea.removeFromLeft(RenderButtonArea.getWidth()/2).reduced(border));
 	
@@ -500,6 +508,14 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 		//thisCreateImportWindow->restoreRenderQueFiles();
 		this->toFront(true);
 	}
+	else if (pButton == btn_ChooseWwiseOriginalsDir)
+	{
+		std::string userOriginalsSubDir = INtxt_OriginalsSubDir->getText().toStdString();
+		if (askUserForWwiseSubDir(userOriginalsSubDir))
+		{
+			INtxt_OriginalsSubDir->setText(userOriginalsSubDir, juce::NotificationType::dontSendNotification);
+		}
+	}
 	
 }
 
@@ -626,3 +642,31 @@ void TransferToWwiseComponent::handle_OnWwiseProjectClosed()
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
 }
 
+bool TransferToWwiseComponent::askUserForWwiseSubDir(std::string &OutSubDir)
+{
+	juce::String wwiseOriginalsRoot = MyCurrentWwiseConnection->projectGlobals.OriginalsPath;
+	File fWwiseRoot = File(wwiseOriginalsRoot);
+	myChooser = std::make_unique<FileChooser> ("Please select the location for the Wwise originals",fWwiseRoot,"");
+	if (!fWwiseRoot.isDirectory())
+	{
+		return false;
+	}
+	if (myChooser->browseForDirectory())
+	{
+		File selectedFile (myChooser->getResult());
+		std::string subDir = selectedFile.getRelativePathFrom(fWwiseRoot).toStdString();
+		//PrintToConsole(subDir);
+		OutSubDir = subDir;
+		return true;
+	}
+	return false;
+}
+
+void TransferToWwiseComponent::setTransferValuesFromConfig(config c)
+{
+	if (!c.userOrigDir.empty())
+	{
+		INtxt_OriginalsSubDir->setText(c.userOrigDir, juce::NotificationType::dontSendNotification);
+	}
+	
+}

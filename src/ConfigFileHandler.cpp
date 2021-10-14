@@ -17,10 +17,18 @@ using namespace std;
 string defaults = 
 "waapiPort=8080\n"
 "useAutomationMode=1\n"
+"userorigsubdir=ImportedFromReaper/\n"
 ;
 
+std::map<std::string, std::string> configFileDefaults = {
+	{"waapiPort","8080"},
+	{"useAutomationMode","1"},
+	{"userorigsubdir","ImportedFromReaper/"},
+};
 //const char dummyconfig[] = "";
 
+// MyMap myMap = { {"hello", 42}, {"world", 88} };
+	 
 string configFileDir = "";
 map<string, string> rawConfigData;
 
@@ -50,11 +58,34 @@ bool ReadConfigFile(config & outConfig)
 				
 		}
 	}
-
-	// Set the config properties 
-	outConfig.waapiPort = std::stoi(rawConfigData["waapiPort"]);	//stoi converts string to integer
-	outConfig.useAutomationMode = std::stoi(rawConfigData["useAutomationMode"]);
-
+	configFile.close();
+	bool needsReread = false;
+	// Set the config properties
+	if (rawConfigData.find( "waapiPort" ) != rawConfigData.end())
+	{
+		outConfig.waapiPort = std::stoi(rawConfigData["waapiPort"]);	//stoi converts string to integer
+	}
+	else{
+		if (insertDefaultValueInConfig("waapiPort")) {needsReread = true;}
+	}
+	if (rawConfigData.find( "useAutomationMode" ) != rawConfigData.end())
+	{
+		outConfig.useAutomationMode = std::stoi(rawConfigData["useAutomationMode"]);
+	}
+	else{
+		if (insertDefaultValueInConfig("useAutomationMode")) {needsReread = true;}
+	}
+	if (rawConfigData.find( "userorigsubdir" ) != rawConfigData.end())
+	{
+		outConfig.userOrigDir = rawConfigData["userorigsubdir"];
+	}
+	else{
+		if (insertDefaultValueInConfig("userorigsubdir")) {needsReread = true;}
+	}
+	if (needsReread)
+	{
+		ReadConfigFile(outConfig); //call self again to reread any insertions
+	}
 	return true;
 }
 
@@ -72,7 +103,26 @@ bool CreateConfigFile()
 {
 	ofstream newFile;
 	newFile.open(configFileDir + kPathSeparator + "csg_reaperwwise.config");
-	newFile << defaults; //dummyconfig;
+	for (auto entry : configFileDefaults)
+	{
+		newFile << entry.first << "=" << entry.second << "\n";
+	}
+	//newFile << defaults; //dummyconfig;
 	newFile.close();
 	return true;
+}
+
+bool insertDefaultValueInConfig(string Key)
+{
+	bool result = false;
+	if (configFileDefaults.find(Key) != configFileDefaults.end())
+	{
+		ofstream configFile;
+		CheckConfigExists();
+		configFile.open(configFileDir + kPathSeparator + "csg_reaperwwise.config",std::ofstream::out | std::ofstream::app);
+		configFile << Key << "=" << configFileDefaults.at(Key) << "\n";
+		configFile.close();
+		result = true;
+	}
+	return result;
 }

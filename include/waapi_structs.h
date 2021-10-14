@@ -57,6 +57,8 @@ struct WwiseProjectGlobals {
 	std::string ProjectName;
 	std::vector<std::string> Languages;
 	std::string DefaultLanguage;
+	std::string OriginalsPath;
+	std::string ProjectRootFolder;
 };
 
 ///struct to hold the current Waapi connection info (version, port etc)

@@ -6,6 +6,7 @@
 #include "GUI.h"
 #include "gui_RenderTree.h"
 #include <stdio.h>
+#include "reaperHelpers.h"
 
 
 //class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
@@ -73,19 +74,24 @@ public:
 		}
 	}
 
+	
+	 
+	bool askUserForWwiseSubDir(std::string &OutSubDir);
 
-
-
+	void setTransferValuesFromConfig(config c);
 
 private:
 
 	CreateObjectChoices myCreateChoices;
+	
+	config myConfig;
 
 	juce::TextButton * btn_RenderAndImport = new TextButton("Render And Import"); //button
 	juce::TextButton * btn_RefreshJobList = new TextButton("Refresh Job List");
 	juce::TextButton * btn_CreateWwiseObject = new TextButton("Create A Wwise Object");
 	juce::TextButton * btn_ApplySettingsToJobs = new TextButton("Apply Import Settings To Selection");
 	juce::TextButton * btn_ConnectToWwise = new TextButton("Connect To Wwise");
+	juce::TextButton * btn_ChooseWwiseOriginalsDir = new TextButton("Choose Originals Dir");
 	juce::ToggleButton * btn_isVoice = new ToggleButton("Is Voice?");
 	juce::ToggleButton * btn_OriginalsMatchesWwise = new ToggleButton("Originals Dir Matches Wwise?");
 	juce::ToggleButton * btn_CreatePlayEvent = new ToggleButton("Create Play Event?");
@@ -98,7 +104,8 @@ private:
 	btn_ConnectToWwise,
 	btn_isVoice,
 	btn_OriginalsMatchesWwise,
-	btn_CreatePlayEvent
+	btn_CreatePlayEvent,
+	btn_ChooseWwiseOriginalsDir
 	};
 
 	juce::ComboBox * dd_Language = new ComboBox("dd_Language"); //drop down
@@ -142,6 +149,8 @@ private:
 
 //	double transferProgress = 0.0f;
 //	juce::ProgressBar * progressBar = new ProgressBar(transferProgress);
+	
+	std::unique_ptr<FileChooser> myChooser;
 	
 
 	StringArray ToJuceStringArray(std::vector<std::string>strings);

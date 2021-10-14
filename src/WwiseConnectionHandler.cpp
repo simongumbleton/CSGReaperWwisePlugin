@@ -13,6 +13,7 @@
 
 
 #include "ReaperRenderQueParser.h"
+#include "platformhelpers.h"
 
 
 //static PluginWindow myPluginWindow = PluginWindow();
@@ -323,8 +324,24 @@ bool WwiseConnectionHandler::GetWwiseProjectGlobals(bool suppressOutputMessages,
 	if (Results.size() != 0)
 	{
 		WwiseProjGlobals.DefaultLanguage = string(Results[0]["@DefaultLanguage"].GetVariant());
-		WwiseProjGlobals.ProjectPath = string(Results[0]["filePath"].GetVariant());
 		WwiseProjGlobals.ProjectName = string(Results[0]["name"].GetVariant());
+		WwiseProjGlobals.ProjectPath = string(Results[0]["filePath"].GetVariant());
+		
+#ifndef _WIN32 //Not windows! Wwise gives crappy paths on mac e.g.
+		//replace("Y:", "~").replace('\\', '/')
+		juce::String tempPath = WwiseProjGlobals.ProjectPath;
+		tempPath = tempPath.replace("Y:", "~").replace("\\", "/");
+		WwiseProjGlobals.ProjectPath = tempPath.toStdString();
+		std::size_t pos = WwiseProjGlobals.ProjectPath.rfind("/");
+		std::string rootPath = WwiseProjGlobals.ProjectPath.substr (0,pos);
+		WwiseProjGlobals.ProjectRootFolder = rootPath;
+		WwiseProjGlobals.OriginalsPath = rootPath + "/Originals";
+#else
+		std::size_t pos = WwiseProjGlobals.ProjectPath.rfind("\\");
+		std::string rootPath = WwiseProjGlobals.ProjectPath.substr (0,pos);
+		WwiseProjGlobals.ProjectRootFolder = rootPath;
+		WwiseProjGlobals.OriginalsPath = rootPath + "\\Originals";
+#endif
 	}
 
 	ObjectGetArgs langs;
