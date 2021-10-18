@@ -247,9 +247,25 @@ void PrintToConsole(int text)
 
 void LaunchTransferWindow()
 {
+	bool useTab = true;
 	String wName = "CSG Reaper Transfer to Wwise Extension";
 	initialiseJuce_GUI();
 	MessageManagerLock mml(Thread::getCurrentThread());
+	if (useTab)
+	{
+		if (transferWindowStatus)
+		{
+			currentTransferWindow->toFront(true);
+		}
+		else
+		{
+			TransferWindow* mainWindow2 = new TransferWindow(wName, new TransferTabComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),&transferWindowStatus);
+			currentTransferWindow = mainWindow2;
+		}
+		return;
+	}
+	
+	
 	if (transferWindowStatus)
 	{
 		currentTransferWindow->toFront(true);

@@ -1,6 +1,7 @@
 
 #include "gui_Transfer.h"
 #include "reaperHelpers.h"
+#include "platformhelpers.h"
 #include <filesystem>
 #include <mutex>
 
@@ -43,17 +44,7 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	info_EventOption->attachToComponent(dd_EventOption, true);
 	info_EventOption->setText("Create Events for: ", juce::NotificationType::dontSendNotification);
 	
-	InitComboBox(dd_CreateType,myCreateChoices.waapiCREATEchoices_TYPE,"Type..");
-	addAndMakeVisible(info_CreateType);
-	info_CreateType->attachToComponent(dd_CreateType, true);
-	info_CreateType->setText("New Object Type: ", juce::NotificationType::dontSendNotification);
 	
-	InitComboBox(dd_OnNameConflict,myCreateChoices.waapiCREATEchoices_NAMECONFLICT,"On name conflict..");
-	addAndMakeVisible(info_NameConflict);
-	info_NameConflict->attachToComponent(dd_OnNameConflict, true);
-	info_NameConflict->setText("On Name Conflict: ", juce::NotificationType::dontSendNotification);
-	dd_OnNameConflict->setSelectedItemIndex(0, false);
-
 	// Init render job tree view
 	InitTreeView();
 	
@@ -62,27 +53,7 @@ TransferToWwiseComponent::TransferToWwiseComponent() //constructor
 	INtxt_OriginalsSubDir->setEditable(true);
 	INtxt_OriginalsSubDir->setColour(juce::Label::backgroundColourId, Colours::lightgrey);
 	
-	addAndMakeVisible(INtxt_CreateName);
-	addAndMakeVisible(info_CreateName);
-	info_CreateName->attachToComponent(INtxt_CreateName, true);
-	info_CreateName->setText("New Object Name:", juce::NotificationType::dontSendNotification);
-	INtxt_CreateName->setEditable(true);
-	INtxt_CreateName->setColour(juce::Label::backgroundColourId, Colours::darkgrey);
-	
-	addAndMakeVisible(INtxt_CreateNotes);
-	addAndMakeVisible(info_CreateNotes);
-	info_CreateNotes->attachToComponent(INtxt_CreateNotes, true);
-	info_CreateNotes->setText("Notes:", juce::NotificationType::dontSendNotification);
-	INtxt_CreateNotes->setEditable(true);
-	INtxt_CreateNotes->setColour(juce::Label::backgroundColourId, Colours::darkgrey);
-	
-	
-	addAndMakeVisible(Title_CreateWwiseObject);
-	Title_CreateWwiseObject->setFont(Font(16.0f,Font::bold));
-	Title_CreateWwiseObject->setText("Create a new Wwise object under current selection", dontSendNotification);
-	Title_CreateWwiseObject->setColour(Label::textColourId, Colours::white);
-	Title_CreateWwiseObject->setJustificationType(Justification::centred);
-	
+		
 	addAndMakeVisible(Title_RenderImport);
 	Title_RenderImport->setFont(Font(16.0f,Font::bold));
 	Title_RenderImport->setText("Select a Wwise parent, apply settings to jobs and render/import", dontSendNotification);
@@ -196,47 +167,28 @@ void TransferToWwiseComponent::resized()
 	auto titleHeight = 60;
 	auto area = getLocalBounds();
 
-	auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
-	auto RightHalf = area;
+	//auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
+	//auto RightHalf = area;
 
 	
 	
-	auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
+	//auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
 	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
 	
-	Title_CreateWwiseObject->setBounds(TopRightQtr.removeFromTop(titleHeight).reduced(border));
-	
-	
-	dd_CreateType->setBounds(TopRightQtr.removeFromTop(comboHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
-	//dd_CreateType->setJustificationType(Justification::right);
-	
-	INtxt_CreateName->setBounds(TopRightQtr.removeFromTop(labelHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
-	//INtxt_CreateName->setJustificationType(Justification::right);
-	
-	INtxt_CreateNotes->setBounds(TopRightQtr.removeFromTop(labelHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
-	//INtxt_CreateNotes->setJustificationType(Justification::right);
-	dd_OnNameConflict->setBounds(TopRightQtr.removeFromTop(comboHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
-	//dd_OnNameConflict->setJustificationType(Justification::right);
-	
-	
-	btn_CreatePlayEvent->setBounds(TopRightQtr.removeFromTop(buttonHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
-	
-	auto buttonArea = TopRightQtr.removeFromTop(buttonHeight).reduced(border);
-	auto edgesize = buttonArea.getWidth()*0.1;
-	auto offsetL = buttonArea.removeFromLeft(edgesize);
-	auto offsetR = buttonArea.removeFromRight(edgesize);
-	btn_CreateWwiseObject->setBounds(buttonArea);
-	btn_CreateWwiseObject->setSize(buttonArea.getWidth(), buttonHeight);
+	//auto buttonArea = TopRightQtr.removeFromTop(buttonHeight).reduced(border);
+	//auto edgesize = buttonArea.getWidth()*0.1;
+	//auto offsetL = buttonArea.removeFromLeft(edgesize);
+	//auto offsetR = buttonArea.removeFromRight(edgesize);
 	
 	//auto TopLeftQtr = LeftHalf.removeFromTop(LeftHalf.getHeight()/2);
 	
-	Title_RenderImport->setBounds(LeftHalf.removeFromTop(titleHeight).reduced(border));
+	Title_RenderImport->setBounds(area.removeFromTop(titleHeight).reduced(border));
 	
-	selectedParentLabel->setBounds(LeftHalf.removeFromTop(labelHeight).reduced(border));
+	selectedParentLabel->setBounds(area.removeFromTop(labelHeight).reduced(border));
 	
-	auto optionsArea1 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
+	auto optionsArea1 = area.removeFromTop(buttonHeight).reduced(border);
 	
-	auto optionsArea2 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
+	auto optionsArea2 = area.removeFromTop(buttonHeight).reduced(border);
 	
 	auto o1qtrsize = optionsArea1.getWidth()/4;
 	
@@ -257,19 +209,22 @@ void TransferToWwiseComponent::resized()
 	
 	btn_ChooseWwiseOriginalsDir->setBounds(optionsArea2);
 	
-	btn_ApplySettingsToJobs->setBounds(LeftHalf.removeFromTop(labelHeight*1.5).reduced(border));
+	btn_ApplySettingsToJobs->setBounds(area.removeFromTop(labelHeight*1.5).reduced(border));
 	
+	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
 	
-	auto bottomRow = LeftHalf.removeFromBottom(buttonHeight).reduced(border);
+	auto statusLeft = statusRow.removeFromLeft(statusRow.getWidth()/2);
 	
-	btn_ConnectToWwise->setBounds(bottomRow.removeFromLeft(bottomRow.getWidth()/2));
+	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth()/2).reduced(border));
+	debugLabel->setBounds(statusRow);
 	
-	txt_ConnectionStatus->setBounds(bottomRow);
+	btn_ConnectToWwise->setBounds(statusLeft.removeFromLeft(statusLeft.getWidth()/2));
 	
-	progressBar->setBounds(LeftHalf.removeFromBottom(buttonHeight).reduced(border));
+	txt_ConnectionStatus->setBounds(statusLeft);
 	
+	progressBar->setBounds(area.removeFromBottom(buttonHeight).reduced(border));
 	
-	auto RenderButtonArea = LeftHalf.removeFromBottom(buttonHeight*1.5).reduced(border);
+	auto RenderButtonArea = area.removeFromBottom(buttonHeight*1.5).reduced(border);
 	
 	btn_RefreshJobList->setBounds(RenderButtonArea.removeFromLeft(RenderButtonArea.getWidth()/2).reduced(border));
 	
@@ -277,15 +232,8 @@ void TransferToWwiseComponent::resized()
 	
 	//tree_RenderJobTree->setBounds(LeftHalf.removeFromTop(treeHeight).reduced(border));
 	
-	tree_RenderJobTree->setBounds(LeftHalf.reduced(border));
-	
-	
-	
-	
-	auto statusRow = RightHalf.removeFromBottom(labelHeight).reduced(border);
-	
-	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth()/2).reduced(border));
-	debugLabel->setBounds(statusRow);
+	tree_RenderJobTree->setBounds(area.reduced(border));
+
 }
 
 
@@ -490,10 +438,6 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	{
 		ApplySettingsToSelectedJobs();
 	}
-	else if (pButton == btn_CreateWwiseObject)
-	{
-		handleUI_B_CreateObject();
-	}
 	else if (pButton == btn_OriginalsMatchesWwise)
 	{
 		CheckOriginalsDirectory();
@@ -581,25 +525,6 @@ void TransferToWwiseComponent::RefreshRenderJobTree()
 	}
 }
 
-void TransferToWwiseComponent::handleUI_B_CreateObject()
-{
-
-	//PrintToConsole("Creating New Wwise Object");
-	CreateObjectArgs myCreateObjectArgs;
-	
-	myCreateObjectArgs.Type = GetDropDownValue(dd_CreateType);
-	myCreateObjectArgs.onNameConflict = GetDropDownValue(dd_OnNameConflict);
-	
-	myCreateObjectArgs.Name = GetLabelValue(INtxt_CreateName);
-	myCreateObjectArgs.Notes = GetLabelValue(INtxt_CreateNotes);
-
-	myCreateObjectArgs.createPlayEvent = GetToggleValue(btn_CreatePlayEvent);
-	
-	//TODO notes doesnt work needs changing in waapi code
-	//TODO creating a voice object doesnt work either
-	thisCreateImportWindow->handleUI_B_CreateObject(myCreateObjectArgs);
-
-}
 
 
 std::string TransferToWwiseComponent::GetDropDownValue(juce::ComboBox * dropdown)
@@ -654,7 +579,31 @@ bool TransferToWwiseComponent::askUserForWwiseSubDir(std::string &OutSubDir)
 	if (myChooser->browseForDirectory())
 	{
 		File selectedFile (myChooser->getResult());
-		std::string subDir = selectedFile.getRelativePathFrom(fWwiseRoot).toStdString();
+		std::string subDir = selectedFile.getRelativePathFrom(fWwiseRoot).toStdString()+kPathSeparator;
+		std::string subDirLower = stringToLower(subDir);
+		if (subDir.empty() or subDir==".")
+		{
+			PrintToConsole("Wwise originals location must be inside SFX or Voices folder..");
+			return false;
+		}
+		if (!(subDirLower.find("voices") != subDirLower.npos or subDirLower.find("sfx") != subDirLower.npos))
+		{
+			PrintToConsole("Wwise originals location must be inside SFX or Voices folder..");
+			return false;
+		}
+		//strip the first dir off because it will either be SFX or Voices
+		if (subDir.find(kPathSeparator) != subDir.npos)
+		{
+			subDir.erase(0, subDir.find(kPathSeparator) + 1);
+		}
+		//if subDir contained voices, then we must then strip the language folder too
+		if (subDirLower.find("voices") != subDirLower.npos)
+		{
+			if (subDir.find(kPathSeparator) != subDir.npos)
+			{
+				subDir.erase(0, subDir.find(kPathSeparator) + 1);
+			}
+		}
 		//PrintToConsole(subDir);
 		OutSubDir = subDir;
 		return true;

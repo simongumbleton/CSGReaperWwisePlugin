@@ -139,32 +139,32 @@ void CreateWwiseComponent::resized()
 	auto titleHeight = 60;
 	auto area = getLocalBounds();
 
-	auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
-	auto RightHalf = area;
+	//auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
+	//auto RightHalf = area;
 
 	
 	
-	auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
+	//auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
 	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
 	
-	Title_CreateWwiseObject->setBounds(TopRightQtr.removeFromTop(titleHeight).reduced(border));
+	Title_CreateWwiseObject->setBounds(area.removeFromTop(titleHeight).reduced(border));
 	
 	
-	dd_CreateType->setBounds(TopRightQtr.removeFromTop(comboHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
+	dd_CreateType->setBounds(area.removeFromTop(comboHeight).reduced(border).removeFromRight(area.getWidth()/2));
 	//dd_CreateType->setJustificationType(Justification::right);
 	
-	INtxt_CreateName->setBounds(TopRightQtr.removeFromTop(labelHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
+	INtxt_CreateName->setBounds(area.removeFromTop(labelHeight).reduced(border).removeFromRight(area.getWidth()/2));
 	//INtxt_CreateName->setJustificationType(Justification::right);
 	
-	INtxt_CreateNotes->setBounds(TopRightQtr.removeFromTop(labelHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
+	INtxt_CreateNotes->setBounds(area.removeFromTop(labelHeight).reduced(border).removeFromRight(area.getWidth()/2));
 	//INtxt_CreateNotes->setJustificationType(Justification::right);
-	dd_OnNameConflict->setBounds(TopRightQtr.removeFromTop(comboHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
+	dd_OnNameConflict->setBounds(area.removeFromTop(comboHeight).reduced(border).removeFromRight(area.getWidth()/2));
 	//dd_OnNameConflict->setJustificationType(Justification::right);
 	
 	
-	btn_CreatePlayEvent->setBounds(TopRightQtr.removeFromTop(buttonHeight).reduced(border).removeFromRight(TopRightQtr.getWidth()/2));
+	btn_CreatePlayEvent->setBounds(area.removeFromTop(buttonHeight).reduced(border).removeFromRight(area.getWidth()/2));
 	
-	auto buttonArea = TopRightQtr.removeFromTop(buttonHeight).reduced(border);
+	auto buttonArea = area.removeFromTop(buttonHeight).reduced(border);
 	auto edgesize = buttonArea.getWidth()*0.1;
 	auto offsetL = buttonArea.removeFromLeft(edgesize);
 	auto offsetR = buttonArea.removeFromRight(edgesize);
@@ -173,31 +173,31 @@ void CreateWwiseComponent::resized()
 	
 	//auto TopLeftQtr = LeftHalf.removeFromTop(LeftHalf.getHeight()/2);
 	
-	selectedParentLabel->setBounds(LeftHalf.removeFromTop(labelHeight).reduced(border));
+	auto optionsArea1 = area.removeFromTop(buttonHeight).reduced(border);
 	
-	auto optionsArea1 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
-	
-	auto optionsArea2 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
+	auto optionsArea2 = area.removeFromTop(buttonHeight).reduced(border);
 	
 	auto o1qtrsize = optionsArea1.getWidth()/4;
 		
 	auto originalsTextArea = optionsArea2.removeFromLeft(optionsArea2.getWidth()*0.7);
 		
-	auto bottomRow = LeftHalf.removeFromBottom(buttonHeight).reduced(border);
+	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
 	
-	btn_ConnectToWwise->setBounds(bottomRow.removeFromLeft(bottomRow.getWidth()/2));
-	
-	txt_ConnectionStatus->setBounds(bottomRow);
-	
-	progressBar->setBounds(LeftHalf.removeFromBottom(buttonHeight).reduced(border));
-	
-	
-	auto RenderButtonArea = LeftHalf.removeFromBottom(buttonHeight*1.5).reduced(border);
-	
-	auto statusRow = RightHalf.removeFromBottom(labelHeight).reduced(border);
+	auto statusLeft = statusRow.removeFromLeft(statusRow.getWidth()/2);
 	
 	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth()/2).reduced(border));
 	debugLabel->setBounds(statusRow);
+	
+	btn_ConnectToWwise->setBounds(statusLeft.removeFromLeft(statusLeft.getWidth()/2));
+	
+	txt_ConnectionStatus->setBounds(statusLeft);
+	
+	progressBar->setBounds(area.removeFromBottom(buttonHeight).reduced(border));
+	
+	
+	auto RenderButtonArea = area.removeFromBottom(buttonHeight*1.5).reduced(border);
+	
+
 }
 
 

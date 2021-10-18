@@ -7,6 +7,7 @@
 #include "gui_RenderTree.h"
 #include <stdio.h>
 #include "reaperHelpers.h"
+#include "gui_create.h"
 
 
 //class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
@@ -81,58 +82,40 @@ public:
 	void setTransferValuesFromConfig(config c);
 
 private:
-
 	CreateObjectChoices myCreateChoices;
-	
 	config myConfig;
 
 	juce::TextButton * btn_RenderAndImport = new TextButton("Render And Import"); //button
 	juce::TextButton * btn_RefreshJobList = new TextButton("Refresh Job List");
-	juce::TextButton * btn_CreateWwiseObject = new TextButton("Create A Wwise Object");
+
 	juce::TextButton * btn_ApplySettingsToJobs = new TextButton("Apply Import Settings To Selection");
 	juce::TextButton * btn_ConnectToWwise = new TextButton("Connect To Wwise");
 	juce::TextButton * btn_ChooseWwiseOriginalsDir = new TextButton("Choose Originals Dir");
 	juce::ToggleButton * btn_isVoice = new ToggleButton("Is Voice?");
 	juce::ToggleButton * btn_OriginalsMatchesWwise = new ToggleButton("Originals Dir Matches Wwise?");
-	juce::ToggleButton * btn_CreatePlayEvent = new ToggleButton("Create Play Event?");
 
 	std::vector<juce::Button*> buttons{
 	btn_RenderAndImport,
 	btn_RefreshJobList,
-	btn_CreateWwiseObject,
 	btn_ApplySettingsToJobs,
 	btn_ConnectToWwise,
 	btn_isVoice,
 	btn_OriginalsMatchesWwise,
-	btn_CreatePlayEvent,
 	btn_ChooseWwiseOriginalsDir
 	};
 
 	juce::ComboBox * dd_Language = new ComboBox("dd_Language"); //drop down
 	juce::ComboBox * dd_EventOption = new ComboBox("dd_EventOption");
 	juce::Label * info_EventOption = new Label();
-	juce::ComboBox * dd_CreateType = new ComboBox("dd_CreateType");
-	juce::Label * info_CreateType = new Label();
-	juce::ComboBox * dd_OnNameConflict = new ComboBox("dd_OnNameConflict");
-	juce::Label * info_NameConflict = new Label();
 
 	std::vector<juce::ComboBox *> comboBoxes{
 		dd_Language,
 		dd_EventOption,
-		dd_CreateType,
-		dd_OnNameConflict
 	};
 	
-	juce::Label * Title_CreateWwiseObject = new Label();
 	juce::Label * Title_RenderImport = new Label();
 
 	juce::Label * INtxt_OriginalsSubDir = new Label();
-	
-	juce::Label * INtxt_CreateName = new Label();
-	juce::Label * info_CreateName = new Label();
-	
-	juce::Label * INtxt_CreateNotes = new Label();
-	juce::Label * info_CreateNotes = new Label();
 	
 	juce::Label * txt_ConnectionStatus = new Label(); // text
 
@@ -177,6 +160,7 @@ public:
 
 		setResizable(true, false);
 		setResizeLimits(500, 500, 10000, 10000);
+		setSize(750, 600);
 		centreWithSize(getWidth(), getHeight());
 
 		setVisible(true);
@@ -194,3 +178,29 @@ private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferWindow)
 };
 
+class TransferTabComponent : public juce::TabbedComponent
+{
+	TransferToWwiseComponent* transferComp;
+	CreateWwiseComponent* createComp;
+public:
+	
+	TransferTabComponent(juce::TabbedButtonBar::Orientation orientation) : juce::TabbedComponent(orientation)
+	{
+		transferComp = new TransferToWwiseComponent();
+		
+		addTab("Transfer",juce::Colours::darkslategrey,transferComp,true,0);
+		
+		createComp = new CreateWwiseComponent();
+		
+		addTab("Create",juce::Colours::darkslategrey,createComp,true,1);
+		
+	};
+	~TransferTabComponent()
+	{
+		
+	};
+	
+	
+	//==============================================================================
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferTabComponent)
+};
