@@ -110,9 +110,9 @@ public:
 	
 	bool SetNotesForObject(std::string id, std::string notes,AK::WwiseAuthoringAPI::AkJson & results);
 	
-	bool SubscribeOnSelectionChanged(AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,uint64_t subscriptionID);
+	bool SubscribeOnSelectionChanged(AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,uint64_t &outsubscriptionID);
 	
-	bool SubscribeOnProjectClosed(AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,uint64_t subscriptionID);
+	bool SubscribeOnProjectClosed(AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,uint64_t &outsubscriptionID);
 	
 	bool UnsubscribeFromTopicByID(uint64_t subscriptionID)
 	{

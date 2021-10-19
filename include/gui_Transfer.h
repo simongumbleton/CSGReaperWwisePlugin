@@ -9,7 +9,7 @@
 #include "reaperHelpers.h"
 #include "gui_create.h"
 
-
+class TransferTabComponent;
 //class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
 class TransferToWwiseComponent : public BaseWwiseGuiComponent
 {
@@ -72,10 +72,16 @@ public:
 					 break;       // and exits the switch
 			case 2 : handle_OnWwiseProjectClosed();
 					 break;
+			case 30: handle_OnBecameActiveTab();
+					break;
+			case 31: handle_OnTabBecameInactive();
+					break;
 		}
 	}
 
+	void handle_OnBecameActiveTab();
 	
+	void handle_OnTabBecameInactive();
 	 
 	bool askUserForWwiseSubDir(std::string &OutSubDir);
 
@@ -85,7 +91,9 @@ private:
 	CreateObjectChoices myCreateChoices;
 	config myConfig;
 
-	juce::Component* parent = nullptr;
+	uint64_t subscriptionID_selectionChanged =0;
+	uint64_t subscriptionID_projectClosed=0;
+	TransferTabComponent* parent = nullptr;
 
 	juce::TextButton * btn_RenderAndImport = new TextButton("Render And Import"); //button
 	juce::TextButton * btn_RefreshJobList = new TextButton("Refresh Job List");
@@ -195,16 +203,12 @@ public:
 	{
 
 		thisCreateImportWindow = new CreateImportWindow();
-		transferComp = new TransferToWwiseComponent(this);
-		createComp = new CreateWwiseComponent();
 
-		if (thisCreateImportWindow)
-		{
-			thisCreateImportWindow->owningGUIWindow = transferComp;
-		}
 		WwiseCntnHndlr = thisCreateImportWindow->WwiseConnectionHnd;
 		MyCurrentWwiseConnection = &thisCreateImportWindow->WwiseConnectionHnd->MyCurrentWwiseConnection;
 
+		transferComp = new TransferToWwiseComponent(this);
+		createComp = new CreateWwiseComponent(this);
 		
 		addTab("Transfer",juce::Colours::darkslategrey,transferComp,true,0);
 		addTab("Create",juce::Colours::darkslategrey,createComp,true,1);
@@ -219,6 +223,24 @@ public:
 		
 	};
 	
+	void currentTabChanged(int newCurrentTabIndex,const String & newCurrentTabName)
+	{
+		if (currentActiveTabIndex != newCurrentTabIndex)
+		{
+			if (getTabContentComponent(currentActiveTabIndex))
+			{
+				getTabContentComponent(currentActiveTabIndex)->handleCommandMessage(31);
+			}
+			if (getTabContentComponent(newCurrentTabIndex))
+			{
+				getTabContentComponent(newCurrentTabIndex)->handleCommandMessage(30);
+			}
+			currentActiveTabIndex = newCurrentTabIndex;
+		}
+		//PrintToConsole(newCurrentTabIndex);
+	}
+private:
+	int currentActiveTabIndex = -1;
 	
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferTabComponent)

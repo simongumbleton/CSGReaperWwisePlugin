@@ -66,7 +66,7 @@ WwiseTemplateComponent::WwiseTemplateComponent() //constructor
 
 	setSize(1000, 500);
 	
-	//TryConnectToWwise();
+	TryConnectToWwise();
 }
 
 WwiseTemplateComponent::~WwiseTemplateComponent()
@@ -165,15 +165,15 @@ void WwiseTemplateComponent::TryConnectToWwise() {
 		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->projectGlobals.ProjectName);
 		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
 		WwiseCntnHndlr->AddActiveComponent(this);
-		WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, 21);
-		WwiseCntnHndlr->SubscribeOnProjectClosed(WwiseConnectionHandler::callback_OnProjectClosed, 22);
+		WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, subscriptionID_selectionChanged);
+		WwiseCntnHndlr->SubscribeOnProjectClosed(WwiseConnectionHandler::callback_OnProjectClosed, subscriptionID_projectClosed);
 		handle_OnSelectedParentChanged();
 	}
 	else
 	{
 		txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
-		WwiseCntnHndlr->UnsubscribeFromTopicByID(21);
-		WwiseCntnHndlr->UnsubscribeFromTopicByID(22);
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
 		WwiseCntnHndlr->DisconnectFromWwise();
 		WwiseCntnHndlr->RemoveActiveComponent(this);
 		

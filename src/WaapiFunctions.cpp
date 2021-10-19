@@ -24,6 +24,7 @@ bool waapi_Connect(CurrentWwiseConnection &wwiseConnectionReturn)
 	
 	if ((success = my_client->Connect("127.0.0.1", wwiseConnectionReturn.port,waapi_DisconnectHandler)))
 	{
+		
 		std::cout << "Connection Success" << std::endl;
 		//Get Wwise info
 		if ((success = my_client->Call(ak::wwise::core::getInfo,
@@ -44,6 +45,7 @@ bool waapi_Connect(CurrentWwiseConnection &wwiseConnectionReturn)
 		wwiseConnectionReturn.projectGlobals = WwiseProjectGlobals();//if not connected clear the project globals
 	}
 	myWwiseConnection = &wwiseConnectionReturn;
+	
 	return success;
 }
 
@@ -665,7 +667,7 @@ bool waapi_DoWorkgoupOperation(SourceControlOperation operation, std::string tar
 
 bool waapi_SetupSubscription(const char *subscription,
 							 AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,
-							 uint64_t subscriptionID)
+							 uint64_t &subscriptionID)
 {
 	using namespace AK::WwiseAuthoringAPI;
 	

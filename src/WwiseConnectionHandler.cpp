@@ -498,16 +498,16 @@ bool WwiseConnectionHandler::SetNotesForObject(std::string id, std::string notes
 
 bool WwiseConnectionHandler::SubscribeOnSelectionChanged
  (AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,
-	uint64_t subscriptionID)
+	uint64_t &outsubscriptionID)
 {
-	return waapi_SetupSubscription(ak::wwise::ui::selectionChanged, in_callback, subscriptionID);
+	return waapi_SetupSubscription(ak::wwise::ui::selectionChanged, in_callback, outsubscriptionID);
 }
 
 bool WwiseConnectionHandler::SubscribeOnProjectClosed
  (AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,
-	uint64_t subscriptionID)
+	uint64_t &outsubscriptionID)
 {
-	return waapi_SetupSubscription(ak::wwise::core::project::preClosed, in_callback, subscriptionID);
+	return waapi_SetupSubscription(ak::wwise::core::project::preClosed, in_callback, outsubscriptionID);
 }
 
 

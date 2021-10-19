@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "reaperHelpers.h"
 
-
+class TransferTabComponent;
 //class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
 class CreateWwiseComponent : public BaseWwiseGuiComponent
 {
@@ -22,7 +22,7 @@ public:
 	
 	WwiseConnectionHandler * WwiseCntnHndlr;
 
-	CreateWwiseComponent();
+	CreateWwiseComponent(juce::Component* parentComp);
 	~CreateWwiseComponent();
 
 	void resized() override;
@@ -61,16 +61,26 @@ public:
 					 break;       // and exits the switch
 			case 2 : handle_OnWwiseProjectClosed();
 					 break;
+			case 30: handle_OnBecameActiveTab();
+					break;
+			case 31: handle_OnTabBecameInactive();
+					break;
 		}
 	}
 
 	void setTransferValuesFromConfig(config c);
+	
+	void handle_OnBecameActiveTab();
+	
+	void handle_OnTabBecameInactive();
 
 private:
 
 	CreateObjectChoices myCreateChoices;
-	
+	TransferTabComponent* parent;
 	config myConfig;
+	uint64_t subscriptionID_selectionChanged =0;
+	uint64_t subscriptionID_projectClosed=0;
 
 	juce::TextButton * btn_CreateWwiseObject = new TextButton("Create A Wwise Object");
 	juce::TextButton * btn_ConnectToWwise = new TextButton("Connect To Wwise");

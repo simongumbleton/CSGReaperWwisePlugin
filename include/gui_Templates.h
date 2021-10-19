@@ -73,6 +73,9 @@ public:
 
 private:
 
+	uint64_t subscriptionID_selectionChanged =0;
+	uint64_t subscriptionID_projectClosed=0;
+	
 	juce::TextButton * btn_ConnectToWwise = new TextButton("Connect To Wwise");
 	
 	juce::TextButton * btn_Save = new TextButton("Save Changes");

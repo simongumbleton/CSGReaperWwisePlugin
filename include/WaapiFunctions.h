@@ -86,8 +86,7 @@ bool waapi_UndoHandler(undoStep undoStep, std::string undoTag);
 bool waapi_DoWorkgoupOperation(SourceControlOperation operation, std::string target);
 
 
-bool waapi_SetupSubscription(const char *subscription,AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,
-uint64_t subscriptionID);
+bool waapi_SetupSubscription(const char *subscription,AK::WwiseAuthoringAPI::Client::WampEventCallback in_callback,uint64_t &subscriptionID);
 
 bool waapi_Unsubscribe(const uint64_t& in_subscriptionId); //bool Unsubscribe(const uint64_t& in_subscriptionId, AkJson& out_result, int in_timeoutMs = -1);
 
