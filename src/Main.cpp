@@ -272,7 +272,7 @@ void LaunchTransferWindow()
 	}
 	else
 	{
-		TransferWindow* mainWindow2 = new TransferWindow(wName, new TransferToWwiseComponent,&transferWindowStatus);
+		TransferWindow* mainWindow2 = new TransferWindow(wName, new TransferToWwiseComponent(nullptr),&transferWindowStatus);
 		currentTransferWindow = mainWindow2;
 	}
 }

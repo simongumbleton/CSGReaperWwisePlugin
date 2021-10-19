@@ -23,7 +23,7 @@ public:
 	
 	WwiseConnectionHandler * WwiseCntnHndlr;
 
-	TransferToWwiseComponent();
+	TransferToWwiseComponent(juce::Component* parentComp);
 	~TransferToWwiseComponent();
 
 	void resized() override;
@@ -84,6 +84,8 @@ public:
 private:
 	CreateObjectChoices myCreateChoices;
 	config myConfig;
+
+	juce::Component* parent = nullptr;
 
 	juce::TextButton * btn_RenderAndImport = new TextButton("Render And Import"); //button
 	juce::TextButton * btn_RefreshJobList = new TextButton("Refresh Job List");
@@ -180,21 +182,38 @@ private:
 
 class TransferTabComponent : public juce::TabbedComponent
 {
-	TransferToWwiseComponent* transferComp;
-	CreateWwiseComponent* createComp;
 public:
 	
+	TransferToWwiseComponent* transferComp = nullptr;
+	CreateWwiseComponent* createComp = nullptr;
+
+	CreateImportWindow* thisCreateImportWindow = nullptr;
+	CurrentWwiseConnection* MyCurrentWwiseConnection = nullptr;
+	WwiseConnectionHandler* WwiseCntnHndlr = nullptr;
+
 	TransferTabComponent(juce::TabbedButtonBar::Orientation orientation) : juce::TabbedComponent(orientation)
 	{
-		transferComp = new TransferToWwiseComponent();
+
+		thisCreateImportWindow = new CreateImportWindow();
+		transferComp = new TransferToWwiseComponent(this);
+		createComp = new CreateWwiseComponent();
+
+		if (thisCreateImportWindow)
+		{
+			thisCreateImportWindow->owningGUIWindow = transferComp;
+		}
+		WwiseCntnHndlr = thisCreateImportWindow->WwiseConnectionHnd;
+		MyCurrentWwiseConnection = &thisCreateImportWindow->WwiseConnectionHnd->MyCurrentWwiseConnection;
+
 		
 		addTab("Transfer",juce::Colours::darkslategrey,transferComp,true,0);
-		
-		createComp = new CreateWwiseComponent();
-		
 		addTab("Create",juce::Colours::darkslategrey,createComp,true,1);
 		
 	};
+
+
+
+
 	~TransferTabComponent()
 	{
 		

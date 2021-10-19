@@ -18,9 +18,11 @@ StringArray TransferToWwiseComponent::ToJuceStringArray(std::vector<std::string>
 TransferToWwiseComponent * TransferToWwiseComponent::currentTransferComponent = nullptr;
 std::mutex mx_t;
 
-TransferToWwiseComponent::TransferToWwiseComponent() //constructor
+TransferToWwiseComponent::TransferToWwiseComponent(juce::Component* parentComp) //constructor
 {
 	
+	parent = parentComp;
+
 	thisCreateImportWindow = new CreateImportWindow();
 	if (thisCreateImportWindow)
 	{
@@ -119,6 +121,7 @@ TransferToWwiseComponent::~TransferToWwiseComponent()
 	WwiseCntnHndlr->UnsubscribeFromTopicByID(11);
 	WwiseCntnHndlr->UnsubscribeFromTopicByID(12);
 	WwiseCntnHndlr->RemoveActiveComponent(this);
+	parent = nullptr;
 	TransferToWwiseComponent::currentTransferComponent = nullptr;
 }
 

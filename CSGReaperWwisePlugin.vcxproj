@@ -69,6 +69,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\gui_create.cpp" />
     <ClCompile Include="src\gui_Templates.cpp" />
     <ClCompile Include="src\gui_Transfer.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -87,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="include\ConfigFileHandler.h" />
     <ClInclude Include="include\GUI.h" />
+    <ClInclude Include="include\gui_create.h" />
     <ClInclude Include="include\gui_properties.h" />
     <ClInclude Include="include\gui_RenderTree.h" />
     <ClInclude Include="include\gui_Templates.h" />
