@@ -24,6 +24,7 @@ std::map<std::string, std::string> configFileDefaults = {
 	{"waapiPort","8080"},
 	{"useAutomationMode","1"},
 	{"userorigsubdir","ImportedFromReaper/"},
+	{"versionToken","_v00"}
 };
 //const char dummyconfig[] = "";
 
@@ -61,6 +62,7 @@ bool ReadConfigFile(config & outConfig)
 	configFile.close();
 	bool needsReread = false;
 	// Set the config properties
+	
 	if (rawConfigData.find( "waapiPort" ) != rawConfigData.end())
 	{
 		outConfig.waapiPort = std::stoi(rawConfigData["waapiPort"]);	//stoi converts string to integer
@@ -68,6 +70,7 @@ bool ReadConfigFile(config & outConfig)
 	else{
 		if (insertDefaultValueInConfig("waapiPort")) {needsReread = true;}
 	}
+	
 	if (rawConfigData.find( "useAutomationMode" ) != rawConfigData.end())
 	{
 		outConfig.useAutomationMode = std::stoi(rawConfigData["useAutomationMode"]);
@@ -75,6 +78,7 @@ bool ReadConfigFile(config & outConfig)
 	else{
 		if (insertDefaultValueInConfig("useAutomationMode")) {needsReread = true;}
 	}
+	
 	if (rawConfigData.find( "userorigsubdir" ) != rawConfigData.end())
 	{
 		outConfig.userOrigDir = rawConfigData["userorigsubdir"];
@@ -82,6 +86,15 @@ bool ReadConfigFile(config & outConfig)
 	else{
 		if (insertDefaultValueInConfig("userorigsubdir")) {needsReread = true;}
 	}
+	
+	if (rawConfigData.find( "versionToken" ) != rawConfigData.end())
+	{
+		outConfig.versionToken = rawConfigData["versionToken"];
+	}
+	else{
+		if (insertDefaultValueInConfig("versionToken")) {needsReread = true;}
+	}
+	
 	if (needsReread)
 	{
 		ReadConfigFile(outConfig); //call self again to reread any insertions

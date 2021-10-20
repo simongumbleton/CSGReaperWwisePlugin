@@ -83,7 +83,7 @@ void CreateImportWindow::OnCommand(int id, int notifycode)
 void CreateImportWindow::OnInitDlg()
 {
 
-	config myConfig;
+	//config myConfig;
 	ReadConfigFile(myConfig);
 	WwiseConnectionHnd->SetOptionsFromConfig(myConfig);
 
@@ -755,11 +755,65 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 		//PrintToConsole("");
 		//PrintToConsole(obj.properties.at("name"));
 		std::string name = obj.properties.at("name")+".wav";
-		if (name == audioFile)
+		std::string nameForComparison = name;
+		std::string audioFileNameForComparison = audioFile;
+		
+		// TODO Could maybe do the versioning here?
+		std::string versionToken = myConfig.versionToken;
+		bool isVersion = false;
+		
+		
+		size_t lengthToRemove = versionToken.length()+4;
+		
+		if (audioFile.length() >= lengthToRemove)
+		{
+			size_t verTokenPos = audioFile.length()-lengthToRemove;// last 8 chars of a version will be _v**.wav
+			std::size_t found = audioFile.find(versionToken.c_str(),verTokenPos,2);//match the first 2 chars of the token (_v)
+			if (found != audioFile.npos)
+			{
+				int i = 0;
+				bool doesPatternMatch = false;
+				for (auto c : versionToken)
+				{
+					if((isdigit(c)) != (isdigit(audioFile[found+i])))
+					{
+						break;
+					}
+					i++;
+				}
+				if (i == versionToken.length())
+				{
+					doesPatternMatch = true;
+				}
+				char c = audioFile[found+versionToken.length()];
+				if (c != '.')
+				{
+					doesPatternMatch = false;
+				}
+				
+				if (doesPatternMatch)
+				{
+					isVersion = true;
+					audioFileNameForComparison = audioFileNameForComparison.erase(audioFileNameForComparison.length()-8,8);
+					size_t verTokenPos = nameForComparison.length()-8;// last 8 chars of a version will be _v**.wav
+					std::size_t found = nameForComparison.find(versionToken.c_str(),verTokenPos,2);
+					if (found != nameForComparison.npos)
+					{
+						nameForComparison = nameForComparison.erase(nameForComparison.length()-8,8);
+					}
+					else
+					{
+						nameForComparison = nameForComparison.erase(nameForComparison.length()-4,4);
+					}
+				}
+			}
+		
+		}
+		
+		if (nameForComparison == audioFileNameForComparison)
 		{
 			std::string wwisePath = obj.properties.at("path");
 			std::string fullPath = obj.properties.at("sound:originalWavFilePath");
-
 
 			ObjectGetArgs getPArgs;
 			getPArgs.From = { "path",wwisePath };
@@ -774,7 +828,7 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 				MyWwiseObjects = WwiseConnectionHnd->GetWwiseObjects(false, getPArgs, results);
 			}
 			catch (std::string e) {
-				//PrintToConsole(e);
+				PrintToConsole(e);
 			}
 
 			parent = MyWwiseObjects[0];
@@ -794,11 +848,18 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 				fullPath.erase(0, 14);
 			}
 
-			size_t pos = fullPath.find(audioFile);
-			fullPath.erase(pos, audioFile.length());
-
-			pos = wwisePath.find(obj.properties.at("name"));
-			wwisePath.erase(pos, obj.properties.at("name").length());
+			size_t pos = fullPath.rfind(name);
+			if (pos != fullPath.npos)
+			{
+				fullPath.erase(pos, audioFile.length());
+				
+			}
+			pos = wwisePath.rfind(obj.properties.at("name"));
+			if (pos != wwisePath.npos)
+			{
+				wwisePath.erase(pos, obj.properties.at("name").length());
+			}
+			
 
 			existingOriginalDir = fullPath;
 			existingWwisePath = wwisePath;

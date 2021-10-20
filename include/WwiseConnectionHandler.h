@@ -150,6 +150,7 @@ public:
 	CreateImportWindow();
 	~CreateImportWindow();
 
+	config myConfig;
 
 	//static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 	

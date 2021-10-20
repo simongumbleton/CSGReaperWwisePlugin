@@ -11,6 +11,7 @@ struct config
 	int waapiPort = 8080;
 	bool useAutomationMode = true;
 	std::string userOrigDir = "ImportedFromReaper/";
+	std::string versionToken = "_v00";
 };
 
 // PUBLIC client calls this function
