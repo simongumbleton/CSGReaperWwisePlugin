@@ -86,13 +86,13 @@ CreateWwiseComponent::CreateWwiseComponent(juce::Component* parentComp) //constr
 
 	setSize(1000, 600);
 	
-	thisCreateImportWindow->OnInitDlg();
+	//thisCreateImportWindow->OnInitDlg();
 	
-	TryConnectToWwise();
+	//TryConnectToWwise();
 	updateProgressValue(0);
 	
-	ReadConfigFile(myConfig);
-	setTransferValuesFromConfig(myConfig);
+	//ReadConfigFile(myConfig);
+	//setTransferValuesFromConfig(myConfig);
 	
 	setStatusText("Ready..");
 	
@@ -101,8 +101,6 @@ CreateWwiseComponent::CreateWwiseComponent(juce::Component* parentComp) //constr
 
 CreateWwiseComponent::~CreateWwiseComponent()
 {
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(11);
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(12);
 	WwiseCntnHndlr->RemoveActiveComponent(this);
 	CreateWwiseComponent::currentCreateComponent = nullptr;
 }
@@ -202,25 +200,37 @@ void CreateWwiseComponent::resized()
 
 
 void CreateWwiseComponent::TryConnectToWwise() {
-	thisCreateImportWindow->handleUI_B_Connect();
+	if (!MyCurrentWwiseConnection->connected)
+	{
+		thisCreateImportWindow->handleUI_B_Connect();
+	}
 	bool connected = MyCurrentWwiseConnection->connected;
 	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
 	{
 		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->projectGlobals.ProjectName);
 		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
 		WwiseCntnHndlr->AddActiveComponent(this);
-		WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, subscriptionID_selectionChanged);
-		WwiseCntnHndlr->SubscribeOnProjectClosed(WwiseConnectionHandler::callback_OnProjectClosed, subscriptionID_projectClosed);
+		if (!isSubscribed)
+		{
+			WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, subscriptionID_selectionChanged);
+			WwiseCntnHndlr->SubscribeOnProjectClosed(WwiseConnectionHandler::callback_OnProjectClosed, subscriptionID_projectClosed);
+			isSubscribed = true;
+		}
 		handle_OnSelectedParentChanged();
+		setStatusText("Ready");
 	}
 	else
 	{
 		txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
-		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
-		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+		if (isSubscribed)
+		{
+			WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
+			WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+			isSubscribed = false;
+		}
 		WwiseCntnHndlr->DisconnectFromWwise();
 		WwiseCntnHndlr->RemoveActiveComponent(this);
-		
+		setStatusText("Error");
 	}
 }
 
@@ -306,8 +316,12 @@ void CreateWwiseComponent::handle_OnWwiseProjectClosed()
 	const std::lock_guard<std::mutex> lock(mx_c);
 	std::cout << "_____Callback 2______" << std::endl;
 	txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+	if (isSubscribed)
+	{
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+		isSubscribed = false;
+	}
 	WwiseCntnHndlr->DisconnectFromWwise();
 	std::string display = "Selected Parent: ";
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
@@ -326,15 +340,31 @@ void CreateWwiseComponent::handle_OnBecameActiveTab()
 	bool connected = MyCurrentWwiseConnection->connected;
 	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
 	{
-		WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, subscriptionID_selectionChanged);
-		WwiseCntnHndlr->SubscribeOnProjectClosed(WwiseConnectionHandler::callback_OnProjectClosed, subscriptionID_projectClosed);
+		if (!isSubscribed)
+		{
+			WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, subscriptionID_selectionChanged);
+			WwiseCntnHndlr->SubscribeOnProjectClosed(WwiseConnectionHandler::callback_OnProjectClosed, subscriptionID_projectClosed);
+			isSubscribed = true;
+		}
 		handle_OnSelectedParentChanged();
+		setStatusText("Ready");
+		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->projectGlobals.ProjectName);
+		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
+	}
+	else
+	{
+		setStatusText("Error");
+		txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
 	}
 }
 
 void CreateWwiseComponent::handle_OnTabBecameInactive()
 {
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
-//	WwiseCntnHndlr->DisconnectFromWwise();
+	if (isSubscribed)
+	{
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+		isSubscribed = false;
+	}
+	//	WwiseCntnHndlr->DisconnectFromWwise();
 }

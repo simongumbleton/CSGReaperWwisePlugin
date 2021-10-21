@@ -103,14 +103,14 @@ void CreateImportWindow::handleUI_B_Connect()
 {
 	if (WwiseConnectionHnd->handle_GUI_Connect())
 	{
-		SetStatusMessageText("Ready");
+		//SetStatusMessageText("Ready");
 		//SetDlgItemText(m_hWindow, IDC_WwiseConnection, "Wwise Connection Established");
 		//		SendMessage(hwnd_combo, CB_SETCURSEL, 0, 0);
 		//		textConnectionStatus
 	}
 	else
 	{
-		SetStatusMessageText("Error");
+		//SetStatusMessageText("Error");
 		//SetDlgItemText(m_hWindow, IDC_WwiseConnection, "!!Wwise Connection Missing!!");
 	}
 }

@@ -82,12 +82,27 @@ public:
 	void handle_OnBecameActiveTab();
 	
 	void handle_OnTabBecameInactive();
+
+	void handle_Shutdown()
+	{
+		if (isSubscribed)
+		{
+			if ((MyCurrentWwiseConnection) && (MyCurrentWwiseConnection->connected) && (WwiseCntnHndlr))
+			{
+				WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
+				WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+				isSubscribed = false;
+			}
+		}
+	}
 	 
 	bool askUserForWwiseSubDir(std::string &OutSubDir);
 
 	void setTransferValuesFromConfig(config c);
 
 private:
+
+	bool isSubscribed = false;
 	CreateObjectChoices myCreateChoices;
 	config myConfig;
 
@@ -209,9 +224,18 @@ public:
 
 		transferComp = new TransferToWwiseComponent(this);
 		createComp = new CreateWwiseComponent(this);
+
+		thisCreateImportWindow->OnInitDlg();
+
+		if (!MyCurrentWwiseConnection->connected)
+		{
+			thisCreateImportWindow->handleUI_B_Connect();
+		}
 		
 		addTab("Transfer",juce::Colours::darkslategrey,transferComp,true,0);
 		addTab("Create",juce::Colours::darkslategrey,createComp,true,1);
+
+
 		
 	};
 
@@ -220,7 +244,24 @@ public:
 
 	~TransferTabComponent()
 	{
-		
+		if ((thisCreateImportWindow)&&(thisCreateImportWindow->WwiseConnectionHnd))
+		{
+			if ((MyCurrentWwiseConnection)&&(MyCurrentWwiseConnection->connected))
+			{
+			//	thisCreateImportWindow->WwiseConnectionHnd->DisconnectFromWwise();
+			}
+		}
+
+		if (transferComp)
+		{
+			transferComp->handle_Shutdown();
+		}
+		if (createComp)
+		{
+			createComp->handle_Shutdown();
+		}
+
+
 	};
 	
 	void currentTabChanged(int newCurrentTabIndex,const String & newCurrentTabName)

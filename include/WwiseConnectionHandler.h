@@ -139,12 +139,12 @@ class CreateImportWindow
 
 public:
 	
-	WwiseConnectionHandler * WwiseConnectionHnd;
+	WwiseConnectionHandler * WwiseConnectionHnd = nullptr;
 	std::vector<RenderQueJob> GlobalListOfRenderQueJobs;
 	std::vector<std::string> RenderFilesBackup;
 	
 	//TransferToWwiseComponent * owningGUIWindow;
-	BaseWwiseGuiComponent * owningGUIWindow;
+	BaseWwiseGuiComponent * owningGUIWindow = nullptr;
 	//juce::Component * owningGUIWindow;
 	
 	CreateImportWindow();
@@ -163,7 +163,7 @@ public:
 	//HWND m_hParent;
 	int m_nResId;
 
-	CreateImportWindow* thisPluginWindow;
+	CreateImportWindow* thisPluginWindow = nullptr;
 
 
 	////=============================================================================

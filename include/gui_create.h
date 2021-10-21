@@ -74,7 +74,22 @@ public:
 	
 	void handle_OnTabBecameInactive();
 
+	void handle_Shutdown()
+	{
+		if (isSubscribed)
+		{
+			if ((MyCurrentWwiseConnection) && (MyCurrentWwiseConnection->connected) && (WwiseCntnHndlr))
+			{
+				WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
+				WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+				isSubscribed = false;
+			}
+		}
+		
+	}
+
 private:
+	bool isSubscribed = false;
 
 	CreateObjectChoices myCreateChoices;
 	TransferTabComponent* parent;
