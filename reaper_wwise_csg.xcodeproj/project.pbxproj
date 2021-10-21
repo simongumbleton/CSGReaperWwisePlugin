@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		9E185DD125051AEA0034F026 /* RapidJsonUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E185DD025051AEA0034F026 /* RapidJsonUtils.h */; };
+		9E4024CA2722170B0057AB9F /* pugiconfig.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9E4024C72722170B0057AB9F /* pugiconfig.hpp */; };
+		9E4024CB2722170B0057AB9F /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E4024C82722170B0057AB9F /* pugixml.cpp */; };
+		9E4024CC2722170B0057AB9F /* pugixml.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9E4024C92722170B0057AB9F /* pugixml.hpp */; };
+		9E4024CF272217700057AB9F /* workunithelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E4024CE272217700057AB9F /* workunithelper.h */; };
+		9E4024D2272217AF0057AB9F /* workunithelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E4024D1272217AF0057AB9F /* workunithelper.cpp */; };
 		9E5B444A254A0B4500382C38 /* gui_RenderTree.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E5B4449254A0B4500382C38 /* gui_RenderTree.h */; };
 		9E5B444D254A0D1A00382C38 /* gui_Templates.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E5B444C254A0D1A00382C38 /* gui_Templates.h */; };
 		9E5B4453254A14F000382C38 /* gui_Templates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E5B444F254A112D00382C38 /* gui_Templates.cpp */; };
@@ -75,6 +80,11 @@
 
 /* Begin PBXFileReference section */
 		9E185DD025051AEA0034F026 /* RapidJsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RapidJsonUtils.h; sourceTree = "<group>"; };
+		9E4024C72722170B0057AB9F /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugiconfig.hpp; sourceTree = "<group>"; };
+		9E4024C82722170B0057AB9F /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pugixml.cpp; sourceTree = "<group>"; };
+		9E4024C92722170B0057AB9F /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugixml.hpp; sourceTree = "<group>"; };
+		9E4024CE272217700057AB9F /* workunithelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = workunithelper.h; sourceTree = "<group>"; };
+		9E4024D1272217AF0057AB9F /* workunithelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = workunithelper.cpp; sourceTree = "<group>"; };
 		9E5B4449254A0B4500382C38 /* gui_RenderTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_RenderTree.h; sourceTree = "<group>"; };
 		9E5B444C254A0D1A00382C38 /* gui_Templates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_Templates.h; sourceTree = "<group>"; };
 		9E5B444F254A112D00382C38 /* gui_Templates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_Templates.cpp; sourceTree = "<group>"; };
@@ -155,6 +165,9 @@
 		9E781E4E24C0E8FD005401E2 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				9E4024C72722170B0057AB9F /* pugiconfig.hpp */,
+				9E4024C82722170B0057AB9F /* pugixml.cpp */,
+				9E4024C92722170B0057AB9F /* pugixml.hpp */,
 				9E5B444C254A0D1A00382C38 /* gui_Templates.h */,
 				9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */,
 				9E185DD025051AEA0034F026 /* RapidJsonUtils.h */,
@@ -170,6 +183,7 @@
 				9E5B4449254A0B4500382C38 /* gui_RenderTree.h */,
 				9E7B946F270E56CB002359AD /* gui_properties.h */,
 				9E8161B32718E24700216C42 /* gui_create.h */,
+				9E4024CE272217700057AB9F /* workunithelper.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -201,6 +215,7 @@
 				9E78220E24C0E9B2005401E2 /* WaapiFunctions.cpp */,
 				9E78220F24C0E9B2005401E2 /* Main.cpp */,
 				9E8161B42718E3B700216C42 /* gui_create.cpp */,
+				9E4024D1272217AF0057AB9F /* workunithelper.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -323,7 +338,10 @@
 				9E78206524C0E904005401E2 /* AppConfig.h in Headers */,
 				9E78206024C0E904005401E2 /* JuceHeader.h in Headers */,
 				C40699501C39B34300E445F7 /* reaper_plugin_functions.h in Headers */,
+				9E4024CA2722170B0057AB9F /* pugiconfig.hpp in Headers */,
+				9E4024CF272217700057AB9F /* workunithelper.h in Headers */,
 				9E5B444A254A0B4500382C38 /* gui_RenderTree.h in Headers */,
+				9E4024CC2722170B0057AB9F /* pugixml.hpp in Headers */,
 				9E5B444D254A0D1A00382C38 /* gui_Templates.h in Headers */,
 				9E78207324C0E904005401E2 /* reaperHelpers.h in Headers */,
 				9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */,
@@ -390,7 +408,9 @@
 			files = (
 				C484E6931C1BAD49005C6CCC /* swell-wnd.mm in Sources */,
 				9EE4E5E024CA1FC5006BC020 /* CreateImportWindow.cpp in Sources */,
+				9E4024CB2722170B0057AB9F /* pugixml.cpp in Sources */,
 				9E78206224C0E904005401E2 /* include_juce_gui_basics.mm in Sources */,
+				9E4024D2272217AF0057AB9F /* workunithelper.cpp in Sources */,
 				C484E6941C1BAD49005C6CCC /* swell.cpp in Sources */,
 				C49593F31C4EFCB7007C6C9B /* connection.cpp in Sources */,
 				9E78206324C0E904005401E2 /* include_juce_graphics.mm in Sources */,
