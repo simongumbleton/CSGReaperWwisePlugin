@@ -8,6 +8,7 @@
 #pragma once
 #include <string>
 #include <algorithm>
+#include "JuceHeader.h"
 
 #ifndef platformhelpers_h
 #define platformhelpers_h
@@ -34,5 +35,16 @@ static std::string stringToUpper(std::string input)
 		[](unsigned char c) { return std::toupper(c); });
 	return result;
 }
+
+static std::string cleanWwisePathsFromMac(std::string input)
+{
+#ifndef _WIN32
+	juce::String result = input;
+	return result.replace("Y:", "~").replace("\\", "/").toStdString();
+#else
+	return input;
+#endif
+}
+
 
 #endif /* platformhelpers_h */
