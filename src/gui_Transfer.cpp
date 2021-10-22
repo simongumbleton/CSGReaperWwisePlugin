@@ -440,8 +440,6 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	if (pButton == btn_ConnectToWwise)
 	{
 		TryConnectToWwise();
-
-		WwiseCntnHndlr->CheckForProjectFileChanges();
 	}
 	else if (pButton == btn_RefreshJobList)
 	{

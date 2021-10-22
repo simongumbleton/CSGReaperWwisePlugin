@@ -882,24 +882,28 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 			{
 				//Need to save off the details so we can replace the active source in the XML later
 				activeSourceUpdateInfo thisSoundInfo;
+				if (obj.properties.find("filepath") != obj.properties.end())
+				{
 #ifndef _WIN32
-				thisSoundInfo.workUnitPath = cleanWwisePathsFromMac(obj.properties.at("filepath"));
+					thisSoundInfo.workUnitPath = cleanWwisePathsFromMac(obj.properties.at("filepath"));
 #else
-				thisSoundInfo.workUnitPath = obj.properties.at("filepath");
+					thisSoundInfo.workUnitPath = obj.properties.at("filepath");
 #endif // !_WIN32
 
-				thisSoundInfo.parentSoundID = parent.properties.at("id");
-				thisSoundInfo.newActiveSourceName = audioFile;
+					thisSoundInfo.parentSoundID = parent.properties.at("id");
+					thisSoundInfo.newActiveSourceName = audioFile;
 
-				size_t found = audioFile.find(".wav");
-				if (found != audioFile.npos)
-				{
-					thisSoundInfo.newActiveSourceName.erase(thisSoundInfo.newActiveSourceName.length() - 4, 4);
+					size_t found = audioFile.find(".wav");
+					if (found != audioFile.npos)
+					{
+						thisSoundInfo.newActiveSourceName.erase(thisSoundInfo.newActiveSourceName.length() - 4, 4);
+					}
+
+					std::vector sourcesForThisWU = activeSourcesUpdateMap[thisSoundInfo.workUnitPath];
+					sourcesForThisWU.push_back(thisSoundInfo);
+					activeSourcesUpdateMap[thisSoundInfo.workUnitPath] = sourcesForThisWU;
 				}
-
-				std::vector sourcesForThisWU = activeSourcesUpdateMap[thisSoundInfo.workUnitPath];
-				sourcesForThisWU.push_back(thisSoundInfo);
-				activeSourcesUpdateMap[thisSoundInfo.workUnitPath] = sourcesForThisWU;
+				
 			}
 
 
