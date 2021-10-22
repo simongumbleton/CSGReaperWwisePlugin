@@ -8,13 +8,14 @@
 
 #include <stdio.h>
 #include "workunithelper.h"
+#include "reaperHelpers.h"
 
 using namespace pugi;
 
 	
 xml_parse_result WorkUnitHelper::LoadWorkUnit(std::string workUnitPath)
 {
-	return doc.load_string(workUnitPath.c_str());
+	return doc.load_file(workUnitPath.c_str());
 };
 	
 void WorkUnitHelper::SaveWorkUnit(std::string workUnitPath)
@@ -34,8 +35,17 @@ xml_node WorkUnitHelper::GetNodeByWwiseID(std::string objectID,std::string nodeT
 		root = searchRoot;
 	}
 	// Search for the first / last child entry with the given hint attribute
-	std::string searchStr = nodeType+"[@ID="+objectID+"]";
-	xpath_node xpathNode = root.select_node(searchStr.c_str());
+	std::string searchStr = "//" + nodeType + "[@ID ='" + objectID + "']";
+	xpath_node xpathNode;
+	try
+	{
+		xpathNode = root.select_node(searchStr.c_str());
+	}
+	catch (std::string e) {
+		PrintToConsole(e);
+		return xml_node();
+	}
+
 	if (xpathNode)
 	{
 		xml_node selectedNode = xpathNode.node();
@@ -59,13 +69,38 @@ xml_node WorkUnitHelper::GetNodeByWwiseName(std::string name,std::string nodeTyp
 		root = searchRoot;
 	}
 	// Search for the first / last child entry with the given hint attribute
-	std::string searchStr = nodeType+"[@Name="+name+"]";
+	std::string searchStr = "//" + nodeType + "[@Name ='" + name + "']";
 	xpath_node xpathNode = root.select_node(searchStr.c_str());
 	if (xpathNode)
 	{
 		xml_node selectedNode = xpathNode.node();
 			// now access found node
 			// ...
+		return selectedNode;
+	}
+
+	return xml_node();
+};
+
+xml_node WorkUnitHelper::GetFirstNodeOfTypeUnderParent(std::string nodeType, xml_node searchRoot = xml_node())
+{
+	xml_node root;
+	if (searchRoot.empty())
+	{
+		root = doc.document_element();
+	}
+	else
+	{
+		root = searchRoot;
+	}
+	// Search for the first / last child entry with the given hint attribute
+	std::string searchStr = "//" + nodeType;
+	xpath_node xpathNode = root.select_node(searchStr.c_str());
+	if (xpathNode)
+	{
+		xml_node selectedNode = xpathNode.node();
+		// now access found node
+		// ...
 		return selectedNode;
 	}
 
@@ -98,7 +133,7 @@ void WorkUnitHelper::SetAttributeValue(xml_attribute attribute,float attributeVa
 };
 
 
-bool WUActiveSourceUpdater::UpdateActiveSource(std::string workUnit,std::string soundID,std::string newActiveSourceName)
+bool WUActiveSourceUpdater::UpdateActiveSource(std::string soundID,std::string newActiveSourceName)
 {
 	xml_node soundNode = GetNodeByWwiseID(soundID, "Sound");
 	if (!soundNode.empty())
@@ -110,7 +145,7 @@ bool WUActiveSourceUpdater::UpdateActiveSource(std::string workUnit,std::string 
 			xml_attribute newActiveSourceIDAttr = GetAttribute(audioSource, "ID");
 			std::string newActiveSourceID = newActiveSourceIDAttr.value();
 			
-			xml_node activeSource = GetNodeByWwiseName(newActiveSourceName, "ActiveSource",soundNode);
+			xml_node activeSource = GetFirstNodeOfTypeUnderParent("ActiveSource",soundNode);
 			if (!activeSource.empty())
 			{
 				xml_attribute nameAttr = GetAttribute(activeSource, "Name");

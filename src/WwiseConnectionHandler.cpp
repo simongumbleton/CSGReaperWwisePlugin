@@ -30,6 +30,16 @@ WwiseConnectionHandler::~WwiseConnectionHandler()
 {
 }
 
+bool WwiseConnectionHandler::SaveWwiseProject()
+{
+	return waapi_SaveWwiseProject();
+}
+
+bool WwiseConnectionHandler::CheckForProjectFileChanges()
+{
+	return waapi_CheckForProjectFileChanges();
+}
+
 void WwiseConnectionHandler::ReportConnectionError(CurrentWwiseConnection attemptedConnection)
 {
 	std::string errorLog = "Wwise Connection not found on port " + std::to_string(attemptedConnection.port) + "...Exiting!";

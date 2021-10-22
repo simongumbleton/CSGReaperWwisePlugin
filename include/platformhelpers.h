@@ -8,7 +8,7 @@
 #pragma once
 #include <string>
 #include <algorithm>
-#include "JuceHeader.h"
+#include "JUCE/JuceHeader.h"
 
 #ifndef platformhelpers_h
 #define platformhelpers_h

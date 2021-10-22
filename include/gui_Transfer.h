@@ -9,6 +9,11 @@
 #include "reaperHelpers.h"
 #include "gui_create.h"
 
+
+
+
+
+
 class TransferTabComponent;
 //class TransferToWwiseComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
 class TransferToWwiseComponent : public BaseWwiseGuiComponent
@@ -159,6 +164,8 @@ private:
 //	juce::ProgressBar * progressBar = new ProgressBar(transferProgress);
 	
 	std::unique_ptr<FileChooser> myChooser;
+
+	
 	
 
 	StringArray ToJuceStringArray(std::vector<std::string>strings);

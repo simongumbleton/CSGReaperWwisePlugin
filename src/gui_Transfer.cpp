@@ -2,6 +2,7 @@
 #include "gui_Transfer.h"
 #include "reaperHelpers.h"
 #include "platformhelpers.h"
+
 #include <filesystem>
 #include <mutex>
 
@@ -439,6 +440,8 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	if (pButton == btn_ConnectToWwise)
 	{
 		TryConnectToWwise();
+
+		WwiseCntnHndlr->CheckForProjectFileChanges();
 	}
 	else if (pButton == btn_RefreshJobList)
 	{

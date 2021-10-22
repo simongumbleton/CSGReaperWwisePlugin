@@ -11,6 +11,7 @@
 #include <mutex>
 #include <future>
 #include <thread>
+#include "workunithelper.h"
 
 
 #include "ConfigFileHandler.h"
@@ -374,6 +375,36 @@ bool CreateImportWindow::handleUI_RenderImport()
 	return false; // Shouldnt ever get here, if we do something has gone wrong so return false
 }
 
+void CreateImportWindow::handleActiveSourceUpdatesForVersions()
+{
+	for (const auto& myPair : activeSourcesUpdateMap)
+	{
+		std::string workUnitPath = myPair.first;
+		auto activeSources = myPair.second;
+
+		std::unique_ptr<WUActiveSourceUpdater> workUnitUpdater(new WUActiveSourceUpdater);
+		xml_parse_result result =  workUnitUpdater->LoadWorkUnit(workUnitPath);
+		if (!result)continue;
+		//work unit loaded successfully
+		bool needsSave = false;
+		for (const auto& activeSourceInfo : activeSources)
+		{
+			if (workUnitUpdater->UpdateActiveSource(activeSourceInfo.parentSoundID, activeSourceInfo.newActiveSourceName))
+			{
+				needsSave = true;
+			}
+		}
+		if (needsSave)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+			workUnitUpdater->SaveWorkUnit(workUnitPath);
+			//workUnitUpdater->SaveWorkUnit("D:/save_file_output.xml");
+			//WwiseConnectionHnd->CheckForProjectFileChanges(); // this is not working command id invalid??
+		}
+	}
+
+}
+
 
 
 bool CreateImportWindow::ImportJobsIntoWwise()
@@ -606,7 +637,18 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 	if (importSuccesses == GlobalListOfRenderQueJobs.size())
 	{
 		//PrintToConsole("All jobs imported successfully");
+
+		//Finished importing so if we have any version changes try to update the active sources
+		if (!activeSourcesUpdateMap.empty())
+		{
+			if (WwiseConnectionHnd->SaveWwiseProject())//need to save changes so we can read the xml
+			{
+				handleActiveSourceUpdatesForVersions();
+			}
+		}
+
 		SetStatusMessageText("All Import jobs complete");
+
 		return true;
 	}
 	else
@@ -741,6 +783,8 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 	getArgs.Where = { "type:isIn","AudioFileSource" };
 	getArgs.customReturnArgs.push_back("sound:originalWavFilePath"); 
 	getArgs.customReturnArgs.push_back("path");
+	getArgs.customReturnArgs.push_back("workunit");
+	getArgs.customReturnArgs.push_back("filepath");
 
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	std::vector<WwiseObject> MyWwiseObjects;
@@ -794,12 +838,12 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 				if (doesPatternMatch)
 				{
 					isVersion = true;
-					audioFileNameForComparison = audioFileNameForComparison.erase(audioFileNameForComparison.length()-8,8);
-					size_t verTokenPos = nameForComparison.length()-8;// last 8 chars of a version will be _v**.wav
+					audioFileNameForComparison = audioFileNameForComparison.erase(audioFileNameForComparison.length()- lengthToRemove, lengthToRemove);
+					size_t verTokenPos = nameForComparison.length()- lengthToRemove;// last 8 chars of a version will be _v**.wav
 					std::size_t found = nameForComparison.find(versionToken.c_str(),verTokenPos,2);
 					if (found != nameForComparison.npos)
 					{
-						nameForComparison = nameForComparison.erase(nameForComparison.length()-8,8);
+						nameForComparison = nameForComparison.erase(nameForComparison.length()- lengthToRemove, lengthToRemove);
 					}
 					else
 					{
@@ -834,7 +878,29 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 			parent = MyWwiseObjects[0];
 
 
+			if (isVersion)
+			{
+				//Need to save off the details so we can replace the active source in the XML later
+				activeSourceUpdateInfo thisSoundInfo;
+#ifndef _WIN32
+				thisSoundInfo.workUnitPath = cleanWwisePathsFromMac(obj.properties.at("filepath"));
+#else
+				thisSoundInfo.workUnitPath = obj.properties.at("filepath");
+#endif // !_WIN32
 
+				thisSoundInfo.parentSoundID = parent.properties.at("id");
+				thisSoundInfo.newActiveSourceName = audioFile;
+
+				size_t found = audioFile.find(".wav");
+				if (found != audioFile.npos)
+				{
+					thisSoundInfo.newActiveSourceName.erase(thisSoundInfo.newActiveSourceName.length() - 4, 4);
+				}
+
+				std::vector sourcesForThisWU = activeSourcesUpdateMap[thisSoundInfo.workUnitPath];
+				sourcesForThisWU.push_back(thisSoundInfo);
+				activeSourcesUpdateMap[thisSoundInfo.workUnitPath] = sourcesForThisWU;
+			}
 
 
 			fullPath.erase(0, fullPath.find("Originals\\"));

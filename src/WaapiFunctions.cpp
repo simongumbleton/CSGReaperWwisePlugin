@@ -590,10 +590,16 @@ bool waapi_TranslateJSONResults(std::map<std::string,std::string>& INstringResul
 bool waapi_SaveWwiseProject()
 {
 	using namespace AK::WwiseAuthoringAPI;
-	AkJson in;
-	AkJson out;
-	AkJson res;
-	return my_client->Call(ak::wwise::core::project::save, in, out, res);
+	AkJson in = AkJson(AkJson::Map());
+	AkJson out = AkJson(AkJson::Map());
+	AkJson res = AkJson(AkJson::Map());
+	bool result = my_client->Call(ak::wwise::core::project::save, in, out, res);
+	if (!result)
+	{
+		std::string error = res["message"].GetVariant().GetString();
+		PrintToConsole(error);
+	}
+	return result;
 }
 
 bool waapi_OpenWwiseProject(std::string proj)
@@ -684,4 +690,27 @@ bool waapi_Unsubscribe(const uint64_t& in_subscriptionId)
 	AkJson results = AkJson(AkJson::Map());
 	
 	return my_client->Unsubscribe(in_subscriptionId, results);
-}//bool Unsubscribe(const uint64_t& in_subscriptionId, AkJson& out_result, int in_timeoutMs = -1);
+}
+
+bool waapi_CheckForProjectFileChanges()
+{
+	//TODO - this is only supported in 2021.1.4 wwise sdk!
+	using namespace AK::WwiseAuthoringAPI;
+	AkJson args;
+	args = AkJson::Map{
+		{ "command", AkVariant("CheckProjectFiles")},
+		{ "objects", AkJson::Array{
+		} } };
+
+	AkJson options = AkJson(AkJson::Map());
+	AkJson results = AkJson(AkJson::Map());
+	bool result = my_client->Call(ak::wwise::ui::commands::execute, args, options, results);
+	if (!result)
+	{
+		std::string error = results["message"].GetVariant().GetString();
+		PrintToConsole(error);
+	}
+	return result;
+	
+}
+//bool Unsubscribe(const uint64_t& in_subscriptionId, AkJson& out_result, int in_timeoutMs = -1);

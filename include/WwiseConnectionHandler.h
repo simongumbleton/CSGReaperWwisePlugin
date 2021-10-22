@@ -9,6 +9,8 @@
 #include "GUI.h"
 #include "WaapiFunctions.h"
 //#include "PluginWindow.h"
+#include <map>
+#include <vector>
 
 class BaseWwiseGuiComponent;
 
@@ -119,6 +121,10 @@ public:
 		return waapi_Unsubscribe(subscriptionID);
 	}
 
+	bool SaveWwiseProject();
+
+	bool CheckForProjectFileChanges();
+
 
 private:
 
@@ -132,6 +138,13 @@ private:
 ///////////////////////////////////
 /////Create Import Window - Implements Object Create and Import
 //////////////////////////////////
+
+struct activeSourceUpdateInfo
+{
+	std::string parentSoundID="";
+	std::string newActiveSourceName="";
+	std::string workUnitPath="";//wwise returns the workunit_id so we will need to get the actual path later with a get call asking for filePath
+};
 
 class CreateImportWindow
 {
@@ -175,6 +188,8 @@ public:
 	void handleUI_GetImportEventOptions(int notifCode);
 	void handleUI_GetNameConflict(int notifCode);
 	bool handleUI_RenderImport();
+
+	void handleActiveSourceUpdatesForVersions();
 
 	////non-message function declarations
 	////=============================================================================
@@ -226,7 +241,7 @@ public:
 
 	void SetWwiseAutomationMode(bool enable);
 	
-	
+	std::map<std::string, std::vector<activeSourceUpdateInfo>> activeSourcesUpdateMap;
 	
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

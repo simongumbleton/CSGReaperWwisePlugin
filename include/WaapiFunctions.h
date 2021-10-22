@@ -90,3 +90,5 @@ bool waapi_SetupSubscription(const char *subscription,AK::WwiseAuthoringAPI::Cli
 
 bool waapi_Unsubscribe(const uint64_t& in_subscriptionId); //bool Unsubscribe(const uint64_t& in_subscriptionId, AkJson& out_result, int in_timeoutMs = -1);
 
+bool waapi_CheckForProjectFileChanges();
+

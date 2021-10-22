@@ -60,6 +60,12 @@
     <ClCompile Include="src\gui_create.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="include\pugixml.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="src\workunithelper.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\JUCE\include_juce_core.mm">
@@ -245,6 +251,15 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\gui_create.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pugixml.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\workunithelper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pugiconfig.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
