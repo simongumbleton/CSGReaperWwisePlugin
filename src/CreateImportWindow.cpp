@@ -784,7 +784,7 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 	getArgs.customReturnArgs.push_back("sound:originalWavFilePath"); 
 	getArgs.customReturnArgs.push_back("path");
 	getArgs.customReturnArgs.push_back("workunit");
-	getArgs.customReturnArgs.push_back("filepath");
+	getArgs.customReturnArgs.push_back("filePath");
 
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	std::vector<WwiseObject> MyWwiseObjects;
@@ -882,12 +882,12 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 			{
 				//Need to save off the details so we can replace the active source in the XML later
 				activeSourceUpdateInfo thisSoundInfo;
-				if (obj.properties.find("filepath") != obj.properties.end())
+				if (obj.properties.find("filePath") != obj.properties.end())
 				{
 #ifndef _WIN32
-					thisSoundInfo.workUnitPath = cleanWwisePathsFromMac(obj.properties.at("filepath"));
+					thisSoundInfo.workUnitPath = cleanWwisePathsFromMac(obj.properties.at("filePath"));
 #else
-					thisSoundInfo.workUnitPath = obj.properties.at("filepath");
+					thisSoundInfo.workUnitPath = obj.properties.at("filePath");
 #endif // !_WIN32
 
 					thisSoundInfo.parentSoundID = parent.properties.at("id");

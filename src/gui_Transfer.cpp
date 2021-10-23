@@ -21,7 +21,6 @@ std::mutex mx_t;
 
 TransferToWwiseComponent::TransferToWwiseComponent(juce::Component* parentComp) //constructor
 {
-	
 	parent = dynamic_cast<TransferTabComponent*>(parentComp);
 	if (parent)
 	{
@@ -468,6 +467,7 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 		}
 		//thisCreateImportWindow->restoreRenderQueFiles();
 		this->toFront(true);
+		handle_OnBecameActiveTab();
 	}
 	else if (pButton == btn_ChooseWwiseOriginalsDir)
 	{
