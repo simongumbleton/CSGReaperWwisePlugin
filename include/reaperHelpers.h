@@ -20,7 +20,7 @@ void PrintToConsole(std::string text);
 
 void PrintToConsole(int text);
 
-std::vector<std::string> getNonMasterProjectRegions();
+std::vector<std::string> getNonMasterProjectRegionNames();
 
 int countRegions();
 

@@ -138,6 +138,30 @@ public:
 			}
 		}
 	}
+	
+	void SaveRegionPropertiesToExState()
+	{
+			std::string name = this->GetRegionName();
+			std::map<std::string, std::string> values = this->GetPropertyValues();
+			std::stringstream valuesToJson;
+			//"{ 'id': 1234, 'name': 'nandini' }"
+			valuesToJson << '{';
+			for (auto value : values)
+			{
+				valuesToJson << "'";
+				valuesToJson << value.first;
+				valuesToJson << "'";
+				valuesToJson << ":";
+				valuesToJson << "'";
+				valuesToJson << value.second;
+				valuesToJson << "'";
+				valuesToJson << ",";
+			}
+			//PrintToConsole(valuesToJson.str());
+			valuesToJson.seekp(-1,valuesToJson.cur); valuesToJson << "}";
+			saveProjExState(name, valuesToJson.str());
+	}
+	
 
 private:
 	
@@ -216,7 +240,7 @@ private:
 	Array<PropertiesComponent*> createProperties()
 	{// TO DO - count should be the number of regions
 		Array<PropertiesComponent*> properties;
-		for (auto region : getNonMasterProjectRegions())
+		for (auto region : getNonMasterProjectRegionNames())
 		{
 			properties.add(new PropertiesComponent(region));
 		}

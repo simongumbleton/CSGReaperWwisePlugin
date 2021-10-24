@@ -3,6 +3,7 @@
 #include "reaperHelpers.h"
 #include <filesystem>
 #include <mutex>
+#include "RegionMetadata.h"
 
 StringArray RegionMetadataComponent::ToJuceStringArray(std::vector<std::string> strings)
 {
@@ -57,9 +58,9 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 	//	i++;
 	//}
 
-	addAndMakeVisible(regionProperties);
+	addAndMakeVisible(regionPropertiesViewport);
 	myViewport->setBounds(0, 0, 750, 300);
-	myViewport->setViewedComponent(regionProperties);
+	myViewport->setViewedComponent(regionPropertiesViewport);
 	addAndMakeVisible(myViewport);
 
 
@@ -67,6 +68,8 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 	setSize(1000, 500);
 	
 	TryConnectToWwise();
+	
+	metadataHelper = std::make_unique<ProjectRegionMetadataHelper>();
 }
 
 RegionMetadataComponent::~RegionMetadataComponent()
@@ -248,32 +251,13 @@ void RegionMetadataComponent::handle_OnWwiseProjectClosed()
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
 }
 
-void RegionMetadataComponent::handle_OnButton_Saved() { 
+void RegionMetadataComponent::handle_OnButton_Saved()
+{
 	//std::vector<std::string>nonMasterRegions = getNonMasterProjectRegions();
 	saveProjExState("", "");
-	std::map< std::string, std::map<std::string, std::string> > savedRegionsWithProperties;
-	for (auto region : regionProperties->RegionProperties)
+	for (auto region : regionPropertiesViewport->RegionProperties)
 	{
-		std::string name = region->GetRegionName();
-		std::map<std::string, std::string> values = region->GetPropertyValues();
-		savedRegionsWithProperties.emplace(name,values);
-		std::stringstream valuesToJson;
-		//"{ 'id': 1234, 'name': 'nandini' }"
-		valuesToJson << '{';
-		for (auto value : values)
-		{
-			valuesToJson << "'";
-			valuesToJson << value.first;
-			valuesToJson << "'";
-			valuesToJson << ":";
-			valuesToJson << "'";
-			valuesToJson << value.second;
-			valuesToJson << "'";
-			valuesToJson << ",";
-		}
-		//PrintToConsole(valuesToJson.str());
-		valuesToJson.seekp(-1,valuesToJson.cur); valuesToJson << "}";
-		saveProjExState(name, valuesToJson.str());
+		region->SaveRegionPropertiesToExState();
 	}
 	SaveProject();
 }

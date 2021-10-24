@@ -8,7 +8,7 @@
 #include "gui_properties.h"
 #include "reaperHelpers.h"
 
-
+class ProjectRegionMetadataHelper;
 //class WwiseTemplateComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
 class RegionMetadataComponent : public BaseWwiseGuiComponent
 {
@@ -69,9 +69,10 @@ public:
 	
 	//Array<PropertiesComponent*> RegionProperties;
 	Viewport* myViewport = new Viewport();
-	PropertiesViewportComponent* regionProperties = new PropertiesViewportComponent();
+	PropertiesViewportComponent* regionPropertiesViewport = new PropertiesViewportComponent();
 
 private:
+	std::unique_ptr<ProjectRegionMetadataHelper> metadataHelper;
 
 	uint64_t subscriptionID_selectionChanged =0;
 	uint64_t subscriptionID_projectClosed=0;
@@ -94,7 +95,7 @@ private:
 	Array<PropertiesComponent*> createProperties(int count)
 	{// TO DO - count should be the number of regions
 		Array<PropertiesComponent*> properties;
-		for (auto region : getNonMasterProjectRegions())
+		for (auto region : getNonMasterProjectRegionNames())
 		{
 			properties.add(new PropertiesComponent(region));
 		}

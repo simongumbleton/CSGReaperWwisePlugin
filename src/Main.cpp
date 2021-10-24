@@ -207,7 +207,7 @@ inline bool ends_with(std::string const & value, std::string const & ending)
 	return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
 }
 
-std::vector<std::string> getNonMasterProjectRegions()
+std::vector<std::string> getNonMasterProjectRegionNames()
 {
 	int total = countRegions() + countMarkers();
 	std::vector<std::string> results;
