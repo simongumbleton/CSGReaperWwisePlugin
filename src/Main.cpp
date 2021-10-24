@@ -251,6 +251,11 @@ void LaunchTransferWindow()
 	String wName = "CSG Reaper Transfer to Wwise Extension";
 	initialiseJuce_GUI();
 	MessageManagerLock mml(Thread::getCurrentThread());
+	
+	//int commandID = NamedCommandLookup("_S&M_HIDECCLANES_ME");
+	//reaper.Main_OnCommand(commandID, 0)
+	//std::string name = ReverseNamedCommandLookup(commandID);
+	
 	if (useTab)
 	{
 		if (transferWindowStatus)
@@ -291,7 +296,7 @@ void LaunchTemplateWindow()
 	}
 	else
 	{
-		TemplateWindow* mainWindow3 = new TemplateWindow(wName, new WwiseTemplateComponent,&templateWindowStatus);
+		RegionMetadataWindow* mainWindow3 = new RegionMetadataWindow(wName, new RegionMetadataComponent,&templateWindowStatus);
 		currentTemplateWindow = mainWindow3;
 	}
 	

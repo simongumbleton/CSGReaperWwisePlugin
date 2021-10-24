@@ -10,9 +10,9 @@
 
 
 //class WwiseTemplateComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
-class WwiseTemplateComponent : public BaseWwiseGuiComponent
+class RegionMetadataComponent : public BaseWwiseGuiComponent
 {
-	static WwiseTemplateComponent * currentWwiseTemplateComponent;
+	static RegionMetadataComponent * currentWwiseTemplateComponent;
 
 public:
 
@@ -22,8 +22,8 @@ public:
 	
 	WwiseConnectionHandler * WwiseCntnHndlr;
 
-	WwiseTemplateComponent();
-	~WwiseTemplateComponent();
+	RegionMetadataComponent();
+	~RegionMetadataComponent();
 
 	void resized() override;
 	
@@ -108,18 +108,18 @@ private:
 	StringArray ToJuceStringArray(std::vector<std::string>strings);
 
 	//==============================================================================
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WwiseTemplateComponent)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RegionMetadataComponent)
 };
 
 
 
 
 
-class TemplateWindow : public juce::DocumentWindow
+class RegionMetadataWindow : public juce::DocumentWindow
 {
 	bool * mWindowState;
 public:
-	TemplateWindow(const juce::String& name, juce::Component* component, bool *windowStatus)
+	RegionMetadataWindow(const juce::String& name, juce::Component* component, bool *windowStatus)
 		: DocumentWindow(name, juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), juce::DocumentWindow::allButtons)
 	{
 		setUsingNativeTitleBar(true);
@@ -144,6 +144,6 @@ public:
 private:
 
 	//==============================================================================
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TemplateWindow)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RegionMetadataWindow)
 };
 

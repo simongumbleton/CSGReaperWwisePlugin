@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <mutex>
 
-StringArray WwiseTemplateComponent::ToJuceStringArray(std::vector<std::string> strings)
+StringArray RegionMetadataComponent::ToJuceStringArray(std::vector<std::string> strings)
 {
 	StringArray output;
 	for (auto string : strings)
@@ -14,10 +14,10 @@ StringArray WwiseTemplateComponent::ToJuceStringArray(std::vector<std::string> s
 	return output;
 }
 
-WwiseTemplateComponent * WwiseTemplateComponent::currentWwiseTemplateComponent = nullptr;
+RegionMetadataComponent * RegionMetadataComponent::currentWwiseTemplateComponent = nullptr;
 std::mutex mx_tem;
 
-WwiseTemplateComponent::WwiseTemplateComponent() //constructor
+RegionMetadataComponent::RegionMetadataComponent() //constructor
 {
 	
 	thisCreateImportWindow = new CreateImportWindow();
@@ -29,7 +29,7 @@ WwiseTemplateComponent::WwiseTemplateComponent() //constructor
 	
 	MyCurrentWwiseConnection = &thisCreateImportWindow->WwiseConnectionHnd->MyCurrentWwiseConnection;
 	
-	WwiseTemplateComponent::currentWwiseTemplateComponent = this;
+	RegionMetadataComponent::currentWwiseTemplateComponent = this;
 	
 	// Init buttons and combo boxes
 	InitAllButtons(buttons);
@@ -69,16 +69,16 @@ WwiseTemplateComponent::WwiseTemplateComponent() //constructor
 	TryConnectToWwise();
 }
 
-WwiseTemplateComponent::~WwiseTemplateComponent()
+RegionMetadataComponent::~RegionMetadataComponent()
 {
 	
 	WwiseCntnHndlr->UnsubscribeFromTopicByID(21);
 	WwiseCntnHndlr->UnsubscribeFromTopicByID(22);
 	WwiseCntnHndlr->RemoveActiveComponent(this);
-	WwiseTemplateComponent::currentWwiseTemplateComponent = nullptr;
+	RegionMetadataComponent::currentWwiseTemplateComponent = nullptr;
 }
 
-void WwiseTemplateComponent::InitAllButtons(std::vector<juce::Button *> buttons)
+void RegionMetadataComponent::InitAllButtons(std::vector<juce::Button *> buttons)
 {
 	for (auto button : buttons)
 	{
@@ -90,7 +90,7 @@ void WwiseTemplateComponent::InitAllButtons(std::vector<juce::Button *> buttons)
 	}
 }
 
-void WwiseTemplateComponent::InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices,string displayText)
+void RegionMetadataComponent::InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices,string displayText)
 {
 	comboBox->clear();
 	comboBox->addItemList(ToJuceStringArray(choices),1);
@@ -102,7 +102,7 @@ void WwiseTemplateComponent::InitComboBox(juce::ComboBox * comboBox, std::vector
 
 
 
-void WwiseTemplateComponent::resized()
+void RegionMetadataComponent::resized()
 {
 	auto border = 4;
 	auto buttonHeight = 30;
@@ -157,7 +157,7 @@ void WwiseTemplateComponent::resized()
 
 
 
-void WwiseTemplateComponent::TryConnectToWwise() {
+void RegionMetadataComponent::TryConnectToWwise() {
 	thisCreateImportWindow->handleUI_B_Connect();
 	bool connected = MyCurrentWwiseConnection->connected;
 	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
@@ -180,7 +180,7 @@ void WwiseTemplateComponent::TryConnectToWwise() {
 	}
 }
 
-void WwiseTemplateComponent::buttonClicked(juce::Button * pButton)
+void RegionMetadataComponent::buttonClicked(juce::Button * pButton)
 {
 	pButton->setColour(juce::Label::textColourId, juce::Colours::aqua);
 	String text = ("CLICKED: " + pButton->getButtonText());
@@ -198,33 +198,33 @@ void WwiseTemplateComponent::buttonClicked(juce::Button * pButton)
 	
 }
 
-void WwiseTemplateComponent::comboBoxChanged(ComboBox * comboBoxThatHasChanged)
+void RegionMetadataComponent::comboBoxChanged(ComboBox * comboBoxThatHasChanged)
 {
 	String text = ("SELECTED: " + comboBoxThatHasChanged->getText());
 	debugLabel->setText(text, juce::NotificationType::dontSendNotification);
 }
 
-void WwiseTemplateComponent::labelTextChanged(Label * labelThatHasChanged)
+void RegionMetadataComponent::labelTextChanged(Label * labelThatHasChanged)
 {
 }
 
-std::string WwiseTemplateComponent::GetDropDownValue(juce::ComboBox * dropdown)
+std::string RegionMetadataComponent::GetDropDownValue(juce::ComboBox * dropdown)
 {
 	int Index = dropdown->getSelectedItemIndex();
 	return dropdown->getItemText(Index).toStdString();
 }
 
-std::string WwiseTemplateComponent::GetLabelValue(juce::Label * label)
+std::string RegionMetadataComponent::GetLabelValue(juce::Label * label)
 {
 	return label->getText().toStdString();
 }
 
-bool WwiseTemplateComponent::GetToggleValue(juce::ToggleButton * btn)
+bool RegionMetadataComponent::GetToggleValue(juce::ToggleButton * btn)
 {
 	return btn->getToggleState();
 }
 
-void WwiseTemplateComponent::handle_OnSelectedParentChanged()
+void RegionMetadataComponent::handle_OnSelectedParentChanged()
 {
 	const std::lock_guard<std::mutex> lock(mx_tem);
 	//std::cout << "_____Callback 1______" << std::endl;
@@ -236,7 +236,7 @@ void WwiseTemplateComponent::handle_OnSelectedParentChanged()
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
 }
 
-void WwiseTemplateComponent::handle_OnWwiseProjectClosed()
+void RegionMetadataComponent::handle_OnWwiseProjectClosed()
 {
 	const std::lock_guard<std::mutex> lock(mx_tem);
 	std::cout << "_____Callback 2______" << std::endl;
@@ -248,7 +248,7 @@ void WwiseTemplateComponent::handle_OnWwiseProjectClosed()
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
 }
 
-void WwiseTemplateComponent::handle_OnButton_Saved() { 
+void RegionMetadataComponent::handle_OnButton_Saved() { 
 	//std::vector<std::string>nonMasterRegions = getNonMasterProjectRegions();
 	saveProjExState("", "");
 	std::map< std::string, std::map<std::string, std::string> > savedRegionsWithProperties;
