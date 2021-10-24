@@ -255,6 +255,7 @@ void LaunchTransferWindow()
 	//int commandID = NamedCommandLookup("_S&M_HIDECCLANES_ME");
 	//reaper.Main_OnCommand(commandID, 0)
 	//std::string name = ReverseNamedCommandLookup(commandID);
+	//int commandID = AddRemoveReaScript(true, 0, reaper.GetResourcePath().."/Scripts/12000.eel", true);
 	
 	if (useTab)
 	{
