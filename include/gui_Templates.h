@@ -76,6 +76,7 @@ public:
 private:
 	std::unique_ptr<ProjectRegionMetadataHelper> metadataHelper;
 
+	bool isSubscribed;
 	uint64_t subscriptionID_selectionChanged =0;
 	uint64_t subscriptionID_projectClosed=0;
 	

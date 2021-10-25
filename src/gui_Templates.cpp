@@ -76,7 +76,7 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 
 	setSize(600, 400);
 	
-	TryConnectToWwise();
+	//TryConnectToWwise();
 	
 	metadataHelper = std::make_unique<ProjectRegionMetadataHelper>();
 }
@@ -178,24 +178,38 @@ void RegionMetadataComponent::resized()
 
 
 void RegionMetadataComponent::TryConnectToWwise() {
-	thisCreateImportWindow->handleUI_B_Connect();
+	if (!MyCurrentWwiseConnection->connected)
+	{
+		thisCreateImportWindow->handleUI_B_Connect();
+	}
+	
 	bool connected = MyCurrentWwiseConnection->connected;
 	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
 	{
 		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->projectGlobals.ProjectName);
 		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
 		WwiseCntnHndlr->AddActiveComponent(this);
-		WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, subscriptionID_selectionChanged);
-		WwiseCntnHndlr->SubscribeOnProjectClosed(WwiseConnectionHandler::callback_OnProjectClosed, subscriptionID_projectClosed);
+		if (!isSubscribed)
+		{
+			WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, subscriptionID_selectionChanged);
+			WwiseCntnHndlr->SubscribeOnProjectClosed(WwiseConnectionHandler::callback_OnProjectClosed, subscriptionID_projectClosed);
+			isSubscribed = true;
+		}
 		handle_OnSelectedParentChanged();
+		setStatusText("Ready");
 	}
 	else
 	{
 		txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
-		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
-		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+		if (isSubscribed)
+		{
+			WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
+			WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+			isSubscribed = false;
+		}
 		WwiseCntnHndlr->DisconnectFromWwise();
 		WwiseCntnHndlr->RemoveActiveComponent(this);
+		setStatusText("Error");
 		
 	}
 }
@@ -265,8 +279,12 @@ void RegionMetadataComponent::handle_OnWwiseProjectClosed()
 	const std::lock_guard<std::mutex> lock(mx_tem);
 	std::cout << "_____Callback 2______" << std::endl;
 	txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(21);
-	WwiseCntnHndlr->UnsubscribeFromTopicByID(22);
+	if (isSubscribed)
+	{
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
+		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+		isSubscribed = false;
+	}
 	WwiseCntnHndlr->DisconnectFromWwise();
 	std::string display = "Selected Parent: ";
 	selectedParentLabel->setText(display, juce::NotificationType::dontSendNotification);
