@@ -29,7 +29,7 @@ public:
 			addAndMakeVisible(comp);
 		}
 		
-		setSize (750, 30);
+		setSize (550, 30);
 	}
 	void SetRegionName(const juce::String& name)
 	{
@@ -226,8 +226,8 @@ public:
 			region->SetPropertyValuesFromExState();
 		}
 		int sizeY = gridHeight * RegionProperties.size();
-		setSize(750, sizeY);
-		setBounds(0, 0, 750, sizeY);
+		setSize(550, sizeY);
+		//setBounds(0, 0, 750, sizeY);
 		repaint();
 		resized();
 	}

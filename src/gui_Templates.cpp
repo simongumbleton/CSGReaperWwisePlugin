@@ -46,6 +46,15 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 	addAndMakeVisible(statusLabel);
 	statusLabel->setText("Status: ", juce::NotificationType::dontSendNotification);
 	
+	
+	addAndMakeVisible(TitleRegions);
+	TitleRegions->setText("Regions:", juce::NotificationType::dontSendNotification);
+	addAndMakeVisible(TitleTag);
+	TitleTag->setText("Tag:", juce::NotificationType::dontSendNotification);
+	addAndMakeVisible(TitleAttach);
+	TitleAttach->setText("Attach:", juce::NotificationType::dontSendNotification);
+	
+	
 	//int numRegions = 3;
 	//RegionProperties = createProperties(numRegions);
 	//int i = 0;
@@ -59,13 +68,13 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 	//}
 
 	addAndMakeVisible(regionPropertiesViewport);
-	myViewport->setBounds(0, 0, 750, 300);
+	//myViewport->setBounds(0, 0, 750, 300);
 	myViewport->setViewedComponent(regionPropertiesViewport);
 	addAndMakeVisible(myViewport);
 
 
 
-	setSize(1000, 500);
+	setSize(600, 400);
 	
 	TryConnectToWwise();
 	
@@ -116,6 +125,10 @@ void RegionMetadataComponent::resized()
 	auto area = getLocalBounds();
 
 	auto titleArea = area.removeFromTop(titleHeight);
+	
+	TitleRegions->setBounds(titleArea.removeFromLeft(320));
+	TitleTag->setBounds(titleArea.removeFromLeft(100));
+	TitleAttach->setBounds(titleArea.removeFromLeft(100));
 
 	//auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
 	//auto RightHalf = area;
@@ -132,7 +145,7 @@ void RegionMetadataComponent::resized()
 	
 	btn_Save->setBounds(savebuttonArea.reduced(border));
 
-	auto refreshButtonArea = buttonArea;
+	auto refreshButtonArea = buttonArea.removeFromLeft(300);
 
 	btn_Refresh->setBounds(refreshButtonArea.reduced(border));
 	

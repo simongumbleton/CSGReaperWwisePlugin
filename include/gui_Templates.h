@@ -97,6 +97,11 @@ private:
 	
 	juce::Label * selectedParentLabel = new Label();
 	
+	juce::Label * TitleRegions = new Label();
+	juce::Label * TitleTag = new Label();
+	juce::Label * TitleAttach = new Label();
+	
+	
 	Array<PropertiesComponent*> createProperties(int count)
 	{// TO DO - count should be the number of regions
 		Array<PropertiesComponent*> properties;
