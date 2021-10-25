@@ -75,6 +75,7 @@
     <ClCompile Include="src\gui_Transfer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\ReaperRenderQueParser.cpp" />
+    <ClCompile Include="src\RegionMetadata.cpp" />
     <ClCompile Include="src\WaapiConnect.cpp" />
     <ClCompile Include="src\WaapiFunctions.cpp" />
     <ClCompile Include="src\workunithelper.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="include\ReaperRenderQueParser.h" />
     <ClInclude Include="include\reaper_plugin.h" />
     <ClInclude Include="include\reaper_plugin_functions.h" />
+    <ClInclude Include="include\RegionMetadata.h" />
     <ClInclude Include="include\WaapiConnect.h" />
     <ClInclude Include="include\WaapiFunctions.h" />
     <ClInclude Include="include\waapi_structs.h" />

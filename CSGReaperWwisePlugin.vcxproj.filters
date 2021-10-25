@@ -66,6 +66,9 @@
     <ClCompile Include="src\workunithelper.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\RegionMetadata.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\JUCE\include_juce_core.mm">
@@ -260,6 +263,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\pugiconfig.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RegionMetadata.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
