@@ -131,6 +131,10 @@ void RegionMetadataComponent::resized()
 	auto savebuttonArea = buttonArea.removeFromLeft(300);
 	
 	btn_Save->setBounds(savebuttonArea.reduced(border));
+
+	auto refreshButtonArea = buttonArea;
+
+	btn_Refresh->setBounds(refreshButtonArea.reduced(border));
 	
 	auto edgesize = buttonArea.getWidth()*0.1;
 	auto offsetL = buttonArea.removeFromLeft(edgesize);
@@ -198,6 +202,10 @@ void RegionMetadataComponent::buttonClicked(juce::Button * pButton)
 	{
 		handle_OnButton_Saved();
 	}
+	else if (pButton == btn_Refresh)
+	{
+		handle_OnButton_Refresh();
+	}
 	
 }
 
@@ -253,13 +261,24 @@ void RegionMetadataComponent::handle_OnWwiseProjectClosed()
 
 void RegionMetadataComponent::handle_OnButton_Saved()
 {
+	metadataHelper->fillProjectRegionInfos();
 	//std::vector<std::string>nonMasterRegions = getNonMasterProjectRegions();
 	saveProjExState("", "");
 	for (auto region : regionPropertiesViewport->RegionProperties)
 	{
+		std::map<std::string, std::string> values = region->GetPropertyValues();
+		metadataHelper->updateRegionGUIProperties(region->GetRegionName(), values);
 		region->SaveRegionPropertiesToExState();
 	}
+	metadataHelper->createMasterRegionData();
 	SaveProject();
+	metadataHelper->writeMasterRegionInfoToJson();
+}
+
+void RegionMetadataComponent::handle_OnButton_Refresh()
+{
+	regionPropertiesViewport->refreshRegionsFromProject();
+	//regionPropertiesViewport->repaint();
 }
 
 

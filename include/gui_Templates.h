@@ -53,6 +53,8 @@ public:
 	void handle_OnWwiseProjectClosed();
 	
 	void handle_OnButton_Saved();
+
+	void handle_OnButton_Refresh();
 	
 	//void postCommandMessage(int commandId);
 	//https://docs.juce.com/master/classComponent.html#a9ba6fa31d1397c7e90050b2cd4f2089b
@@ -81,9 +83,12 @@ private:
 	
 	juce::TextButton * btn_Save = new TextButton("Save Changes");
 
+	juce::TextButton* btn_Refresh = new TextButton("Refresh Regions From Project");
+
 	std::vector<juce::Button*> buttons{
 //	btn_ConnectToWwise,
-	btn_Save
+	btn_Save,
+	btn_Refresh
 	};
 
 	juce::Label * txt_ConnectionStatus = new Label(); // text

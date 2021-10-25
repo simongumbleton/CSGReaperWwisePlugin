@@ -2,6 +2,11 @@
 #include <map>
 #include <vector>
 
+#include <json.hpp>
+
+// for convenience
+using json = nlohmann::json;
+
 struct RegionInfo
 {
 	std::string name = "";//rInfo["name"] = name
@@ -45,6 +50,14 @@ public:
 	void getRelativeStartForChildrenInMaster(RegionInfo &master);
 	
 	void createMasterRegionData();
+
+	void updateRegionGUIProperties(std::string RegionName, std::map<std::string, std::string> values);
+
+	void writeMasterRegionInfoToJson();
+
+	json RegionInfoToJson(RegionInfo& rinfo);
+
+	bool CreateProjectRegionJsonFile(std::string filename,json data);
 	
 };
 

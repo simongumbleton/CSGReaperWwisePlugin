@@ -48,6 +48,12 @@ static std::string cleanWwisePathsFromMac(std::string input)
 #endif
 }
 
+static std::string stringReplace(std::string input, std::string from, std::string to)
+{
+	juce::String result = input;
+	return result.replace(from, to).toStdString();
+}
+
 
 //...
 

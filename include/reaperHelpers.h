@@ -12,6 +12,8 @@ std::string GetCurrentReaperProject();
 
 ReaProject* GetCurrentReaProject();
 
+std::string GetCurrentReaperProjectPath();
+
 void SaveProject();
 
 void Reaper_RenderAllQuedJobs();
@@ -29,3 +31,5 @@ int countMarkers();
 void saveProjExState(std::string Key, std::string Value);
 
 std::string getProjExState(std::string Key);
+
+

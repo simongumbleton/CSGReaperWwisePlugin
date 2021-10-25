@@ -268,5 +268,8 @@
     <ClInclude Include="include\RegionMetadata.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\json.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

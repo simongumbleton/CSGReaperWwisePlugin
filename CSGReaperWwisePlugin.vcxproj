@@ -96,6 +96,7 @@
     <ClInclude Include="include\gui_RenderTree.h" />
     <ClInclude Include="include\gui_Templates.h" />
     <ClInclude Include="include\gui_Transfer.h" />
+    <ClInclude Include="include\json.hpp" />
     <ClInclude Include="include\JUCE\AppConfig.h" />
     <ClInclude Include="include\JUCE\JuceHeader.h" />
     <ClInclude Include="include\platformhelpers.h" />

@@ -12,12 +12,16 @@
 class PropertiesComponent   : public Component
 {
 public:
+
+	String sRegionName;
+
 	PropertiesComponent(const juce::String& name)
 	{
 		setOpaque (true);
 		
 		addAndMakeVisible(regionName);
 		regionName->setText(name, juce::NotificationType::dontSendNotification);
+		sRegionName = name;
 		
 		properties = createTextEditors();
 		for (auto comp : properties)
@@ -161,7 +165,6 @@ public:
 			valuesToJson.seekp(-1,valuesToJson.cur); valuesToJson << "}";
 			saveProjExState(name, valuesToJson.str());
 	}
-	
 
 private:
 	
@@ -177,8 +180,8 @@ private:
 	{
 		return
 		{
-			new TextEditor("Tag")
-			,new TextEditor("Attach")
+			new TextEditor("tag")
+			,new TextEditor("attach")
 			//,new TextEditor("Value")
 		};
 	}
@@ -195,25 +198,38 @@ public:
 	{
 		setOpaque(true);
 
-		RegionProperties = createProperties();
-		for (auto region : RegionProperties)
-		{
-			addChildComponent(region);
-			addAndMakeVisible(region);
-			region->SetPropertyValuesFromExState();
-		}
-
-
-		int sizeY = gridHeight * RegionProperties.size();
-		setSize(750, sizeY);
-		setBounds(0, 0, 750, sizeY);
-		
+		refreshRegionsFromProject();
 	}
 
 	void paint(Graphics& g) override
 	{
 		//g.fillAll(juce::Colours::aquamarine);
 		g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+	}
+
+	void refreshRegionsFromProject()
+	{
+		removeAllChildren();
+
+		if (!RegionProperties.empty())
+		{
+			RegionProperties.clear();
+		}
+
+		RegionProperties = createProperties();
+		for (auto region : RegionProperties)
+		{
+			addChildComponent(region);
+			addAndMakeVisible(region);
+			region->repaint();
+			region->resized();
+			region->SetPropertyValuesFromExState();
+		}
+		int sizeY = gridHeight * RegionProperties.size();
+		setSize(750, sizeY);
+		setBounds(0, 0, 750, sizeY);
+		repaint();
+		resized();
 	}
 
 	void resized() override
@@ -231,18 +247,18 @@ public:
 
 
 
-	Array<PropertiesComponent*> RegionProperties;
+	std::vector<PropertiesComponent*> RegionProperties;
 
 private:
 	
 	int gridHeight = 30;
 
-	Array<PropertiesComponent*> createProperties()
+	std::vector<PropertiesComponent*> createProperties()
 	{// TO DO - count should be the number of regions
-		Array<PropertiesComponent*> properties;
+	std::vector <PropertiesComponent*> properties;
 		for (auto region : getNonMasterProjectRegionNames())
 		{
-			properties.add(new PropertiesComponent(region));
+			properties.push_back(new PropertiesComponent(region));
 		}
 		//for (int i = 0;i < count;i++)
 		//{

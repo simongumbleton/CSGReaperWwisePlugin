@@ -125,6 +125,13 @@ ReaProject* GetCurrentReaProject()
 	return EnumProjects(-1, NULL, NULL);
 }
 
+std::string GetCurrentReaperProjectPath()
+{
+	char projPath[256];
+	EnumProjects(-1, projPath, MAX_PATH);
+	return std::string(projPath);
+}
+
 void SaveProject()
 {
 	Main_SaveProject(GetCurrentReaProject(), false);
