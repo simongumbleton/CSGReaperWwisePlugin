@@ -294,7 +294,7 @@ bool WwiseConnectionHandler::ImportAudioToWwise(bool suppressOutputMessages, Imp
 	//waapi_TranslateJSONResults(stringRes, numRes, MoreRawReturnResults, "");
 
 
-	waapi_UndoHandler(End, "Auto Import");
+	
 	waapi_SaveWwiseProject();
 
 	if (!waapi_SetAutomationMode(false))

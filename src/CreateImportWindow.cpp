@@ -663,13 +663,14 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 	
 }
 
-void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name)
+void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,std::string notes)
 {
 	CreateObjectArgs args;
 	args.ParentID = "\\Events\\Default Work Unit";
 	args.Type = "Event";
 	args.Name = "Play_"+name;
 	args.createPlayEvent = true;
+	args.Notes = notes;
 
 	EventCreateArgs eventArgs;
 	eventArgs.target = id;
@@ -760,7 +761,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 			std::string name = obj["name"].GetVariant();
 			if (type == "AudioFileSource") { continue; }
 
-			CreatePlayEventForID(obj["id"].GetVariant(), obj["name"].GetVariant());
+			CreatePlayEventForID(obj["id"].GetVariant(), obj["name"].GetVariant(),curJobImportArgs.SourceReaperProject);
 		}
 	}
 	else if (curJobImportArgs.eventCreateOption == 2)
@@ -768,7 +769,11 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 		// \Actor-Mixer Hierarchy\Default Work Unit\MyAM\AnotherAM\New Random Container
 		std::string target = curJobImportArgs.ImportLocation;
 		std::string name = curJobImportArgs.ImportLocation.erase(0,curJobImportArgs.ImportLocation.rfind("\\")+1);
-		CreatePlayEventForID(target, name);
+		CreatePlayEventForID(target, name,curJobImportArgs.SourceReaperProject);
+	}
+	if (success)
+	{
+		waapi_UndoHandler(End, "Auto Import");
 	}
 
 	return success;

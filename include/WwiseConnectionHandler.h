@@ -219,7 +219,7 @@ public:
 	bool UpdateProgressDuringRender(int numJobs);
 
 	bool ImportJobsIntoWwise();
-	void CreatePlayEventForID(std::string id,std::string name);
+	void CreatePlayEventForID(std::string id,std::string name,std::string notes="");
 	
 	ImportObjectArgs SetupImportArgs(WwiseObject parent, bool isVoice, std::string ImportLanguage,
 									 bool OrigsDirMatchesWwise, std::string userOrigSubDir,
