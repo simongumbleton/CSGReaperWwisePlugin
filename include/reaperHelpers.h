@@ -10,6 +10,8 @@ std::string GetReaperResourcePath();
 
 std::string GetCurrentReaperProject();
 
+std::string GetCurrentReaperProjectName();
+
 ReaProject* GetCurrentReaProject();
 
 std::string GetCurrentReaperProjectPath();
@@ -32,4 +34,5 @@ void saveProjExState(std::string Key, std::string Value);
 
 std::string getProjExState(std::string Key);
 
+void bringWindowsToFront();
 

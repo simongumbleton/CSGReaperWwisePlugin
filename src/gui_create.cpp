@@ -226,6 +226,8 @@ void CreateWwiseComponent::TryConnectToWwise() {
 		{
 			WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
 			WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+			subscriptionID_selectionChanged = 0;
+			subscriptionID_projectClosed = 0;
 			isSubscribed = false;
 		}
 		WwiseCntnHndlr->DisconnectFromWwise();
@@ -320,6 +322,8 @@ void CreateWwiseComponent::handle_OnWwiseProjectClosed()
 	{
 		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
 		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+		subscriptionID_selectionChanged = 0;
+		subscriptionID_projectClosed = 0;
 		isSubscribed = false;
 	}
 	WwiseCntnHndlr->DisconnectFromWwise();
@@ -364,6 +368,8 @@ void CreateWwiseComponent::handle_OnTabBecameInactive()
 	{
 		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
 		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+		subscriptionID_selectionChanged = 0;
+		subscriptionID_projectClosed = 0;
 		isSubscribed = false;
 	}
 	//	WwiseCntnHndlr->DisconnectFromWwise();

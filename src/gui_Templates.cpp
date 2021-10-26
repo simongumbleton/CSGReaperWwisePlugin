@@ -304,6 +304,7 @@ void RegionMetadataComponent::handle_OnButton_Saved()
 	metadataHelper->createMasterRegionData();
 	SaveProject();
 	metadataHelper->writeMasterRegionInfoToJson();
+	bringWindowsToFront();
 }
 
 void RegionMetadataComponent::handle_OnButton_Refresh()

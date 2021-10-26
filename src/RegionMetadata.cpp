@@ -31,7 +31,9 @@ ProjectRegionMetadataHelper::~ProjectRegionMetadataHelper()
 
 void ProjectRegionMetadataHelper::fillProjectRegionInfos()
 {
-	ProjectRegions.empty();
+	MasterRegions.clear();
+	ProjectRegions.clear();
+	
 	int total = countRegions() + countMarkers();
 	std::vector<RegionInfo> results;
 	int i = 0;
@@ -154,13 +156,14 @@ void ProjectRegionMetadataHelper::writeMasterRegionInfoToJson()
 	//ProjectRegionInfo["master_regions"] = MasterRegions;
 
 	json ProjectRegionInfo;
+	ProjectRegionInfo["reaper_project"] = stringToLower(GetCurrentReaperProjectName());
 	for (auto& master : MasterRegions)
 	{
 		ProjectRegionInfo["master_regions"][master.first] = RegionInfoToJson(master.second);
 	}
 	
-	std::string output = ProjectRegionInfo.dump(4);
-	PrintToConsole(output);
+	//std::string output = ProjectRegionInfo.dump(4);
+	//PrintToConsole(output);
 
 	//std::string projNameJson = stringReplace(stringToLower(GetCurrentReaperProject()),".rpp" , ".json");
 	std::string projPathjson = stringReplace(stringToLower(GetCurrentReaperProjectPath()), ".rpp", ".json"); ;

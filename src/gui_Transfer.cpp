@@ -420,6 +420,8 @@ void TransferToWwiseComponent::TryConnectToWwise() {
 		{
 			WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
 			WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+			subscriptionID_selectionChanged = 0;
+			subscriptionID_projectClosed = 0;
 			isSubscribed = false;
 		}
 		WwiseCntnHndlr->DisconnectFromWwise();
@@ -581,6 +583,8 @@ void TransferToWwiseComponent::handle_OnWwiseProjectClosed()
 	{
 		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
 		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+		subscriptionID_selectionChanged = 0;
+		subscriptionID_projectClosed = 0;
 		isSubscribed = false;
 	}
 	WwiseCntnHndlr->DisconnectFromWwise();
@@ -646,6 +650,7 @@ void TransferToWwiseComponent::handle_OnBecameActiveTab()
 	bool connected = MyCurrentWwiseConnection->connected;
 	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
 	{
+		WwiseCntnHndlr->AddActiveComponent(this);
 		if (!isSubscribed)
 		{
 			WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, subscriptionID_selectionChanged);
@@ -661,6 +666,7 @@ void TransferToWwiseComponent::handle_OnBecameActiveTab()
 	{
 		setStatusText("Error");
 		txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
+		WwiseCntnHndlr->RemoveActiveComponent(this);
 	}
 
 }
@@ -671,8 +677,12 @@ void TransferToWwiseComponent::handle_OnTabBecameInactive()
 	{
 		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_selectionChanged);
 		WwiseCntnHndlr->UnsubscribeFromTopicByID(subscriptionID_projectClosed);
+		subscriptionID_selectionChanged = 0;
+		subscriptionID_projectClosed = 0;
 		isSubscribed = false;
 	}
+	//WwiseCntnHndlr->DisconnectFromWwise();
+	WwiseCntnHndlr->RemoveActiveComponent(this);
 
 //	WwiseCntnHndlr->DisconnectFromWwise();
 }

@@ -494,7 +494,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						fileOverride.second.userOrigsSubDir,
 						audiofile,
 						fileOverride.second.createEventOption,
-						job.ParentReaperProject
+						filenameFromPathString(job.ParentReaperProject)
 						
 					);
 					if (ImportCurrentRenderJob(curFileOverrideImportArgs))
@@ -559,7 +559,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						existingOriginalsPath,
 						importfiles,
 						job.createEventOption,
-						job.ParentReaperProject
+						filenameFromPathString(job.ParentReaperProject)
 					);
 					if (ImportCurrentRenderJob(curJobImportArgs))
 					{
@@ -591,7 +591,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 				job.userOrigsSubDir,
 				job.RenderQueJobFileList,
 				job.createEventOption,
-				job.ParentReaperProject
+				filenameFromPathString(job.ParentReaperProject)
 			);
 			if ((existingSiblingOriginalsPath != "") && (job.OrigDirMatchesWwise))
 			{
@@ -760,8 +760,9 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 			std::string type = obj["type"].GetVariant();
 			std::string name = obj["name"].GetVariant();
 			if (type == "AudioFileSource") { continue; }
+			std::string notes = "rpp:" + filenameFromPathString(curJobImportArgs.SourceReaperProject) + "\nNotes:";
 
-			CreatePlayEventForID(obj["id"].GetVariant(), obj["name"].GetVariant(),curJobImportArgs.SourceReaperProject);
+			CreatePlayEventForID(obj["id"].GetVariant(), obj["name"].GetVariant(), notes);
 		}
 	}
 	else if (curJobImportArgs.eventCreateOption == 2)
@@ -769,7 +770,8 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 		// \Actor-Mixer Hierarchy\Default Work Unit\MyAM\AnotherAM\New Random Container
 		std::string target = curJobImportArgs.ImportLocation;
 		std::string name = curJobImportArgs.ImportLocation.erase(0,curJobImportArgs.ImportLocation.rfind("\\")+1);
-		CreatePlayEventForID(target, name,curJobImportArgs.SourceReaperProject);
+		std::string notes = "rpp:" + filenameFromPathString(curJobImportArgs.SourceReaperProject) + "\nNotes:";
+		CreatePlayEventForID(target, name, notes);
 	}
 	if (success)
 	{

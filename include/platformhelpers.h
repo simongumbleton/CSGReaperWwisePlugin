@@ -54,6 +54,14 @@ static std::string stringReplace(std::string input, std::string from, std::strin
 	return result.replace(from, to).toStdString();
 }
 
+static std::string filenameFromPathString(std::string input)
+{
+	if (input.rfind(kPathSeparator) != input.npos)
+	{
+		input.erase(0, input.rfind(kPathSeparator) + 1);
+	}
+	return input;
+}
 
 //...
 

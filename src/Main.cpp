@@ -120,6 +120,11 @@ std::string GetCurrentReaperProject()
 	return std::string(projName);
 }
 
+std::string GetCurrentReaperProjectName()
+{
+	return filenameFromPathString(GetCurrentReaperProject());
+}
+
 ReaProject* GetCurrentReaProject()
 {
 	return EnumProjects(-1, NULL, NULL);
@@ -309,6 +314,20 @@ void LaunchTemplateWindow()
 	}
 	
 }
+
+void bringWindowsToFront()
+{
+	if (currentTransferWindow && transferWindowStatus)
+	{
+		currentTransferWindow->toFront(true);
+	}
+	if (currentTemplateWindow && templateWindowStatus)
+	{
+		currentTemplateWindow->toFront(true);
+	}
+}
+
+
 
 void ClearCurrentWindowPtr()
 {
