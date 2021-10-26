@@ -147,6 +147,8 @@ void CreateWwiseComponent::resized()
 	
 	Title_CreateWwiseObject->setBounds(area.removeFromTop(titleHeight).reduced(border));
 	
+	auto selectedParentArea = area.removeFromTop(labelHeight);
+	selectedParentLabel->setBounds(selectedParentArea.removeFromLeft(300).reduced(border));
 	
 	dd_CreateType->setBounds(area.removeFromTop(comboHeight).reduced(border).removeFromRight(area.getWidth()/2));
 	//dd_CreateType->setJustificationType(Justification::right);
