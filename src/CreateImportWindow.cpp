@@ -761,8 +761,17 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 			std::string name = obj["name"].GetVariant();
 			if (type == "AudioFileSource") { continue; }
 			std::string notes = "rpp:" + filenameFromPathString(curJobImportArgs.SourceReaperProject) + "\nNotes:";
+			std::string versionToken = "";
+			if (IsAudioFileAVersion(name, versionToken))
+			{
+				size_t found = name.rfind(versionToken);
+				if (found != name.npos)
+				{
+					name = name.erase(found);
+				}
+			}
 
-			CreatePlayEventForID(obj["id"].GetVariant(), obj["name"].GetVariant(), notes);
+			CreatePlayEventForID(obj["id"].GetVariant(), name, notes);
 		}
 	}
 	else if (curJobImportArgs.eventCreateOption == 2)
@@ -813,7 +822,29 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 		std::string versionToken = myConfig.versionToken;
 		bool isVersion = false;
 		
-		
+		std::string foundVersionToken = "";
+		if (IsAudioFileAVersion(audioFile, foundVersionToken))
+		{
+			isVersion = true;
+			std::size_t pos = audioFileNameForComparison.find(foundVersionToken);
+			if (pos != audioFileNameForComparison.npos)
+			{
+				audioFileNameForComparison = audioFileNameForComparison.erase(pos);
+			}
+			//audioFileNameForComparison = audioFileNameForComparison.erase(audioFileNameForComparison.length() - lengthToRemove, lengthToRemove);
+			size_t verTokenPos = nameForComparison.length() - (foundVersionToken.length()+4);// last 8 chars of a version will be _v**.wav
+			std::size_t found = nameForComparison.find(versionToken.c_str(), verTokenPos, 2);
+			if (found != nameForComparison.npos)
+			{
+				nameForComparison = nameForComparison.erase(nameForComparison.length() - (foundVersionToken.length() + 4), foundVersionToken.length() + 4);
+			}
+			else
+			{
+				nameForComparison = nameForComparison.erase(nameForComparison.length() - 4, 4);
+			}
+		}
+
+		/*
 		size_t lengthToRemove = versionToken.length()+4;
 		
 		if (audioFile.length() >= lengthToRemove)
@@ -860,6 +891,7 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 			}
 		
 		}
+		*/
 		
 		if (nameForComparison == audioFileNameForComparison)
 		{
@@ -1008,6 +1040,60 @@ void CreateImportWindow::SetWwiseAutomationMode(bool enable)
 	WwiseConnectionHnd->SetWwiseAutomationMode(enable);
 }
 
+bool CreateImportWindow::IsAudioFileAVersion(std::string input, std::string& outVarientToken)
+{
+	std::string versionToken = myConfig.versionToken;
+	bool isVersion = false;
+	size_t lengthToRemove = versionToken.length();
+	outVarientToken = "";
+
+	//check if ".wav" in input
+	std::size_t found = input.rfind(".wav");
+	if (found != input.npos)
+	{
+		lengthToRemove += 4;
+	}
+
+	if (input.length() >= lengthToRemove)
+	{
+		size_t verTokenPos = input.length() - lengthToRemove;// last 8 chars of a version will be _v**.wav
+		std::size_t found = input.find(versionToken.c_str(), verTokenPos, 2);//match the first 2 chars of the token (_v)
+		if (found != input.npos)
+		{
+			int i = 0;
+			bool doesPatternMatch = false;
+			for (auto c : versionToken)
+			{
+				if ((isdigit(c)) != (isdigit(input[found + i])))
+				{
+					break;
+				}
+				i++;
+			}
+			if (i == versionToken.length())
+			{
+				doesPatternMatch = true;
+			}
+			if (input.length() > (found + versionToken.length()))
+			{
+				char c = input[found + versionToken.length()];
+				if (c != '.')
+				{
+					doesPatternMatch = false;
+				}
+			}
+
+			if (doesPatternMatch)
+			{
+				isVersion = true;
+				outVarientToken = input.substr(verTokenPos, versionToken.length());
+			}
+		}
+
+	}
+	return isVersion;
+}
+
 
 
 
@@ -1049,3 +1135,5 @@ void CreateImportWindow::OpenHelp()
 	//PrintToConsole("Help wanted");
 	//ShellExecute(NULL, "open", help.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
+
+

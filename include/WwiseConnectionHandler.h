@@ -240,6 +240,8 @@ public:
 	void restoreRenderQueFiles();
 
 	void SetWwiseAutomationMode(bool enable);
+
+	bool IsAudioFileAVersion(std::string input, std::string& outVarientToken);
 	
 	std::map<std::string, std::vector<activeSourceUpdateInfo>> activeSourcesUpdateMap;
 	

@@ -344,8 +344,9 @@ void CreateWwiseComponent::setTransferValuesFromConfig(config c)
 void CreateWwiseComponent::handle_OnBecameActiveTab()
 {
 	bool connected = MyCurrentWwiseConnection->connected;
-	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
+	if ((connected) && (MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
 	{
+		WwiseCntnHndlr->AddActiveComponent(this);
 		if (!isSubscribed)
 		{
 			WwiseCntnHndlr->SubscribeOnSelectionChanged(WwiseConnectionHandler::callback_OnSelectionChanged, subscriptionID_selectionChanged);
@@ -361,6 +362,7 @@ void CreateWwiseComponent::handle_OnBecameActiveTab()
 	{
 		setStatusText("Error");
 		txt_ConnectionStatus->setText("No wwise connection", juce::NotificationType::dontSendNotification);
+		WwiseCntnHndlr->RemoveActiveComponent(this);
 	}
 }
 
@@ -374,5 +376,6 @@ void CreateWwiseComponent::handle_OnTabBecameInactive()
 		subscriptionID_projectClosed = 0;
 		isSubscribed = false;
 	}
-	//	WwiseCntnHndlr->DisconnectFromWwise();
+	//WwiseCntnHndlr->DisconnectFromWwise();
+	WwiseCntnHndlr->RemoveActiveComponent(this);
 }
