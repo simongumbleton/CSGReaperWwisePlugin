@@ -6,21 +6,18 @@ Wwise transfer:
 
 
 
-Versioning can we add things as new sources? 
+Versioning can we add things as new sources? - XML refresh still not working?
 What is the versioning token?
-
-Better way to choose import location - DONE
-Load the originals location from config file - file browser? - DONE
-Make apply button BIGGER!
-
-
-Move create component into its own tab/window?
 
 
 Render que open bypassed plugins in disabled state?
 
 
+Can we create music objects?
 
+Can we create multiple objects and enumerate the names?
+
+How to do templates....
 
 
 
@@ -29,3 +26,5 @@ Region metadata:
 - Need to read the current project regions and merge/sync with the ExtState values before displaying/populating the UI
 - UI allign to grid
 - Contain UI in scrollable window/layer
+
+how does wwise pitch affect the event behaviour in sequencers?
