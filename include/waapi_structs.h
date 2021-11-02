@@ -13,6 +13,17 @@
 
 typedef struct WwiseObject WwiseObject;
 
+enum IMPORT_TYPE
+{
+	Sfx, Voice, Music
+};
+enum SourceControlOperation
+{
+	CheckoutWWU, RevertWWU, UpdateWWU, CommitWWU
+};
+
+
+
 struct WwiseObject
 {
 	std::map<std::string, std::string> properties;
@@ -31,6 +42,7 @@ struct RenderJobFileOverride
 	std::string userOrigsSubDir;
 	bool hasImported = false;
 	std::string createEventOption;
+	IMPORT_TYPE EimportType;
 };
 
 struct RenderQueJob
@@ -48,6 +60,7 @@ struct RenderQueJob
 	bool hasPerFileOverrides = false;
 	std::map<std::string, RenderJobFileOverride> perFileOverridesmap;
 	std::string createEventOption;
+	IMPORT_TYPE EimportType;
 	
 
 };
@@ -168,8 +181,14 @@ struct CreateObjectChoices {
 	{
 		"None","Play@Parent", "Play@Children"
 	};
+	std::vector<std::string> waapiCREATEchoices_IMPORTTYPE
+	{
+		"Sfx","Voice", "Music"
+	};
 
 };
+
+
 
 struct WorkgroupOperations {
 	std::vector<std::string> WorkUnit
@@ -182,7 +201,3 @@ struct WorkgroupOperations {
 	//TO DO - add other workgroup commands 
 };
 
-enum SourceControlOperation
-{
-	CheckoutWWU, RevertWWU, UpdateWWU, CommitWWU
-};

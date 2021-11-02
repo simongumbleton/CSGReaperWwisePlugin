@@ -49,6 +49,12 @@ TransferToWwiseComponent::TransferToWwiseComponent(juce::Component* parentComp) 
 	info_EventOption->setText("Create Events for: ", juce::NotificationType::dontSendNotification);
 	
 	
+	InitComboBox(dd_ImportType, myCreateChoices.waapiCREATEchoices_IMPORTTYPE,"Sfx");
+	addAndMakeVisible(info_ImportType);
+	info_ImportType->attachToComponent(dd_ImportType, true);
+	info_ImportType->setText("Import as: ", juce::NotificationType::dontSendNotification);
+	
+	
 	// Init render job tree view
 	InitTreeView();
 	
@@ -192,7 +198,11 @@ void TransferToWwiseComponent::resized()
 	
 	auto o1qtrsize = optionsArea1.getWidth()/4;
 	
-	btn_isVoice->setBounds(optionsArea1.removeFromLeft(o1qtrsize).reduced(border/2));
+	//btn_isVoice->setBounds(optionsArea1.removeFromLeft(o1qtrsize).reduced(border/2));
+	
+	auto buffer = optionsArea1.removeFromLeft(75).reduced(border/2);
+	
+	dd_ImportType->setBounds(optionsArea1.removeFromLeft(o1qtrsize/2).reduced(border/2));
 	
 	dd_Language->setBounds(optionsArea1.removeFromLeft(o1qtrsize).reduced(border/2));
 	
@@ -261,11 +271,22 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 		return;	// Invalid wwise parent selection!
 	}
 
-	if (parentWwisePath.find("Actor-Mixer Hierarchy\\") == parentWwisePath.npos)
+	if (GetImportType()==IMPORT_TYPE::Music)
 	{
-		PrintToConsole("Import parent must be in Actor-Mixer hierarchy");
-		return;	// Invalid wwise parent selection!
+		if (parentWwisePath.find("Interactive Music Hierarchy\\") == parentWwisePath.npos)
+		{
+			PrintToConsole("Import parent must be in Interactive Music hierarchy for Music imports");
+			return;	// Invalid wwise parent selection!
+		}
 	}
+	else{
+		if (parentWwisePath.find("Actor-Mixer Hierarchy\\") == parentWwisePath.npos)
+		{
+			PrintToConsole("Import parent must be in Actor-Mixer hierarchy for Sfx or Voice imports");
+			return;	// Invalid wwise parent selection!
+		}
+	}
+	
 	if (RenderTreeSelectedItems.size() == 0) // Nothing selected
 	{
 		PrintToConsole("No render job or file selected");
@@ -325,6 +346,7 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 					fileOverride.RenderJobFile = currentName;
 					fileOverride.parentWwiseObject = selectedParent;
 					fileOverride.isVoice = CheckIsVoice();
+					fileOverride.EimportType = GetImportType();
 					fileOverride.createEventOption = dd_EventOption->getText().toStdString();
 					fileOverride.OrigDirMatchesWwise = CheckOriginalsDirectory();
 					if (!fileOverride.OrigDirMatchesWwise)
@@ -354,6 +376,7 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 					renderJob.parentWwiseObject = selectedParent;
 
 					renderJob.isVoice = CheckIsVoice();
+					renderJob.EimportType = GetImportType();
 
 					renderJob.createEventOption = dd_EventOption->getText().toStdString();
 
@@ -486,6 +509,10 @@ void TransferToWwiseComponent::comboBoxChanged(ComboBox * comboBoxThatHasChanged
 {
 	String text = ("SELECTED: " + comboBoxThatHasChanged->getText());
 	debugLabel->setText(text, juce::NotificationType::dontSendNotification);
+	if (comboBoxThatHasChanged == dd_ImportType)
+	{
+		CheckIsVoice();
+	}
 }
 
 void TransferToWwiseComponent::labelTextChanged(Label * labelThatHasChanged)
@@ -493,6 +520,18 @@ void TransferToWwiseComponent::labelTextChanged(Label * labelThatHasChanged)
 }
 
 bool TransferToWwiseComponent::CheckIsVoice() {
+	
+	if (dd_ImportType->getText().toStdString() == "Voice")
+	{
+		dd_Language->setEnabled(true);
+		return true;
+	}
+	else
+	{
+		dd_Language->setEnabled(false);
+		return false;
+	}
+	/*
 	if (btn_isVoice->getToggleState())
 	{
 		dd_Language->setEnabled(true);
@@ -501,7 +540,7 @@ bool TransferToWwiseComponent::CheckIsVoice() {
 	else{
 		dd_Language->setEnabled(false);
 		return false;
-	}
+	}*/
 }
 
 bool TransferToWwiseComponent::CheckOriginalsDirectory() {
@@ -661,6 +700,7 @@ void TransferToWwiseComponent::handle_OnBecameActiveTab()
 		setStatusText("Ready");
 		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->projectGlobals.ProjectName);
 		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
+		InitComboBox(dd_Language, MyCurrentWwiseConnection->projectGlobals.Languages, "Language..");
 	}
 	else
 	{
@@ -686,3 +726,19 @@ void TransferToWwiseComponent::handle_OnTabBecameInactive()
 
 //	WwiseCntnHndlr->DisconnectFromWwise();
 }
+
+IMPORT_TYPE TransferToWwiseComponent::GetImportType() { 
+	if (dd_ImportType->getText().toStdString() == "Voice")
+	{
+		return IMPORT_TYPE::Voice;
+	}
+	else if (dd_ImportType->getText().toStdString() == "Music")
+	{
+		return IMPORT_TYPE::Music;
+	}
+	else
+	{
+		return IMPORT_TYPE::Sfx;
+	}
+}
+

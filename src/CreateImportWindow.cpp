@@ -489,7 +489,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 					ImportObjectArgs curFileOverrideImportArgs = SetupImportArgs
 					(
 						fileOverride.second.parentWwiseObject,
-						fileOverride.second.isVoice,
+						fileOverride.second.EimportType,
 						fileOverride.second.ImportLanguage,
 						fileOverride.second.OrigDirMatchesWwise,
 						fileOverride.second.userOrigsSubDir,
@@ -554,7 +554,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 					ImportObjectArgs curJobImportArgs = SetupImportArgs
 					(
 						originalJobWwiseParent,
-						job.isVoice,
+						job.EimportType,
 						job.ImportLanguage,
 						false,
 						existingOriginalsPath,
@@ -586,7 +586,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 			ImportObjectArgs curJobImportArgs = SetupImportArgs
 			(
 				job.parentWwiseObject,
-				job.isVoice,
+				job.EimportType,
 				job.ImportLanguage,
 				job.OrigDirMatchesWwise,
 				job.userOrigsSubDir,
@@ -687,7 +687,7 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 
 }
 
-ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent, bool isVoice, std::string ImportLanguage,
+ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent, IMPORT_TYPE importType, std::string ImportLanguage,
 													 bool OrigsDirMatchesWwise,
 													 std::string userOrigSubDir,
 													 std::vector<std::string> ImportFiles,
@@ -705,13 +705,16 @@ ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent, bool is
 	importArgs.SourceReaperProject = SourceReaperProj;
 	importArgs.ImportLocation = parent.properties["path"];
 	importArgs.ImportLanguage = ImportLanguage;
-	if (isVoice)
-	{
-		importArgs.objectType = "<Sound Voice>";
-	}
-	else
-	{
-		importArgs.objectType = "<Sound SFX>";
+	switch (importType) {
+		case Voice:
+			importArgs.objectType = "<Sound Voice>";
+			break;
+		case Music:
+			importArgs.objectType = "<MusicTrack>";
+			break;
+		default:
+			importArgs.objectType = "<Sound SFX>";
+			break;
 	}
 	if (OrigsDirMatchesWwise)
 	{

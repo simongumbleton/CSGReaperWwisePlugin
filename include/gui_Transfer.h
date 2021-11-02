@@ -51,6 +51,8 @@ public:
 	
 	bool CheckIsVoice();
 	
+	IMPORT_TYPE GetImportType();
+	
 	bool CheckOriginalsDirectory();
 	
 	void ApplySettingsToSelectedJobs();
@@ -137,10 +139,14 @@ private:
 	juce::ComboBox * dd_Language = new ComboBox("dd_Language"); //drop down
 	juce::ComboBox * dd_EventOption = new ComboBox("dd_EventOption");
 	juce::Label * info_EventOption = new Label();
+	
+	juce::ComboBox * dd_ImportType = new ComboBox("dd_ImportType");
+	juce::Label * info_ImportType = new Label();
 
 	std::vector<juce::ComboBox *> comboBoxes{
 		dd_Language,
 		dd_EventOption,
+		dd_ImportType
 	};
 	
 	juce::Label * Title_RenderImport = new Label();
@@ -238,6 +244,8 @@ public:
 		{
 			thisCreateImportWindow->handleUI_B_Connect();
 		}
+		//transferComp->TryConnectToWwise();
+		//createComp->TryConnectToWwise();
 		
 		addTab("Transfer",juce::Colours::darkslategrey,transferComp,true,0);
 		addTab("Create",juce::Colours::darkslategrey,createComp,true,1);

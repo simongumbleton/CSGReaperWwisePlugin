@@ -221,14 +221,14 @@ public:
 	bool ImportJobsIntoWwise();
 	void CreatePlayEventForID(std::string id,std::string name,std::string notes="");
 	
-	ImportObjectArgs SetupImportArgs(WwiseObject parent, bool isVoice, std::string ImportLanguage,
+	ImportObjectArgs SetupImportArgs(WwiseObject parent, IMPORT_TYPE importType, std::string ImportLanguage,
 									 bool OrigsDirMatchesWwise, std::string userOrigSubDir,
 									 std::vector<std::string> ImportFiles,
 									 std::string eventCreateOption,
 									 std::string SourceReaperProj = "",
 									 std::string Notes = "");
 	
-	ImportObjectArgs SetupImportArgs(WwiseObject parent, bool isVoice, std::string ImportLanguage,
+	ImportObjectArgs SetupImportArgs(WwiseObject parent, IMPORT_TYPE importType, std::string ImportLanguage,
 									 bool OrigsDirMatchesWwise,std::string userOrigSubDir,
 									 std::vector<std::string> ImportFiles);
 	
