@@ -192,6 +192,16 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 	{
 		//Check the type for the event target
 	}
+	else if (createArgs.Type == "MusicTrack")
+	{
+		if (stringToLower(createArgs.ParentType).compare("musicsegment") != 0)
+		{
+			//Something went wrong!
+			PrintToConsole("ERROR. Parent of MusicTrack must be MusicSegment!");
+			waapi_UndoHandler(Cancel, "Create Object");
+			return false;
+		}
+	}
 
 	if (MyCurrentWwiseConnection.useAutomationMode)
 	{
@@ -208,8 +218,9 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 	if (!waapi_CreateObjectFromArgs(createArgs, MoreRawReturnResults))
 	{
 		//Something went wrong!
-		PrintToConsole("ERROR. Create Object Call Failed. Exiting.");
+		PrintToConsole("ERROR. Create Object Call Failed. Check if the selected parent is correct.");
 		waapi_UndoHandler(Cancel, "Create Object");
+		waapi_SetAutomationMode(false);
 		return false;
 	}
 	waapi_GetWaapiResultsArray(Results, MoreRawReturnResults);

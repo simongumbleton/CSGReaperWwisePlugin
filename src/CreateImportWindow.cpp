@@ -133,6 +133,7 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 	}
 
 	myCreateObjectArgs.ParentID = selectedParent.properties["id"];
+	myCreateObjectArgs.ParentType = selectedParent.properties["type"];
 	myCreateObjectArgs.Workunit = selectedParent.properties["workunit"];
 
 

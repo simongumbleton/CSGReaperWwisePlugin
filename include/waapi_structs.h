@@ -97,6 +97,7 @@ struct CreateObjectArgs {
 	bool createPlayEvent = false;
 	EventCreateArgs eventArgs;
 	std::string Workunit = "";
+	std::string ParentType = "";
 };
 
 struct ImportObjectArgs {
@@ -151,7 +152,9 @@ struct GetObjectChoices {
 struct CreateObjectChoices {
 	std::vector<std::string> waapiCREATEchoices_TYPE
 	{
-		"ActorMixer","Blend", "Random", "Sequence", "Switch","Sound","Voice"
+		"ActorMixer","Blend", "Random", "Sequence",
+		"Switch","Sound","Voice",
+		"MusicPlaylistContainer", "MusicSwitchContainer", "MusicSegment", "MusicTrack"
 	};
 	std::vector<std::string> waapiCREATEchoices_NAMECONFLICT
 	{
