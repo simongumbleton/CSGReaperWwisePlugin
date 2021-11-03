@@ -22,7 +22,7 @@
 
 #include "GUI.h"
 #include "gui_Transfer.h"
-#include "gui_Templates.h"
+#include "gui_RegionMetadata.h"
 
 #include "reaperHelpers.h"
 #include "platformhelpers.h"

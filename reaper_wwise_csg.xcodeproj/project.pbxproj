@@ -14,8 +14,8 @@
 		9E4024CF272217700057AB9F /* workunithelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E4024CE272217700057AB9F /* workunithelper.h */; };
 		9E4024D2272217AF0057AB9F /* workunithelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E4024D1272217AF0057AB9F /* workunithelper.cpp */; };
 		9E5B444A254A0B4500382C38 /* gui_RenderTree.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E5B4449254A0B4500382C38 /* gui_RenderTree.h */; };
-		9E5B444D254A0D1A00382C38 /* gui_Templates.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E5B444C254A0D1A00382C38 /* gui_Templates.h */; };
-		9E5B4453254A14F000382C38 /* gui_Templates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E5B444F254A112D00382C38 /* gui_Templates.cpp */; };
+		9E5B444D254A0D1A00382C38 /* gui_RegionMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E5B444C254A0D1A00382C38 /* gui_RegionMetadata.h */; };
+		9E5B4453254A14F000382C38 /* gui_RegionMetadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E5B444F254A112D00382C38 /* gui_RegionMetadata.cpp */; };
 		9E78206024C0E904005401E2 /* JuceHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5124C0E8FD005401E2 /* JuceHeader.h */; };
 		9E78206224C0E904005401E2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */; };
 		9E78206324C0E904005401E2 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */; };
@@ -39,7 +39,10 @@
 		9E893BA124BE578600188A61 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA024BE578600188A61 /* IOKit.framework */; };
 		9E893BA324BE57C900188A61 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E893BA224BE57C900188A61 /* CoreImage.framework */; };
 		9EA5479A2534FEFC005FE490 /* platformhelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EA547992534FEFC005FE490 /* platformhelpers.h */; };
+		9EB1CF2C2725E5A6000850A7 /* RegionMetadataHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EB1CF2A2725E5A6000850A7 /* RegionMetadataHelper.cpp */; };
+		9EB1CF312725E744000850A7 /* RegionMetadataHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EB1CF302725E5E8000850A7 /* RegionMetadataHelper.h */; };
 		9EBC0E9E24C346800068154E /* waapi_structs.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EBC0E9D24C346800068154E /* waapi_structs.h */; };
+		9ED27E14272724DA00A3AC7F /* json.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9ED27E13272724DA00A3AC7F /* json.hpp */; };
 		9EE4E5DD24CA16A0006BC020 /* WwiseConnectionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */; };
 		9EE4E5DE24CA16A3006BC020 /* WwiseConnectionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */; };
 		9EE4E5E024CA1FC5006BC020 /* CreateImportWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */; };
@@ -86,8 +89,8 @@
 		9E4024CE272217700057AB9F /* workunithelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = workunithelper.h; sourceTree = "<group>"; };
 		9E4024D1272217AF0057AB9F /* workunithelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = workunithelper.cpp; sourceTree = "<group>"; };
 		9E5B4449254A0B4500382C38 /* gui_RenderTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_RenderTree.h; sourceTree = "<group>"; };
-		9E5B444C254A0D1A00382C38 /* gui_Templates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_Templates.h; sourceTree = "<group>"; };
-		9E5B444F254A112D00382C38 /* gui_Templates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_Templates.cpp; sourceTree = "<group>"; };
+		9E5B444C254A0D1A00382C38 /* gui_RegionMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_RegionMetadata.h; sourceTree = "<group>"; };
+		9E5B444F254A112D00382C38 /* gui_RegionMetadata.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_RegionMetadata.cpp; sourceTree = "<group>"; };
 		9E781E5124C0E8FD005401E2 /* JuceHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JuceHeader.h; sourceTree = "<group>"; };
 		9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_gui_basics.mm; sourceTree = "<group>"; };
 		9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_graphics.mm; sourceTree = "<group>"; };
@@ -118,9 +121,12 @@
 		9E893C6B24BE5CCA00188A61 /* libAkSoundEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkSoundEngine.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Release/lib/libAkSoundEngine.a; sourceTree = "<group>"; };
 		9E893C6D24BFB39D00188A61 /* libAkSoundEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAkSoundEngine.a; path = ../../Wwise/WwiseIncludeFiles/Mac/Debug/lib/libAkSoundEngine.a; sourceTree = "<group>"; };
 		9EA547992534FEFC005FE490 /* platformhelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platformhelpers.h; sourceTree = "<group>"; };
+		9EB1CF2A2725E5A6000850A7 /* RegionMetadataHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RegionMetadataHelper.cpp; sourceTree = "<group>"; };
+		9EB1CF302725E5E8000850A7 /* RegionMetadataHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegionMetadataHelper.h; sourceTree = "<group>"; };
 		9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WwiseConnectionHandler.cpp; path = src/WwiseConnectionHandler.cpp; sourceTree = SOURCE_ROOT; };
 		9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WwiseConnectionHandler.h; path = include/WwiseConnectionHandler.h; sourceTree = SOURCE_ROOT; };
 		9EBC0E9D24C346800068154E /* waapi_structs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = waapi_structs.h; sourceTree = "<group>"; };
+		9ED27E13272724DA00A3AC7F /* json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
 		9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CreateImportWindow.cpp; path = src/CreateImportWindow.cpp; sourceTree = SOURCE_ROOT; };
 		C406994D1C39B33800E445F7 /* reaper_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reaper_plugin.h; path = ../library/reaper_plugin/reaper_plugin.h; sourceTree = "<group>"; };
 		C406994F1C39B34300E445F7 /* reaper_plugin_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reaper_plugin_functions.h; path = ../library/reaper_plugin/reaper_plugin_functions.h; sourceTree = "<group>"; };
@@ -165,10 +171,11 @@
 		9E781E4E24C0E8FD005401E2 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				9ED27E13272724DA00A3AC7F /* json.hpp */,
 				9E4024C72722170B0057AB9F /* pugiconfig.hpp */,
 				9E4024C82722170B0057AB9F /* pugixml.cpp */,
 				9E4024C92722170B0057AB9F /* pugixml.hpp */,
-				9E5B444C254A0D1A00382C38 /* gui_Templates.h */,
+				9E5B444C254A0D1A00382C38 /* gui_RegionMetadata.h */,
 				9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */,
 				9E185DD025051AEA0034F026 /* RapidJsonUtils.h */,
 				9E781E4F24C0E8FD005401E2 /* JUCE */,
@@ -184,6 +191,7 @@
 				9E7B946F270E56CB002359AD /* gui_properties.h */,
 				9E8161B32718E24700216C42 /* gui_create.h */,
 				9E4024CE272217700057AB9F /* workunithelper.h */,
+				9EB1CF302725E5E8000850A7 /* RegionMetadataHelper.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -206,7 +214,7 @@
 		9E78220824C0E9B2005401E2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				9E5B444F254A112D00382C38 /* gui_Templates.cpp */,
+				9E5B444F254A112D00382C38 /* gui_RegionMetadata.cpp */,
 				9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */,
 				9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */,
 				9E78220924C0E9B2005401E2 /* ConfigFileHandler.cpp */,
@@ -216,6 +224,7 @@
 				9E78220F24C0E9B2005401E2 /* Main.cpp */,
 				9E8161B42718E3B700216C42 /* gui_create.cpp */,
 				9E4024D1272217AF0057AB9F /* workunithelper.cpp */,
+				9EB1CF2A2725E5A6000850A7 /* RegionMetadataHelper.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -337,12 +346,14 @@
 				9EE4E5DE24CA16A3006BC020 /* WwiseConnectionHandler.h in Headers */,
 				9E78206524C0E904005401E2 /* AppConfig.h in Headers */,
 				9E78206024C0E904005401E2 /* JuceHeader.h in Headers */,
+				9ED27E14272724DA00A3AC7F /* json.hpp in Headers */,
 				C40699501C39B34300E445F7 /* reaper_plugin_functions.h in Headers */,
 				9E4024CA2722170B0057AB9F /* pugiconfig.hpp in Headers */,
 				9E4024CF272217700057AB9F /* workunithelper.h in Headers */,
 				9E5B444A254A0B4500382C38 /* gui_RenderTree.h in Headers */,
 				9E4024CC2722170B0057AB9F /* pugixml.hpp in Headers */,
-				9E5B444D254A0D1A00382C38 /* gui_Templates.h in Headers */,
+				9EB1CF312725E744000850A7 /* RegionMetadataHelper.h in Headers */,
+				9E5B444D254A0D1A00382C38 /* gui_RegionMetadata.h in Headers */,
 				9E78207324C0E904005401E2 /* reaperHelpers.h in Headers */,
 				9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */,
 				9E78207124C0E904005401E2 /* GUI.h in Headers */,
@@ -406,6 +417,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EB1CF2C2725E5A6000850A7 /* RegionMetadataHelper.cpp in Sources */,
 				C484E6931C1BAD49005C6CCC /* swell-wnd.mm in Sources */,
 				9EE4E5E024CA1FC5006BC020 /* CreateImportWindow.cpp in Sources */,
 				9E4024CB2722170B0057AB9F /* pugixml.cpp in Sources */,
@@ -429,7 +441,7 @@
 				C484E68F1C1BAD49005C6CCC /* swell-kb.mm in Sources */,
 				9E78221424C0E9B2005401E2 /* ReaperRenderQueParser.cpp in Sources */,
 				C49593F91C4EFD1A007C6C9B /* util.cpp in Sources */,
-				9E5B4453254A14F000382C38 /* gui_Templates.cpp in Sources */,
+				9E5B4453254A14F000382C38 /* gui_RegionMetadata.cpp in Sources */,
 				9E78206624C0E904005401E2 /* include_juce_events.mm in Sources */,
 				9E78206924C0E904005401E2 /* include_juce_data_structures.mm in Sources */,
 				9E78221624C0E9B2005401E2 /* Main.cpp in Sources */,
@@ -595,6 +607,7 @@
 				);
 				LD_DYLIB_INSTALL_NAME = "$(TARGET_NAME).dylib";
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/Mac/Debug/lib\"/**";
+				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OBJROOT = /Users/simongumbleton/Projects/ReaperPluginMAC/Xcode/Build;
 				OTHER_LDFLAGS = "-lAkAutobahn";
@@ -639,6 +652,7 @@
 				);
 				LD_DYLIB_INSTALL_NAME = "$(TARGET_NAME).dylib";
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../Wwise/WwiseIncludeFiles/Mac/Release/lib\"/**";
+				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OBJROOT = /Users/simongumbleton/Projects/ReaperPluginMAC/Xcode/Build;
 				OTHER_LDFLAGS = "-lAkAutobahn";

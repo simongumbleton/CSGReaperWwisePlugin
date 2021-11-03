@@ -1,9 +1,9 @@
 
-#include "gui_Templates.h"
+#include "gui_RegionMetadata.h"
 #include "reaperHelpers.h"
 #include <filesystem>
 #include <mutex>
-#include "RegionMetadata.h"
+#include "RegionMetadataHelper.h"
 
 StringArray RegionMetadataComponent::ToJuceStringArray(std::vector<std::string> strings)
 {

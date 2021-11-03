@@ -1,4 +1,4 @@
-#include "RegionMetadata.h"
+#include "RegionMetadataHelper.h"
 #include "reaperHelpers.h"
 #include "reaper_plugin_functions.h"
 #include "platformhelpers.h"
