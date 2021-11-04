@@ -54,9 +54,6 @@
     <ClCompile Include="src\CreateImportWindow.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui_Templates.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\gui_create.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -66,7 +63,10 @@
     <ClCompile Include="src\workunithelper.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\RegionMetadata.cpp">
+    <ClCompile Include="src\gui_RegionMetadata.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RegionMetadataHelper.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -214,9 +214,6 @@
     <ClInclude Include="include\gui_RenderTree.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\gui_Templates.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\gui_Transfer.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -265,10 +262,13 @@
     <ClInclude Include="include\pugiconfig.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\RegionMetadata.h">
+    <ClInclude Include="include\json.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\json.hpp">
+    <ClInclude Include="include\gui_RegionMetadata.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RegionMetadataHelper.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
