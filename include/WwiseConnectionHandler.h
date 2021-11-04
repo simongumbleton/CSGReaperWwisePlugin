@@ -219,7 +219,7 @@ public:
 	bool UpdateProgressDuringRender(int numJobs);
 
 	bool ImportJobsIntoWwise();
-	void CreatePlayEventForID(std::string id,std::string name,std::string notes="");
+	void CreatePlayEventForID(std::string id,std::string name,std::string notes="",std::string path="\\Events\\Default Work Unit");
 	
 	ImportObjectArgs SetupImportArgs(WwiseObject parent, IMPORT_TYPE importType, std::string ImportLanguage,
 									 bool OrigsDirMatchesWwise, std::string userOrigSubDir,
@@ -245,6 +245,7 @@ public:
 	
 	std::map<std::string, std::vector<activeSourceUpdateInfo>> activeSourcesUpdateMap;
 	
+	WwiseObject GetWwiseObjectFromID(std::string guid);
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };

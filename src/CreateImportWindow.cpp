@@ -664,10 +664,12 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 	
 }
 
-void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,std::string notes)
+void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,std::string notes,std::string path)
 {
+	//std::string remove = "\\Actor-Mixer Hierarchy";
+	//path.erase(0, remove.length());
 	CreateObjectArgs args;
-	args.ParentID = "\\Events\\Default Work Unit";
+	args.ParentID = stringReplace(path, "\\Actor-Mixer Hierarchy", "\\Events");;
 	args.Type = "Event";
 	args.Name = "Play_"+name;
 	args.createPlayEvent = true;
@@ -774,6 +776,8 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 					name = name.erase(found);
 				}
 			}
+			WwiseObject wobj = GetWwiseObjectFromID(obj["id"].GetVariant());
+			WwiseObject pwobj = GetWwiseObjectFromID(wobj.properties["parent_id"]);
 
 			CreatePlayEventForID(obj["id"].GetVariant(), name, notes);
 		}
@@ -1139,5 +1143,34 @@ void CreateImportWindow::OpenHelp()
 	//PrintToConsole("Help wanted");
 	//ShellExecute(NULL, "open", help.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
+
+WwiseObject CreateImportWindow::GetWwiseObjectFromID(std::string guid)
+{
+	ObjectGetArgs getArgs;
+	getArgs.From = { "id",guid };
+	getArgs.Select = "";
+	getArgs.customReturnArgs.push_back("path");
+	getArgs.customReturnArgs.push_back("workunit");
+	getArgs.customReturnArgs.push_back("filePath");
+	getArgs.customReturnArgs.push_back("parent");
+
+	AK::WwiseAuthoringAPI::AkJson::Array results;
+	std::vector<WwiseObject> MyWwiseObjects;
+	try {
+		MyWwiseObjects = WwiseConnectionHnd->GetWwiseObjects(false, getArgs, results);
+	}
+	catch (std::string e) {
+		//PrintToConsole(e);
+	}
+	if (MyWwiseObjects.empty())
+	{
+		return WwiseObject();
+	}
+	else
+	{
+		return MyWwiseObjects[0];
+	}
+}
+
 
 
