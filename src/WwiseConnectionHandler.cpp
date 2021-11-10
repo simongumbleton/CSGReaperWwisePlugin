@@ -143,6 +143,8 @@ std::vector<WwiseObject> WwiseConnectionHandler::GetWwiseObjects(bool suppressOu
 	if (!waapi_GetObjectFromArgs(getargs, MoreRawReturnResults))
 	{
 		//Something went wrong!
+		std::string message = MoreRawReturnResults["message"].GetVariant().GetString().c_str();
+		PrintToConsole(message);
 		PrintToConsole("ERROR. Get Object Call Failed. Exiting.");
 		throw std::string("ERROR. Get Object Call Failed!");
 	}
@@ -218,6 +220,7 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 	if (!waapi_CreateObjectFromArgs(createArgs, MoreRawReturnResults))
 	{
 		//Something went wrong!
+		//waapi_GetWaapiResultsArray(Results, MoreRawReturnResults);
 		PrintToConsole("ERROR. Create Object Call Failed. Check if the selected parent is correct.");
 		waapi_UndoHandler(Cancel, "Create Object");
 		waapi_SetAutomationMode(false);

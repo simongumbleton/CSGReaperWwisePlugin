@@ -161,7 +161,14 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 		AK::WwiseAuthoringAPI::AkJson results;
 		WwiseConnectionHnd->SetNotesForObject(id, notes, results);
 	}
-
+	if (owningGUIWindow)
+	{
+		TransferToWwiseComponent* ownerAsTransferComponent = dynamic_cast<TransferToWwiseComponent*>(owningGUIWindow);
+		if (ownerAsTransferComponent)
+		{
+			ownerAsTransferComponent->SaveEventsToExState();
+		}
+	}
 	SetStatusMessageText("Ready");
 
 	//waapi_CreateObjectFromArgs(myCreateObjectArgs, results);
@@ -685,8 +692,16 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 	if (!WwiseConnectionHnd->CreateWwiseObjects(false, args, results))
 	{
 		//PrintToConsole("Error creating Play event");
+		return;
 	}
-
+	if (owningGUIWindow)
+	{
+		TransferToWwiseComponent* parentAsTransferComponent = dynamic_cast<TransferToWwiseComponent*>(owningGUIWindow);
+		if (parentAsTransferComponent)
+		{
+			parentAsTransferComponent->AddEventToSaveList(args.Name);
+		}
+	}
 }
 
 ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent, IMPORT_TYPE importType, std::string ImportLanguage,
@@ -1170,6 +1185,24 @@ WwiseObject CreateImportWindow::GetWwiseObjectFromID(std::string guid)
 	{
 		return MyWwiseObjects[0];
 	}
+}
+
+std::vector<WwiseObject> CreateImportWindow::GetWwiseObjectsByName(std::string objectName,std::string type)
+{
+	ObjectGetArgs getArgs;
+	getArgs.From = { "ofType",type };
+	getArgs.Select = "";
+	getArgs.Where = { "name:contains",objectName};
+
+	AK::WwiseAuthoringAPI::AkJson::Array results;
+	std::vector<WwiseObject> MyWwiseObjects;
+	try {
+		return WwiseConnectionHnd->GetWwiseObjects(false, getArgs, results);
+	}
+	catch (std::string e) {
+		//PrintToConsole(e);
+	}
+	return std::vector<WwiseObject>();
 }
 
 

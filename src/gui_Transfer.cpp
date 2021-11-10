@@ -2,7 +2,7 @@
 #include "gui_Transfer.h"
 #include "reaperHelpers.h"
 #include "platformhelpers.h"
-
+#include "RegionMetadataHelper.h"
 #include <filesystem>
 #include <mutex>
 
@@ -488,6 +488,7 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 		//thisCreateImportWindow->backupRenderQueFiles();
 		if (thisCreateImportWindow->handleUI_RenderImport())
 		{
+			SaveEventsToExState();
 			RefreshRenderJobTree();
 		}
 		//thisCreateImportWindow->restoreRenderQueFiles();
@@ -742,3 +743,49 @@ IMPORT_TYPE TransferToWwiseComponent::GetImportType() {
 	}
 }
 
+void TransferToWwiseComponent::AddEventToSaveList(std::string eventName)
+{
+	if (eventName != "")
+	{
+		EventsToSave.insert(eventName);
+	}
+}
+
+void TransferToWwiseComponent::SaveEventsToExState()
+{
+	GetExistingEventsFromExState();
+	if (EventsToSave.empty())
+	{
+		return;
+	}
+	std::string name = "CSGTransferWwiseEvents";
+	std::stringstream valuesToJson;
+	//"{ 'id': 1234, 'name': 'nandini' }"
+	valuesToJson << '{';
+	for (auto value : EventsToSave)
+	{
+		valuesToJson << "'";
+		valuesToJson << value;
+		valuesToJson << "'";
+		valuesToJson << ",";
+	}
+	//PrintToConsole(valuesToJson.str());
+	valuesToJson.seekp(-1, valuesToJson.cur); valuesToJson << "}";
+	saveProjExState("Events", valuesToJson.str(), name);
+}
+
+void TransferToWwiseComponent::GetExistingEventsFromExState()
+{
+	std::vector<std::string> existingEvents = ProjectRegionMetadataHelper::GetEventListFromProjExtState();
+	for (auto event : existingEvents)
+	{
+		if (thisCreateImportWindow)
+		{
+			if (!thisCreateImportWindow->GetWwiseObjectsByName(event, "Event").empty())
+			{
+				EventsToSave.insert(event);
+			}
+		}
+		
+	}
+}

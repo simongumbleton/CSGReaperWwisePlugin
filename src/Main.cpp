@@ -142,12 +142,13 @@ void SaveProject()
 	Main_SaveProject(GetCurrentReaProject(), false);
 }
 
-void saveProjExState(std::string Key, std::string Value)
+void saveProjExState(std::string Key, std::string Value,std::string extName)
 {
-	SetProjExtState(GetCurrentReaProject(), "CSGREGIONPROPERTIES", &Key[0], &Value[0]);
+	SetProjExtState(GetCurrentReaProject(), extName.c_str(), &Key[0], &Value[0]);
+	SaveProject();
 }
 
-std::string getProjExState(std::string Key)
+std::string getProjExState(std::string Key, std::string extName)
 {
 	//std::string KeyOutValue;
 	//char bufferK[256] = "x";
@@ -174,7 +175,7 @@ std::string getProjExState(std::string Key)
 	//int OutSize;
 	std::string keyUC = stringToUpper(Key);
 	//needs a char* for outvalue
-	GetProjExtState(GetCurrentReaProject(), "CSGREGIONPROPERTIES", &keyUC[0], bufferValue, ValOutSize);
+	GetProjExtState(GetCurrentReaProject(), extName.c_str(), &keyUC[0], bufferValue, ValOutSize);
 	return std::string(bufferValue);
 }
 

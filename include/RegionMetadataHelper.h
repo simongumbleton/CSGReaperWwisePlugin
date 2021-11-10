@@ -1,6 +1,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <set>
 
 #include <json.hpp>
 
@@ -18,6 +19,7 @@ struct RegionInfo
 	std::map<std::string,RegionInfo*> children; //rInfo["children"]={}
 	std::string tag = ""; //rInfo["tag"]=""
 	std::string attach = ""; //rInfo["attach"]=""
+	std::set<std::string> events;
 	~RegionInfo() { }
 };
 
@@ -46,6 +48,8 @@ public:
 	void getProjectMasterRegions();
 	
 	void getMasterRegionForRegion(RegionInfo &rinfo);
+
+	void getEventsForRegion(RegionInfo& rinfo);
 	
 	void getRelativeStartForChildrenInMaster(RegionInfo &master);
 	
@@ -58,6 +62,10 @@ public:
 	json RegionInfoToJson(RegionInfo& rinfo);
 
 	bool CreateProjectRegionJsonFile(std::string filename,json data);
+
+	static std::vector<std::string> GetEventListFromProjExtState();
+
+
 	
 };
 

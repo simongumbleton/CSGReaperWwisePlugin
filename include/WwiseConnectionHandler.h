@@ -247,6 +247,8 @@ public:
 	
 	WwiseObject GetWwiseObjectFromID(std::string guid);
 
+	std::vector<WwiseObject> GetWwiseObjectsByName(std::string objectName, std::string type);
+
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
 

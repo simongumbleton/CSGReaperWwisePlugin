@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "reaperHelpers.h"
 #include "gui_create.h"
+#include <set>
 
 
 
@@ -106,6 +107,14 @@ public:
 	bool askUserForWwiseSubDir(std::string &OutSubDir);
 
 	void setTransferValuesFromConfig(config c);
+
+	std::set<std::string> EventsToSave;
+
+	void AddEventToSaveList(std::string eventName);
+
+	void SaveEventsToExState();
+
+	void GetExistingEventsFromExState();
 
 private:
 

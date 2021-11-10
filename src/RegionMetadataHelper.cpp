@@ -2,6 +2,7 @@
 #include "reaperHelpers.h"
 #include "reaper_plugin_functions.h"
 #include "platformhelpers.h"
+#include "WwiseConnectionHandler.h"
 
 #include <iomanip>
 #include <cstdlib>
@@ -109,6 +110,19 @@ void ProjectRegionMetadataHelper::getMasterRegionForRegion(RegionInfo &rinfo)
 	}
 }
 
+void ProjectRegionMetadataHelper::getEventsForRegion(RegionInfo& rinfo)
+{
+	rinfo.events.clear();
+	for (auto event : GetEventListFromProjExtState())
+	{
+		size_t found = stringToLower(event).find(stringToLower(rinfo.name));
+		if (found != std::string::npos)
+		{
+			rinfo.events.insert(event);
+		}
+	}
+}
+
 
 void ProjectRegionMetadataHelper::getRelativeStartForChildrenInMaster(RegionInfo &masterRegion)
 {
@@ -126,6 +140,7 @@ void ProjectRegionMetadataHelper::createMasterRegionData()
 	for (auto &region : ProjectRegions)
 	{
 		getMasterRegionForRegion(region.second);
+		getEventsForRegion(region.second);
 	}
 	for (auto &mregion : MasterRegions)
 	{
@@ -193,6 +208,12 @@ json ProjectRegionMetadataHelper::RegionInfoToJson(RegionInfo& rinfo)
 	j["master"] = rinfo.master;
 	j["tag"] = rinfo.tag;
 	j["attach"] = rinfo.attach;
+	j["events"] = {};
+	for (auto& event : rinfo.events)
+	{
+		j["events"].push_back(event);
+	}
+
 	if (rinfo.children.empty())
 	{
 		j["children"] = {};
@@ -204,6 +225,8 @@ json ProjectRegionMetadataHelper::RegionInfoToJson(RegionInfo& rinfo)
 			j["children"][child.first] = RegionInfoToJson(*child.second);
 		}
 	}
+	
+
 	
 	return j;
 }
@@ -228,4 +251,31 @@ bool ProjectRegionMetadataHelper::CreateProjectRegionJsonFile(std::string filena
 	{
 		return false;
 	}
+}
+
+std::vector<std::string> ProjectRegionMetadataHelper::GetEventListFromProjExtState()
+{
+	std::string svalue = "";
+	std::vector<std::string> tempListValues;
+	svalue = getProjExState("EVENTS", "CSGTRANSFERWWISEEVENTS");
+	if (!svalue.empty())
+	{
+		char* pch;
+		printf("Splitting string \"%s\" into tokens:\n", svalue.c_str());
+		//char delims[] = "\n !@#$%^&*)(_+-=][}{|:;'<>?,./\"\\";
+		char delims[] = "!@#$%^&*)(+-=][}{|:;<>?,./\\";
+		pch = strtok(&svalue[0], delims);
+		
+		while (pch != NULL)
+		{
+			printf("%s\n", pch);
+			std::string value = std::string(pch);
+			value.erase(std::remove(value.begin(), value.end(), '\''), value.end());
+
+
+			tempListValues.push_back(value);
+			pch = strtok(NULL, delims);
+		}
+	}
+	return tempListValues;
 }

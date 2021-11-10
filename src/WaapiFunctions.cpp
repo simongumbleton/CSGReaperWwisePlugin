@@ -203,21 +203,50 @@ bool waapi_GetObjectFromArgs(ObjectGetArgs & getArgs, AK::WwiseAuthoringAPI::AkJ
 
 		if (getArgs.Where[0] == "name:contains" || getArgs.Where[0] == "name:matches")
 		{
-			args = (AkJson::Map{
+			if (getArgs.Select == "")// If Select is empty (we are running with no transform
+			{
+				args = (AkJson::Map{
+				{ "from", AkJson::Map{ { from0, AkJson::Array{ from1 } } } },
+				{ "transform",
+					{ AkJson::Array
+					{ 
+						{ AkJson::Map{ { "where", AkJson::Array{ { where0,  where1 } } } } } 
+					}
+					} 
+				} });
+			}
+			else
+			{
+				args = (AkJson::Map{
 				{ "from", AkJson::Map{ { from0, AkJson::Array{ from1 } } } },
 				{ "transform",{ AkJson::Array
 				{ { AkJson::Map{ { "select",AkJson::Array{ { Akselect } } } } },
 				{ AkJson::Map{ { "where", AkJson::Array{ { where0,  where1 } } } } } }
 				} } });
+			}
+			
 		}
 		else
 		{
-			args = (AkJson::Map{
+			if (getArgs.Select == "")// If Select is empty (we are running with no transform
+			{
+				args = (AkJson::Map{
+				{ "from", AkJson::Map{ { from0, AkJson::Array{ from1 } } } },
+				{ "transform",{ AkJson::Array
+				{
+				{ AkJson::Map{ { "where", AkJson::Array{ { where0,  AkJson::Array{ where1 } } } } } } }
+				} } });
+			}
+			else
+			{
+				args = (AkJson::Map{
 				{ "from", AkJson::Map{ { from0, AkJson::Array{ from1 } } } },
 				{ "transform",{ AkJson::Array
 				{ { AkJson::Map{ { "select",AkJson::Array{ { Akselect } } } } },
 				{ AkJson::Map{ { "where", AkJson::Array{ { where0,  AkJson::Array{ where1 } } } } } } }
 				} } });
+			}
+			
 
 		}
 	}
