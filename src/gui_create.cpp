@@ -2,6 +2,7 @@
 #include "gui_create.h"
 #include "gui_Transfer.h"
 #include "reaperHelpers.h"
+#include "platformhelpers.h"
 #include <filesystem>
 #include <mutex>
 
@@ -60,6 +61,30 @@ CreateWwiseComponent::CreateWwiseComponent(juce::Component* parentComp) //constr
 	INtxt_CreateNotes->setEditable(true);
 	INtxt_CreateNotes->setColour(juce::Label::backgroundColourId, Colours::darkgrey);
 	
+	addAndMakeVisible(INtxt_Count);
+	addAndMakeVisible(info_Count);
+	info_Count->attachToComponent(INtxt_Count, true);
+	info_Count->setText("Count:(max 99)", juce::NotificationType::dontSendNotification);
+	INtxt_Count->setEditable(true);
+	INtxt_Count->setColour(juce::Label::backgroundColourId, Colours::darkgrey);
+	INtxt_Count->setText ("01", dontSendNotification);
+	
+	INtxt_Count->onTextChange = [this]
+	{
+		if ((!stringIsNumber(INtxt_Count->getText().toStdString()))
+			or (INtxt_Count->getText().length()>2)
+			or (stoi(INtxt_Count->getText().toStdString())==0))
+		{
+			INtxt_Count->setText ("01", dontSendNotification);
+			dd_OnNameConflict->setSelectedItemIndex(0); //default is merge
+			setStatusText("Error: Invalid count");
+		}
+		else
+		{
+			dd_OnNameConflict->setSelectedItemIndex(1);//rename if we have a valid count
+			setStatusText("Ready");
+		}
+	};
 	
 	addAndMakeVisible(Title_CreateWwiseObject);
 	Title_CreateWwiseObject->setFont(Font(16.0f,Font::bold));
@@ -158,6 +183,10 @@ void CreateWwiseComponent::resized()
 	
 	INtxt_CreateNotes->setBounds(area.removeFromTop(labelHeight).reduced(border).removeFromRight(area.getWidth()/2));
 	//INtxt_CreateNotes->setJustificationType(Justification::right);
+	
+	auto countArea = area.removeFromTop(labelHeight).reduced(border).removeFromRight(area.getWidth()/2);
+	INtxt_Count->setBounds(countArea.removeFromLeft(40));
+	
 	dd_OnNameConflict->setBounds(area.removeFromTop(comboHeight).reduced(border).removeFromRight(area.getWidth()/2));
 	//dd_OnNameConflict->setJustificationType(Justification::right);
 	
@@ -279,6 +308,7 @@ void CreateWwiseComponent::handleUI_B_CreateObject()
 	myCreateObjectArgs.Notes = GetLabelValue(INtxt_CreateNotes);
 
 	myCreateObjectArgs.createPlayEvent = GetToggleValue(btn_CreatePlayEvent);
+	myCreateObjectArgs.count = std::stoi(GetLabelValue(INtxt_Count));
 	
 	//TODO notes doesnt work needs changing in waapi code
 	//TODO creating a voice object doesnt work either

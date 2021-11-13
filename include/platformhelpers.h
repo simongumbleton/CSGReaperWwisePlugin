@@ -37,6 +37,15 @@ static std::string stringToUpper(std::string input)
 	return result;
 }
 
+static bool stringIsNumber(std::string input)
+{
+	for (auto c : input)
+	{
+		if (!isdigit(c)) {return false;}
+	}
+	return true;
+}
+
 static std::string cleanWwisePathsFromMac(std::string input)
 {
 #ifndef _WIN32

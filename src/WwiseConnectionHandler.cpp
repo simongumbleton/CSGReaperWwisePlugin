@@ -162,7 +162,7 @@ std::vector<WwiseObject> WwiseConnectionHandler::GetWwiseObjects(bool suppressOu
 	return WwiseObjects;
 }
 
-bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, CreateObjectArgs & createArgs, AK::WwiseAuthoringAPI::AkJson::Array & Results)
+bool WwiseConnectionHandler::CreateWwiseObject(bool suppressOutputMessages, CreateObjectArgs & createArgs, AK::WwiseAuthoringAPI::AkJson::Array & Results,bool undoAndSave)
 {
 	if (!MyCurrentWwiseConnection.connected)
 	{
@@ -206,6 +206,7 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 		}
 	}
 
+
 	if (MyCurrentWwiseConnection.useAutomationMode)
 	{
 		if (!waapi_SetAutomationMode(true))
@@ -213,10 +214,12 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 			//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
 		}
 	}
-
-
-	waapi_UndoHandler(Begin, "Create Object");
-
+	if (undoAndSave)
+	{
+		waapi_UndoHandler(Begin, "Create Object");
+	}
+	
+	
 	AkJson MoreRawReturnResults;
 	if (!waapi_CreateObjectFromArgs(createArgs, MoreRawReturnResults))
 	{
@@ -228,14 +231,16 @@ bool WwiseConnectionHandler::CreateWwiseObjects(bool suppressOutputMessages, Cre
 		return false;
 	}
 	waapi_GetWaapiResultsArray(Results, MoreRawReturnResults);
-
-	waapi_UndoHandler(End, "Create Object");
-	waapi_SaveWwiseProject();
-
-
-	if (!waapi_SetAutomationMode(false))
+		
+	if (undoAndSave)
 	{
-			//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
+		waapi_UndoHandler(End, "Create Object");
+		waapi_SaveWwiseProject();
+	}
+	//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
+	if (MyCurrentWwiseConnection.useAutomationMode)
+	{
+		waapi_SetAutomationMode(false);
 	}
 
 	return true;
@@ -707,7 +712,7 @@ WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, st
 				createArgs.Name = name;
 				
 				AK::WwiseAuthoringAPI::AkJson::Array results;
-				if (CreateWwiseObjects(false, createArgs, results))
+				if (CreateWwiseObject(false, createArgs, results))
 				{
 					WwiseObject res = ResultToWwiseObject(results[0]);
 					if (!res.isEmpty)

@@ -112,6 +112,7 @@ struct CreateObjectArgs {
 	EventCreateArgs eventArgs;
 	std::string Workunit = "";
 	std::string ParentType = "";
+	int count = 1;
 };
 
 struct ImportObjectArgs {

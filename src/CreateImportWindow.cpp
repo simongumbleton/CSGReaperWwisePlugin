@@ -136,31 +136,47 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 	myCreateObjectArgs.ParentType = selectedParent.properties["type"];
 	myCreateObjectArgs.Workunit = selectedParent.properties["workunit"];
 
-
-	AK::WwiseAuthoringAPI::AkJson::Array results;
-	if (!WwiseConnectionHnd->CreateWwiseObjects(false, myCreateObjectArgs, results))
+	bool shouldUseAutomation =WwiseConnectionHnd->MyCurrentWwiseConnection.useAutomationMode;
+	WwiseConnectionHnd->MyCurrentWwiseConnection.useAutomationMode = false;
+	waapi_SetAutomationMode(true);
+	
+	if (myCreateObjectArgs.count>1)
 	{
-		//ERROR
-		SetStatusMessageText("Error");
-		return;
+		myCreateObjectArgs.Name += "_01";//if we are making multiple then set the first one to _01 so that wwise renaming takes care of the itteration
+		//createArgs.onNameConflict = "rename";
 	}
-	if (myCreateObjectArgs.createPlayEvent)
+	for (int i=0; i < myCreateObjectArgs.count; i++)
 	{
-		if (myCreateObjectArgs.Type != "ActorMixer")
+		AK::WwiseAuthoringAPI::AkJson::Array results;
+		if (!WwiseConnectionHnd->CreateWwiseObject(false, myCreateObjectArgs, results,false))
 		{
-			//create play event for the object we just created
+			//ERROR
+			SetStatusMessageText("Error");
+			return;
+		}
+		if (myCreateObjectArgs.createPlayEvent)
+		{
+			if (myCreateObjectArgs.Type != "ActorMixer")
+			{
+				//create play event for the object we just created
+				std::string id = results[0]["id"].GetVariant();
+				std::string name = results[0]["name"].GetVariant();
+				WwiseObject createdObj = GetWwiseObjectFromID(id);
+				CreatePlayEventForID(id, name,"",createdObj.properties["path"]);
+			}
+		}
+		if (myCreateObjectArgs.Notes != "")
+		{
 			std::string id = results[0]["id"].GetVariant();
-			std::string name = results[0]["name"].GetVariant();
-			CreatePlayEventForID(id, name);
+			std::string notes = myCreateObjectArgs.Notes;
+			AK::WwiseAuthoringAPI::AkJson results;
+			WwiseConnectionHnd->SetNotesForObject(id, notes, results);
 		}
 	}
-	if (myCreateObjectArgs.Notes != "")
-	{
-		std::string id = results[0]["id"].GetVariant();
-		std::string notes = myCreateObjectArgs.Notes;
-		AK::WwiseAuthoringAPI::AkJson results;
-		WwiseConnectionHnd->SetNotesForObject(id, notes, results);
-	}
+	
+	WwiseConnectionHnd->MyCurrentWwiseConnection.useAutomationMode = shouldUseAutomation;
+	waapi_SetAutomationMode(false);
+	
 	if (owningGUIWindow)
 	{
 		TransferToWwiseComponent* ownerAsTransferComponent = dynamic_cast<TransferToWwiseComponent*>(owningGUIWindow);
@@ -720,7 +736,7 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 	
 	
 	AK::WwiseAuthoringAPI::AkJson::Array results;
-	if (!WwiseConnectionHnd->CreateWwiseObjects(false, args, results))
+	if (!WwiseConnectionHnd->CreateWwiseObject(false, args, results))
 	{
 		//PrintToConsole("Error creating Play event");
 		return;

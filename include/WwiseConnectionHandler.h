@@ -98,7 +98,7 @@ public:
 	
 	WwiseObject CreateStructureFromPath(std::string path,std::string parent = "Actor-Mixer Hierarchy");
 
-	bool CreateWwiseObjects(bool suppressOutputMessages, CreateObjectArgs& createArgs, AK::WwiseAuthoringAPI::AkJson::Array& Results);
+	bool CreateWwiseObject(bool suppressOutputMessages, CreateObjectArgs& createArgs, AK::WwiseAuthoringAPI::AkJson::Array& Results,bool enableAutomation = true);
 
 	bool ImportAudioToWwise(bool suppressOutputMessages, ImportObjectArgs& importArgs, AK::WwiseAuthoringAPI::AkJson::Array& Results);
 

@@ -125,6 +125,9 @@ private:
 	juce::Label * INtxt_CreateNotes = new Label();
 	juce::Label * info_CreateNotes = new Label();
 	
+	juce::Label * INtxt_Count = new Label();
+	juce::Label * info_Count = new Label();
+	
 	juce::Label * txt_ConnectionStatus = new Label(); // text
 
 	juce::Label * debugLabel = new Label();
