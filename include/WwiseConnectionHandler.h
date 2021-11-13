@@ -95,6 +95,8 @@ public:
 	WwiseObject GetSelectedObject();
 
 	std::vector<WwiseObject> GetWwiseObjects(bool suppressOuputMessages, ObjectGetArgs& getargs, AK::WwiseAuthoringAPI::AkJson::Array& Results);
+	
+	WwiseObject CreateStructureFromPath(std::string path,std::string parent = "Actor-Mixer Hierarchy");
 
 	bool CreateWwiseObjects(bool suppressOutputMessages, CreateObjectArgs& createArgs, AK::WwiseAuthoringAPI::AkJson::Array& Results);
 
@@ -248,6 +250,8 @@ public:
 	WwiseObject GetWwiseObjectFromID(std::string guid);
 
 	std::vector<WwiseObject> GetWwiseObjectsByName(std::string objectName, std::string type);
+	
+	std::string PrepareEventPathForCreation(std::string inPath);
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };

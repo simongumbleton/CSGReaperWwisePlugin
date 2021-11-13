@@ -470,6 +470,7 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 		RefreshRenderJobTree();
 		updateProgressValue(0);
 		setStatusText("Ready..");
+		
 	}
 	else if (pButton == btn_isVoice)
 	{

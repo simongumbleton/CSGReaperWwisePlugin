@@ -110,7 +110,8 @@ WwiseObject WwiseConnectionHandler::GetSelectedObject()
 	
 	for (const auto &result : MyReturnResults)
 	{
-		WwiseObject obj;
+		//WwiseObject obj;
+		mySelectedObject.isEmpty = false;
 		mySelectedObject.properties.insert(std::make_pair("id", result["id"].GetVariant().GetString()));
 		mySelectedObject.properties.insert(std::make_pair("name", result["name"].GetVariant().GetString()));
 		mySelectedObject.properties.insert(std::make_pair("type", result["type"].GetVariant().GetString()));
@@ -418,6 +419,7 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 				std::string key = stringKey;
 				std::string value = variant.GetString();
 				returnWwiseObject.properties.emplace(std::make_pair(key, value));
+				returnWwiseObject.isEmpty = false;
 			}
 			else if (variant.IsNumber())
 			{
@@ -425,6 +427,7 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 				std::string key = stringKey;
 				double value = variant.operator double();
 				returnWwiseObject.numericProperties.emplace(std::make_pair(key, value));
+				returnWwiseObject.isEmpty = false;
 			}
 			else if (variant.GetType() == 11)//Type is bool
 			{
@@ -432,6 +435,7 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 				bool b_value = variant.GetBoolean();
 				std::string value = std::to_string(b_value);
 				returnWwiseObject.properties.emplace(std::make_pair(key, value));
+				returnWwiseObject.isEmpty = false;
 			}
 		}
 		else if (type == AK::WwiseAuthoringAPI::AkJson::Type::Map)
@@ -446,6 +450,7 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 					std::string key = first;
 					std::string value = variant.GetString();
 					returnWwiseObject.properties.emplace(std::make_pair(stringKey+"_"+key, value));
+					returnWwiseObject.isEmpty = false;
 				}
 				else if (variant.IsNumber())
 				{
@@ -453,6 +458,7 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 					std::string key = first;
 					double value = variant.operator double();
 					returnWwiseObject.numericProperties.emplace(std::make_pair(stringKey + "_" + key, value));
+					returnWwiseObject.isEmpty = false;
 				}
 				else if (variant.GetType() == 11)//Type is bool
 				{
@@ -460,6 +466,7 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 					bool b_value = variant.GetBoolean();
 					std::string value = std::to_string(b_value);
 					returnWwiseObject.properties.emplace(std::make_pair(stringKey + "_" + key, value));
+					returnWwiseObject.isEmpty = false;
 				}
 			}
 		}
@@ -476,7 +483,6 @@ WwiseObject WwiseConnectionHandler::ResultToWwiseObject(AK::WwiseAuthoringAPI::A
 			//"Ak retunr Type not found";
 		}
 	}
-
 	return returnWwiseObject;
 }
 
@@ -533,6 +539,207 @@ bool WwiseConnectionHandler::SubscribeOnProjectClosed
 {
 	return waapi_SetupSubscription(ak::wwise::core::project::preClosed, in_callback, outsubscriptionID);
 }
+
+WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, std::string parent)
+{
+	if ((parent == "") or (path == ""))
+	{
+		//print("Error. Missing arguments")
+		return WwiseObject();
+	}
+	bool isParentID = false;
+	std::string nextParentID;
+	//isParentID = isStringValidID(parent) // need to implement this regex check
+	
+	if (!isParentID)
+	{
+	//the parent param was not an ID, lets try to find it in the wwise project
+		if (stringToLower(parent) == "actor-mixer hierarchy"){
+			parent = "\\"+parent;}
+		else if (stringToLower(parent) == "events"){
+			parent = "\\"+parent;}
+
+		ObjectGetArgs getArgs;
+		getArgs.From = { "path",parent };
+		getArgs.Select = "";
+		getArgs.customReturnArgs.push_back("path");
+
+		AK::WwiseAuthoringAPI::AkJson::Array results;
+		std::vector<WwiseObject> MyWwiseObjects;
+		try {
+			MyWwiseObjects = GetWwiseObjects(false, getArgs, results);
+		}
+		catch (std::string e) {
+			PrintToConsole(e);
+		}
+		if (MyWwiseObjects.size()==1)
+		{
+			nextParentID = MyWwiseObjects[0].properties["id"];
+		}
+		else if (MyWwiseObjects.size()>1)
+		{
+			PrintToConsole("Ambiguous parent argument. More than one possible parent found using arg: "+parent);
+			PrintToConsole("Consider refining the argument or passing an explicit ID instead");
+			return WwiseObject();
+		}
+		else if(MyWwiseObjects.empty())
+		{
+			PrintToConsole("Could not locate parent in wwise project. Attempting to create. Arg given = "+parent);
+			//if "Actor-Mixer Hierarchy" in parent:
+			size_t foundPos = stringToLower(parent).find("actor-mixer hierarchy");
+			if (foundPos != parent.npos)
+			{
+				std::string p = parent.substr(foundPos+21,parent.npos);
+				//p = parent.partition("Actor-Mixer Hierarchy")[2]
+				WwiseObject res = CreateStructureFromPath(p,"\\Actor-Mixer Hierarchy");
+				if (res.isEmpty)
+				{
+					PrintToConsole("Error creating parent object");
+					return WwiseObject();
+				}
+				nextParentID = res.properties["id"];
+			}
+			else
+			{//elif "Events" in parent:
+				size_t foundPos = stringToLower(parent).find("events");
+				if (foundPos != parent.npos)
+				{
+					std::string p = parent.substr(foundPos+6,parent.npos);
+					//p = parent.partition("Actor-Mixer Hierarchy")[2]
+					WwiseObject res = CreateStructureFromPath(p,"\\Events");
+					if (res.isEmpty)
+					{
+						PrintToConsole("Error creating parent object");
+						return WwiseObject();
+					}
+					nextParentID = res.properties["id"];
+				}
+			}
+		}
+	}
+	else
+	{
+		ObjectGetArgs getArgs;
+		getArgs.From = { "id",parent };
+		getArgs.Select = "";
+		getArgs.customReturnArgs.push_back("path");
+
+		AK::WwiseAuthoringAPI::AkJson::Array results;
+		std::vector<WwiseObject> MyWwiseObjects;
+		try {
+			MyWwiseObjects = GetWwiseObjects(false, getArgs, results);
+		}
+		catch (std::string e) {
+			PrintToConsole(e);
+		}
+		if (!MyWwiseObjects.empty())
+		{
+			nextParentID = parent;
+		}
+		else{
+			PrintToConsole("Error. Cannot find an object with matching ID from parent argument");
+			return WwiseObject();
+		}
+	}
+	
+	
+	WwiseObject lastChild;
+	std::vector<std::string> pathlist = stringSplitToList(path, "\\");
+	for (auto node : pathlist)
+	{
+		if (node == "") {continue;}
+		std::string type = "";
+		std::string name = "";
+		size_t found = node.find("<");
+		if (found != node.npos)
+		{
+			//if "<" in node:
+			size_t found = node.find(">");
+			if (found != node.npos)
+			{
+				type = node.substr(0,found);
+				type = stringReplace(type, "<", "");
+				name = node.substr(found+1,node.npos);
+			}
+		}
+		else
+		{
+			type = "";
+			name = node;
+		}
+		// check if there is already a child with the name under the parent
+		ObjectGetArgs getArgs;
+		getArgs.From = { "id",nextParentID };
+		getArgs.Select = "children";
+		getArgs.customReturnArgs.push_back("path");
+
+		AK::WwiseAuthoringAPI::AkJson::Array results;
+		std::vector<WwiseObject> MyWwiseObjects;
+		try {
+			MyWwiseObjects = GetWwiseObjects(false, getArgs, results);
+		}
+		catch (std::string e) {
+			PrintToConsole(e);
+		}
+		bool foundMatch = false;
+		if (!MyWwiseObjects.empty())
+		{
+			for (auto item : MyWwiseObjects)
+			{
+				if (stringToLower(item.properties["name"]) == stringToLower(name))
+				{
+					//node already exists in wwise
+					foundMatch = true;
+					nextParentID = item.properties["id"];
+					lastChild = item;
+					break;
+				}
+			}
+		}
+		if (!foundMatch)
+		{
+			if (!type.empty())
+			{
+			//node contains a type, and we didn't find an existing item so we try to create it
+				CreateObjectArgs createArgs;
+				createArgs.ParentID = nextParentID;
+				createArgs.Type = type;
+				createArgs.Name = name;
+				
+				AK::WwiseAuthoringAPI::AkJson::Array results;
+				if (CreateWwiseObjects(false, createArgs, results))
+				{
+					WwiseObject res = ResultToWwiseObject(results[0]);
+					if (!res.isEmpty)
+					{
+						nextParentID = res.properties["id"];
+						lastChild = res;
+					}
+				}
+				else
+				{
+					PrintToConsole("Error! Could not create object and found no existing object named "+name+" underneath " + parent);
+					return WwiseObject();
+				}
+			}
+			else
+			{
+				PrintToConsole("Error! Could not create object and found no existing object named "+name+" underneath " + parent);
+				return WwiseObject();
+			}
+			
+		}
+	}
+
+	if (!lastChild.isEmpty)
+	{
+		return lastChild;
+	}
+	else{
+		return WwiseObject();
+	}
+}
+
 
 
 

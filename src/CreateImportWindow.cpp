@@ -671,6 +671,27 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 	
 }
 
+std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath) {
+	std::vector<std::string> tokens = stringSplitToList(inPath, "\\");
+	std::string result;
+	int i = 0;
+	for (auto token : tokens)
+	{
+		if (token == "Events") continue;
+		if (i == 0)
+		{
+			result += "<WorkUnit>"+token+"\\";
+		}
+		else{
+			result += "<Folder>"+token+"\\";
+		}
+		i++;
+		
+	}
+	return result;
+}
+
+
 void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,std::string notes,std::string path)
 {
 	//std::string remove = "\\Actor-Mixer Hierarchy";
@@ -687,7 +708,17 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 	
 	args.eventArgs = eventArgs;
 
-
+	std::string evPath = PrepareEventPathForCreation(args.ParentID);
+	
+	WwiseObject createdPathObj = WwiseConnectionHnd->CreateStructureFromPath(evPath,"Events");
+	if (createdPathObj.isEmpty)
+	{
+		//failed to create the supplied event path, fallback to default work unit
+		args.ParentID = "\\Events\\Default Work Unit";
+	}
+	
+	
+	
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	if (!WwiseConnectionHnd->CreateWwiseObjects(false, args, results))
 	{
@@ -794,7 +825,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 			WwiseObject wobj = GetWwiseObjectFromID(obj["id"].GetVariant());
 			WwiseObject pwobj = GetWwiseObjectFromID(wobj.properties["parent_id"]);
 
-			CreatePlayEventForID(obj["id"].GetVariant(), name, notes);
+			CreatePlayEventForID(obj["id"].GetVariant(), name, notes,pwobj.properties["path"]);
 		}
 	}
 	else if (curJobImportArgs.eventCreateOption == 2)
@@ -1204,6 +1235,9 @@ std::vector<WwiseObject> CreateImportWindow::GetWwiseObjectsByName(std::string o
 	}
 	return std::vector<WwiseObject>();
 }
+
+
+
 
 
 

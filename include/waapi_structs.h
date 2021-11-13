@@ -30,6 +30,7 @@ struct WwiseObject
 	std::map<std::string, double> numericProperties;
 	std::vector<WwiseObject*> childObjects;
 	WwiseObject* parentObject;
+	bool isEmpty = true;
 };
 
 struct RenderJobFileOverride

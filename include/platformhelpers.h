@@ -63,6 +63,37 @@ static std::string filenameFromPathString(std::string input)
 	return input;
 }
 
+static std::vector<std::string> stringSplitToList(std::string target, std::string delim)
+{
+	std::vector<std::string> v;
+	if (!target.empty()) {
+		std::string::size_type start = 0;
+		do {
+			size_t x = target.find(delim, start);
+			if (x == target.npos)
+			{
+				//no more delimeters found so save the last remaining token
+				std::string token = target.substr(start);
+				v.push_back(token);
+				break;
+			}
+			if (x != 0)
+			{
+				std::string token = target.substr(start, x-start);
+				v.push_back(token);
+				start += token.size() + delim.size();
+			}
+			else
+			{//found delim at the start so skip adding an empty token and just move start forward by the delim size
+				start += delim.size();
+			}
+			
+			
+		}
+		while (true);
+	}
+	return v;
+}
 //...
 
 
