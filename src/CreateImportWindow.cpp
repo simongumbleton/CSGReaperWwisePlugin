@@ -136,9 +136,15 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 	myCreateObjectArgs.ParentType = selectedParent.properties["type"];
 	myCreateObjectArgs.Workunit = selectedParent.properties["workunit"];
 
-	bool shouldUseAutomation =WwiseConnectionHnd->MyCurrentWwiseConnection.useAutomationMode;
-	WwiseConnectionHnd->MyCurrentWwiseConnection.useAutomationMode = false;
-	waapi_SetAutomationMode(true);
+	if (WwiseConnectionHnd->MyCurrentWwiseConnection.useAutomationMode)
+	{
+		if (!waapi_SetAutomationMode(true))
+		{
+			//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
+		}
+	}
+	
+	waapi_UndoHandler(Begin, "Create Objects");
 	
 	if (myCreateObjectArgs.count>1)
 	{
@@ -152,6 +158,8 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 		{
 			//ERROR
 			SetStatusMessageText("Error");
+			waapi_UndoHandler(Cancel, "Create Objects");
+			waapi_SetAutomationMode(false);
 			return;
 		}
 		if (myCreateObjectArgs.createPlayEvent)
@@ -162,7 +170,8 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 				std::string id = results[0]["id"].GetVariant();
 				std::string name = results[0]["name"].GetVariant();
 				WwiseObject createdObj = GetWwiseObjectFromID(id);
-				CreatePlayEventForID(id, name,"",createdObj.properties["path"]);
+				WwiseObject parent = GetWwiseObjectFromID(createdObj.properties["parent_id"]);
+				CreatePlayEventForID(id, name,"",parent.properties["path"]);
 			}
 		}
 		if (myCreateObjectArgs.Notes != "")
@@ -174,8 +183,13 @@ void CreateImportWindow::handleUI_B_CreateObject(CreateObjectArgs myCreateObject
 		}
 	}
 	
-	WwiseConnectionHnd->MyCurrentWwiseConnection.useAutomationMode = shouldUseAutomation;
-	waapi_SetAutomationMode(false);
+		waapi_UndoHandler(End, "Create Objects");
+		waapi_SaveWwiseProject();
+	//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
+	if (WwiseConnectionHnd->MyCurrentWwiseConnection.useAutomationMode)
+	{
+		waapi_SetAutomationMode(false);
+	}
 	
 	if (owningGUIWindow)
 	{

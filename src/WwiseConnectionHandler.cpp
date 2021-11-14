@@ -206,19 +206,6 @@ bool WwiseConnectionHandler::CreateWwiseObject(bool suppressOutputMessages, Crea
 		}
 	}
 
-
-	if (MyCurrentWwiseConnection.useAutomationMode)
-	{
-		if (!waapi_SetAutomationMode(true))
-		{
-			//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
-		}
-	}
-	if (undoAndSave)
-	{
-		waapi_UndoHandler(Begin, "Create Object");
-	}
-	
 	
 	AkJson MoreRawReturnResults;
 	if (!waapi_CreateObjectFromArgs(createArgs, MoreRawReturnResults))
@@ -226,22 +213,9 @@ bool WwiseConnectionHandler::CreateWwiseObject(bool suppressOutputMessages, Crea
 		//Something went wrong!
 		//waapi_GetWaapiResultsArray(Results, MoreRawReturnResults);
 		PrintToConsole("ERROR. Create Object Call Failed. Check if the selected parent is correct.");
-		waapi_UndoHandler(Cancel, "Create Object");
-		waapi_SetAutomationMode(false);
 		return false;
 	}
 	waapi_GetWaapiResultsArray(Results, MoreRawReturnResults);
-		
-	if (undoAndSave)
-	{
-		waapi_UndoHandler(End, "Create Object");
-		waapi_SaveWwiseProject();
-	}
-	//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
-	if (MyCurrentWwiseConnection.useAutomationMode)
-	{
-		waapi_SetAutomationMode(false);
-	}
 
 	return true;
 }
