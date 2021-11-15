@@ -104,6 +104,7 @@ TransferToWwiseComponent::TransferToWwiseComponent(juce::Component* parentComp) 
 	statusLabel->setText("Status: ", juce::NotificationType::dontSendNotification);
 	
 	addAndMakeVisible(progressBar);
+	addAndMakeVisible(txt_pluginVersion);
 
 	setSize(1000, 600);
 	
@@ -187,8 +188,9 @@ void TransferToWwiseComponent::resized()
 	//auto offsetR = buttonArea.removeFromRight(edgesize);
 	
 	//auto TopLeftQtr = LeftHalf.removeFromTop(LeftHalf.getHeight()/2);
-	
-	Title_RenderImport->setBounds(area.removeFromTop(titleHeight).reduced(border));
+	auto titleArea = area.removeFromTop(titleHeight).reduced(border);
+	//txt_pluginVersion->setBounds(titleArea.removeFromRight(50));
+	Title_RenderImport->setBounds(titleArea);
 	
 	selectedParentLabel->setBounds(area.removeFromTop(labelHeight).reduced(border));
 	
@@ -222,6 +224,7 @@ void TransferToWwiseComponent::resized()
 	btn_ApplySettingsToJobs->setBounds(area.removeFromTop(labelHeight*1.5).reduced(border));
 	
 	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
+	txt_pluginVersion->setBounds(statusRow.removeFromRight(50));
 	
 	auto statusLeft = statusRow.removeFromLeft(statusRow.getWidth()/2);
 	

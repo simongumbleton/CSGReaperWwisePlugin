@@ -108,6 +108,7 @@ CreateWwiseComponent::CreateWwiseComponent(juce::Component* parentComp) //constr
 	statusLabel->setText("Status: ", juce::NotificationType::dontSendNotification);
 	
 	addAndMakeVisible(progressBar);
+	addAndMakeVisible(txt_pluginVersion);
 
 	setSize(1000, 600);
 	
@@ -169,8 +170,9 @@ void CreateWwiseComponent::resized()
 	
 	//auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
 	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
-	
-	Title_CreateWwiseObject->setBounds(area.removeFromTop(titleHeight).reduced(border));
+	auto titleArea = area.removeFromTop(titleHeight).reduced(border);
+	//txt_pluginVersion->setBounds(titleArea.removeFromRight(50));
+	Title_CreateWwiseObject->setBounds(titleArea);
 	
 	auto selectedParentArea = area.removeFromTop(labelHeight);
 	selectedParentLabel->setBounds(selectedParentArea.removeFromLeft(300).reduced(border));
@@ -211,6 +213,7 @@ void CreateWwiseComponent::resized()
 	auto originalsTextArea = optionsArea2.removeFromLeft(optionsArea2.getWidth()*0.7);
 		
 	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
+	txt_pluginVersion->setBounds(statusRow.removeFromRight(50));
 	
 	auto statusLeft = statusRow.removeFromLeft(statusRow.getWidth()/2);
 	

@@ -72,6 +72,8 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 	myViewport->setViewedComponent(regionPropertiesViewport);
 	addAndMakeVisible(myViewport);
 
+	txt_pluginVersion->setText(RegionMetadata::GetPluginVersionString(), juce::NotificationType::dontSendNotification);
+	addAndMakeVisible(txt_pluginVersion);
 
 
 	setSize(600, 400);
@@ -168,6 +170,8 @@ void RegionMetadataComponent::resized()
 	//txt_ConnectionStatus->setBounds(bottomRow);
 	
 	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
+	
+	txt_pluginVersion->setBounds(statusRow.removeFromRight(50));
 	
 	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth()/2).reduced(border));
 	debugLabel->setBounds(statusRow);

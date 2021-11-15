@@ -13,9 +13,6 @@ What is the versioning token?
 Render que open bypassed plugins in disabled state?
 
 
-Can we create music objects?
-
-Can we create multiple objects and enumerate the names?
 
 How to do templates....
 

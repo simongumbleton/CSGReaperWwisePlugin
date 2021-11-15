@@ -16,6 +16,7 @@
 		9E5B444A254A0B4500382C38 /* gui_RenderTree.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E5B4449254A0B4500382C38 /* gui_RenderTree.h */; };
 		9E5B444D254A0D1A00382C38 /* gui_RegionMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E5B444C254A0D1A00382C38 /* gui_RegionMetadata.h */; };
 		9E5B4453254A14F000382C38 /* gui_RegionMetadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9E5B444F254A112D00382C38 /* gui_RegionMetadata.cpp */; };
+		9E73CE962742E15800165EAC /* versioning.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E73CE952742E15800165EAC /* versioning.h */; };
 		9E78206024C0E904005401E2 /* JuceHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E781E5124C0E8FD005401E2 /* JuceHeader.h */; };
 		9E78206224C0E904005401E2 /* include_juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */; };
 		9E78206324C0E904005401E2 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */; };
@@ -91,6 +92,7 @@
 		9E5B4449254A0B4500382C38 /* gui_RenderTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_RenderTree.h; sourceTree = "<group>"; };
 		9E5B444C254A0D1A00382C38 /* gui_RegionMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui_RegionMetadata.h; sourceTree = "<group>"; };
 		9E5B444F254A112D00382C38 /* gui_RegionMetadata.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui_RegionMetadata.cpp; sourceTree = "<group>"; };
+		9E73CE952742E15800165EAC /* versioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = versioning.h; sourceTree = "<group>"; };
 		9E781E5124C0E8FD005401E2 /* JuceHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JuceHeader.h; sourceTree = "<group>"; };
 		9E781E5324C0E8FD005401E2 /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_gui_basics.mm; sourceTree = "<group>"; };
 		9E781E5424C0E8FD005401E2 /* include_juce_graphics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = include_juce_graphics.mm; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				9E8161B32718E24700216C42 /* gui_create.h */,
 				9E4024CE272217700057AB9F /* workunithelper.h */,
 				9EB1CF302725E5E8000850A7 /* RegionMetadataHelper.h */,
+				9E73CE952742E15800165EAC /* versioning.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				9E5B444D254A0D1A00382C38 /* gui_RegionMetadata.h in Headers */,
 				9E78207324C0E904005401E2 /* reaperHelpers.h in Headers */,
 				9E78220724C0E905005401E2 /* gui_Transfer.h in Headers */,
+				9E73CE962742E15800165EAC /* versioning.h in Headers */,
 				9E78207124C0E904005401E2 /* GUI.h in Headers */,
 				9E78206B24C0E904005401E2 /* ReaperRenderQueParser.h in Headers */,
 				9EA5479A2534FEFC005FE490 /* platformhelpers.h in Headers */,
