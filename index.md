@@ -1,4 +1,7 @@
 ## Welcome to CSGReaperWwisePlugin
 
-![This is an image](docs/images/PluginWindowMain.png)
+# Transfer Window
+![Transfer Window](docs/images/PluginWindowMain.png)
 
+# Create Window
+![Create Window](docs/images/PluginWindowCreate.png)
