@@ -1,0 +1,12 @@
+
+.idea/workspace.xml
+.vs/CSGReaperWwisePlugin/xs/UserPrefs.xml
+*.xcbuild
+reaper_wwise_csg.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+reaper_wwise_csg.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+reaper_wwise_csg.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+build/XCBuildData/BuildDescriptionCacheIndex-15486ff459d1ea551331c2eaf9902797
+build/XCBuildData/build.db
+reaper_wwise_csg.xcodeproj/project.xcworkspace/xcuserdata/simongumbleton.xcuserdatad/UserInterfaceState.xcuserstate
+reaper_wwise_csg.xcodeproj/xcuserdata/simongumbleton.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+reaper_wwise_csg.xcodeproj/xcuserdata/simongumbleton.xcuserdatad/xcschemes/xcschememanagement.plist
