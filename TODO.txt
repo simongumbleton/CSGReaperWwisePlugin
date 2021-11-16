@@ -1,3 +1,5 @@
+Git page - https://simongumbleton.github.io/CSGReaperWwisePlugin/
+
 Wwise transfer:
 - originals matches wise should match existing file original locations if exists
 - templates?
