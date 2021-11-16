@@ -1,4 +1,4 @@
 ## Transfer Window
 
-![Transfer](../../docs/images/PluginWindowMain.png)
+<img src="../../docs/images/PluginWindowMain.png" width="400">
 
