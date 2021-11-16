@@ -5,11 +5,9 @@
 
 This window uses the Reaper render queue to automate importing audio into Wwise.
 It uses Waapi to communicate with the Wwise authoring tool, so depends on having the Wwise project open and Waapi configured.
-
-The basic workflow for using the plugin is;
-
+### The basic workflow for using the plugin is;
 <details>
-  <summary>Workflow</summary>
+  <summary> Workflow </summary>
 
   1. In Reaper, instead of directly rendering your audio files, add them to the render queue <br />
   <img src="../../docs/images/renderqueue.png" width="400"> <br />
@@ -24,3 +22,29 @@ The basic workflow for using the plugin is;
   This will start Reaper rendering, and when the render is finished the plugin will import the resulting files into Wwise using the import settings <br />
 
 </details>
+
+****
+
+### Setting the import properties;
+<details>
+  <summary> Import Properties </summary>
+  
+</details>
+
+****
+
+### Render jobs and per file overrides;
+<details>
+  <summary> Render Job and File Overrides </summary>
+  
+</details>
+
+****
+
+### Connection, status and config file;
+<details>
+  <summary> Connection, status and config file </summary>
+  
+</details>
+
+****
