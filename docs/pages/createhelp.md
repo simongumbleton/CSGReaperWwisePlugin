@@ -1,4 +1,4 @@
 ## Create Window
 
-![Create](../../docs/images/PluginWindowCreate.png)
+<img src="../../docs/images/PluginWindowCreate.png" width="400">
 
