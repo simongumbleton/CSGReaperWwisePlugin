@@ -1,4 +1,5 @@
-## Welcome to CSGReaperWwisePlugin
+###### [Home](../../index.md)
+## Create Window
 
-![This is an image](docs/images/PluginWindowMain.png)
+<img src="../../docs/images/PluginWindowCreate.png" width="400">
 
