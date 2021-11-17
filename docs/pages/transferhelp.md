@@ -115,17 +115,18 @@ The title summarises the basic idea of this plugin window.
 <details>
   <summary> Version Handling and Existing Files </summary>
     <br />
-  -<strong> When the plugin launches, it tries to connect to a Wwise project via Waapi. You must ensure that Waapi is enabled in the Wwise authoring tool </strong> <br />
-  Take note of the WAMP port you are using. 8080 is the default for the plugin, but it can be changed in the plugin config file <br />
-  <img src="../../docs/images/wwisewaapisetup.png" width="400"> <br />
+  -<strong> During import, the plugin will look for already existing sounds in Wwise with matching names, underneath the selected parent </strong> <br />
+  If an already existing sound is found, the plugin will just update the wav file<br />
+  <img src="../../docs/images/replaceexistingfile.png" width="400"> <br />
   <br />
-  -<strong> If the plugin has a connection, it will display the status and name of the Wwise project at the bottom</strong> <br />
-  If the connection is lost, the Connect To Wwise button allows you to try and re-establish a connection<br />
-  <img src="../../docs/images/wwisestatusok.png" width="800"> <br />
+  -<strong> The plugin can also support versioning, with the use of a pre-defined version token</strong> <br />
+  This token is specified in the plugin config file, by default the token is; "_v00".<br />
+  The plugin will try to match the token pattern in the audio filename to decide if the file to import is a version<br />
+  <img src="../../docs/images/versiontoken.png" width="400"> <br />
   <br />
-    -<strong> If the plugin cannot make a connection, it will display a no connection warning</strong> <br />
-  The most likely cause of this is a mismatch in the ports being used by Wwise and the plugin<br />
-  <img src="../../docs/images/statusnowwise.png" width="800"> <br />
+    -<strong> If the file to import is a Version, it is imported as a new source underneath the existing sound</strong> <br />
+  The plugin also updates the work unit xml to set this new source as the Active Source (used) <br />
+  <img src="../../docs/images/wwiseversioning.png" width="400"> <br />
   <br />
 </details>
 
