@@ -19,8 +19,7 @@ The title summarises the basic idea of this plugin window.
   2. Choose the type of object you want to create, and fill out any additional properties<br />
   You can specify a name and notes, as well as choose what to do if there is a name conflict with an    existing wwise object. You can also create an event for your new object.
   <img src="../../docs/images/createobject.png" width="400"> <br />
-  <br />
-  3. Press the Create Wwise Object button to create a new object, using the properties you defined, underneath the currently selected Wwise object <br />
+  3. Press the Create Wwise Object button to create a new object, using the properties you defined, underneath the currently selected Wwise object <br /><br />
 </details>
 
 ****
