@@ -682,6 +682,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 			if (WwiseConnectionHnd->SaveWwiseProject())//need to save changes so we can read the xml
 			{
 				handleActiveSourceUpdatesForVersions();
+				activeSourcesUpdateMap.clear();
 			}
 		}
 

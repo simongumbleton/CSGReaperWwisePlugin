@@ -94,7 +94,7 @@ xml_node WorkUnitHelper::GetFirstNodeOfTypeUnderParent(std::string nodeType, xml
 		root = searchRoot;
 	}
 	// Search for the first / last child entry with the given hint attribute
-	std::string searchStr = "//" + nodeType;
+	std::string searchStr = ".//" + nodeType;
 	xpath_node xpathNode = root.select_node(searchStr.c_str());
 	if (xpathNode)
 	{

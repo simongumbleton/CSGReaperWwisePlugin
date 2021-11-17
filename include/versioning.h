@@ -27,7 +27,7 @@ static std::string GetPluginVersionAsString(double Vnumber)
 
 
 namespace CreateTransfer{
-	static const double pluginVersionNumber = 1.01;
+	static const double pluginVersionNumber = 1.02;
 
 	static std::string GetPluginVersionString()
 	{
