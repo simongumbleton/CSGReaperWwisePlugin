@@ -11,3 +11,7 @@ You can find help pages for each of the plugin windows below:
 
 # [Create Window](docs/pages/createhelp.md)
 <img src="docs/images/PluginWindowCreate.png" width="500">
+
+****
+
+# [Configuration and Setup ](docs/pages/configsetup.md)
