@@ -7,7 +7,7 @@ This window allows for quick creation of several Wwise structural objects.
 It uses Waapi to communicate with the Wwise authoring tool, so depends on having the Wwise project open and Waapi configured.  
 
 The title summarises the basic idea of this plugin window.  
-<img src="../../docs/images/createtitle.png" width="800"> <br />
+<img src="../../docs/images/createtitle.png" width="600"> <br />
 
 ### The basic workflow for using the plugin is;
 <details>
