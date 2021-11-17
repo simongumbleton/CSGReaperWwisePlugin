@@ -37,7 +37,7 @@ The title summarises the basic idea of this plugin window.
 <details>
   <summary> Import Properties </summary>
   <br />
-  <b> - At the top of the window, the plugin will show the currently selected Wwise object. </b> <br />
+  <strong> - At the top of the window, the plugin will show the currently selected Wwise object. </strong> <br />
   This will update when the selection changes in Wwise. <br />
   <img src="../../docs/images/transferselectedparent.png" width="400"> <br />
   <br />
