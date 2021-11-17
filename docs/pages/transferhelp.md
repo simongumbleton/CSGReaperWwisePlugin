@@ -69,15 +69,36 @@ The title summarises the basic idea of this plugin window.
 ### Render jobs and per file overrides;
 <details>
   <summary> Render Job and File Overrides </summary>
+  <br />
+   -<strong> The central view of the plugin shows the list of jobs in the render queue, and the files that will be created from them </strong> <br />
+  The list is automatically populated when the plugin is opened <br />
+  <img src="../../docs/images/transferjobs.png" width="400"> <br />
+  <br />
+  -<strong> If the render queue changes, you can refresh the list of jobs and files with the Refresh button </strong> <br />
+  Refreshing the list will clear any applied properties <br />
+  <img src="../../docs/images/transferrefreshjob.png" width="400"> <br />
+  <br />
+   -<strong> Applying properties to the job itself means all the files in that job will use the same properties </strong> <br />
+  It is possible to override individual files in the job with different properties by selecting the file instead of the job when applying <br />
+  <img src="../../docs/images/transferjoboverride.png" width="400"> <br />
+  <br />
+  -<strong> It is possible to have multiple jobs in the render queue, and the plugin will display multiple jobs in the list </strong> <br />
+  This is useful for cases where you want to export batches of audio with different render settings, or render from multiple projects <br />
+  <img src="../../docs/images/transferjobmulti.png" width="400"> <br />
+  <br />
   
 </details>
 
 ****
 
-### Connection, status and config file;
+### Wwise Connection and Status;
 <details>
-  <summary> Connection, status and config file </summary>
-  
+  <summary> Wwise Connection and Status </summary>
+  <br />
+  -<strong> It is possible to have multiple jobs in the render queue, and the plugin will display multiple jobs in the list </strong> <br />
+  This is useful for cases where you want to export batches of audio with different render settings, or render from multiple projects <br />
+  <img src="../../docs/images/transferjobmulti.png" width="400"> <br />
+  <br />
 </details>
 
 ****
