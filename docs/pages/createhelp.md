@@ -38,3 +38,25 @@ The title summarises the basic idea of this plugin window.
   <img src="../../docs/images/createmultiwwise.png" width="400"> <br />
   <br />
 </details>
+
+****
+
+### Wwise Connection and Status;
+<details>
+  <summary> Wwise Connection and Status </summary>
+  <br />
+  -<strong> When the plugin launches, it tries to connect to a Wwise project via Waapi. You must ensure that Waapi is enabled in the Wwise authoring tool </strong> <br />
+  Take note of the WAMP port you are using. 8080 is the default for the plugin, but it can be changed in the plugin config file <br />
+  <img src="../../docs/images/wwisewaapisetup.png" width="400"> <br />
+  <br />
+  -<strong> If the plugin has a connection, it will display the status and name of the Wwise project at the bottom</strong> <br />
+  If the connection is lost, the Connect To Wwise button allows you to try and re-establish a connection<br />
+  <img src="../../docs/images/wwisestatusok.png" width="800"> <br />
+  <br />
+    -<strong> If the plugin cannot make a connection, it will display a no connection warning</strong> <br />
+  The most likely cause of this is a mismatch in the ports being used by Wwise and the plugin<br />
+  <img src="../../docs/images/statusnowwise.png" width="800"> <br />
+  <br />
+</details>
+
+****
