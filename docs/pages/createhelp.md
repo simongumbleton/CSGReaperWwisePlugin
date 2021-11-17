@@ -25,3 +25,16 @@ The title summarises the basic idea of this plugin window.
 
 ****
 
+### Creating Multiple Objects At Once;
+<details>
+  <summary> Creating Multiple Objects </summary>
+    <br />
+  -<strong> The Count property allows you to create multiple objects in one go </strong> <br />
+  Setting the count to something greater than 1 will trigger this behaviour.<br />
+  <img src="../../docs/images/createmultiplugin.png" width="400"> <br />
+  <br />
+  -<strong> When this mode is active, the name conflict behaviour is changed to Rename</strong> <br />
+  This allows Wwise to handle the incrementing of the object names.<br />
+  <img src="../../docs/images/createmultiwwise.png" width="400"> <br />
+  <br />
+</details>
