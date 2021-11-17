@@ -37,29 +37,31 @@ The title summarises the basic idea of this plugin window.
 <details>
   <summary> Import Properties </summary>
   <br />
-  - At the top of the window, the plugin will show the currently selected Wwise object.  
+  - <b>At the top of the window, the plugin will show the currently selected Wwise object. </b> <br />
   This will update when the selection changes in Wwise. <br />
   <img src="../../docs/images/transferselectedparent.png" width="400"> <br />
   <br />
-  - Choose to import the audio files as sound fx, voice or music tracks. When voice is selected a project language drop-down is enabled <br />
+ - <b>Choose to import the audio files as sound fx, voice or music tracks. When voice is selected a project language drop-down is enabled </b> <br />
   <img src="../../docs/images/transferimportas.png" width="400"> <br />
   <br />
-  - Choose to create events for the imported items <br />
+ - <b>Choose to create events for the imported items </b> <br />
     Play@Children will create a Play event for each audio file in the list when it is imported <br />
     Play@Parent will create a Play event for the parent object of the imported files. For example, if you are importing variations into a random container <br />
   <img src="../../docs/images/transferevents.png" width="400"> <br />
-  <br />
-  - Choose the location in Originals to copy the audio files into <br />
-  <img src="../../docs/images/transferoriginals.png" width="800"> <br />
+  <br />  
+ - <b>Choose the location in Originals to copy the audio files into </b> <br />
   Originals dir matches Wwise - This will create a folder structure matching the Actor-Mixer structure where the audio is imported (can result is fairly deep nesting as it mirrors the AM structure fully) <br />
   Otherwise the user can either enter the text path, relative to the SFX/Voices root, or use the system directory selector <br />
-  <br />
-  - Refresh the list of render jobs and files in the plugin window <br />
+  <img src="../../docs/images/transferoriginals.png" width="800"> <br />
+  <br /> 
+ - <b>Refresh the list of render jobs and files in the plugin window </b> <br />
   <img src="../../docs/images/transferrefreshjob.png" width="400"> <br />
   <br />
-  - The status bar shows and errors, as well as the current Wwise connection. There is also a button to refresh the connection to Wwise in cases where the plugin was open without Wwise open, or the Wwise tool was closed while the plugin was in use. <br />
+ - <b>The status bar shows and errors, as well as the current Wwise connection. </b> <br />
+  There is also a button to refresh the connection to Wwise in cases where the plugin was open without Wwise open, or the Wwise tool was closed while the plugin was in use. <br />
   <img src="../../docs/images/transferconnectionstatus.png" width="400"> <br />
   <br />
+  
 </details>
 
 ****
