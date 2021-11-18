@@ -9,7 +9,7 @@ Copy the plugin file into your Reaper install directory, in a folder called User
 
 
 
-### Configuration File and Option;
+### Configuration File and Options;
 <details>
   <summary> Configuration File and Options </summary>
   <br />
