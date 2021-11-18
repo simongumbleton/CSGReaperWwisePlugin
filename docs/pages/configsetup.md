@@ -3,7 +3,7 @@
 The plugin uses a config file to define some default values for features, as well as provide a way for the user to customise those features. If a config file isn't found next to the plugin when it launches, it will create one using the default values. This file can then be edited by the user to override certain configuration options.
 
 ## Installation
-Download the latest version from the github repro -  
+Download the latest version from the github repro - <https://github.com/simongumbleton/CSGReaperWwisePlugin/tree/master/latestBuilds>
 
 Copy the plugin file into your Reaper install directory, in a folder called UserPlugins. 
 
