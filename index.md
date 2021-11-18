@@ -4,6 +4,10 @@ The plugin supports Mac and Win64 platforms. Latest builds can be found at <http
 
 You can find help pages for each of the plugin windows below:
 
+# [Configuration and Setup ](docs/pages/configsetup.md)
+
+****
+
 # [Transfer Window](docs/pages/transferhelp.md)
 <img src="docs/images/PluginWindowMain.png" width="500">
 
@@ -14,4 +18,4 @@ You can find help pages for each of the plugin windows below:
 
 ****
 
-# [Configuration and Setup ](docs/pages/configsetup.md)
+
