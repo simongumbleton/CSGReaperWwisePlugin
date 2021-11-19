@@ -1,0 +1,1 @@
+cp "/Users/simongumbleton/Library/Application Support/REAPER/UserPlugins/reaper_wwise_csg.dylib" "/Users/simongumbleton/Projects/CSGReaperWwisePlugin/latestBuilds/Mac/reaper_wwise_csg.dylib"
