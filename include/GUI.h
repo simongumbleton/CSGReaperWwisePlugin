@@ -142,6 +142,8 @@ public:
 	
 	juce::Label * txt_pluginVersion = new Label();
 	
+	juce::HyperlinkButton * helpButton = new HyperlinkButton ("Help", {"https://simongumbleton.github.io/CSGReaperWwisePlugin/" });
+	
 	void setStatusText(std::string message)
 	{
 		statusLabel->setText("Status: "+message, juce::NotificationType::dontSendNotification);

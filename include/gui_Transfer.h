@@ -142,7 +142,8 @@ private:
 	btn_ConnectToWwise,
 	btn_isVoice,
 	btn_OriginalsMatchesWwise,
-	btn_ChooseWwiseOriginalsDir
+	btn_ChooseWwiseOriginalsDir,
+	helpButton
 	};
 
 	juce::ComboBox * dd_Language = new ComboBox("dd_Language"); //drop down

@@ -189,8 +189,12 @@ void TransferToWwiseComponent::resized()
 	
 	//auto TopLeftQtr = LeftHalf.removeFromTop(LeftHalf.getHeight()/2);
 	auto titleArea = area.removeFromTop(titleHeight).reduced(border);
+	auto topLeftCorner = titleArea.removeFromLeft(40);
+	auto topRightCorner = titleArea.removeFromRight(40);
 	//txt_pluginVersion->setBounds(titleArea.removeFromRight(50));
 	Title_RenderImport->setBounds(titleArea);
+	
+	helpButton->setBounds(topRightCorner.removeFromTop(20));
 	
 	selectedParentLabel->setBounds(area.removeFromTop(labelHeight).reduced(border));
 	

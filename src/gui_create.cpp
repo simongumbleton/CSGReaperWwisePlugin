@@ -172,7 +172,11 @@ void CreateWwiseComponent::resized()
 	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
 	auto titleArea = area.removeFromTop(titleHeight).reduced(border);
 	//txt_pluginVersion->setBounds(titleArea.removeFromRight(50));
+	auto topLeftCorner = titleArea.removeFromLeft(40);
+	auto topRightCorner = titleArea.removeFromRight(40);
+	
 	Title_CreateWwiseObject->setBounds(titleArea);
+	helpButton->setBounds(topRightCorner.removeFromTop(20));
 	
 	auto selectedParentArea = area.removeFromTop(labelHeight);
 	selectedParentLabel->setBounds(selectedParentArea.removeFromLeft(300).reduced(border));

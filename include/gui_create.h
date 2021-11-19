@@ -104,7 +104,8 @@ private:
 	std::vector<juce::Button*> buttons{
 	btn_CreateWwiseObject,
 	btn_ConnectToWwise,
-	btn_CreatePlayEvent
+	btn_CreatePlayEvent,
+	helpButton
 	};
 
 	juce::ComboBox * dd_CreateType = new ComboBox("dd_CreateType");
