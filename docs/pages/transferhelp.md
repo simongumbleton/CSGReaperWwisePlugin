@@ -49,6 +49,12 @@ The title summarises the basic idea of this plugin window.
     Play@Parent will create a Play event for the parent object of the imported files. For example, if you are importing variations into a random container <br />
   <img src="../../docs/images/transferevents.png" width="400"> <br />
   <br />  
+ - <strong>Sound object templates </strong> <br />
+    You can configue a set of sound object templates in your Wwise project to use when importing <br />
+    Edit the plugin config file to provide the path to your template objects. If a template is selected for an import job, the template object is first copied into the desitination location and named to match the incoming audio file. When the import occurs, it is merged into this newly created object, allowing you to specify specific sound object properties for any import. <br />
+  <img src="../../docs/images/templates_wwise.png" width="400"> <br />
+  <img src="../../docs/images/templates_gui.png" width="400"> <br />
+  <br />  
  - <strong>Choose the location in Originals to copy the audio files into </strong> <br />
   Originals dir matches Wwise - This will create a folder structure matching the Actor-Mixer structure where the audio is imported (can result is fairly deep nesting as it mirrors the AM structure fully) <br />
   Otherwise the user can either enter the text path, relative to the SFX/Voices root, or use the system directory selector <br />
