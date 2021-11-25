@@ -522,6 +522,11 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 					std::vector<std::string> audiofile;
 					audiofile.push_back(fileOverride.second.RenderJobFile);
 
+					std::string outtoken;
+					if (IsAudioFileAVersion(file, outtoken))
+					{
+						fileOverride.second.Template = WwiseObject();
+					}
 					//deal with importing the overriden files
 					ImportObjectArgs curFileOverrideImportArgs = SetupImportArgs
 					(
@@ -532,7 +537,9 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						fileOverride.second.userOrigsSubDir,
 						audiofile,
 						fileOverride.second.createEventOption,
-						filenameFromPathString(job.ParentReaperProject)
+						filenameFromPathString(job.ParentReaperProject),
+						"",
+						fileOverride.second.Template
 						
 					);
 					if (ImportCurrentRenderJob(curFileOverrideImportArgs))
@@ -588,6 +595,11 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 					std::vector<std::string> importfiles;
 					importfiles.push_back(fullPath);
 
+					std::string outtoken;
+					if (IsAudioFileAVersion(file, outtoken))
+					{
+						job.Template = WwiseObject();
+					}
 					ImportObjectArgs curJobImportArgs = SetupImportArgs
 					(
 						originalJobWwiseParent,
@@ -597,7 +609,9 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						existingOriginalsPath,
 						importfiles,
 						job.createEventOption,
-						filenameFromPathString(job.ParentReaperProject)
+						filenameFromPathString(job.ParentReaperProject),
+						"",
+						job.Template
 					);
 					if (ImportCurrentRenderJob(curJobImportArgs))
 					{
@@ -629,7 +643,9 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 				job.userOrigsSubDir,
 				job.RenderQueJobFileList,
 				job.createEventOption,
-				filenameFromPathString(job.ParentReaperProject)
+				filenameFromPathString(job.ParentReaperProject),
+				"",
+				job.Template
 			);
 			if ((existingSiblingOriginalsPath != "") && (job.OrigDirMatchesWwise))
 			{
@@ -766,13 +782,16 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 	}
 }
 
-ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent, IMPORT_TYPE importType, std::string ImportLanguage,
+ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent,
+													 IMPORT_TYPE importType,
+													 std::string ImportLanguage,
 													 bool OrigsDirMatchesWwise,
 													 std::string userOrigSubDir,
 													 std::vector<std::string> ImportFiles,
 													 std::string eventCreateOption,
 													 std::string SourceReaperProj,
-													 std::string Notes
+													 std::string Notes,
+													 WwiseObject Template
 													 )
 {
 	std::string originalsPath = parent.properties["path"];
@@ -783,7 +802,9 @@ ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent, IMPORT_
 	importArgs.Notes = Notes;
 	importArgs.SourceReaperProject = SourceReaperProj;
 	importArgs.ImportLocation = parent.properties["path"];
+	importArgs.ImportParentID = parent.properties["id"];
 	importArgs.ImportLanguage = ImportLanguage;
+	importArgs.templateObject = Template;
 	switch (importType) {
 		case Voice:
 			importArgs.objectType = "<Sound Voice>";
@@ -1266,6 +1287,43 @@ std::vector<WwiseObject> CreateImportWindow::GetWwiseObjectsByName(std::string o
 	}
 	return std::vector<WwiseObject>();
 }
+
+std::vector<WwiseObject> CreateImportWindow::GetTemplateWwiseObjects(std::string templateWwisePath) {
+	std::vector<WwiseObject> templateObjects;
+	if (templateWwisePath.empty())
+	{
+		return templateObjects;
+	}
+	if (!WwiseConnectionHnd)
+	{
+		return templateObjects;
+	}
+	if (!DoesTemplatePathExist(templateWwisePath))
+	{
+		return templateObjects;
+	}
+	ObjectGetArgs getArgs;
+	getArgs.From = {"path",templateWwisePath};
+	getArgs.Select = "children";
+	getArgs.Where = { "type:isIn","Sound" };
+	AK::WwiseAuthoringAPI::AkJson::Array Results;
+	templateObjects = WwiseConnectionHnd->GetWwiseObjects(false, getArgs, Results);
+	return templateObjects;
+}
+
+bool CreateImportWindow::DoesTemplatePathExist(std::string templateWwisePath) { 
+	AK::WwiseAuthoringAPI::AkJson MoreRawReturnResults;
+	ObjectGetArgs getArgs;
+	getArgs.From = {"path",templateWwisePath};
+	getArgs.Select = "";
+	if (!waapi_GetObjectFromArgs(getArgs, MoreRawReturnResults))
+	{
+		return false;
+	}
+	return true;
+}
+
+
 
 
 

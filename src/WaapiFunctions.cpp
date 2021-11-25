@@ -8,6 +8,7 @@
 #include <AK/WwiseAuthoringAPI/AkAutobahn/Client.h>
 //#include <AkAutobahn\JSONHelpers.h> - // TODO figure this out, not in the ak sdk anymore??
 #include "reaperHelpers.h"
+#include "platformhelpers.h"
 
 ///Socket client for Waapi connection
 AK::WwiseAuthoringAPI::Client * my_client = new AK::WwiseAuthoringAPI::Client();
@@ -310,8 +311,23 @@ std::string GetPropertyFromGUID(const AK::WwiseAuthoringAPI::AkVariant & id, std
 
 	AkJson results;
 
-	my_client->Call(ak::wwise::core::object::get, args, options, results);
-
+	if (!my_client->Call(ak::wwise::core::object::get, args, options, results))
+	{
+		return std::string();
+	}
+	WwiseObject resObj = waapi_ResultToWiseObject(results);
+	if (resObj.isEmpty)
+	{
+		return std::string();
+	}
+	if (resObj.properties.find(property)!= resObj.properties.end())
+	{
+		return resObj.properties.at(property);
+	}
+	if (resObj.numericProperties.find(property)!= resObj.numericProperties.end())
+	{
+		return std::to_string(resObj.numericProperties.at(property));
+	}
 	return std::string();
 }
 
@@ -404,7 +420,7 @@ bool wappi_ImportFromArgs(ImportObjectArgs & importArgs, AK::WwiseAuthoringAPI::
 
 	// Do Source control operations
 	waapi_DoWorkgoupOperation(CheckoutWWU, importArgs.ImportLocation);
-
+	
 	AkJson::Array items;
 
 	for (auto importFile : importArgs.ImportFileList)
@@ -744,3 +760,195 @@ bool waapi_CheckForProjectFileChanges()
 }
 //bool Unsubscribe(const uint64_t& in_subscriptionId, AkJson& out_result, int in_timeoutMs = -1);
 
+bool waapi_CopyPasteWwiseObject(std::string sourceID, std::string destinationParentID, std::string newName)
+{
+	if (sourceID.empty() or destinationParentID.empty())
+	{
+		return false;
+	}
+	using namespace AK::WwiseAuthoringAPI;
+	// Do Source control operations
+	waapi_DoWorkgoupOperation(CheckoutWWU, sourceID);
+	waapi_DoWorkgoupOperation(CheckoutWWU, destinationParentID);
+	
+	AkJson parResults;
+	if (!waapi_GetParentFromGUID(sourceID, parResults))
+	{
+		return false;
+	}
+	WwiseObject tempParent = waapi_ResultToWiseObject(parResults);
+	if (tempParent.isEmpty)
+	{
+		return false;
+	}
+	
+	
+	
+	AkJson args; //"@RandomOrSequence"
+	args = (AkJson::Map{
+		{ "object",AkVariant(sourceID)},
+		{ "parent", AkVariant(tempParent.properties["id"])},
+		{ "onNameConflict", AkVariant("rename")}
+		});
+	
+	AkJson options = AkJson(AkJson::Map());
+	AkJson results = AkJson(AkJson::Map());
+	if (my_client->Call(ak::wwise::core::object::copy, args, options, results))
+	{
+		WwiseObject newObj = waapi_ResultToWiseObject(results);
+		if (newObj.isEmpty)
+		{
+			return false;
+		}
+		//rename the object
+		
+		//std::string templateObjectName = GetPropertyFromGUID(sourceID, "name", false);
+		//stringReplace(newObj.properties["name"], templateObjectName, newName);
+		
+		if (!waapi_RenameObject(newObj.properties["id"], newName))
+		{
+			return false;
+		}
+		if (!waapi_MoveWwiseObject(newObj.properties["id"], destinationParentID))
+		{
+			return false;
+		}
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+	
+WwiseObject waapi_ResultToWiseObject(AK::WwiseAuthoringAPI::AkJson Result)
+{
+	using namespace AK::WwiseAuthoringAPI;
+	WwiseObject returnWwiseObject;
+	
+	for (const auto i : Result.GetMap()) {
+		AkJson::Type type;
+		std::string stringKey = i.first;
+		type = i.second.GetType();
+
+		///Type is already AK Variant
+		if (type == AkJson::Type::Variant)
+		{
+			AkVariant variant = Result[stringKey].GetVariant();
+			if (variant.IsString())
+			{
+				//push value into string results
+				std::string key = stringKey;
+				std::string value = variant.GetString();
+				returnWwiseObject.properties.emplace(std::make_pair(key, value));
+				returnWwiseObject.isEmpty = false;
+			}
+			else if (variant.IsNumber())
+			{
+				//push value into number results
+				std::string key = stringKey;
+				double value = variant.operator double();
+				returnWwiseObject.numericProperties.emplace(std::make_pair(key, value));
+				returnWwiseObject.isEmpty = false;
+			}
+			else if (variant.GetType() == 11)//Type is bool
+			{
+				std::string key = stringKey;
+				bool b_value = variant.GetBoolean();
+				std::string value = std::to_string(b_value);
+				returnWwiseObject.properties.emplace(std::make_pair(key, value));
+				returnWwiseObject.isEmpty = false;
+			}
+		}
+		else if (type == AK::WwiseAuthoringAPI::AkJson::Type::Map)
+		{
+			for (const auto x : Result[stringKey].GetMap())
+			{
+				std::string first = x.first;
+				AkVariant variant = x.second.GetVariant();
+				if (variant.IsString())
+				{
+					//push value into string results
+					std::string key = first;
+					std::string value = variant.GetString();
+					returnWwiseObject.properties.emplace(std::make_pair(stringKey+"_"+key, value));
+					returnWwiseObject.isEmpty = false;
+				}
+				else if (variant.IsNumber())
+				{
+					//push value into number results
+					std::string key = first;
+					double value = variant.operator double();
+					returnWwiseObject.numericProperties.emplace(std::make_pair(stringKey + "_" + key, value));
+					returnWwiseObject.isEmpty = false;
+				}
+				else if (variant.GetType() == 11)//Type is bool
+				{
+					std::string key = first;
+					bool b_value = variant.GetBoolean();
+					std::string value = std::to_string(b_value);
+					returnWwiseObject.properties.emplace(std::make_pair(stringKey + "_" + key, value));
+					returnWwiseObject.isEmpty = false;
+				}
+			}
+		}
+		else if (type == AK::WwiseAuthoringAPI::AkJson::Type::Array)
+		{
+			auto x = Result[stringKey].GetArray()[0];
+			{
+				returnWwiseObject = waapi_ResultToWiseObject(x);
+				return returnWwiseObject;
+			}
+		}
+		else
+		{
+			//"Ak retunr Type not found";
+		}
+	}
+	return returnWwiseObject;
+}
+
+bool waapi_RenameObject(std::string objectID,std::string newName)
+{
+	if (objectID.empty() or newName.empty())
+	{
+		return false;
+	}
+	using namespace AK::WwiseAuthoringAPI;
+	// Do Source control operations
+	waapi_DoWorkgoupOperation(CheckoutWWU, objectID);
+
+
+	AkJson args; //"@RandomOrSequence"
+	args = (AkJson::Map{
+		{ "object",AkVariant(objectID)},
+		{ "value", AkVariant(newName)}
+		});
+	
+	AkJson options = AkJson(AkJson::Map());
+	AkJson results = AkJson(AkJson::Map());
+	return my_client->Call(ak::wwise::core::object::setName, args, options, results);
+}
+
+bool waapi_MoveWwiseObject(std::string sourceID, std::string destinationParentID)
+{
+	if (sourceID.empty() or destinationParentID.empty())
+	{
+		return false;
+	}
+	using namespace AK::WwiseAuthoringAPI;
+	// Do Source control operations
+	waapi_DoWorkgoupOperation(CheckoutWWU, sourceID);
+	waapi_DoWorkgoupOperation(CheckoutWWU, destinationParentID);
+	
+	
+	AkJson args; //"@RandomOrSequence"
+	args = (AkJson::Map{
+		{ "object",AkVariant(sourceID)},
+		{ "parent", AkVariant(destinationParentID)},
+		{ "onNameConflict", AkVariant("rename")}
+		});
+	
+	AkJson options = AkJson(AkJson::Map());
+	AkJson results = AkJson(AkJson::Map());
+	return my_client->Call(ak::wwise::core::object::move, args, options, results);
+}

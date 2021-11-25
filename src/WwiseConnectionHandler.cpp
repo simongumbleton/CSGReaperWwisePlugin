@@ -245,6 +245,17 @@ bool WwiseConnectionHandler::ImportAudioToWwise(bool suppressOutputMessages, Imp
 			//PrintToConsole("Failed to set automation mode. Not supported in WAAPI 2017 or earlier");
 		}
 	}
+	
+	if (!importArgs.templateObject.isEmpty)
+	{
+		//put a template object in the right place
+		for (auto importFile : importArgs.ImportFileList)
+		{
+			std::string audiofile = importFile.first.substr(importFile.first.find_last_of("/\\")+1);
+			std::string rawAudioFile = audiofile.substr(0, audiofile.find_last_of("."));
+			SetupTemplateObject(importArgs.templateObject.properties["id"], importArgs.ImportParentID, rawAudioFile);
+		}
+	}
 
 	waapi_UndoHandler(Begin, "Auto Import");
 	AkJson MoreRawReturnResults;
@@ -718,6 +729,35 @@ WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, st
 		return WwiseObject();
 	}
 }
+
+bool WwiseConnectionHandler::SetupTemplateObject(std::string templateObjID, std::string destinationParentID, std::string newName) { 
+	
+	using namespace AK::WwiseAuthoringAPI;
+	ObjectGetArgs getChildrenArgs;
+	getChildrenArgs.From = {"id",destinationParentID};
+	getChildrenArgs.Select = "children";
+	AK::WwiseAuthoringAPI::AkJson::Array results;
+	std::vector<WwiseObject> MyWwiseObjects;
+	try {
+		MyWwiseObjects = GetWwiseObjects(false, getChildrenArgs, results);
+	}
+	catch (std::string e) {
+		PrintToConsole(e);
+		return false;
+	}
+	for (auto obj : MyWwiseObjects)
+	{ //check if a named object already exists under the parent. We only want to create a template if we are adding a new audio file
+		if (stringToLower(obj.properties["name"]) == stringToLower(newName))
+		{
+			return false;
+		}
+	}
+	
+	waapi_CopyPasteWwiseObject(templateObjID, destinationParentID, newName);
+	
+	return true;
+}
+
 
 
 

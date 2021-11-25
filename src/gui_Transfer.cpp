@@ -118,6 +118,9 @@ TransferToWwiseComponent::TransferToWwiseComponent(juce::Component* parentComp) 
 	ReadConfigFile(myConfig);
 	setTransferValuesFromConfig(myConfig);
 	
+	InitComboBoxTemplate();
+	
+	
 	setStatusText("Ready..");
 }
 
@@ -149,6 +152,21 @@ void TransferToWwiseComponent::InitComboBox(juce::ComboBox * comboBox, std::vect
 	comboBox->addListener(this);
 	comboBox->setSelectedItemIndex(0, false);
 	addAndMakeVisible(comboBox);
+}
+
+void TransferToWwiseComponent::InitComboBoxTemplate()
+{
+	dd_Template->clear();
+	std::vector<WwiseObject> templates = thisCreateImportWindow->GetTemplateWwiseObjects(myConfig.templatePath);
+	std::vector<std::string> templateNames;
+	for (auto templateObj : templates)
+	{
+		templateNames.push_back(templateObj.properties["name"]);
+	}
+	dd_Template->addItemList(ToJuceStringArray(templateNames),1);
+	dd_Template->setTextWhenNothingSelected("Template");
+	dd_Template->addListener(this);
+	addAndMakeVisible(dd_Template);
 }
 
 void TransferToWwiseComponent::InitTreeView()
@@ -216,7 +234,11 @@ void TransferToWwiseComponent::resized()
 	
 	dd_EventOption->setBounds(optionsArea1.reduced(border/2));
 	
+	dd_Template->setBounds(optionsArea2.removeFromLeft(150));
+	
 	btn_OriginalsMatchesWwise->setBounds(optionsArea2.removeFromLeft(o1qtrsize * 1.5).reduced(border/2));
+	
+	
 	
 	auto originalsTextArea = optionsArea2.removeFromLeft(optionsArea2.getWidth()*0.7);
 	
@@ -356,6 +378,17 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 					fileOverride.EimportType = GetImportType();
 					fileOverride.createEventOption = dd_EventOption->getText().toStdString();
 					fileOverride.OrigDirMatchesWwise = CheckOriginalsDirectory();
+
+					std::vector<WwiseObject> templates = thisCreateImportWindow->GetTemplateWwiseObjects(myConfig.templatePath);
+					for (auto templateObj : templates)
+					{
+						if (templateObj.properties["name"] == dd_Template->getText().toStdString())
+						{
+							fileOverride.Template = templateObj;
+							continue;
+						}
+					}
+					
 					if (!fileOverride.OrigDirMatchesWwise)
 					{
 						fileOverride.userOrigsSubDir = INtxt_OriginalsSubDir->getText().toStdString();
@@ -406,6 +439,18 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 						language = "SFX";
 					}
 					jobItem->importText = parentWwiseName + "(" + parentWwiseType + ") - ";
+					
+					std::vector<WwiseObject> templates = thisCreateImportWindow->GetTemplateWwiseObjects(myConfig.templatePath);
+					for (auto templateObj : templates)
+					{
+						if (templateObj.properties["name"] == dd_Template->getText().toStdString())
+						{
+							renderJob.Template = templateObj;
+							continue;
+						}
+					}
+					
+					
 				}
 			}
 		}
@@ -477,7 +522,7 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 		RefreshRenderJobTree();
 		updateProgressValue(0);
 		setStatusText("Ready..");
-		
+				
 	}
 	else if (pButton == btn_isVoice)
 	{
@@ -710,6 +755,7 @@ void TransferToWwiseComponent::handle_OnBecameActiveTab()
 		String text = ("Wwise Connected: " + MyCurrentWwiseConnection->projectGlobals.ProjectName);
 		txt_ConnectionStatus->setText(text, juce::NotificationType::dontSendNotification);
 		InitComboBox(dd_Language, MyCurrentWwiseConnection->projectGlobals.Languages, "Language..");
+		InitComboBoxTemplate();
 	}
 	else
 	{

@@ -14,17 +14,12 @@
 
 using namespace std;
 
-string defaults = 
-"waapiPort=8080\n"
-"useAutomationMode=1\n"
-"userorigsubdir=ImportedFromReaper/\n"
-;
-
 std::map<std::string, std::string> configFileDefaults = {
 	{"waapiPort","8080"},
 	{"useAutomationMode","1"},
 	{"userorigsubdir","ImportedFromReaper/"},
-	{"versionToken","_v00"}
+	{"versionToken","_v00"},
+	{"templatePath","\\Actor-Mixer Hierarchy\\Templates\\Templates"}
 };
 //const char dummyconfig[] = "";
 

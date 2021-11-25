@@ -91,3 +91,11 @@ bool waapi_SetupSubscription(const char *subscription,AK::WwiseAuthoringAPI::Cli
 bool waapi_Unsubscribe(const uint64_t& in_subscriptionId); //bool Unsubscribe(const uint64_t& in_subscriptionId, AkJson& out_result, int in_timeoutMs = -1);
 
 bool waapi_CheckForProjectFileChanges();
+
+bool waapi_CopyPasteWwiseObject(std::string sourceID, std::string destinationParentID, std::string newName);
+
+WwiseObject waapi_ResultToWiseObject(AK::WwiseAuthoringAPI::AkJson Result);
+
+bool waapi_RenameObject(std::string objectID,std::string newName);
+
+bool waapi_MoveWwiseObject(std::string sourceID, std::string destinationParentID);

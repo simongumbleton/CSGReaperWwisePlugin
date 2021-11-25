@@ -44,6 +44,7 @@ struct RenderJobFileOverride
 	bool hasImported = false;
 	std::string createEventOption;
 	IMPORT_TYPE EimportType;
+	WwiseObject Template;
 };
 
 struct RenderQueJob
@@ -62,8 +63,8 @@ struct RenderQueJob
 	std::map<std::string, RenderJobFileOverride> perFileOverridesmap;
 	std::string createEventOption;
 	IMPORT_TYPE EimportType;
+	WwiseObject Template;
 	
-
 };
 
 struct WwiseProjectGlobals {
@@ -127,6 +128,8 @@ struct ImportObjectArgs {
 	std::string Workunit = "";
 	std::string Notes = "";
 	std::string SourceReaperProject = "";
+	WwiseObject templateObject;
+	std::string ImportParentID = "";
 
 };
 

@@ -126,6 +126,8 @@ public:
 	bool SaveWwiseProject();
 
 	bool CheckForProjectFileChanges();
+	
+	bool SetupTemplateObject(std::string templateObjID, std::string destinationParentID, std::string newName);
 
 
 private:
@@ -228,7 +230,8 @@ public:
 									 std::vector<std::string> ImportFiles,
 									 std::string eventCreateOption,
 									 std::string SourceReaperProj = "",
-									 std::string Notes = "");
+									 std::string Notes = "",
+									 WwiseObject Template = WwiseObject());
 	
 	ImportObjectArgs SetupImportArgs(WwiseObject parent, IMPORT_TYPE importType, std::string ImportLanguage,
 									 bool OrigsDirMatchesWwise,std::string userOrigSubDir,
@@ -252,6 +255,10 @@ public:
 	std::vector<WwiseObject> GetWwiseObjectsByName(std::string objectName, std::string type);
 	
 	std::string PrepareEventPathForCreation(std::string inPath);
+	
+	std::vector<WwiseObject> GetTemplateWwiseObjects(std::string templateWwisePath);
+	
+	bool DoesTemplatePathExist(std::string templateWwisePath);
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };

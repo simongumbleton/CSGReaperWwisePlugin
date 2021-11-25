@@ -46,6 +46,8 @@ public:
 
 	void InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices, string displayText);
 	
+	void InitComboBoxTemplate();
+	
 	void InitTreeView();
 	
 	void RefreshRenderJobTree();
@@ -148,6 +150,7 @@ private:
 
 	juce::ComboBox * dd_Language = new ComboBox("dd_Language"); //drop down
 	juce::ComboBox * dd_EventOption = new ComboBox("dd_EventOption");
+	juce::ComboBox * dd_Template = new ComboBox("dd_Template");
 	juce::Label * info_EventOption = new Label();
 	
 	juce::ComboBox * dd_ImportType = new ComboBox("dd_ImportType");
