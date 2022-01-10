@@ -43,4 +43,13 @@ namespace RegionMetadata{
 		return GetPluginVersionAsString(pluginVersionNumber);
 	}
 }
+
+namespace Reconformer{
+	static const double pluginVersionNumber = 0.01;
+
+	static std::string GetPluginVersionString()
+	{
+		return GetPluginVersionAsString(pluginVersionNumber);
+	}
+}
 #endif /* versioning_h */

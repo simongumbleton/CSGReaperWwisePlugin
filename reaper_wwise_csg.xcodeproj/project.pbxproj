@@ -43,6 +43,10 @@
 		9EB1CF2C2725E5A6000850A7 /* RegionMetadataHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EB1CF2A2725E5A6000850A7 /* RegionMetadataHelper.cpp */; };
 		9EB1CF312725E744000850A7 /* RegionMetadataHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EB1CF302725E5E8000850A7 /* RegionMetadataHelper.h */; };
 		9EBC0E9E24C346800068154E /* waapi_structs.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EBC0E9D24C346800068154E /* waapi_structs.h */; };
+		9ECD1BCA278CD94B00E39C62 /* gui_reconformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9ECD1BC9278CD94B00E39C62 /* gui_reconformer.h */; };
+		9ECD1BCD278CDBC800E39C62 /* gui_reconformer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9ECD1BCC278CDBC700E39C62 /* gui_reconformer.cpp */; };
+		9ECD1BD1278CE1BD00E39C62 /* EDL_Conformer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9ECD1BCF278CE1BD00E39C62 /* EDL_Conformer.cpp */; };
+		9ECD1BD6278CE1EC00E39C62 /* EDL_Conformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9ECD1BD5278CE1EC00E39C62 /* EDL_Conformer.h */; };
 		9ED27E14272724DA00A3AC7F /* json.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9ED27E13272724DA00A3AC7F /* json.hpp */; };
 		9EE4E5DD24CA16A0006BC020 /* WwiseConnectionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */; };
 		9EE4E5DE24CA16A3006BC020 /* WwiseConnectionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */; };
@@ -128,6 +132,10 @@
 		9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WwiseConnectionHandler.cpp; path = src/WwiseConnectionHandler.cpp; sourceTree = SOURCE_ROOT; };
 		9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WwiseConnectionHandler.h; path = include/WwiseConnectionHandler.h; sourceTree = SOURCE_ROOT; };
 		9EBC0E9D24C346800068154E /* waapi_structs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = waapi_structs.h; sourceTree = "<group>"; };
+		9ECD1BC9278CD94B00E39C62 /* gui_reconformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_reconformer.h; sourceTree = "<group>"; };
+		9ECD1BCC278CDBC700E39C62 /* gui_reconformer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui_reconformer.cpp; sourceTree = "<group>"; };
+		9ECD1BCF278CE1BD00E39C62 /* EDL_Conformer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EDL_Conformer.cpp; sourceTree = "<group>"; };
+		9ECD1BD5278CE1EC00E39C62 /* EDL_Conformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EDL_Conformer.h; sourceTree = "<group>"; };
 		9ED27E13272724DA00A3AC7F /* json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
 		9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CreateImportWindow.cpp; path = src/CreateImportWindow.cpp; sourceTree = SOURCE_ROOT; };
 		C406994D1C39B33800E445F7 /* reaper_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reaper_plugin.h; path = ../library/reaper_plugin/reaper_plugin.h; sourceTree = "<group>"; };
@@ -195,6 +203,8 @@
 				9E4024CE272217700057AB9F /* workunithelper.h */,
 				9EB1CF302725E5E8000850A7 /* RegionMetadataHelper.h */,
 				9E73CE952742E15800165EAC /* versioning.h */,
+				9ECD1BC9278CD94B00E39C62 /* gui_reconformer.h */,
+				9ECD1BD5278CE1EC00E39C62 /* EDL_Conformer.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -228,6 +238,8 @@
 				9E8161B42718E3B700216C42 /* gui_create.cpp */,
 				9E4024D1272217AF0057AB9F /* workunithelper.cpp */,
 				9EB1CF2A2725E5A6000850A7 /* RegionMetadataHelper.cpp */,
+				9ECD1BCC278CDBC700E39C62 /* gui_reconformer.cpp */,
+				9ECD1BCF278CE1BD00E39C62 /* EDL_Conformer.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -346,6 +358,7 @@
 				9E78207224C0E904005401E2 /* ConfigFileHandler.h in Headers */,
 				9E78206C24C0E904005401E2 /* WaapiFunctions.h in Headers */,
 				C406994E1C39B33800E445F7 /* reaper_plugin.h in Headers */,
+				9ECD1BCA278CD94B00E39C62 /* gui_reconformer.h in Headers */,
 				9EE4E5DE24CA16A3006BC020 /* WwiseConnectionHandler.h in Headers */,
 				9E78206524C0E904005401E2 /* AppConfig.h in Headers */,
 				9E78206024C0E904005401E2 /* JuceHeader.h in Headers */,
@@ -362,6 +375,7 @@
 				9E73CE962742E15800165EAC /* versioning.h in Headers */,
 				9E78207124C0E904005401E2 /* GUI.h in Headers */,
 				9E78206B24C0E904005401E2 /* ReaperRenderQueParser.h in Headers */,
+				9ECD1BD6278CE1EC00E39C62 /* EDL_Conformer.h in Headers */,
 				9EA5479A2534FEFC005FE490 /* platformhelpers.h in Headers */,
 				9E185DD125051AEA0034F026 /* RapidJsonUtils.h in Headers */,
 				9EBC0E9E24C346800068154E /* waapi_structs.h in Headers */,
@@ -422,6 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EB1CF2C2725E5A6000850A7 /* RegionMetadataHelper.cpp in Sources */,
+				9ECD1BD1278CE1BD00E39C62 /* EDL_Conformer.cpp in Sources */,
 				C484E6931C1BAD49005C6CCC /* swell-wnd.mm in Sources */,
 				9EE4E5E024CA1FC5006BC020 /* CreateImportWindow.cpp in Sources */,
 				9E4024CB2722170B0057AB9F /* pugixml.cpp in Sources */,
@@ -447,6 +462,7 @@
 				C49593F91C4EFD1A007C6C9B /* util.cpp in Sources */,
 				9E5B4453254A14F000382C38 /* gui_RegionMetadata.cpp in Sources */,
 				9E78206624C0E904005401E2 /* include_juce_events.mm in Sources */,
+				9ECD1BCD278CDBC800E39C62 /* gui_reconformer.cpp in Sources */,
 				9E78206924C0E904005401E2 /* include_juce_data_structures.mm in Sources */,
 				9E78221624C0E9B2005401E2 /* Main.cpp in Sources */,
 				C49593F11C4EFCA0007C6C9B /* httpget.cpp in Sources */,
