@@ -2,7 +2,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "platformhelpers.h"
+#include <regex>
+
 
 
 struct ShotTCInfo
@@ -79,17 +80,18 @@ private:
 	std::string originalEndTime = "";
 	int numberOfShots = 0;
 	bool working = false;
-	std::string BaseTimeCodeMatchingPattern = "%d%d:%d%d:%d%d:%d%d";
-	std::string ShotTimeCodeMatchingPattern = BaseTimeCodeMatchingPattern+" "+BaseTimeCodeMatchingPattern+" "+BaseTimeCodeMatchingPattern+" "+BaseTimeCodeMatchingPattern;
 	
-
-	float TruncateFloat(float inFloat,int decimalPlaces);
+	std::vector<std::string> FindTimecodeValuesInString(std::string inString);
+	
+	float TruncateFloat(float inFloat,int decimalPlaces=4);
 	
 	bool TimeIsEqual(float num1,float num2,int decimalPlaces);
 	
 	std::string SecondsToTimecodeString(float inSeconds);
 	
-	void GatherAndCheckCommandIDs();
+	float TimecodeToSeconds(std::string inTimecode);
+	
+	bool GatherAndCheckCommandIDs();
 	
 	void SetEditCursorToTimecode(std::string inTimecode);
 	
