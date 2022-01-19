@@ -17,6 +17,7 @@
 #include <filesystem>
 #include <fstream>
 #include <algorithm>
+#include <unordered_map>
 
 
 
@@ -49,67 +50,360 @@ std::vector<std::string> EDLconformer::FindTimecodeValuesInString(std::string in
 
 
 void EDLconformer::CropProject() { 
-	
+	auto NewEndTime_secs = TimecodeToSeconds(timeLineOffset) * 2;
+	SetTimeSelection("00:00:00:00",SecondsToTimecodeString(NewEndTime_secs));
+	Main_OnCommand(cmd_CropProjectToSelection,0);
 }
 
 
 void EDLconformer::FinishWork() { 
-
+	Print("Finished");
+	UpdateTimeline();
+	Undo_EndBlock("CSG EDL Conform", -1);
+	Main_OnCommand(cmd_CloseAllRunningScripts,0);
 }
 
 
-void EDLconformer::handleUnchangedSections() { 
+void EDLconformer::handleUnchangedSections() {
+	int unchangedSectionIndex = -1;
+	int lastUnchangedSourceStart = -1;
+	int lastUnchangedSourceEnd = -1;
+	int lastUnchangedDestStart = -1;
+	int lastUnchangedDestEnd = -1;
+	int newShotOffset = INT_MAX;
+	Print("Unchanged Sections.....");
+	int lastChangeStartTime = -1;
+	int lastChangeEndTime = -1;
 	
+	for (auto result : conformResults)
+	{
+		auto oldShot = result.oldShot;
+		auto newShot = result.newShot;
+		bool changed = result.changed;
+		
+		if (changed or newShot.empty)
+		{
+			lastUnchangedSourceStart = -1;
+			if (changed)
+			{
+				lastChangeStartTime = TimecodeToFrames(newShot.destStartTC);
+				lastChangeEndTime = TimecodeToFrames(newShot.destEndTC);
+			}
+		}
+		else
+		{
+			auto sourceStartTime_frames = TimecodeToFrames(oldShot.destStartTC);
+			auto sourceEndTime_frames = TimecodeToFrames(oldShot.destEndTC);
+			auto destStartTime_frames = TimecodeToFrames(newShot.destStartTC);
+			auto destEndTime_frames = TimecodeToFrames(newShot.destEndTC);
+			
+			if ((lastChangeStartTime != -1)
+				and (destStartTime_frames >= lastChangeStartTime)
+				and (destStartTime_frames <= lastChangeEndTime))
+			{
+				lastUnchangedSourceStart = -1; // clear the tracking of unchanged shots if this shot clashes with a known change
+			}
+			if ((lastUnchangedSourceStart == -1) or (destStartTime_frames-sourceStartTime_frames != newShotOffset))
+			{
+				//new unchanged section save the start times and increment the index
+				unchangedSectionIndex = unchangedSectionIndex + 1;
+				lastUnchangedSourceStart = sourceStartTime_frames;
+				lastUnchangedDestStart = destStartTime_frames;
+				newShotOffset = destStartTime_frames - sourceStartTime_frames;
+				lastUnchangedSourceEnd = sourceEndTime_frames;
+				lastUnchangedDestEnd = destEndTime_frames;
+				ShotTimeInfoSeconds info;
+				info.sourceStart = FramesToSeconds(lastUnchangedSourceStart);
+				info.sourceEnd = FramesToSeconds(lastUnchangedSourceEnd);
+				info.destStart = FramesToSeconds(lastUnchangedDestStart);
+				info.destEnd = FramesToSeconds(lastUnchangedDestEnd);
+				info.shotName = oldShot.shotName;
+				
+				if (unchangedSectionIndex >= unchangedSections.size()) {
+					unchangedSections.resize(unchangedSectionIndex+1);
+				}
+				unchangedSections[unchangedSectionIndex] = info;
+				
+			}
+			else
+			{
+				ShotTimeInfoSeconds& info = unchangedSections[unchangedSectionIndex];
+				lastUnchangedSourceEnd = std::fmax(FramesToSeconds(sourceEndTime_frames),info.sourceEnd);
+				lastUnchangedDestEnd = std::fmax(FramesToSeconds(destEndTime_frames),info.destEnd);
+				info.sourceEnd = lastUnchangedSourceEnd;
+				info.destEnd = lastUnchangedDestEnd;
+			}
+		}
+	}
+	int i = 0;
+	for (auto section : unchangedSections)
+	{
+		i++;
+		auto sourceStartTime_TC = SecondsToTimecodeString(section.sourceStart);
+		auto sourceEndTime_TC = SecondsToTimecodeString(section.sourceEnd);
+		auto destStartTime_TC = SecondsToTimecodeString(section.destStart);
+		auto destEndTime_TC = SecondsToTimecodeString(section.destEnd);
+		CopyOldSliceToNewTime(sourceStartTime_TC,sourceEndTime_TC,destStartTime_TC,destEndTime_TC, "Unchanged section "+std::to_string(i));
+	}
 }
 
 
 void EDLconformer::ExecuteConform() { 
+	bool working = true;
+	Print("Starting Conform.......");
+	Print("_____________________");
+	Print(" ");
+	Print("Number of old shots = "+std::to_string(old_shotTimeInfo.size()));
+	Print("Number of new shots = "+std::to_string(new_shotTimeInfo.size()));
+	PreventUIRefresh(1);
 	
+	int i = 0;
+	std::unordered_map<std::string,int> oldShotCounts;
+	while (i < old_shotTimeInfo.size())
+	{
+		int matchingOldShotIndex = i;
+		if (matchingOldShotIndex > old_shotTimeInfo.size()-1){
+			Print("No more old shots to check");
+			break;
+		}
+		auto shot = old_shotTimeInfo[matchingOldShotIndex].shotName;
+		
+		//store the old shot in a result table, assume changed  = false by default until we find a match and determine change later
+		//this is used later on to group the unchanged sections together
+		ConformResultsInfo cinfo;
+		cinfo.oldShot = old_shotTimeInfo[matchingOldShotIndex];
+		conformResults.push_back(cinfo);
+		//track how many times we've seen this shot in the list
+		if (oldShotCounts.find(shot)==oldShotCounts.end())
+		{
+			oldShotCounts[shot] = 1;
+		}else
+		{
+			oldShotCounts[shot]++;
+		}
+		int matchingNewShotIndex = -1;
+		bool shotChanged = false;
+		bool foundMatch = false;
+		int matchCount = 0;
+		
+		int newShotIndex = 0;
+		//try to find a matching entry in the new shot list
+		while ((newShotIndex < new_shotTimeInfo.size()) and not foundMatch)
+		{
+			//Print("Comparing..."+shot+" with "+new_shotTimeInfo[newShotIndex].shotName);
+			if (new_shotTimeInfo[newShotIndex].shotName == shot)
+			{
+				matchCount = matchCount + 1;
+				if (matchCount == oldShotCounts[shot])
+				{
+					foundMatch = true;
+					matchingNewShotIndex = newShotIndex;
+					//Print("Found a matching shot");
+					break;
+				}
+			}
+			newShotIndex = newShotIndex + 1;
+		}
+		
+		if (foundMatch)
+		{
+			auto oldshotTCinfo = old_shotTimeInfo[matchingOldShotIndex];
+			auto newshotTCinfo = new_shotTimeInfo[matchingNewShotIndex];
+			if (oldshotTCinfo.empty or newshotTCinfo.empty)
+			{
+				Print("Invalid shot index after match attempt..Exiting");
+				return;
+			}
+			conformResults[i].oldShot = oldshotTCinfo;
+			conformResults[i].newShot = newshotTCinfo;
+			
+			auto old_offset_In_frames = TimecodeToFrames(oldshotTCinfo.sourceStartTC);
+			auto old_offset_Out_frames = TimecodeToFrames(oldshotTCinfo.sourceEndTC);
+			auto new_offset_In_frames = TimecodeToFrames(newshotTCinfo.sourceStartTC);
+			auto new_offset_Out_frames = TimecodeToFrames(newshotTCinfo.sourceEndTC);
+			int old_duration_frames = old_offset_Out_frames - old_offset_In_frames;
+			int new_duration_frames = new_offset_Out_frames - new_offset_In_frames;
+			
+			if ((old_duration_frames != new_duration_frames)
+				or (old_offset_In_frames != new_offset_In_frames)
+				or (old_offset_Out_frames != new_offset_Out_frames))
+			{
+				shotChanged = true;
+				conformResults[i].changed = true;
+			}
+			
+			int shotInternalStartDifference = new_offset_In_frames - old_offset_In_frames;
+			int shotInternalEndDifference = new_offset_Out_frames - old_offset_Out_frames;
+			int durationDifference = new_duration_frames - old_duration_frames;
+			
+			int sourceStartTime_frames = TimecodeToFrames(oldshotTCinfo.destStartTC);
+			int sourceEndTime_frames = TimecodeToFrames(oldshotTCinfo.destEndTC);
+			int destStartTime_frames = TimecodeToFrames(newshotTCinfo.destStartTC);
+			int destEndTime_frames = TimecodeToFrames(newshotTCinfo.destEndTC);
+			
+			if (shotInternalStartDifference > 0)
+			{ // new shot starts later in the source
+				sourceStartTime_frames = sourceStartTime_frames + shotInternalStartDifference;
+				if (new_duration_frames < (sourceEndTime_frames - sourceStartTime_frames))
+				{
+					sourceEndTime_frames = sourceStartTime_frames + new_duration_frames;
+				}
+				else
+				{//}-- new shot starts earlier or the same in the source
+					if (destEndTime_frames < sourceEndTime_frames)
+					{
+						sourceEndTime_frames = destEndTime_frames;
+					}
+				}
+			}
+			auto sourceStartTime_TC = FramesToTimecodeString(sourceStartTime_frames);
+			auto sourceEndTime_TC = FramesToTimecodeString(sourceEndTime_frames);
+			auto destStartTime_TC = FramesToTimecodeString(destStartTime_frames);
+			auto destEndTime_TC = FramesToTimecodeString(destEndTime_frames);
+			
+			if (shotChanged)
+			{
+				auto sourceEndTimeTrimmed = FramesToTimecodeString(sourceEndTime_frames);
+				if (new_duration_frames < old_duration_frames)
+				{
+					sourceEndTimeTrimmed = FramesToTimecodeString(sourceStartTime_frames + new_duration_frames);
+				}
+				CopyOldSliceToNewTime(sourceStartTime_TC,sourceEndTimeTrimmed,destStartTime_TC,destEndTime_TC, shot);
+				Print("CHANGE: "+oldshotTCinfo.shotName+": New Timecode: "+destStartTime_TC+" "+destEndTime_TC);
+			}
+			else
+			{
+				conformResults[i].changed = false;
+			}
+			if (CreateRegionsForShots)
+			{
+				if (CreateRegionsForShotsOnlyChanged and not shotChanged)
+				{
+					//skip unchanged shot
+				}
+				else
+				{
+					int colour = 0;
+					if (shotChanged) {
+						colour = ColorToNative(255,255,255)|16777216;// -- red
+					}
+					AddRegion(destStartTime_TC,destEndTime_TC,"CHANGE: "+oldshotTCinfo.shotName,colour);
+				}
+			}
+		}
+		i++;
+	}
+	if (CreateEDLRegions){
+		auto startTime = new_shotTimeInfo.front().destStartTC;
+		auto endTime = new_shotTimeInfo.back().destEndTC;
+		int colour = ColorToNative(255,255,255)|16777216; //red
+		AddRegion(startTime,endTime,new_EDL_Filename,colour);
+	}
+	working = false;
+	PreventUIRefresh(-1);
 }
 
 
 void EDLconformer::RefreshTimeline() { 
-	
+	UpdateTimeline();
 }
 
 
-void EDLconformer::IngestEDLFiles() { 
-	
+void EDLconformer::IngestEDLFiles() {
+	char oldfilename[256];
+	bool result = GetUserFileNameForRead(oldfilename, "Choose OLD EDL file...", "");
+	if (!result)return;
+	char newfilename[256];
+	result = GetUserFileNameForRead(newfilename, "Choose NEW EDL file...", "");
+	if (!result)return;
+	std::vector<std::string> old_fileLines = ReadFile(oldfilename);
+	std::vector<std::string> new_fileLines = ReadFile(newfilename);
+	new_EDL_Filename = newfilename;
+	old_shotTimeInfo = CreateShotTimeInfo(old_fileLines);
+	originalEndTime = old_shotTimeInfo.back().destEndTC;
+	new_shotTimeInfo = CreateShotTimeInfo(new_fileLines);
 }
 
 
 void EDLconformer::CropProjectToTime(std::string newProjEndTime) { 
-	
+	UpdateTimeline();
 }
 
 
 void EDLconformer::CopyOldSliceToNewTime(std::string oldStart, std::string oldEnd, std::string newStart, std::string NewEnd, std::string ShotName) { 
-	
+	Main_OnCommand(cmd_UnSelectAllTracks,0);
+	Main_OnCommand(cmd_UnselectAllItems,0);
+	float offsetInSeconds = TimecodeToSeconds(timeLineOffset);
+	float oldStartWOffset_secs = TimecodeToSeconds(oldStart) + offsetInSeconds;
+	std::string oldStartWOffset_TC = SecondsToTimecodeString(oldStartWOffset_secs);
+	float oldEndWOffset_secs = TimecodeToSeconds(oldEnd) + offsetInSeconds;
+	std::string oldEndWOffset_TC = SecondsToTimecodeString(oldEndWOffset_secs);
+	SetTimeSelection(oldStartWOffset_TC,oldEndWOffset_TC);
+	SetEditCursorToTimecode(newStart);
+	Main_OnCommand(cmd_SelectAllTracks,0);
+	Main_OnCommand(cmd_DuplicateItemsInSelectionToEditCursor,0);
 }
 
 
 void EDLconformer::MovePreviousRegions() { 
-	
+	float originalContentEndTime_secs = TimecodeToSeconds(originalEndTime) + TimecodeToSeconds(timeLineOffset);
+	float originalContentStartTime_secs = TimecodeToSeconds(timeLineOffset);
+	int markerCount = countMarkers() + countRegions();
+	for (int i = 0; i < markerCount; i++)
+	{
+		bool isRegion;
+		double pos;
+		double regEnd;
+		//std::string name;
+		const char* name;
+		int index;
+		EnumProjectMarkers(i, &isRegion,&pos,&regEnd,&name,&index);
+		if (pos >= originalContentStartTime_secs and pos < originalContentEndTime_secs)
+		{
+			if (isRegion)
+			{
+				float newPos = pos - originalContentStartTime_secs;
+				float newEnd = regEnd - originalContentStartTime_secs;
+				SetProjectMarker( index, isRegion, newPos, newEnd, name );
+			}
+			else
+			{
+				float newPos = pos - originalContentStartTime_secs;
+				SetProjectMarker( index, isRegion, newPos, newPos, name );
+			}
+		}
+	}
 }
 
 
 void EDLconformer::CopyPreviousRegions() { 
-	
+	float originalEndTime_secs = TimecodeToSeconds(originalEndTime) + TimecodeToSeconds(timeLineOffset);
+	//Print("Copy Regions");
+	//Print(timeLineOffset);
+	//Print(SecondsToTimecodeString(originalEndTime_secs));
+	SetTimeSelection(timeLineOffset,SecondsToTimecodeString(originalEndTime_secs));
+	Main_OnCommand(cmd_CopyRegionsInTimeSelection,0);
+	SetEditCursorToTimecode("00:00:00:00");
+	Main_OnCommand(cmd_PasteRegionsToEditCursor,0);
 }
 
 
 void EDLconformer::AddRegion(std::string timeCodeStart, std::string timeCodeEnd, std::string name, int colour) { 
-	
+	AddProjectMarker2(0, true, TimecodeToSeconds(timeCodeStart), TimecodeToSeconds(timeCodeEnd), name.c_str(), 0, colour);
 }
 
 
 void EDLconformer::ShiftExistingTimeline() { 
-	
+	SetTimeSelection("00:00:00:00",timeLineOffset);
+	Main_OnCommand(cmd_InsertEmptySpaceAtSelection,0);
 }
 
 
 void EDLconformer::SetTimeSelection(std::string startTimecode, std::string endTimecode) { 
-	
+	SetEditCursorToTimecode(startTimecode);
+	Main_OnCommand(cmd_SetSelectionStart,0);
+	SetEditCursorToTimecode(endTimecode);
+	Main_OnCommand(cmd_SetSelectionEnd,0);
 }
 
 
@@ -151,6 +445,7 @@ std::vector<ShotTCInfo> EDLconformer::CreateShotTimeInfo(std::vector<std::string
 				shotInfo.sourceEndTC = matches[1];
 				shotInfo.destStartTC = matches[2];
 				shotInfo.destEndTC = matches[3];
+				shotInfo.empty = false;
 				tcinfo.push_back(shotInfo);
 			}
 		}
@@ -177,7 +472,7 @@ std::vector<std::string> EDLconformer::ReadFile(std::string inFilepath) {
 
 
 void EDLconformer::SetEditCursorToTimecode(std::string inTimecode) {
-	int posSeconds = parse_timestr_pos(inTimecode.c_str(),5);
+	double posSeconds = parse_timestr_pos(inTimecode.c_str(),5);
 	SetEditCurPos(posSeconds,0,0);
 }
 
@@ -333,7 +628,7 @@ bool EDLconformer::GatherAndCheckCommandIDs() {
 }
 
 
-std::string EDLconformer::SecondsToTimecodeString(float inSeconds) { 
+std::string EDLconformer::SecondsToTimecodeString(float inSeconds) {
 	std::string result = "";
 	std::stringstream temp;
 	int wholeSeconds = std::floorf(inSeconds);
@@ -343,9 +638,9 @@ std::string EDLconformer::SecondsToTimecodeString(float inSeconds) {
 	int secs = std::floorf(wholeSeconds % 60);
 	int frames = (framerate * decimals);
 	
-	temp << std::internal << std::setfill('0') << std::setw(2) << hours <<
-	std::internal << std::setfill('0') << std::setw(2) << mins <<
-	std::internal << std::setfill('0') << std::setw(2) << secs <<
+	temp << std::internal << std::setfill('0') << std::setw(2) << hours << ":" <<
+	std::internal << std::setfill('0') << std::setw(2) << mins << ":" <<
+	std::internal << std::setfill('0') << std::setw(2) << secs << ":" <<
 	std::internal << std::setfill('0') << std::setw(2) << frames;
 	
 	result = temp.str();
@@ -381,22 +676,36 @@ float EDLconformer::TimecodeToSeconds(std::string inTimecode) {
 		}
 		i++;
 	}
-	result << std::setprecision(5) << seconds;
-	result >> seconds;
+//	result << std::setprecision(5) << seconds;
+//	result >> seconds;
 	return seconds;
 }
 
 bool EDLconformer::TimeIsEqual(float num1, float num2, int decimalPlaces) {
-	return std::abs(TruncateFloat(num1,decimalPlaces) - TruncateFloat(num2,decimalPlaces)) <= (1/std::pow(10, decimalPlaces));
+	
+	
+	
+	
+//	std::string xInt, xDecs;
+//	TruncateFloat(num1,decimalPlaces,xInt,xDecs);
+//	std::string yInt, yDecs;
+//	TruncateFloat(num2,decimalPlaces,yInt,yDecs);
+//	return (xInt == yInt and xDecs == yDecs);
+	auto isequal = std::abs(num1 - num2) <= (1/std::pow(10, decimalPlaces));
+	return isequal;
 }
 
 
-float EDLconformer::TruncateFloat(float inFloat, int decimalPlaces) { 
+float EDLconformer::TruncateFloat(float inFloat, int decimalPlaces, std::string& outInts, std::string& outDecs)
+{
 	float result = 0.0f;
 	std::string ints = "0";
 	std::string decs = "0";
 	int i = 0;
-	std::vector<std::string> tokens = stringSplitToList(std::to_string(inFloat), ".");
+	std::stringstream floatToString;
+	floatToString.precision(decimalPlaces);
+	floatToString << std::fixed << inFloat;
+	std::vector<std::string> tokens = stringSplitToList(floatToString.str(), ".");
 	for (auto token : tokens)
 	{
 		switch (i) {
@@ -410,9 +719,93 @@ float EDLconformer::TruncateFloat(float inFloat, int decimalPlaces) {
 		}
 		i++;
 	}
+	outInts = ints;
+	outDecs = decs;
 	result = std::stof(ints + "." + decs);
 	return result;
 }
+
+void EDLconformer::Main() {
+	GatherAndCheckCommandIDs();
+	Undo_BeginBlock(); //Begining of the undo block. Leave it at the top of your main function.
+
+	IngestEDLFiles();
+	ShiftExistingTimeline();
+		
+	if (CopyExistingRegions) {
+		MovePreviousRegions();
+	}
+	ExecuteConform();
+	handleUnchangedSections();
+	CropProject();
+	FinishWork();
+}
+
+float EDLconformer::FramesToSeconds(int inFrames) { 
+	return inFrames / framerate;
+}
+
+
+std::string EDLconformer::FramesToTimecodeString(int inFrames) { 
+	std::string result = "";
+	std::stringstream temp;
+	int framesPerhour = framerate * 3600;
+	int framesPermin = framerate * 60;
+	int hours = std::floorf(inFrames/framesPerhour);
+	inFrames = inFrames - (hours * framesPerhour);
+	int mins = std::floorf(inFrames/framesPermin);
+	inFrames = inFrames - (mins * framesPermin);
+	int secs = std::floorf(inFrames / framerate);
+	//inFrames = inFrames - (secs * framerate);
+	int frames = inFrames - (secs * framerate);
+	
+	temp << std::internal << std::setfill('0') << std::setw(2) << hours << ":" <<
+	std::internal << std::setfill('0') << std::setw(2) << mins << ":" <<
+	std::internal << std::setfill('0') << std::setw(2) << secs << ":" <<
+	std::internal << std::setfill('0') << std::setw(2) << frames;
+	
+	result = temp.str();
+	return result;
+}
+
+
+int EDLconformer::TimecodeToFrames(std::string inTimecode) { 
+	std::stringstream result;
+	int framesPerhour = framerate * 3600;
+	int framesPermin = framerate * 60;
+	int frames = 0;
+	int i = 0;
+	std::vector<std::string> tokens = stringSplitToList(inTimecode, ":");
+	for (auto token : tokens)
+	{
+		switch (i) {
+			case 0:
+				//hours
+				frames += std::stoi(token) * framesPerhour;
+				break;
+			case 1:
+				//mins
+				frames += std::stoi(token) * framesPermin;
+				break;
+			case 2:
+				//secs
+				frames += std::stoi(token) * framerate;
+				break;
+			case 3:
+				//frames
+				frames += std::stof(token);
+				break;
+			default:
+				break;
+		}
+		i++;
+	}
+//	result << std::setprecision(5) << seconds;
+//	result >> seconds;
+	return frames;
+}
+
+
 
 
 

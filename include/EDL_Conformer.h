@@ -13,6 +13,7 @@ struct ShotTCInfo
 	std::string destStartTC;
 	std::string destEndTC;
 	std::string shotName;
+	bool empty = true;
 };
 
 struct ShotTimeInfoSeconds
@@ -28,7 +29,7 @@ struct ConformResultsInfo
 {
 	ShotTCInfo oldShot;
 	ShotTCInfo newShot;
-	bool changed;
+	bool changed = false;
 };
 
 class EDLconformer
@@ -42,9 +43,15 @@ public:
 	
 	float framerate = 30;
 	
-	EDLconformer();
+	EDLconformer()
+	{
+		Main();
+	}
 	
-	~EDLconformer();
+	~EDLconformer()
+	{
+	
+	}
 	
 	void Main();
 	
@@ -76,20 +83,26 @@ private:
 	std::vector<ShotTimeInfoSeconds> unchangedSections;
 	std::vector<ConformResultsInfo> conformResults;
 	
-	std::string timeLineOffset = "00:01:00:00";
+	std::string timeLineOffset = "01:00:00:00";
 	std::string originalEndTime = "";
 	int numberOfShots = 0;
 	bool working = false;
 	
 	std::vector<std::string> FindTimecodeValuesInString(std::string inString);
 	
-	float TruncateFloat(float inFloat,int decimalPlaces=4);
+	float TruncateFloat(float inFloat,int decimalPlaces, std::string& outInts, std::string& outDecs);
 	
-	bool TimeIsEqual(float num1,float num2,int decimalPlaces);
+	bool TimeIsEqual(float num1,float num2,int decimalPlaces=4);
 	
 	std::string SecondsToTimecodeString(float inSeconds);
 	
 	float TimecodeToSeconds(std::string inTimecode);
+	
+	int TimecodeToFrames(std::string inTimecode);
+	
+	std::string FramesToTimecodeString(int inFrames);
+	
+	float FramesToSeconds(int inFrames);
 	
 	bool GatherAndCheckCommandIDs();
 	
@@ -103,7 +116,7 @@ private:
 	
 	void ShiftExistingTimeline();
 	
-	void AddRegion(std::string timeCodeStart,std::string timeCodeEnd,std::string name,int colour);
+	void AddRegion(std::string timeCodeStart,std::string timeCodeEnd,std::string name,int colour = 0);
 	
 	void CopyPreviousRegions();
 	
