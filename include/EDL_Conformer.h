@@ -16,15 +16,6 @@ struct ShotTCInfo
 	bool empty = true;
 };
 
-struct ShotTimeInfoSeconds
-{
-	float sourceStart;
-	float sourceEnd;
-	float destStart;
-	float destEnd;
-	std::string shotName;
-};
-
 struct ConformResultsInfo
 {
 	ShotTCInfo oldShot;
@@ -36,10 +27,15 @@ class EDLconformer
 {
 public:
 	
+	std::vector<ShotTCInfo> unchangedSections;
+	std::vector<ShotTCInfo> changedSections;
+	
+	std::string filepath_Old_EDL;
+	std::string filepath_New_EDL;
+	
 	bool CreateEDLRegions = false;
 	bool CopyExistingRegions = true;
-	bool CreateRegionsForShots = true;
-	bool CreateRegionsForShotsOnlyChanged = true;
+	bool CreateRegionsForChangedShots = true;
 	
 	float framerate = 30;
 	
@@ -50,10 +46,13 @@ public:
 	
 	~EDLconformer()
 	{
-	
 	}
 	
 	void Main();
+	
+	bool DoConform();
+	
+	void ResetConform();
 	
 private:
 	
@@ -75,12 +74,9 @@ private:
 	int cmd_CopyRegionsInTimeSelection=0;
 	int cmd_PasteRegionsToEditCursor=0;
 	
-	std::vector<std::string> old_fileLines;
 	std::vector<ShotTCInfo> old_shotTimeInfo;
-	std::vector<std::string> new_fileLines;
 	std::vector<ShotTCInfo> new_shotTimeInfo;
-	std::string new_EDL_Filename;
-	std::vector<ShotTimeInfoSeconds> unchangedSections;
+	
 	std::vector<ConformResultsInfo> conformResults;
 	
 	std::string timeLineOffset = "01:00:00:00";
@@ -130,14 +126,14 @@ private:
 	
 	void RefreshTimeline();
 	
-	void ExecuteConform();
+	void PrepareConform();
 	
-	void handleUnchangedSections();
+	void PrepareUnchangedSections();
 	
 	void FinishWork();
 	
 	void CropProject();
 	
-	
+	bool isConformReady();
 	
 };

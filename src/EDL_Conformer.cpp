@@ -59,19 +59,18 @@ void EDLconformer::CropProject() {
 void EDLconformer::FinishWork() { 
 	Print("Finished");
 	UpdateTimeline();
-	Undo_EndBlock("CSG EDL Conform", -1);
 	Main_OnCommand(cmd_CloseAllRunningScripts,0);
+	ResetConform();
 }
 
 
-void EDLconformer::handleUnchangedSections() {
+void EDLconformer::PrepareUnchangedSections() {
 	int unchangedSectionIndex = -1;
 	int lastUnchangedSourceStart = -1;
 	int lastUnchangedSourceEnd = -1;
 	int lastUnchangedDestStart = -1;
 	int lastUnchangedDestEnd = -1;
 	int newShotOffset = INT_MAX;
-	Print("Unchanged Sections.....");
 	int lastChangeStartTime = -1;
 	int lastChangeEndTime = -1;
 	
@@ -112,12 +111,13 @@ void EDLconformer::handleUnchangedSections() {
 				newShotOffset = destStartTime_frames - sourceStartTime_frames;
 				lastUnchangedSourceEnd = sourceEndTime_frames;
 				lastUnchangedDestEnd = destEndTime_frames;
-				ShotTimeInfoSeconds info;
-				info.sourceStart = FramesToSeconds(lastUnchangedSourceStart);
-				info.sourceEnd = FramesToSeconds(lastUnchangedSourceEnd);
-				info.destStart = FramesToSeconds(lastUnchangedDestStart);
-				info.destEnd = FramesToSeconds(lastUnchangedDestEnd);
+				ShotTCInfo info;
+				info.sourceStartTC = FramesToTimecodeString(lastUnchangedSourceStart);
+				info.sourceEndTC = FramesToTimecodeString(lastUnchangedSourceEnd);
+				info.destStartTC = FramesToTimecodeString(lastUnchangedDestStart);
+				info.destEndTC = FramesToTimecodeString(lastUnchangedDestEnd);
 				info.shotName = oldShot.shotName;
+				info.empty = false;
 				
 				if (unchangedSectionIndex >= unchangedSections.size()) {
 					unchangedSections.resize(unchangedSectionIndex+1);
@@ -127,28 +127,18 @@ void EDLconformer::handleUnchangedSections() {
 			}
 			else
 			{
-				ShotTimeInfoSeconds& info = unchangedSections[unchangedSectionIndex];
-				lastUnchangedSourceEnd = std::fmax(FramesToSeconds(sourceEndTime_frames),info.sourceEnd);
-				lastUnchangedDestEnd = std::fmax(FramesToSeconds(destEndTime_frames),info.destEnd);
-				info.sourceEnd = lastUnchangedSourceEnd;
-				info.destEnd = lastUnchangedDestEnd;
+				ShotTCInfo & info = unchangedSections[unchangedSectionIndex];
+				lastUnchangedSourceEnd = std::fmax(FramesToSeconds(sourceEndTime_frames),TimecodeToSeconds( info.sourceEndTC));
+				lastUnchangedDestEnd = std::fmax(FramesToSeconds(destEndTime_frames),TimecodeToSeconds(info.destEndTC));
+				info.sourceEndTC = SecondsToTimecodeString(lastUnchangedSourceEnd);
+				info.destEndTC = SecondsToTimecodeString(lastUnchangedDestEnd);
 			}
 		}
-	}
-	int i = 0;
-	for (auto section : unchangedSections)
-	{
-		i++;
-		auto sourceStartTime_TC = SecondsToTimecodeString(section.sourceStart);
-		auto sourceEndTime_TC = SecondsToTimecodeString(section.sourceEnd);
-		auto destStartTime_TC = SecondsToTimecodeString(section.destStart);
-		auto destEndTime_TC = SecondsToTimecodeString(section.destEnd);
-		CopyOldSliceToNewTime(sourceStartTime_TC,sourceEndTime_TC,destStartTime_TC,destEndTime_TC, "Unchanged section "+std::to_string(i));
 	}
 }
 
 
-void EDLconformer::ExecuteConform() { 
+void EDLconformer::PrepareConform() { 
 	bool working = true;
 	Print("Starting Conform.......");
 	Print("_____________________");
@@ -268,27 +258,18 @@ void EDLconformer::ExecuteConform() {
 				{
 					sourceEndTimeTrimmed = FramesToTimecodeString(sourceStartTime_frames + new_duration_frames);
 				}
-				CopyOldSliceToNewTime(sourceStartTime_TC,sourceEndTimeTrimmed,destStartTime_TC,destEndTime_TC, shot);
-				Print("CHANGE: "+oldshotTCinfo.shotName+": New Timecode: "+destStartTime_TC+" "+destEndTime_TC);
+				ShotTCInfo changedShot;
+				changedShot.sourceStartTC = sourceStartTime_TC;
+				changedShot.sourceEndTC = sourceEndTimeTrimmed;
+				changedShot.destStartTC = destStartTime_TC;
+				changedShot.destEndTC = destEndTime_TC;
+				changedShot.shotName = shot;
+				changedShot.empty = false;
+				changedSections.push_back(changedShot);
 			}
 			else
 			{
 				conformResults[i].changed = false;
-			}
-			if (CreateRegionsForShots)
-			{
-				if (CreateRegionsForShotsOnlyChanged and not shotChanged)
-				{
-					//skip unchanged shot
-				}
-				else
-				{
-					int colour = 0;
-					if (shotChanged) {
-						colour = ColorToNative(255,255,255)|16777216;// -- red
-					}
-					AddRegion(destStartTime_TC,destEndTime_TC,"CHANGE: "+oldshotTCinfo.shotName,colour);
-				}
 			}
 		}
 		i++;
@@ -297,7 +278,7 @@ void EDLconformer::ExecuteConform() {
 		auto startTime = new_shotTimeInfo.front().destStartTC;
 		auto endTime = new_shotTimeInfo.back().destEndTC;
 		int colour = ColorToNative(255,255,255)|16777216; //red
-		AddRegion(startTime,endTime,new_EDL_Filename,colour);
+		AddRegion(startTime,endTime,filepath_New_EDL,colour);
 	}
 	working = false;
 	PreventUIRefresh(-1);
@@ -310,15 +291,24 @@ void EDLconformer::RefreshTimeline() {
 
 
 void EDLconformer::IngestEDLFiles() {
-	char oldfilename[256];
-	bool result = GetUserFileNameForRead(oldfilename, "Choose OLD EDL file...", "");
-	if (!result)return;
-	char newfilename[256];
-	result = GetUserFileNameForRead(newfilename, "Choose NEW EDL file...", "");
-	if (!result)return;
-	std::vector<std::string> old_fileLines = ReadFile(oldfilename);
-	std::vector<std::string> new_fileLines = ReadFile(newfilename);
-	new_EDL_Filename = newfilename;
+	if (filepath_Old_EDL.empty())
+	{
+		char oldfilename[256];
+		bool result = GetUserFileNameForRead(oldfilename, "Choose OLD EDL file...", "");
+		if (!result)return;
+		filepath_Old_EDL = oldfilename;
+	}
+	if (filepath_New_EDL.empty())
+	{
+		char newfilename[256];
+		bool result = GetUserFileNameForRead(newfilename, "Choose NEW EDL file...", "");
+		if (!result)return;
+		filepath_New_EDL = newfilename;
+	}
+	
+	std::vector<std::string> old_fileLines = ReadFile(filepath_Old_EDL);
+	std::vector<std::string> new_fileLines = ReadFile(filepath_New_EDL);
+
 	old_shotTimeInfo = CreateShotTimeInfo(old_fileLines);
 	originalEndTime = old_shotTimeInfo.back().destEndTC;
 	new_shotTimeInfo = CreateShotTimeInfo(new_fileLines);
@@ -682,15 +672,6 @@ float EDLconformer::TimecodeToSeconds(std::string inTimecode) {
 }
 
 bool EDLconformer::TimeIsEqual(float num1, float num2, int decimalPlaces) {
-	
-	
-	
-	
-//	std::string xInt, xDecs;
-//	TruncateFloat(num1,decimalPlaces,xInt,xDecs);
-//	std::string yInt, yDecs;
-//	TruncateFloat(num2,decimalPlaces,yInt,yDecs);
-//	return (xInt == yInt and xDecs == yDecs);
 	auto isequal = std::abs(num1 - num2) <= (1/std::pow(10, decimalPlaces));
 	return isequal;
 }
@@ -727,18 +708,12 @@ float EDLconformer::TruncateFloat(float inFloat, int decimalPlaces, std::string&
 
 void EDLconformer::Main() {
 	GatherAndCheckCommandIDs();
-	Undo_BeginBlock(); //Begining of the undo block. Leave it at the top of your main function.
-
 	IngestEDLFiles();
-	ShiftExistingTimeline();
-		
-	if (CopyExistingRegions) {
-		MovePreviousRegions();
-	}
-	ExecuteConform();
-	handleUnchangedSections();
-	CropProject();
-	FinishWork();
+	PrepareConform();
+	PrepareUnchangedSections();
+	
+	DoConform();
+	
 }
 
 float EDLconformer::FramesToSeconds(int inFrames) { 
@@ -804,6 +779,73 @@ int EDLconformer::TimecodeToFrames(std::string inTimecode) {
 //	result >> seconds;
 	return frames;
 }
+
+
+bool EDLconformer::DoConform() { 
+
+	if (not isConformReady())
+	{
+		Print("Some required data missing for conform..");
+		Print("Check EDL files and run comparison again..");
+		return false;
+	}
+	Undo_BeginBlock(); //Begining of the undo block. Leave it at the top of your main function.
+	
+	ShiftExistingTimeline();
+		
+	if (CopyExistingRegions) {
+		MovePreviousRegions();
+	}
+	
+	for (auto changedShot : changedSections)
+	{
+		CopyOldSliceToNewTime(changedShot.sourceStartTC,changedShot.sourceEndTC,changedShot.destStartTC,changedShot.destEndTC, changedShot.shotName);
+		Print("CHANGE: "+changedShot.shotName+": New Timecode: "+changedShot.destStartTC+" "+changedShot.destEndTC);
+		if (CreateRegionsForChangedShots)
+		{
+			int colour = ColorToNative(255,255,255)|16777216;// -- red
+			AddRegion( changedShot.destStartTC, changedShot.destEndTC ,"CHANGE: "+ changedShot.shotName ,colour);
+		}
+	}
+	
+	int i = 0;
+	for (auto section : unchangedSections)
+	{
+		i++;
+		auto sourceStartTime_TC = section.sourceStartTC;
+		auto sourceEndTime_TC = section.sourceEndTC;
+		auto destStartTime_TC = section.destStartTC;
+		auto destEndTime_TC = section.destEndTC;
+		CopyOldSliceToNewTime(sourceStartTime_TC,sourceEndTime_TC,destStartTime_TC,destEndTime_TC, "Unchanged section "+std::to_string(i));
+	}
+	
+	CropProject();
+	FinishWork();
+	Undo_EndBlock("CSG EDL Conform", -1);
+	return true;
+}
+
+void EDLconformer::ResetConform() {
+	unchangedSections.clear();
+	changedSections.clear();
+	old_shotTimeInfo.clear();
+	new_shotTimeInfo.clear();
+	conformResults.clear();
+}
+
+bool EDLconformer::isConformReady() { 
+	return not
+	(
+	 unchangedSections.empty() or
+	 changedSections.empty() or
+	 old_shotTimeInfo.empty() or
+	 new_shotTimeInfo.empty() or
+	 conformResults.empty()
+	 );
+}
+
+
+
 
 
 
