@@ -27,6 +27,9 @@
 #include "reaperHelpers.h"
 #include "platformhelpers.h"
 
+#include "EDL_Conformer.h"
+#include "gui_reconformer.h"
+
 REAPER_PLUGIN_HINSTANCE g_hInst;
 
 
@@ -44,15 +47,19 @@ char currentProject[256];
 //std::unique_ptr<juce::DocumentWindow>currentActiveWindow;
 bool transferWindowStatus = false;
 bool templateWindowStatus = false;
+bool edlWindowStatus = false;
 juce::DocumentWindow * currentTransferWindow = nullptr;
 juce::DocumentWindow * currentTemplateWindow = nullptr;
+juce::DocumentWindow * currentEDLWindow = nullptr;
 
 gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise" };
 gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Region Metadata" };
+gaccel_register_t EDL_Window = { { 0, 0, 0 }, "CSG Ext - EDL Conformer" };
 
 
 void LaunchTransferWindow();
 void LaunchTemplateWindow();
+void LaunchEDLWindow();
 bool HookCommandProc(int command, int flag);
 static void menuHook(const char *name, HMENU handle, const int f);
 static void AddCustomCSGMenuItems(HMENU parentMenuHandle = NULL);
@@ -81,10 +88,12 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		//Register a custom command ID for an action
 		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise");
 		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "CSG_Ext_RegionMetadata");
+		REGISTER_AND_CHKERROR(EDL_Window.accel.cmd, "command_id", "CSG_Ext_EDLConformer");
 		
 		//register our custom actions
 		plugin_register("gaccel", &Transfer_To_Wwise.accel);
 		plugin_register("gaccel", &Template_To_Wwise.accel);
+		plugin_register("gaccel", &EDL_Window.accel);
 		
 		//hook command is where we process command IDs and launch our custom actions
 		rec->Register("hookcommand", (void*)HookCommandProc);
@@ -258,12 +267,29 @@ void PrintToConsole(int text)
 
 }
 
-void LaunchTransferWindow()
+void LaunchEDLWindow()
 {
-	bool useTab = true;
-	String wName = "CSG Reaper Transfer to Wwise Extension";
 	initialiseJuce_GUI();
 	MessageManagerLock mml(Thread::getCurrentThread());
+
+	if (edlWindowStatus)
+	{
+		currentEDLWindow->toFront(true);
+	}
+	else
+	{
+		currentEDLWindow = new ConformerWindow("EDL", new ConformerComponent(),&edlWindowStatus);
+	}
+}
+
+void LaunchTransferWindow()
+{
+	initialiseJuce_GUI();
+	MessageManagerLock mml(Thread::getCurrentThread());
+		
+	
+	bool useTab = true;
+	String wName = "CSG Reaper Transfer to Wwise Extension";
 	
 	//int commandID = NamedCommandLookup("_S&M_HIDECCLANES_ME");
 	//reaper.Main_OnCommand(commandID, 0)
@@ -326,6 +352,10 @@ void bringWindowsToFront()
 	{
 		currentTemplateWindow->toFront(true);
 	}
+	if (currentEDLWindow && edlWindowStatus)
+	{
+		currentEDLWindow->toFront(true);
+	}
 }
 
 
@@ -334,6 +364,7 @@ void ClearCurrentWindowPtr()
 {
 	currentTransferWindow = nullptr;
 	currentTemplateWindow = nullptr;
+	currentEDLWindow = nullptr;
 }
 
 bool HookCommandProc(int command, int flag)
@@ -348,6 +379,11 @@ bool HookCommandProc(int command, int flag)
 	else if (command == Template_To_Wwise.accel.cmd)
 	{
 		LaunchTemplateWindow();
+		return true;
+	}
+	else if (command == EDL_Window.accel.cmd)
+	{
+		LaunchEDLWindow();
 		return true;
 	}
 	return false;
@@ -377,6 +413,10 @@ static void AddCustomCSGMenuItems(HMENU parentMenuHandle)
 	
 	mi.wID = Template_To_Wwise.accel.cmd;
 	mi.dwTypeData = (char *)"CSG - Region Metadata";
+	InsertMenuItem(hMenu, 0, true, &mi);
+	
+	mi.wID = EDL_Window.accel.cmd;
+	mi.dwTypeData = (char *)"CSG - EDL Conformer";
 	InsertMenuItem(hMenu, 0, true, &mi);
 
 	if (!parentMenuHandle)

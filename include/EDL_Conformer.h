@@ -41,7 +41,6 @@ public:
 	
 	EDLconformer()
 	{
-		Main();
 	}
 	
 	~EDLconformer()
