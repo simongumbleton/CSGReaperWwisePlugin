@@ -18,19 +18,21 @@ ConformerComponent::ConformerComponent()
 	addAndMakeVisible(btn_ChooseNewEDL);
 	addAndMakeVisible(dragDropTarget01);
 	addAndMakeVisible(dragDropTarget02);
-	dragDropTarget01->setText("Drag drop 01", juce::NotificationType::dontSendNotification);
-	dragDropTarget02->setText("Drag drop 02", juce::NotificationType::dontSendNotification);
+	dragDropTarget01->setText("Drag & drop here...", juce::NotificationType::dontSendNotification);
+	dragDropTarget02->setText("Drag & drop here...", juce::NotificationType::dontSendNotification);
 	addAndMakeVisible(btn_DoConform);
 	dragDropTarget01->addListener(this);
 	dragDropTarget02->addListener(this);
 	//dragDropTarget01->setBorderSize(BorderSize(20));
 	//dragDropTarget02->setBorderSize(BorderSize(20));
 	addAndMakeVisible(RegionPreview);
-	txt_OldEdlTxt->setText("Choose OLD EDL File..", juce::NotificationType::dontSendNotification);
+	txt_OldEdlTxt->setText("Choose Old EDL File..", juce::NotificationType::dontSendNotification);
 	txt_NewEdlTxt->setText("Choose New EDL File..", juce::NotificationType::dontSendNotification);
 	addAndMakeVisible(txt_OldEdlTxt);
 	addAndMakeVisible(txt_NewEdlTxt);
 	addAndMakeVisible(txt_preview);
+	addAndMakeVisible(txt_pluginVersion);
+	txt_pluginVersion->setText(Reconformer::GetPluginVersionString(), juce::NotificationType::dontSendNotification);
 	
 	setSize(500, 350);
 };
@@ -54,6 +56,9 @@ void ConformerComponent::resized()
 	RegionPreview->setBounds(area.removeFromTop(50));
 	auto buffer1 = area.removeFromTop(10);
 	btn_DoConform->setBounds(area.removeFromTop(50));
+	
+	auto statusarea = area.removeFromBottom(25);
+	txt_pluginVersion->setBounds(statusarea.removeFromRight(50));
 }
 
 void ConformerComponent::buttonClicked(juce::Button *pButton) { 
