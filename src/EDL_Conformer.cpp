@@ -138,7 +138,7 @@ void EDLconformer::PrepareUnchangedSections() {
 }
 
 
-void EDLconformer::PrepareConform() { 
+void EDLconformer::PrepareChangedSections() { 
 	bool working = true;
 	Print("Starting Conform.......");
 	Print("_____________________");
@@ -290,28 +290,28 @@ void EDLconformer::RefreshTimeline() {
 }
 
 
-void EDLconformer::IngestEDLFiles() {
-	if (filepath_Old_EDL.empty())
+bool EDLconformer::IngestEDLFiles() {
+	if (not std::filesystem::exists(filepath_Old_EDL))
 	{
-		char oldfilename[256];
-		bool result = GetUserFileNameForRead(oldfilename, "Choose OLD EDL file...", "");
-		if (!result)return;
-		filepath_Old_EDL = oldfilename;
+		PrintToConsole("Warning! Invalid filepath provided for OLD edl");
+		return false;
 	}
-	if (filepath_New_EDL.empty())
+	if (not std::filesystem::exists(filepath_New_EDL))
 	{
-		char newfilename[256];
-		bool result = GetUserFileNameForRead(newfilename, "Choose NEW EDL file...", "");
-		if (!result)return;
-		filepath_New_EDL = newfilename;
+		PrintToConsole("Warning! Invalid filepath provided for NEW edl");
+		return false;
 	}
 	
 	std::vector<std::string> old_fileLines = ReadFile(filepath_Old_EDL);
 	std::vector<std::string> new_fileLines = ReadFile(filepath_New_EDL);
 
 	old_shotTimeInfo = CreateShotTimeInfo(old_fileLines);
-	originalEndTime = old_shotTimeInfo.back().destEndTC;
+	if (not old_shotTimeInfo.empty())
+	{
+		originalEndTime = old_shotTimeInfo.back().destEndTC;
+	}
 	new_shotTimeInfo = CreateShotTimeInfo(new_fileLines);
+	return (not old_shotTimeInfo.empty() && not new_shotTimeInfo.empty());
 }
 
 
@@ -397,8 +397,9 @@ void EDLconformer::SetTimeSelection(std::string startTimecode, std::string endTi
 }
 
 
-std::vector<ShotTCInfo> EDLconformer::CreateShotTimeInfo(std::vector<std::string> inFilelines) { 
+std::vector<ShotTCInfo> EDLconformer::CreateShotTimeInfo(std::vector<std::string> inFilelines) {
 	std::vector<ShotTCInfo> tcinfo;
+	if (inFilelines.empty()) return tcinfo;
 	for (int index = 0; index < inFilelines.size()-1; ++index)
 	{
 		// access using []
@@ -706,14 +707,8 @@ float EDLconformer::TruncateFloat(float inFloat, int decimalPlaces, std::string&
 	return result;
 }
 
-void EDLconformer::Main() {
+void EDLconformer::Init() {
 	GatherAndCheckCommandIDs();
-	IngestEDLFiles();
-	PrepareConform();
-	PrepareUnchangedSections();
-	
-	DoConform();
-	
 }
 
 float EDLconformer::FramesToSeconds(int inFrames) { 
@@ -785,9 +780,12 @@ bool EDLconformer::DoConform() {
 
 	if (not isConformReady())
 	{
-		Print("Some required data missing for conform..");
-		Print("Check EDL files and run comparison again..");
-		return false;
+		if (not SetupConform())
+		{
+			Print("Some required data missing for conform..");
+			Print("Check EDL files and run comparison again..");
+			return false;
+		}
 	}
 	Undo_BeginBlock(); //Begining of the undo block. Leave it at the top of your main function.
 	
@@ -843,6 +841,27 @@ bool EDLconformer::isConformReady() {
 	 conformResults.empty()
 	 );
 }
+
+bool EDLconformer::SetupConform() {
+	ResetConform();
+	if (IngestEDLFiles())
+	{
+		PrepareChangedSections();
+		PrepareUnchangedSections();
+	}
+	return isConformReady();
+}
+
+float EDLconformer::GetNewEndTime() {
+	if (not isConformReady()) return 0.0f;
+	return fmax(
+				TimecodeToSeconds(changedSections.back().destEndTC),
+				TimecodeToSeconds(unchangedSections.back().destEndTC)
+				);
+}
+
+
+
 
 
 

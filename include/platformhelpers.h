@@ -104,6 +104,10 @@ static std::vector<std::string> stringSplitToList(std::string target, std::strin
 	return v;
 }
 //...
-
+inline bool ends_with(std::string const & value, std::string const & ending)
+{
+	if (ending.size() > value.size()) return false;
+	return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+}
 
 #endif /* platformhelpers_h */

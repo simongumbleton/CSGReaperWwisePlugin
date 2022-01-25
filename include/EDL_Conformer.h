@@ -41,17 +41,32 @@ public:
 	
 	EDLconformer()
 	{
+		Init();
 	}
 	
 	~EDLconformer()
 	{
 	}
 	
-	void Main();
+	void Init();
+	
+	bool SetupConform();
 	
 	bool DoConform();
 	
 	void ResetConform();
+	
+	float GetNewEndTime();
+	
+	std::string SecondsToTimecodeString(float inSeconds);
+	
+	float TimecodeToSeconds(std::string inTimecode);
+	
+	int TimecodeToFrames(std::string inTimecode);
+	
+	std::string FramesToTimecodeString(int inFrames);
+	
+	float FramesToSeconds(int inFrames);
 	
 private:
 	
@@ -89,15 +104,7 @@ private:
 	
 	bool TimeIsEqual(float num1,float num2,int decimalPlaces=4);
 	
-	std::string SecondsToTimecodeString(float inSeconds);
 	
-	float TimecodeToSeconds(std::string inTimecode);
-	
-	int TimecodeToFrames(std::string inTimecode);
-	
-	std::string FramesToTimecodeString(int inFrames);
-	
-	float FramesToSeconds(int inFrames);
 	
 	bool GatherAndCheckCommandIDs();
 	
@@ -121,11 +128,11 @@ private:
 	
 	void CropProjectToTime(std::string newProjEndTime);
 	
-	void IngestEDLFiles();
+	bool IngestEDLFiles();
 	
 	void RefreshTimeline();
 	
-	void PrepareConform();
+	void PrepareChangedSections();
 	
 	void PrepareUnchangedSections();
 	
