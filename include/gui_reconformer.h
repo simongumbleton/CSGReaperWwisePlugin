@@ -202,7 +202,8 @@ private:
 	std::vector<juce::Button*> buttons{
 		btn_ChooseOldEDL,
 		btn_ChooseNewEDL,
-		btn_DoConform
+		btn_DoConform,
+		helpButton
 	};
 	
 	std::unique_ptr<FileChooser> myChooser;

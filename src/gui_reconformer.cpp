@@ -33,6 +33,7 @@ ConformerComponent::ConformerComponent()
 	addAndMakeVisible(txt_preview);
 	addAndMakeVisible(txt_pluginVersion);
 	txt_pluginVersion->setText(Reconformer::GetPluginVersionString(), juce::NotificationType::dontSendNotification);
+	addAndMakeVisible(helpButton);
 	
 	setSize(500, 350);
 };
@@ -41,6 +42,8 @@ ConformerComponent::ConformerComponent()
 void ConformerComponent::resized()
 {
 	auto area = getLocalBounds();
+	auto titlearea = area.removeFromTop(20);
+	helpButton->setBounds(titlearea.removeFromRight(40));
 	txt_OldEdlTxt->setBounds(area.removeFromTop(25));
 	auto oldedlArea = area.removeFromTop(50);
 	btn_ChooseOldEDL->setBounds(oldedlArea.removeFromRight(100));
