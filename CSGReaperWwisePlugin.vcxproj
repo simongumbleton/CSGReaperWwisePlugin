@@ -70,7 +70,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\EDL_Conformer.cpp" />
     <ClCompile Include="src\gui_create.cpp" />
+    <ClCompile Include="src\gui_reconformer.cpp" />
     <ClCompile Include="src\gui_RegionMetadata.cpp" />
     <ClCompile Include="src\gui_Transfer.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -90,9 +92,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ConfigFileHandler.h" />
+    <ClInclude Include="include\EDL_Conformer.h" />
     <ClInclude Include="include\GUI.h" />
     <ClInclude Include="include\gui_create.h" />
     <ClInclude Include="include\gui_properties.h" />
+    <ClInclude Include="include\gui_reconformer.h" />
     <ClInclude Include="include\gui_RegionMetadata.h" />
     <ClInclude Include="include\gui_RenderTree.h" />
     <ClInclude Include="include\gui_Transfer.h" />

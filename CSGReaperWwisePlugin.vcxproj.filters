@@ -69,6 +69,12 @@
     <ClCompile Include="src\RegionMetadataHelper.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui_reconformer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EDL_Conformer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\JUCE\include_juce_core.mm">
@@ -269,6 +275,12 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\RegionMetadataHelper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gui_reconformer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EDL_Conformer.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
