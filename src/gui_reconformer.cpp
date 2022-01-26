@@ -34,8 +34,10 @@ ConformerComponent::ConformerComponent()
 	addAndMakeVisible(txt_pluginVersion);
 	txt_pluginVersion->setText(Reconformer::GetPluginVersionString(), juce::NotificationType::dontSendNotification);
 	addAndMakeVisible(helpButton);
-	
 	setSize(500, 350);
+	
+	addAndMakeVisible(btn_Settings);
+	
 };
 
 
@@ -60,8 +62,9 @@ void ConformerComponent::resized()
 	auto buffer1 = area.removeFromTop(10);
 	btn_DoConform->setBounds(area.removeFromTop(50));
 	
-	auto statusarea = area.removeFromBottom(25);
-	txt_pluginVersion->setBounds(statusarea.removeFromRight(50));
+	auto statusarea = area.removeFromBottom(40);
+	txt_pluginVersion->setBounds(statusarea.removeFromRight(50).removeFromBottom(25));
+	btn_Settings->setBounds(statusarea.removeFromLeft(40));
 }
 
 void ConformerComponent::buttonClicked(juce::Button *pButton) { 
@@ -88,6 +91,10 @@ void ConformerComponent::buttonClicked(juce::Button *pButton) {
 	else if (pButton == btn_DoConform)
 	{
 		TriggerConform();
+	}
+	else if (pButton == btn_Settings)
+	{
+		LaunchSettings();
 	}
 }
 
@@ -168,6 +175,24 @@ void ConformerComponent::DrawPreviewConform() {
 		}
 	}
 }
+
+void ConformerComponent::LoadSettings() { 
+	
+}
+
+
+void ConformerComponent::SaveSettings() { 
+	
+}
+
+
+void ConformerComponent::LaunchSettings() { 
+	settings = new EDLSettingsWnd("settings");
+	addAndMakeVisible(settings);
+	settings->centreWithSize(300, 400);
+	
+}
+
 
 
 

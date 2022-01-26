@@ -53,6 +53,8 @@
 		9EE4E5E024CA1FC5006BC020 /* CreateImportWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */; };
 		9EECDF6227A0BA660092DDB4 /* gui_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EECDF6027A0BA660092DDB4 /* gui_settings.cpp */; };
 		9EECDF6727A0BA960092DDB4 /* gui_settings.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EECDF6627A0BA960092DDB4 /* gui_settings.h */; };
+		9EFD3E2E27A2052A00EEBF9F /* cog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EFD3E2C27A2052A00EEBF9F /* cog.cpp */; };
+		9EFD3E2F27A2052A00EEBF9F /* cog.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EFD3E2D27A2052A00EEBF9F /* cog.h */; };
 		C406994E1C39B33800E445F7 /* reaper_plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = C406994D1C39B33800E445F7 /* reaper_plugin.h */; };
 		C40699501C39B34300E445F7 /* reaper_plugin_functions.h in Headers */ = {isa = PBXBuildFile; fileRef = C406994F1C39B34300E445F7 /* reaper_plugin_functions.h */; };
 		C42AC6D31C27AB1D00FAE97E /* lice_textnew.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C42AC6D21C27AB1D00FAE97E /* lice_textnew.cpp */; };
@@ -142,6 +144,8 @@
 		9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CreateImportWindow.cpp; path = src/CreateImportWindow.cpp; sourceTree = SOURCE_ROOT; };
 		9EECDF6027A0BA660092DDB4 /* gui_settings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui_settings.cpp; sourceTree = "<group>"; };
 		9EECDF6627A0BA960092DDB4 /* gui_settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_settings.h; sourceTree = "<group>"; };
+		9EFD3E2C27A2052A00EEBF9F /* cog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cog.cpp; sourceTree = "<group>"; };
+		9EFD3E2D27A2052A00EEBF9F /* cog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cog.h; sourceTree = "<group>"; };
 		C406994D1C39B33800E445F7 /* reaper_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reaper_plugin.h; path = ../library/reaper_plugin/reaper_plugin.h; sourceTree = "<group>"; };
 		C406994F1C39B34300E445F7 /* reaper_plugin_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reaper_plugin_functions.h; path = ../library/reaper_plugin/reaper_plugin_functions.h; sourceTree = "<group>"; };
 		C42AC6D21C27AB1D00FAE97E /* lice_textnew.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lice_textnew.cpp; path = ../library/WDL/WDL/lice/lice_textnew.cpp; sourceTree = "<group>"; };
@@ -271,9 +275,19 @@
 			path = Old;
 			sourceTree = "<group>";
 		};
+		9EFD3E2227A1F66B00EEBF9F /* images */ = {
+			isa = PBXGroup;
+			children = (
+				9EFD3E2C27A2052A00EEBF9F /* cog.cpp */,
+				9EFD3E2D27A2052A00EEBF9F /* cog.h */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		C479315B1BE9799D00C024D1 = {
 			isa = PBXGroup;
 			children = (
+				9EFD3E2227A1F66B00EEBF9F /* images */,
 				9EBC0E9A24C345990068154E /* Old */,
 				9E78220824C0E9B2005401E2 /* src */,
 				9E781E4E24C0E8FD005401E2 /* include */,
@@ -367,6 +381,7 @@
 				C406994E1C39B33800E445F7 /* reaper_plugin.h in Headers */,
 				9ECD1BCA278CD94B00E39C62 /* gui_reconformer.h in Headers */,
 				9EE4E5DE24CA16A3006BC020 /* WwiseConnectionHandler.h in Headers */,
+				9EFD3E2F27A2052A00EEBF9F /* cog.h in Headers */,
 				9E78206524C0E904005401E2 /* AppConfig.h in Headers */,
 				9E78206024C0E904005401E2 /* JuceHeader.h in Headers */,
 				9ED27E14272724DA00A3AC7F /* json.hpp in Headers */,
@@ -475,6 +490,7 @@
 				9E78221624C0E9B2005401E2 /* Main.cpp in Sources */,
 				C49593F11C4EFCA0007C6C9B /* httpget.cpp in Sources */,
 				C484E6911C1BAD49005C6CCC /* swell-misc.mm in Sources */,
+				9EFD3E2E27A2052A00EEBF9F /* cog.cpp in Sources */,
 				C484E69C1C1BAE94005C6CCC /* lice.cpp in Sources */,
 				C484E69B1C1BAE94005C6CCC /* lice_line.cpp in Sources */,
 				9E8161B52718E3B700216C42 /* gui_create.cpp in Sources */,

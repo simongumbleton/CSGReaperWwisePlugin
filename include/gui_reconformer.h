@@ -3,6 +3,7 @@
 #include "reaperHelpers.h"
 #include "EDL_Conformer.h"
 #include "platformhelpers.h"
+#include "gui_settings.h"
 
 
 class DragDropHelper : public FileDragAndDropTarget, public Label
@@ -167,6 +168,8 @@ public:
 private:
 	EDLconformer* conformer = nullptr;
 	
+	EDLSettingsWnd* settings = nullptr;
+	
 	juce::Label * txt_OldEdlTxt = new Label("Choose OLD EDL file...");
 	
 	juce::Label * txt_NewEdlTxt = new Label("Choose NEW EDL file...");
@@ -178,6 +181,8 @@ private:
 	juce::TextButton * btn_ChooseNewEDL = new TextButton("...");
 	
 	juce::TextButton * btn_DoConform = new TextButton("Do Conform");
+	
+	SettingsButton * btn_Settings = new SettingsButton("settingsBtn");
 	
 	DragDropHelper * dragDropTarget01 = new DragDropHelper();
 	
@@ -199,11 +204,18 @@ private:
 	
 	void DrawPreviewConform();
 	
+	void LaunchSettings();
+	
+	void SaveSettings();
+	
+	void LoadSettings();
+	
 	std::vector<juce::Button*> buttons{
 		btn_ChooseOldEDL,
 		btn_ChooseNewEDL,
 		btn_DoConform,
 		helpButton
+		,btn_Settings
 	};
 	
 	std::unique_ptr<FileChooser> myChooser;
