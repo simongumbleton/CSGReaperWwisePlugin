@@ -13,6 +13,9 @@
     <Filter Include="include\rapidjson">
       <UniqueIdentifier>{7c622a29-1bb0-4366-83e3-f57de9db8ac4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="images">
+      <UniqueIdentifier>{e2e13148-f5f7-4427-b0f5-bd6b23370167}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ConfigFileHandler.cpp">
@@ -73,6 +76,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\EDL_Conformer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="images\cog.cpp">
+      <Filter>images</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui_settings.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -281,6 +290,12 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\EDL_Conformer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="images\cog.h">
+      <Filter>images</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gui_settings.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

@@ -169,6 +169,8 @@ private:
 	EDLconformer* conformer = nullptr;
 	
 	EDLSettingsWnd* settings = nullptr;
+
+	bool windowStatus;
 	
 	juce::Label * txt_OldEdlTxt = new Label("Choose OLD EDL file...");
 	

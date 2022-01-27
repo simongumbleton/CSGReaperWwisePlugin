@@ -59,6 +59,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="images\cog.cpp" />
     <ClCompile Include="include\JUCE\include_juce_core.cpp" />
     <ClCompile Include="include\JUCE\include_juce_data_structures.cpp" />
     <ClCompile Include="include\JUCE\include_juce_events.cpp" />
@@ -74,6 +75,7 @@
     <ClCompile Include="src\gui_create.cpp" />
     <ClCompile Include="src\gui_reconformer.cpp" />
     <ClCompile Include="src\gui_RegionMetadata.cpp" />
+    <ClCompile Include="src\gui_settings.cpp" />
     <ClCompile Include="src\gui_Transfer.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\ReaperRenderQueParser.cpp" />
@@ -91,6 +93,7 @@
     <None Include="include\JUCE\include_juce_gui_basics.mm" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="images\cog.h" />
     <ClInclude Include="include\ConfigFileHandler.h" />
     <ClInclude Include="include\EDL_Conformer.h" />
     <ClInclude Include="include\GUI.h" />
@@ -99,6 +102,7 @@
     <ClInclude Include="include\gui_reconformer.h" />
     <ClInclude Include="include\gui_RegionMetadata.h" />
     <ClInclude Include="include\gui_RenderTree.h" />
+    <ClInclude Include="include\gui_settings.h" />
     <ClInclude Include="include\gui_Transfer.h" />
     <ClInclude Include="include\json.hpp" />
     <ClInclude Include="include\JUCE\AppConfig.h" />
@@ -749,7 +753,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.1.7601\SDK\include;C:\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;C:\Program Files (x86)\Audiokinetic\Wwise 2021.1.1.7601\SDK\include;C:\JUCE\modules;$(ProjectDir)images;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
