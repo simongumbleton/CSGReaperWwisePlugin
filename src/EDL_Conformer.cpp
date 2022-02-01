@@ -50,7 +50,7 @@ std::vector<std::string> EDLconformer::FindTimecodeValuesInString(std::string in
 
 
 void EDLconformer::CropProject() { 
-	auto NewEndTime_secs = TimecodeToSeconds(Settings.timeLineOffset) * 2;
+	auto NewEndTime_secs = TimecodeToSeconds(EdlCompSettings.timeLineOffset) * 2;
 	SetTimeSelection("00:00:00:00",SecondsToTimecodeString(NewEndTime_secs));
 	Main_OnCommand(cmd_CropProjectToSelection,0);
 }
@@ -274,12 +274,7 @@ void EDLconformer::PrepareChangedSections() {
 		}
 		i++;
 	}
-	if (Settings.CreateEDLRegions){
-		auto startTime = new_shotTimeInfo.front().destStartTC;
-		auto endTime = new_shotTimeInfo.back().destEndTC;
-		int colour = ColorToNative(255,255,255)|16777216; //red
-		AddRegion(startTime,endTime,filepath_New_EDL,colour);
-	}
+	
 	working = false;
 	PreventUIRefresh(-1);
 }
@@ -323,7 +318,7 @@ void EDLconformer::CropProjectToTime(std::string newProjEndTime) {
 void EDLconformer::CopyOldSliceToNewTime(std::string oldStart, std::string oldEnd, std::string newStart, std::string NewEnd, std::string ShotName) { 
 	Main_OnCommand(cmd_UnSelectAllTracks,0);
 	Main_OnCommand(cmd_UnselectAllItems,0);
-	float offsetInSeconds = TimecodeToSeconds(Settings.timeLineOffset);
+	float offsetInSeconds = TimecodeToSeconds(EdlCompSettings.timeLineOffset);
 	float oldStartWOffset_secs = TimecodeToSeconds(oldStart) + offsetInSeconds;
 	std::string oldStartWOffset_TC = SecondsToTimecodeString(oldStartWOffset_secs);
 	float oldEndWOffset_secs = TimecodeToSeconds(oldEnd) + offsetInSeconds;
@@ -336,8 +331,8 @@ void EDLconformer::CopyOldSliceToNewTime(std::string oldStart, std::string oldEn
 
 
 void EDLconformer::MovePreviousRegions() { 
-	float originalContentEndTime_secs = TimecodeToSeconds(originalEndTime) + TimecodeToSeconds(Settings.timeLineOffset);
-	float originalContentStartTime_secs = TimecodeToSeconds(Settings.timeLineOffset);
+	float originalContentEndTime_secs = TimecodeToSeconds(originalEndTime) + TimecodeToSeconds(EdlCompSettings.timeLineOffset);
+	float originalContentStartTime_secs = TimecodeToSeconds(EdlCompSettings.timeLineOffset);
 	int markerCount = countMarkers() + countRegions();
 	for (int i = 0; i < markerCount; i++)
 	{
@@ -367,11 +362,11 @@ void EDLconformer::MovePreviousRegions() {
 
 
 void EDLconformer::CopyPreviousRegions() { 
-	float originalEndTime_secs = TimecodeToSeconds(originalEndTime) + TimecodeToSeconds(Settings.timeLineOffset);
+	float originalEndTime_secs = TimecodeToSeconds(originalEndTime) + TimecodeToSeconds(EdlCompSettings.timeLineOffset);
 	//Print("Copy Regions");
 	//Print(Settings.timeLineOffset);
 	//Print(SecondsToTimecodeString(originalEndTime_secs));
-	SetTimeSelection(Settings.timeLineOffset,SecondsToTimecodeString(originalEndTime_secs));
+	SetTimeSelection(EdlCompSettings.timeLineOffset,SecondsToTimecodeString(originalEndTime_secs));
 	Main_OnCommand(cmd_CopyRegionsInTimeSelection,0);
 	SetEditCursorToTimecode("00:00:00:00");
 	Main_OnCommand(cmd_PasteRegionsToEditCursor,0);
@@ -384,7 +379,7 @@ void EDLconformer::AddRegion(std::string timeCodeStart, std::string timeCodeEnd,
 
 
 void EDLconformer::ShiftExistingTimeline() { 
-	SetTimeSelection("00:00:00:00",Settings.timeLineOffset);
+	SetTimeSelection("00:00:00:00",EdlCompSettings.timeLineOffset);
 	Main_OnCommand(cmd_InsertEmptySpaceAtSelection,0);
 }
 
@@ -627,7 +622,7 @@ std::string EDLconformer::SecondsToTimecodeString(float inSeconds) {
 	int hours = std::floorf(wholeSeconds/3600);
 	int mins = std::floorf((wholeSeconds/60) % 60);
 	int secs = std::floorf(wholeSeconds % 60);
-	int frames = (Settings.framerate * decimals);
+	int frames = (EdlCompSettings.framerate * decimals);
 	
 	temp << std::internal << std::setfill('0') << std::setw(2) << hours << ":" <<
 	std::internal << std::setfill('0') << std::setw(2) << mins << ":" <<
@@ -660,7 +655,7 @@ float EDLconformer::TimecodeToSeconds(std::string inTimecode) {
 				break;
 			case 3:
 				//frames
-				seconds += std::stof(token) * (1/Settings.framerate);
+				seconds += std::stof(token) * (1/EdlCompSettings.framerate);
 				break;
 			default:
 				break;
@@ -712,22 +707,22 @@ void EDLconformer::Init() {
 }
 
 float EDLconformer::FramesToSeconds(int inFrames) { 
-	return inFrames / Settings.framerate;
+	return inFrames / EdlCompSettings.framerate;
 }
 
 
 std::string EDLconformer::FramesToTimecodeString(int inFrames) { 
 	std::string result = "";
 	std::stringstream temp;
-	int framesPerhour = Settings.framerate * 3600;
-	int framesPermin = Settings.framerate * 60;
+	int framesPerhour = EdlCompSettings.framerate * 3600;
+	int framesPermin = EdlCompSettings.framerate * 60;
 	int hours = std::floorf(inFrames/framesPerhour);
 	inFrames = inFrames - (hours * framesPerhour);
 	int mins = std::floorf(inFrames/framesPermin);
 	inFrames = inFrames - (mins * framesPermin);
-	int secs = std::floorf(inFrames / Settings.framerate);
+	int secs = std::floorf(inFrames / EdlCompSettings.framerate);
 	//inFrames = inFrames - (secs * Settings.framerate);
-	int frames = inFrames - (secs * Settings.framerate);
+	int frames = inFrames - (secs * EdlCompSettings.framerate);
 	
 	temp << std::internal << std::setfill('0') << std::setw(2) << hours << ":" <<
 	std::internal << std::setfill('0') << std::setw(2) << mins << ":" <<
@@ -741,8 +736,8 @@ std::string EDLconformer::FramesToTimecodeString(int inFrames) {
 
 int EDLconformer::TimecodeToFrames(std::string inTimecode) { 
 	std::stringstream result;
-	int framesPerhour = Settings.framerate * 3600;
-	int framesPermin = Settings.framerate * 60;
+	int framesPerhour = EdlCompSettings.framerate * 3600;
+	int framesPermin = EdlCompSettings.framerate * 60;
 	int frames = 0;
 	int i = 0;
 	std::vector<std::string> tokens = stringSplitToList(inTimecode, ":");
@@ -759,7 +754,7 @@ int EDLconformer::TimecodeToFrames(std::string inTimecode) {
 				break;
 			case 2:
 				//secs
-				frames += std::stoi(token) * Settings.framerate;
+				frames += std::stoi(token) * EdlCompSettings.framerate;
 				break;
 			case 3:
 				//frames
@@ -791,15 +786,22 @@ bool EDLconformer::DoConform() {
 	
 	ShiftExistingTimeline();
 		
-	if (Settings.CopyExistingRegions) {
+	if (EdlCompSettings.CopyExistingRegions) {
 		MovePreviousRegions();
+	}
+	
+	if (EdlCompSettings.CreateEDLFileRegion){
+		auto startTime = new_shotTimeInfo.front().destStartTC;
+		auto endTime = new_shotTimeInfo.back().destEndTC;
+		int colour = ColorToNative(255,255,255)|16777216; //red
+		AddRegion(startTime,endTime,filepath_New_EDL,colour);
 	}
 	
 	for (auto changedShot : changedSections)
 	{
 		CopyOldSliceToNewTime(changedShot.sourceStartTC,changedShot.sourceEndTC,changedShot.destStartTC,changedShot.destEndTC, changedShot.shotName);
 		Print("CHANGE: "+changedShot.shotName+": New Timecode: "+changedShot.destStartTC+" "+changedShot.destEndTC);
-		if (Settings.CreateRegionsForChangedShots)
+		if (EdlCompSettings.CreateRegionsForChangedShots)
 		{
 			int colour = ColorToNative(255,255,255)|16777216;// -- red
 			AddRegion( changedShot.destStartTC, changedShot.destEndTC ,"CHANGE: "+ changedShot.shotName ,colour);

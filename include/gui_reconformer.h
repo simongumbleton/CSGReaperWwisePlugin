@@ -1,3 +1,4 @@
+#pragma once
 #include "JUCE/JuceHeader.h"
 #include "GUI.h"
 #include "reaperHelpers.h"
@@ -162,15 +163,13 @@ public:
 	
 	~ConformerComponent()
 	{
-		delete conformer;
+		delete conformerComponent;
 	};
-	
-	EDLSettingsStruct edlSettings;
 
 private:
-	EDLconformer* conformer = nullptr;
+	EDLconformer* conformerComponent = nullptr;
 	
-	EDLSettingsWnd* settings = nullptr;
+	EDLSettingsWnd* settingsWndHndl = nullptr;
 
 	bool windowStatus;
 	

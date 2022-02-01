@@ -12,7 +12,7 @@
 
 ConformerComponent::ConformerComponent()
 {
-	conformer = new EDLconformer;
+	conformerComponent = new EDLconformer;
 	InitAllButtons(buttons);
 	addAndMakeVisible(btn_ChooseOldEDL);
 	addAndMakeVisible(btn_ChooseNewEDL);
@@ -131,43 +131,43 @@ void ConformerComponent::TriggerConform() {
 		return;
 	}
 	
-	if (conformer)
+	if (conformerComponent)
 	{
-		conformer->filepath_Old_EDL = dragDropTarget01->getText().toStdString();
-		conformer->filepath_New_EDL = dragDropTarget02->getText().toStdString();
-		conformer->DoConform();
+		conformerComponent->filepath_Old_EDL = dragDropTarget01->getText().toStdString();
+		conformerComponent->filepath_New_EDL = dragDropTarget02->getText().toStdString();
+		conformerComponent->DoConform();
 	}
 }
 
 void ConformerComponent::DrawPreviewConform() { 
-	if (conformer)
+	if (conformerComponent)
 	{
-		conformer->filepath_Old_EDL = dragDropTarget01->getText().toStdString();
-		conformer->filepath_New_EDL = dragDropTarget02->getText().toStdString();
+		conformerComponent->filepath_Old_EDL = dragDropTarget01->getText().toStdString();
+		conformerComponent->filepath_New_EDL = dragDropTarget02->getText().toStdString();
 		txt_preview->setText("", juce::NotificationType::dontSendNotification);
 		repaint();
 		RegionPreview->ClearRegions();
 		RegionPreview->repaint();
-		if (conformer->SetupConform())
+		if (conformerComponent->SetupConform())
 		{
-			float newEndTime = conformer->GetNewEndTime();
+			float newEndTime = conformerComponent->GetNewEndTime();
 			if (newEndTime == 0.0f) return;
 			PrintToConsole("Previewing conform.." + std::to_string(newEndTime));
 			RegionPreview->maxDuration = newEndTime;
-			for (auto region : conformer->changedSections)
+			for (auto region : conformerComponent->changedSections)
 			{
 				
 				RegionPreview->AddRegion(
-										 conformer->TimecodeToSeconds(region.destStartTC),
-										 conformer->TimecodeToSeconds(region.destEndTC),
+										 conformerComponent->TimecodeToSeconds(region.destStartTC),
+										 conformerComponent->TimecodeToSeconds(region.destEndTC),
 										 true);
 			}
-			for (auto region : conformer->unchangedSections)
+			for (auto region : conformerComponent->unchangedSections)
 			{
 				
 				RegionPreview->AddRegion(
-										 conformer->TimecodeToSeconds(region.destStartTC),
-										 conformer->TimecodeToSeconds(region.destEndTC),
+										 conformerComponent->TimecodeToSeconds(region.destStartTC),
+										 conformerComponent->TimecodeToSeconds(region.destEndTC),
 										 false);
 			}
 			txt_preview->setText("Preview of conform...", juce::NotificationType::dontSendNotification);
@@ -187,9 +187,9 @@ void ConformerComponent::SaveSettings() {
 
 
 void ConformerComponent::LaunchSettingsWindow() { 
-	settings = new EDLSettingsWnd("settings", &windowStatus);
-	addAndMakeVisible(settings);
-	settings->centreWithSize(300, 400);
+	settingsWndHndl = new EDLSettingsWnd("settings", conformerComponent->EdlCompSettings,windowStatus);
+	addAndMakeVisible(settingsWndHndl);
+	settingsWndHndl->centreWithSize(300, 400);
 	
 }
 

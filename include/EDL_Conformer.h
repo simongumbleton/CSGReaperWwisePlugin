@@ -6,7 +6,7 @@
 
 struct EDLSettingsStruct
 {
-	bool CreateEDLRegions = false;
+	bool CreateEDLFileRegion = false;
 	bool CopyExistingRegions = true;
 	bool CreateRegionsForChangedShots = true;
 	std::string timeLineOffset = "01:00:00:00";
@@ -41,7 +41,7 @@ public:
 	std::string filepath_Old_EDL;
 	std::string filepath_New_EDL;
 	
-	EDLSettingsStruct Settings;
+	EDLSettingsStruct EdlCompSettings;
 	
 	EDLconformer()
 	{

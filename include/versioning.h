@@ -5,6 +5,7 @@
 //  Created by Simon Gumbleton on 15/11/2021.
 //  Copyright © 2021 My Company. All rights reserved.
 //
+#pragma once
 #include <string>
 #include <iomanip>
 

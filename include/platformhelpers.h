@@ -10,6 +10,7 @@
 #include <algorithm>
 #include "JUCE/JuceHeader.h"
 #include <cstdlib>
+#include <regex>
 
 #ifndef platformhelpers_h
 #define platformhelpers_h
@@ -45,6 +46,39 @@ static bool stringIsNumber(std::string input)
 	}
 	return true;
 }
+
+static bool stringIsFloat(std::string input)
+{
+	for (auto c : input)
+	{
+		if (!isdigit(c) and c != '.')
+		{
+			return false;
+			
+		}
+	}
+	return true;
+}
+
+static bool stringIsTimecode(std::string input)
+{
+	std::regex tcPattern("[0-9][0-9]\\:[0-9][0-9]\\:[0-9][0-9]\\:[0-9][0-9]");
+	std::vector<std::string> matches;
+	std::sregex_iterator iter(input.begin(), input.end(),tcPattern);
+	std::sregex_iterator end;
+	int count=0;
+	while(iter != end)
+	{
+		for(unsigned i = 0; i < iter->size(); ++i)
+		{
+			matches.push_back((*iter)[i]);
+		}
+		++iter;
+		count++;
+	}
+	return matches.size() == 1;
+}
+
 
 static std::string cleanWwisePathsFromMac(std::string input)
 {
