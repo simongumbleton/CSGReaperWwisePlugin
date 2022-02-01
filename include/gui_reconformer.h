@@ -164,6 +164,8 @@ public:
 	{
 		delete conformer;
 	};
+	
+	EDLSettingsStruct edlSettings;
 
 private:
 	EDLconformer* conformer = nullptr;
@@ -206,11 +208,11 @@ private:
 	
 	void DrawPreviewConform();
 	
-	void LaunchSettings();
+	void LaunchSettingsWindow();
 	
 	void SaveSettings();
 	
-	void LoadSettings();
+	void GetCurrentSettings();
 	
 	std::vector<juce::Button*> buttons{
 		btn_ChooseOldEDL,

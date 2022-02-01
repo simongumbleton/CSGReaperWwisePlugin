@@ -94,7 +94,7 @@ void ConformerComponent::buttonClicked(juce::Button *pButton) {
 	}
 	else if (pButton == btn_Settings)
 	{
-		LaunchSettings();
+		LaunchSettingsWindow();
 	}
 }
 
@@ -176,7 +176,7 @@ void ConformerComponent::DrawPreviewConform() {
 	}
 }
 
-void ConformerComponent::LoadSettings() { 
+void ConformerComponent::GetCurrentSettings() {
 	
 }
 
@@ -186,7 +186,7 @@ void ConformerComponent::SaveSettings() {
 }
 
 
-void ConformerComponent::LaunchSettings() { 
+void ConformerComponent::LaunchSettingsWindow() { 
 	settings = new EDLSettingsWnd("settings", &windowStatus);
 	addAndMakeVisible(settings);
 	settings->centreWithSize(300, 400);

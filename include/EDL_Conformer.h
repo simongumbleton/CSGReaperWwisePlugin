@@ -4,6 +4,14 @@
 #include <map>
 #include <regex>
 
+struct EDLSettingsStruct
+{
+	bool CreateEDLRegions = false;
+	bool CopyExistingRegions = true;
+	bool CreateRegionsForChangedShots = true;
+	std::string timeLineOffset = "01:00:00:00";
+	float framerate = 30;
+};
 
 
 struct ShotTCInfo
@@ -33,11 +41,7 @@ public:
 	std::string filepath_Old_EDL;
 	std::string filepath_New_EDL;
 	
-	bool CreateEDLRegions = false;
-	bool CopyExistingRegions = true;
-	bool CreateRegionsForChangedShots = true;
-	
-	float framerate = 30;
+	EDLSettingsStruct Settings;
 	
 	EDLconformer()
 	{
@@ -93,7 +97,7 @@ private:
 	
 	std::vector<ConformResultsInfo> conformResults;
 	
-	std::string timeLineOffset = "01:00:00:00";
+	
 	std::string originalEndTime = "";
 	int numberOfShots = 0;
 	bool working = false;

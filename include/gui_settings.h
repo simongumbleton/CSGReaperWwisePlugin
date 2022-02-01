@@ -15,10 +15,7 @@ struct MetadataSettingsStruct
 	
 };
 
-struct EDLSettingsStruct
-{
-	
-};
+
 
 
 class SettingsButton : public ImageButton
@@ -32,47 +29,39 @@ public:
 	};
 	
 };
-/*
-class SettingsWindow : public DocumentWindow
+
+class SettingsComponent : public Component
 {
 public:
-	SettingsWindow (juce::String name)  : DocumentWindow (name,
-														 juce::Colours::lightgrey,
-														 DocumentWindow::allButtons)
-	   {
-			setUsingNativeTitleBar(true);
-			//setContentOwned(c, true);
-
-			setResizable(true, false);
-			//setResizeLimits(300, 250, 10000, 10000);
-			//centreWithSize(getWidth(), getHeight());
-
-			setVisible(true);
-	   }
-
-	   void closeButtonPressed() override
-	   {
-		   delete this;
-	   }
 	
-	virtual void LoadSettings() {};
+	Label* info = new Label("Settings");
 	
-	virtual void SaveSettings() {};
-
-   private:
-	   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SettingsWindow)
+	SettingsComponent(){
+		info->setText("EDL Settings", NotificationType::dontSendNotification);
+		addAndMakeVisible(info);
+		setWantsKeyboardFocus(true);
+		grabKeyboardFocus();
+	};
+	~SettingsComponent(){};
+	
+	void resized() override
+	{
+		auto area = getBoundsInParent();
+		info->setBounds(area.removeFromTop(20));
+		info->setJustificationType(Justification::centred);
+	};
+	
 };
-*/
 
 class SettingsWindow : public juce::DocumentWindow
 {
 	bool* mWindowState;
 public:
-	SettingsWindow(const juce::String& name, /* juce::Component* component, */ bool* windowStatus)
+	SettingsWindow(const juce::String& name,  juce::Component* component, bool* windowStatus)
 		: DocumentWindow(name, juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), juce::DocumentWindow::allButtons)
 	{
 		setUsingNativeTitleBar(true);
-		//setContentOwned(component, true);
+		setContentOwned(component, true);
 
 		mWindowState = windowStatus;
 		*mWindowState = true;
@@ -81,9 +70,9 @@ public:
 		//setResizeLimits(500, 500, 10000, 10000);
 		//setSize(750, 600);
 		centreWithSize(getWidth(), getHeight());
-		setWantsKeyboardFocus(true);
+		//setWantsKeyboardFocus(true);
 		setVisible(true);
-		grabKeyboardFocus();
+		//grabKeyboardFocus();
 	}
 
 	void closeButtonPressed() override
@@ -92,10 +81,9 @@ public:
 		delete this;
 	}
 
-	virtual void LoadSettings() {};
-
-	virtual void SaveSettings() {};
-
+	virtual void readSettingsFromParent(){};
+	
+	virtual void updateSettingsInParent(){};
 
 private:
 
@@ -117,10 +105,18 @@ class MetadataSettingsWnd : public SettingsWindow
 public:
 };
 
+class EDLSettingsCmp : public SettingsComponent
+{
+	
+
+	
+	
+};
+
 class EDLSettingsWnd : public SettingsWindow
 {
 public:
-	EDLSettingsWnd (const juce::String name, bool* windowStatus)  : SettingsWindow(name, windowStatus)
+	EDLSettingsWnd (const juce::String name, bool* windowStatus)  : SettingsWindow(name, new SettingsComponent(), windowStatus)
 	   {
 	   }
 
@@ -129,9 +125,15 @@ public:
 		   delete this;
 	   }
 	
-	virtual void LoadSettings() override {};
+	virtual void readSettingsFromParent()override
+	{
+		
+	};
 	
-	virtual void SaveSettings() override{};
+	virtual void updateSettingsInParent()override
+	{
+		
+	};
 
    private:
 	   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EDLSettingsWnd)
