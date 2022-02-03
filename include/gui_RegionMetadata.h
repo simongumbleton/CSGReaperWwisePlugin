@@ -7,12 +7,19 @@
 #include "gui_RenderTree.h"
 #include "gui_properties.h"
 #include "reaperHelpers.h"
+#include "gui_settings.h"
 
 class ProjectRegionMetadataHelper;
 //class WwiseTemplateComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
 class RegionMetadataComponent : public BaseWwiseGuiComponent
 {
 	static RegionMetadataComponent * currentWwiseTemplateComponent;
+
+	MetadataSettingsStruct regionMetadataSettings;
+
+	MetadataSettingsWnd* settingsWndHndl_meta = nullptr;
+
+	bool windowStatus;
 
 public:
 
@@ -55,6 +62,8 @@ public:
 	void handle_OnButton_Saved();
 
 	void handle_OnButton_Refresh();
+
+	void LaunchSettingsWindow();
 	
 	//void postCommandMessage(int commandId);
 	//https://docs.juce.com/master/classComponent.html#a9ba6fa31d1397c7e90050b2cd4f2089b
@@ -71,7 +80,7 @@ public:
 	
 	//Array<PropertiesComponent*> RegionProperties;
 	Viewport* myViewport = new Viewport();
-	PropertiesViewportComponent* regionPropertiesViewport = new PropertiesViewportComponent();
+	PropertiesViewportComponent* regionPropertiesViewport = new PropertiesViewportComponent(regionMetadataSettings.PropertyNames);
 
 private:
 	std::unique_ptr<ProjectRegionMetadataHelper> metadataHelper;
@@ -86,10 +95,13 @@ private:
 
 	juce::TextButton* btn_Refresh = new TextButton("Refresh Regions From Project");
 
+	SettingsButton* btn_SettingsMetadata = new SettingsButton("settingsBtn");
+
 	std::vector<juce::Button*> buttons{
 //	btn_ConnectToWwise,
 	btn_Save,
-	btn_Refresh
+	btn_Refresh,
+	btn_SettingsMetadata
 	};
 
 	juce::Label * txt_ConnectionStatus = new Label(); // text
@@ -103,12 +115,13 @@ private:
 	juce::Label * TitleAttach = new Label();
 	
 	
+	
 	Array<PropertiesComponent*> createProperties(int count)
 	{// TO DO - count should be the number of regions
 		Array<PropertiesComponent*> properties;
 		for (auto region : getNonMasterProjectRegionNames())
 		{
-			properties.add(new PropertiesComponent(region));
+			properties.add(new PropertiesComponent(region, regionMetadataSettings.PropertyNames));
 		}
 		//for (int i = 0;i < count;i++)
 		//{

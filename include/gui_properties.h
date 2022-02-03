@@ -8,6 +8,13 @@
 #include "RapidJsonUtils.h"
 #include <algorithm>
 
+struct MetadataSettingsStruct
+{
+	std::vector<std::string>PropertyNames;
+
+};
+
+
 //==============================================================================
 class PropertiesComponent   : public Component
 {
@@ -15,7 +22,9 @@ public:
 
 	String sRegionName;
 
-	PropertiesComponent(const juce::String& name)
+	MetadataSettingsStruct regionPropertySettings;
+
+	PropertiesComponent(const juce::String& name,std::vector<std::string>inProperties)
 	{
 		setOpaque (true);
 		
@@ -23,7 +32,7 @@ public:
 		regionName->setText(name, juce::NotificationType::dontSendNotification);
 		sRegionName = name;
 		
-		properties = createTextEditors();
+		properties = createTextEditors(inProperties);
 		for (auto comp : properties)
 		{
 			addAndMakeVisible(comp);
@@ -176,14 +185,24 @@ private:
 
 	int MaxTextWidth = 300;
 	
-	Array<TextEditor*> createTextEditors()
+	Array<TextEditor*> createTextEditors(std::vector<std::string> properties)
 	{
-		return
+		if (properties.empty())
 		{
-			new TextEditor("tag")
-			,new TextEditor("attach")
+			properties = { "tag","attach" };//make sure there are some defaults
+		}
+		Array<TextEditor*> textEditors;
+		for (auto property : properties)
+		{
+			auto editor = new TextEditor(property);
+			textEditors.add(editor);
+		}
+		return textEditors;
+	//	{
+	//		new TextEditor("tag")
+	//		,new TextEditor("attach")
 			//,new TextEditor("Value")
-		};
+	//	};
 	}
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PropertiesComponent)
 };
@@ -193,9 +212,11 @@ private:
 
 class PropertiesViewportComponent : public Component
 {
+	std::vector<std::string> regionPropertyList;
 public:
-	PropertiesViewportComponent()
+	PropertiesViewportComponent(std::vector<std::string> inRegionPropertyList)
 	{
+		regionPropertyList = inRegionPropertyList;
 		setOpaque(true);
 
 		refreshRegionsFromProject();
@@ -258,7 +279,7 @@ private:
 	std::vector <PropertiesComponent*> properties;
 		for (auto region : getNonMasterProjectRegionNames())
 		{
-			properties.push_back(new PropertiesComponent(region));
+			properties.push_back(new PropertiesComponent(region, regionPropertyList));
 		}
 		//for (int i = 0;i < count;i++)
 		//{

@@ -9,6 +9,7 @@
 // for convenience
 using json = nlohmann::json;
 
+
 struct RegionInfo
 {
 	std::string name = "";//rInfo["name"] = name

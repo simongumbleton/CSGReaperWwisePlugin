@@ -5,19 +5,13 @@
 #include "platformhelpers.h"
 #include "cog.h"
 #include "gui_reconformer.h"
+#include "gui_RegionMetadata.h"
 
 
 struct TransferSettingsStruct
 {
 	
 };
-
-struct MetadataSettingsStruct
-{
-	std::vector<std::string>PropertyNames;
-	
-};
-
 
 
 
@@ -111,9 +105,56 @@ class TransferSettingsWnd : public SettingsWindow
 public:
 };
 
+
+
+class MetadataSettingsCmp : public SettingsComponent
+{
+	MetadataSettingsStruct& rSettings;
+public:
+	MetadataSettingsCmp(MetadataSettingsStruct& inSettings) :rSettings(inSettings)
+	{
+
+	}
+	~MetadataSettingsCmp() {};
+
+	void resized() override {}
+
+	void buttonClicked(juce::Button* pButton)override {}
+
+	void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override {}
+
+	void labelTextChanged(Label* labelThatHasChanged)override {}
+
+};
+
 class MetadataSettingsWnd : public SettingsWindow
 {
 public:
+	MetadataSettingsCmp* settingsComp;
+
+	MetadataSettingsWnd(const juce::String name, MetadataSettingsStruct& inSettings, bool& windowStatus) : SettingsWindow(name, &windowStatus)
+	{
+		settingsComp = new MetadataSettingsCmp(inSettings);
+		setContentOwned(settingsComp, true);
+	}
+
+	void closeButtonPressed() override
+	{
+		delete this;
+	}
+
+	virtual void readSettingsFromParent()override
+	{
+
+	};
+
+	virtual void updateSettingsInParent()override
+	{
+
+	};
+
+private:
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MetadataSettingsWnd)
 };
 
 class EDLSettingsCmp : public SettingsComponent
@@ -137,7 +178,7 @@ class EDLSettingsCmp : public SettingsComponent
 		for (auto choice : supportedFramerates)
 		{
 			auto choiceAsFloat = choice.getFloatValue();
-			if (choiceAsFloat == rSettings.framerate)
+			if (isEqual(choiceAsFloat,rSettings.framerate))
 			{
 				return i;
 			}
@@ -310,6 +351,6 @@ public:
 		
 	};
 
-   private:
-	   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EDLSettingsWnd)
+ private:
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EDLSettingsWnd)
 };

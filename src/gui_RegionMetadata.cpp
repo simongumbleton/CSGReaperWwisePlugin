@@ -5,6 +5,7 @@
 #include <mutex>
 #include "RegionMetadataHelper.h"
 
+
 StringArray RegionMetadataComponent::ToJuceStringArray(std::vector<std::string> strings)
 {
 	StringArray output;
@@ -75,6 +76,7 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 	txt_pluginVersion->setText(RegionMetadata::GetPluginVersionString(), juce::NotificationType::dontSendNotification);
 	addAndMakeVisible(txt_pluginVersion);
 
+	addAndMakeVisible(btn_SettingsMetadata);
 
 	setSize(600, 400);
 	
@@ -172,6 +174,7 @@ void RegionMetadataComponent::resized()
 	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
 	
 	txt_pluginVersion->setBounds(statusRow.removeFromRight(50));
+	btn_SettingsMetadata->setBounds(statusRow.removeFromLeft(40));
 	
 	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth()/2).reduced(border));
 	debugLabel->setBounds(statusRow);
@@ -237,7 +240,10 @@ void RegionMetadataComponent::buttonClicked(juce::Button * pButton)
 	{
 		handle_OnButton_Refresh();
 	}
-	
+	else if (pButton == btn_SettingsMetadata)
+	{
+		LaunchSettingsWindow();
+	}
 }
 
 void RegionMetadataComponent::comboBoxChanged(ComboBox * comboBoxThatHasChanged)
@@ -317,4 +323,9 @@ void RegionMetadataComponent::handle_OnButton_Refresh()
 	//regionPropertiesViewport->repaint();
 }
 
-
+void RegionMetadataComponent::LaunchSettingsWindow()
+{
+	settingsWndHndl_meta = new MetadataSettingsWnd("settings", regionMetadataSettings, windowStatus);
+	addAndMakeVisible(settingsWndHndl_meta);
+	settingsWndHndl_meta->centreWithSize(300, 400);
+}

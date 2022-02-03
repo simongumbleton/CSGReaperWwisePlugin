@@ -11,6 +11,7 @@
 #include "JUCE/JuceHeader.h"
 #include <cstdlib>
 #include <regex>
+#include <limits>
 
 #ifndef platformhelpers_h
 #define platformhelpers_h
@@ -36,6 +37,16 @@ static std::string stringToUpper(std::string input)
 	std::transform(result.begin(), result.end(), result.begin(),
 		[](unsigned char c) { return std::toupper(c); });
 	return result;
+}
+
+static bool isEqual(float A,float B)
+{
+	return abs(A - B) <= std::numeric_limits<float>::epsilon();
+}
+
+static bool isEqual(double A, double B)
+{
+	return abs(A - B) <= std::numeric_limits<double>::epsilon();
 }
 
 static bool stringIsNumber(std::string input)
