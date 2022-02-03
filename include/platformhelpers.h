@@ -47,7 +47,7 @@ static bool stringIsNumber(std::string input)
 	return true;
 }
 
-static bool stringIsFloat(std::string input)
+static bool stringIsDecimalNumber(std::string input)
 {
 	for (auto c : input)
 	{

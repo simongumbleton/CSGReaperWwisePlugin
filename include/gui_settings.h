@@ -119,26 +119,89 @@ public:
 class EDLSettingsCmp : public SettingsComponent
 {
 	EDLSettingsStruct& rSettings;
+	
+	std::vector<String> supportedFramerates
+	{
+		"30",
+		"24",
+		"25" ,
+		"29.97",
+		"59.97",
+		"60",
+		"120",
+	};
+	
+	int getSavedFramerateAsID()
+	{
+		int i = 1;
+		for (auto choice : supportedFramerates)
+		{
+			auto choiceAsFloat = choice.getFloatValue();
+			if (choiceAsFloat == rSettings.framerate)
+			{
+				return i;
+			}
+			i++;
+		}
+		return 1;
+	};
+	
 public:
 	TooltipWindow tooltipWindow {nullptr,750};
 	Label * info_StartOffset = new Label("info_StartOffset");
 	Label * txt_StartOffset = new Label("txt_StartOffset");
 	Label * info_Framerate = new Label("info_Framerate");
 	Label * txt_Framerate = new Label("txt_Framerate");
+	ComboBox * dd_Framerate = new ComboBox("dd_Framerate");
 	ToggleButton * btn_EDLRegions = new ToggleButton("Create EDL Regions");
 	ToggleButton * btn_ExistingRegions = new ToggleButton("Copy Existing Regions");
 	ToggleButton * btn_ChangedShots = new ToggleButton("Create Regions for Changed Shots");
 	
+	
+	
+	
+	
+	
+	void InitComboBox(juce::ComboBox * comboBox, std::vector<String> choices)
+	{
+		comboBox->clear();
+		int i = 1;
+		for (auto choice : choices)
+		{
+			comboBox->addItem(choice, i);
+			i++;
+		}
+		comboBox->addListener(this);
+		comboBox->setSelectedItemIndex(0, false);
+		addAndMakeVisible(comboBox);
+	}
+	
+	
 	void buttonClicked(juce::Button* pButton)override{
-		PrintToConsole(pButton->getName().toStdString());
+		//PrintToConsole(pButton->getName().toStdString());
+		if (pButton == btn_EDLRegions){
+			rSettings.CreateEDLFileRegion = btn_EDLRegions->getToggleState();
+		}else if (pButton == btn_ExistingRegions){
+			rSettings.CopyExistingRegions = btn_ExistingRegions->getToggleState();
+		}else if (pButton == btn_ChangedShots){
+			rSettings.CreateRegionsForChangedShots = btn_ChangedShots->getToggleState();
+		}
 	};
 
 	void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override{
+		if (comboBoxThatHasChanged == dd_Framerate)
+		{
+			auto value = dd_Framerate->getText().getFloatValue();
+			rSettings.framerate = value;
+		}
 		
 	};
 
 	void labelTextChanged(Label* labelThatHasChanged)override{
-		PrintToConsole(labelThatHasChanged->getName().toStdString());
+		//PrintToConsole(labelThatHasChanged->getName().toStdString());
+		if (labelThatHasChanged == txt_StartOffset){
+			rSettings.timeLineOffset = txt_StartOffset->getText().toStdString();
+		}
 	};
 
 	EDLSettingsCmp(EDLSettingsStruct& inSettings):rSettings(inSettings)
@@ -162,7 +225,7 @@ public:
 		{
 			if (!stringIsTimecode(txt_StartOffset->getText().toStdString()))
 			{
-				txt_StartOffset->setText(rSettings.timeLineOffset, dontSendNotification);
+				txt_StartOffset->setText(rSettings.timeLineOffset, sendNotification);
 			}
 		};
 		
@@ -172,21 +235,11 @@ public:
 		info_Framerate->setText("Framerate:", NotificationType::dontSendNotification);
 		addAndMakeVisible(info_Framerate);
 		info_Framerate->setTooltip("Framerate to use during EDL conform.");
-		txt_Framerate->setEditable(true);
-		txt_Framerate->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
-		addAndMakeVisible(txt_Framerate);
-		info_Framerate->attachToComponent(txt_Framerate, true);
-		txt_Framerate->setText(std::to_string(rSettings.framerate), NotificationType::dontSendNotification);
-		txt_Framerate->addListener(this);
-		
-		txt_Framerate->onTextChange = [this]
-		{
-			if (!stringIsFloat(txt_Framerate->getText().toStdString()))
-			{
-				txt_Framerate->setText (std::to_string(rSettings.framerate), dontSendNotification);
-			}
-		};
-		
+
+		addAndMakeVisible(dd_Framerate);
+		info_Framerate->attachToComponent(dd_Framerate, true);
+		InitComboBox(dd_Framerate, supportedFramerates);
+		dd_Framerate->setSelectedId(getSavedFramerateAsID());
 		
 		
 		
@@ -220,7 +273,7 @@ public:
 		auto buffer2 = area.removeFromTop(5);
 		auto area2 = area.removeFromTop(30);
 		info_Framerate->setBounds(area2.removeFromLeft(width/2));
-		txt_Framerate->setBounds(area2.reduced(3));
+		dd_Framerate->setBounds(area2.reduced(3));
 		auto buffer3 = area.removeFromTop(5);
 		btn_EDLRegions->setBounds(area.removeFromTop(20));
 		auto buffer4 = area.removeFromTop(5);
