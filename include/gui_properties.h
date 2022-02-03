@@ -7,12 +7,7 @@
 #include "reaperHelpers.h"
 #include "RapidJsonUtils.h"
 #include <algorithm>
-
-struct MetadataSettingsStruct
-{
-	std::vector<std::string>PropertyNames;
-
-};
+#include "settings_structs.h"
 
 
 //==============================================================================

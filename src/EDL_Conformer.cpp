@@ -609,7 +609,7 @@ bool EDLconformer::GatherAndCheckCommandIDs() {
 		return false;
 	}
 	
-	Print("All command IDs found. Success");
+	//Print("All command IDs found. Success");
 	return true;
 }
 

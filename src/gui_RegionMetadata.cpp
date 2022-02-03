@@ -325,6 +325,7 @@ void RegionMetadataComponent::handle_OnButton_Refresh()
 
 void RegionMetadataComponent::LaunchSettingsWindow()
 {
+	if (windowStatus)return;
 	settingsWndHndl_meta = new MetadataSettingsWnd("settings", regionMetadataSettings, windowStatus);
 	addAndMakeVisible(settingsWndHndl_meta);
 	settingsWndHndl_meta->centreWithSize(300, 400);

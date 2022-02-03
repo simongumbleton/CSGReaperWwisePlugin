@@ -3,15 +3,8 @@
 #include <vector>
 #include <map>
 #include <regex>
+#include "settings_structs.h"
 
-struct EDLSettingsStruct
-{
-	bool CreateEDLFileRegion = false;
-	bool CopyExistingRegions = true;
-	bool CreateRegionsForChangedShots = true;
-	std::string timeLineOffset = "01:00:00:00";
-	float framerate = 30;
-};
 
 
 struct ShotTCInfo
@@ -34,7 +27,7 @@ struct ConformResultsInfo
 class EDLconformer
 {
 public:
-	
+
 	std::vector<ShotTCInfo> unchangedSections;
 	std::vector<ShotTCInfo> changedSections;
 	

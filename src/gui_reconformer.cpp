@@ -186,7 +186,8 @@ void ConformerComponent::SaveSettings() {
 }
 
 
-void ConformerComponent::LaunchSettingsWindow() { 
+void ConformerComponent::LaunchSettingsWindow() {
+	if (windowStatus) return;
 	settingsWndHndl = new EDLSettingsWnd("settings", conformerComponent->EdlCompSettings,windowStatus);
 	addAndMakeVisible(settingsWndHndl);
 	settingsWndHndl->centreWithSize(300, 400);

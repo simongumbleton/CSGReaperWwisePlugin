@@ -165,13 +165,14 @@ public:
 	{
 		delete conformerComponent;
 	};
-
-private:
 	EDLconformer* conformerComponent = nullptr;
 	
 	EDLSettingsWnd* settingsWndHndl = nullptr;
 
 	bool windowStatus;
+	
+private:
+	
 	
 	juce::Label * txt_OldEdlTxt = new Label("Choose OLD EDL file...");
 	
