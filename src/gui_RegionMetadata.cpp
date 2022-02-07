@@ -70,7 +70,10 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 
 	addAndMakeVisible(regionPropertiesViewport);
 	//myViewport->setBounds(0, 0, 750, 300);
-	myViewport->setSize(3000, 1000);
+	//myViewport->setSize(3000, 1000);
+	regionPropertiesViewport->setSize
+	(300+(regionPropertiesViewport->numProperties*150),
+	 100+(regionPropertiesViewport->numRegions*50));
 	myViewport->setViewedComponent(regionPropertiesViewport);
 	addAndMakeVisible(myViewport);
 
@@ -138,6 +141,9 @@ void RegionMetadataComponent::resized()
 	//auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
 	//auto RightHalf = area;
 
+	regionPropertiesViewport->setSize
+	(300+(regionPropertiesViewport->numProperties*150),
+	 100+(regionPropertiesViewport->numRegions*50));
 	auto viewportArea = area.removeFromTop(300);
 	myViewport->setBounds(viewportArea);
 

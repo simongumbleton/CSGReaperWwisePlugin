@@ -71,6 +71,10 @@ public:
 	void UpdateRegionPropertiesFromSettings()
 	{
 		regionPropertiesViewport->UpdateRegionPropertyList(regionMetadataSettings.PropertyNames);
+		//myViewport->setViewedComponent(nullptr);
+		myViewport->setViewedComponent(regionPropertiesViewport);
+		repaint();
+		resized();
 	};
 	
 	//void postCommandMessage(int commandId);

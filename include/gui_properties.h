@@ -209,6 +209,10 @@ class PropertiesViewportComponent : public Component
 {
 	std::vector<std::string> regionPropertyList;
 public:
+	
+	int numProperties = 0;
+	int numRegions = 0;
+	
 	PropertiesViewportComponent(std::vector<std::string> inRegionPropertyList)
 	{
 		regionPropertyList = inRegionPropertyList;
@@ -246,6 +250,7 @@ public:
 			addAndMakeVisible(t);
 			titles.add(t);
 		}
+		numProperties = regionPropertyList.size();
 
 
 		auto createdProperties = createProperties();
@@ -258,8 +263,10 @@ public:
 			region->resized();
 			region->SetPropertyValuesFromExState();
 		}
+		numRegions = createdProperties.size();
+		
 		int sizeY = gridHeight * RegionProperties.size();
-		setSize(550, sizeY);
+		//setSize(550, sizeY);
 		//setBounds(0, 0, 750, sizeY);
 		repaint();
 		resized();

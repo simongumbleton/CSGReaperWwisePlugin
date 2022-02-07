@@ -95,10 +95,18 @@ public:
 	Label* Info = new Label("info");
 	
 	
-	DynamicTextEntry(){
+	DynamicTextEntry(std::vector<std::string>inList)
+	{
 		addAndMakeVisible(Info);
 		Info->setText("List of properties to create for regions",dontSendNotification);
-
+		if (!inList.empty())
+		{
+			for (auto txt : inList)
+			{
+				AddTextEditor(txt);
+			}
+			UpdateTextEditors();
+		}
 		setVisible(true);
 	};
 	
@@ -160,7 +168,7 @@ class MetadataSettingsCmp : public SettingsComponent
 
 	TextButton* btn_AddTextItem = new TextButton("AddTextItem");
 	TextButton* btn_RemoveTextItem = new TextButton("RemoveTextItem");
-	DynamicTextEntry* TextEntryCmpt = new DynamicTextEntry();
+	DynamicTextEntry* TextEntryCmpt;
 	Viewport* myViewport = new Viewport();
 	
 	
@@ -176,11 +184,13 @@ public:
 		btn_RemoveTextItem->setButtonText(btn_RemoveTextItem->getName());
 		btn_RemoveTextItem->addListener(this);
 		addAndMakeVisible(btn_RemoveTextItem);
+		
+		TextEntryCmpt = new DynamicTextEntry(rSettings.PropertyNames);
 
-		TextEntryCmpt->setSize(200, 200);
+		TextEntryCmpt->setSize(200, 1000);
 		//TextEntryCmpt->setBounds(0, 0, 200, 400);
 		addAndMakeVisible(TextEntryCmpt);
-		myViewport->setSize(50, 50);
+		//myViewport->setSize(50, 50);
 		myViewport->setViewedComponent(TextEntryCmpt, true);
 		addAndMakeVisible(myViewport);
 

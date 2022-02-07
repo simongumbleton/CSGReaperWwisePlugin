@@ -15,7 +15,11 @@ struct TransferSettingsStruct
 
 struct MetadataSettingsStruct
 {
-	std::vector<std::string>PropertyNames;
+	std::vector<std::string>PropertyNames
+	{
+		"Attach",
+		"Tag"
+	};
 
 };
 
