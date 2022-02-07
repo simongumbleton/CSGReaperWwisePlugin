@@ -169,7 +169,7 @@ public:
 	
 	EDLSettingsWnd* settingsWndHndl = nullptr;
 
-	bool windowStatus;
+	bool windowStatus = false;
 	
 private:
 	

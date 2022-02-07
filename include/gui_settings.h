@@ -79,17 +79,38 @@ class TransferSettingsWnd : public SettingsWindow
 public:
 };
 
+class DynamicTextEntry : public Component, public juce::Label::Listener
+{
+public:
+	std::vector<TextEditor *> TextEditors;
+	
+	DynamicTextEntry(){};
+	
+	~DynamicTextEntry(){};
+	
+	void resized() override
+	{
+		
+	};
+	
+	void labelTextChanged(Label* labelThatHasChanged)override{};
+};
 
 
 class MetadataSettingsCmp : public SettingsComponent
 {
 	MetadataSettingsStruct& rSettings;
+	
 public:
-	MetadataSettingsCmp(MetadataSettingsStruct& inSettings) :rSettings(inSettings){};
+	MetadataSettingsCmp(MetadataSettingsStruct& inSettings) :rSettings(inSettings){
+		
+	};
 	
 	~MetadataSettingsCmp() {};
 
-	void resized() override {}
+	void resized() override {
+		
+	}
 
 	void buttonClicked(juce::Button* pButton)override {}
 
@@ -101,14 +122,25 @@ public:
 
 class MetadataSettingsWnd : public SettingsWindow
 {
+	Viewport* myViewport = new Viewport();
 public:
 	MetadataSettingsCmp* settingsComp;
 
 	MetadataSettingsWnd(const juce::String name, MetadataSettingsStruct& inSettings, bool& windowStatus) : SettingsWindow(name, &windowStatus)
 	{
+		addAndMakeVisible(myViewport);
 		settingsComp = new MetadataSettingsCmp(inSettings);
 		setContentOwned(settingsComp, true);
+		myViewport->setViewedComponent(settingsComp);
+		auto viewportArea = getLocalBounds().removeFromTop(400);
+		myViewport->setBounds(viewportArea.reduced(50));
 	}
+	
+//	void resized()override
+//	{
+//		auto viewportArea = getLocalBounds().removeFromTop(400);
+//		myViewport->setBounds(viewportArea.reduced(50));
+//	};
 	
 	virtual void readSettingsFromParent()override
 	{

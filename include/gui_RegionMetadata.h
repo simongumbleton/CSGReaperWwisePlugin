@@ -19,7 +19,7 @@ class RegionMetadataComponent : public BaseWwiseGuiComponent
 
 	MetadataSettingsWnd* settingsWndHndl_meta = nullptr;
 
-	bool windowStatus;
+	bool windowStatus = false;
 
 public:
 

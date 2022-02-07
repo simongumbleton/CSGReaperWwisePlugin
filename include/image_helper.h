@@ -13,9 +13,11 @@
 #include "JUCE/JuceHeader.h"
 #include "cog.h"
 
+static Image cogImg = ImageFileFormat::loadFrom(cog::cog_png, cog::cog_pngSize);
+
 static Image GetSettingsImage()
 {
-	return ImageFileFormat::loadFrom(cog::cog_png, cog::cog_pngSize);
+	return cogImg;
 }
 
 #endif /* image_helper_h */
