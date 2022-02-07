@@ -33,7 +33,7 @@ public:
 			addAndMakeVisible(comp);
 		}
 		
-		setSize (550, 30);
+		setSize (3000, 30);
 	}
 	void SetRegionName(const juce::String& name)
 	{
@@ -217,6 +217,12 @@ public:
 		refreshRegionsFromProject();
 	}
 
+	void UpdateRegionPropertyList(std::vector<std::string> inList)
+	{
+		regionPropertyList = inList;
+		refreshRegionsFromProject();
+	}
+
 	void paint(Graphics& g) override
 	{
 		//g.fillAll(juce::Colours::aquamarine);
@@ -227,14 +233,25 @@ public:
 	{
 		removeAllChildren();
 
-		if (!RegionProperties.empty())
+		if (!RegionProperties.isEmpty())
 		{
 			RegionProperties.clear();
 		}
 
-		RegionProperties = createProperties();
-		for (auto region : RegionProperties)
+		titles.clear();
+		for (auto title : regionPropertyList)
 		{
+			Label* t = new Label(title);
+			t->setText(title,dontSendNotification);
+			addAndMakeVisible(t);
+			titles.add(t);
+		}
+
+
+		auto createdProperties = createProperties();
+		for (auto region : createdProperties)
+		{
+			RegionProperties.add(region);
 			addChildComponent(region);
 			addAndMakeVisible(region);
 			region->repaint();
@@ -251,6 +268,22 @@ public:
 	void resized() override
 	{
 		auto area = getLocalBounds();
+
+		auto titleArea = area.removeFromTop(30);
+		int x = 1;
+		int y = 2;
+		int MaxTextWidth = 300;
+		x += MaxTextWidth + 20;
+
+		for (auto title : titles)
+		{
+			title->setBounds(x, y, 100, 26);
+			//auto borderSize = juce::BorderSize(25);
+			//comp->setBoundsInset(borderSize);
+			x += 105;
+			//y += 80;
+		}
+
 		for (auto region : RegionProperties)
 		{
 			auto propertyArea = area.removeFromTop(gridHeight);
@@ -263,11 +296,14 @@ public:
 
 
 
-	std::vector<PropertiesComponent*> RegionProperties;
+	OwnedArray<PropertiesComponent> RegionProperties;
 
 private:
 	
 	int gridHeight = 30;
+
+	juce::Label* TitleRegions = new Label();
+	OwnedArray<Label> titles;
 
 	std::vector<PropertiesComponent*> createProperties()
 	{// TO DO - count should be the number of regions

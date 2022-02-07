@@ -11,6 +11,9 @@
 
 class ProjectRegionMetadataHelper;
 //class WwiseTemplateComponent : public juce::Component, public juce::Button::Listener, public juce::ComboBox::Listener, public juce::Label::Listener
+
+
+
 class RegionMetadataComponent : public BaseWwiseGuiComponent
 {
 	static RegionMetadataComponent * currentWwiseTemplateComponent;
@@ -64,6 +67,11 @@ public:
 	void handle_OnButton_Refresh();
 
 	void LaunchSettingsWindow();
+
+	void UpdateRegionPropertiesFromSettings()
+	{
+		regionPropertiesViewport->UpdateRegionPropertyList(regionMetadataSettings.PropertyNames);
+	};
 	
 	//void postCommandMessage(int commandId);
 	//https://docs.juce.com/master/classComponent.html#a9ba6fa31d1397c7e90050b2cd4f2089b
@@ -74,6 +82,9 @@ public:
 			case 1 : handle_OnSelectedParentChanged();
 					 break;       // and exits the switch
 			case 2 : handle_OnWwiseProjectClosed();
+					 break;
+			/// Sent from gui_settings
+			case 11: UpdateRegionPropertiesFromSettings();
 					 break;
 		}
 	}
@@ -111,8 +122,8 @@ private:
 	juce::Label * selectedParentLabel = new Label();
 	
 	juce::Label * TitleRegions = new Label();
-	juce::Label * TitleTag = new Label();
-	juce::Label * TitleAttach = new Label();
+	//juce::Label * TitleTag = new Label();
+	//juce::Label * TitleAttach = new Label();
 	
 	
 	

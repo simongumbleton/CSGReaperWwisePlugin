@@ -50,10 +50,10 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 	
 	addAndMakeVisible(TitleRegions);
 	TitleRegions->setText("Regions:", juce::NotificationType::dontSendNotification);
-	addAndMakeVisible(TitleTag);
-	TitleTag->setText("Tag:", juce::NotificationType::dontSendNotification);
-	addAndMakeVisible(TitleAttach);
-	TitleAttach->setText("Attach:", juce::NotificationType::dontSendNotification);
+	//addAndMakeVisible(TitleTag);
+	//TitleTag->setText("Tag:", juce::NotificationType::dontSendNotification);
+	//addAndMakeVisible(TitleAttach);
+	//TitleAttach->setText("Attach:", juce::NotificationType::dontSendNotification);
 	
 	
 	//int numRegions = 3;
@@ -70,6 +70,7 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 
 	addAndMakeVisible(regionPropertiesViewport);
 	//myViewport->setBounds(0, 0, 750, 300);
+	myViewport->setSize(3000, 1000);
 	myViewport->setViewedComponent(regionPropertiesViewport);
 	addAndMakeVisible(myViewport);
 
@@ -131,8 +132,8 @@ void RegionMetadataComponent::resized()
 	auto titleArea = area.removeFromTop(titleHeight);
 	
 	TitleRegions->setBounds(titleArea.removeFromLeft(320));
-	TitleTag->setBounds(titleArea.removeFromLeft(100));
-	TitleAttach->setBounds(titleArea.removeFromLeft(100));
+	//TitleTag->setBounds(titleArea.removeFromLeft(100));
+	//TitleAttach->setBounds(titleArea.removeFromLeft(100));
 
 	//auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
 	//auto RightHalf = area;
