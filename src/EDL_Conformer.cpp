@@ -862,6 +862,60 @@ float EDLconformer::GetNewEndTime() {
 				);
 }
 
+void EDLconformer::SaveSettingsToExtState() { 
+	std::string name = "CSGEDLSettings";
+	std::stringstream valuesToJson;
+	//"{ 'id': 1234, 'name': 'nandini' }"
+	valuesToJson << '{';
+	valuesToJson << "'" << EdlCompSettings.CreateEDLFileRegion << "'" << ",";
+	valuesToJson << "'" << EdlCompSettings.CopyExistingRegions << "'" << ",";
+	valuesToJson << "'" << EdlCompSettings.CreateRegionsForChangedShots << "'" << ",";
+	valuesToJson << "'" << EdlCompSettings.timeLineOffset << "'" << ",";
+	valuesToJson << "'" << EdlCompSettings.framerate << "'";
+	valuesToJson << "}";
+	saveProjExState("EDL", valuesToJson.str(), name);
+}
+
+
+void EDLconformer::LoadSettingsFromExtState() { 
+	
+	std::string svalue = "";
+	std::vector<std::string> tempListValues;
+	svalue = getProjExState("EDL", "CSGEDLSettings");
+	
+	if (svalue.empty()) {return;}
+	
+	char* pch;
+	printf("Splitting string \"%s\" into tokens:\n", svalue.c_str());
+	//char delims[] = "\n !@#$%^&*)(_+-=][}{|:;'<>?,./\"\\";
+	char delims[] = "{,}";
+	pch = strtok(&svalue[0], delims);
+	
+	while (pch != NULL)
+	{
+		printf("%s\n", pch);
+		std::string value = std::string(pch);
+		value.erase(std::remove(value.begin(), value.end(), '\''), value.end());
+
+
+		tempListValues.push_back(value);
+		pch = strtok(NULL, delims);
+	}
+	
+	if (tempListValues.size() != 5)//number of settings in the struct
+	{
+		printf("Warning! Mismatch in number of settings retrived from extstate");
+		return;
+	}
+	
+	EdlCompSettings.CreateEDLFileRegion = std::stoi(tempListValues[0]);
+	EdlCompSettings.CopyExistingRegions = std::stoi(tempListValues[1]);
+	EdlCompSettings.CreateRegionsForChangedShots = std::stoi(tempListValues[2]);
+	EdlCompSettings.timeLineOffset = tempListValues[3];
+	EdlCompSettings.framerate = std::stof(tempListValues[4]);
+}
+
+
 
 
 

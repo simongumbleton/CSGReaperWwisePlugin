@@ -38,11 +38,13 @@ public:
 	
 	EDLconformer()
 	{
+		LoadSettingsFromExtState();
 		Init();
 	}
 	
 	~EDLconformer()
 	{
+		SaveSettingsToExtState();
 	}
 	
 	void Init();
@@ -64,6 +66,10 @@ public:
 	std::string FramesToTimecodeString(int inFrames);
 	
 	float FramesToSeconds(int inFrames);
+	
+	void LoadSettingsFromExtState();
+	
+	void SaveSettingsToExtState();
 	
 private:
 	
