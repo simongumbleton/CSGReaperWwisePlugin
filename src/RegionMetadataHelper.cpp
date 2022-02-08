@@ -152,15 +152,11 @@ void ProjectRegionMetadataHelper::updateRegionGUIProperties(std::string RegionNa
 {
 	if (ProjectRegions.find(RegionName) != ProjectRegions.end())
 	{
-		if (values.find("tag") != values.end())
-		{
-			ProjectRegions.at(RegionName).tag = values.at("tag");
-		}
-		if (values.find("attach") != values.end())
-		{
-			ProjectRegions.at(RegionName).attach = values.at("attach");
-		}
 		//add more string properties to the region metadata here
+		for (auto& keyval : values)
+		{
+			ProjectRegions.at(RegionName).userProperties[keyval.first] = keyval.second;
+		}
 	}
 	
 }
@@ -206,14 +202,16 @@ json ProjectRegionMetadataHelper::RegionInfoToJson(RegionInfo& rinfo)
 	j["end"] = rinfo.end;
 	j["index"] = rinfo.index;
 	j["master"] = rinfo.master;
-	j["tag"] = rinfo.tag;
-	j["attach"] = rinfo.attach;
+	for (auto& keyVal : rinfo.userProperties)
+	{
+		j[keyVal.first] = keyVal.second;
+	}
 	j["events"] = {};
 	for (auto& event : rinfo.events)
 	{
 		j["events"].push_back(event);
 	}
-
+	
 	if (rinfo.children.empty())
 	{
 		j["children"] = {};

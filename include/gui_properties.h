@@ -75,7 +75,7 @@ public:
 		std::map<std::string, std::string> results;
 		for (auto property : properties)
 		{
-			results.emplace(property->getName().toStdString(),property->getText().toStdString());
+			results.emplace(property->getName().toLowerCase().toStdString(),property->getText().toLowerCase().toStdString());
 		}
 		return results;
 	}

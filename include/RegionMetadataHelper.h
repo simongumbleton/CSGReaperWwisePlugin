@@ -19,8 +19,7 @@ struct RegionInfo
 	int index = 0; //rInfo["index"]=markrgnindexnumber
 	std::string master = ""; //rInfo["master"]="none"
 	std::map<std::string,RegionInfo*> children; //rInfo["children"]={}
-	std::string tag = ""; //rInfo["tag"]=""
-	std::string attach = ""; //rInfo["attach"]=""
+	std::unordered_map<std::string, std::string> userProperties;
 	std::set<std::string> events;
 	~RegionInfo() { }
 };
