@@ -298,5 +298,8 @@
     <ClInclude Include="include\gui_settings.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\versioning.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

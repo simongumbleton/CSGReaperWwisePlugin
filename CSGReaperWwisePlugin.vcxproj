@@ -153,6 +153,7 @@
     <ClInclude Include="include\reaper_plugin.h" />
     <ClInclude Include="include\reaper_plugin_functions.h" />
     <ClInclude Include="include\RegionMetadataHelper.h" />
+    <ClInclude Include="include\versioning.h" />
     <ClInclude Include="include\WaapiConnect.h" />
     <ClInclude Include="include\WaapiFunctions.h" />
     <ClInclude Include="include\waapi_structs.h" />
