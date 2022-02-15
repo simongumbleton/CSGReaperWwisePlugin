@@ -28,7 +28,7 @@ static std::string GetPluginVersionAsString(double Vnumber)
 
 
 namespace CreateTransfer{
-	static const double pluginVersionNumber = 1.05;
+	static const double pluginVersionNumber = 1.06;
 
 	static std::string GetPluginVersionString()
 	{
@@ -37,7 +37,7 @@ namespace CreateTransfer{
 }
 
 namespace RegionMetadata{
-	static const double pluginVersionNumber = 1.05;
+	static const double pluginVersionNumber = 1.06;
 
 	static std::string GetPluginVersionString()
 	{
@@ -46,7 +46,7 @@ namespace RegionMetadata{
 }
 
 namespace Reconformer{
-	static const double pluginVersionNumber = 1.05;
+	static const double pluginVersionNumber = 1.06;
 
 	static std::string GetPluginVersionString()
 	{
