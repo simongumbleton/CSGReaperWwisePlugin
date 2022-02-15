@@ -8,22 +8,43 @@ Wwise transfer:
 
 
 
-Versioning can we add things as new sources? - XML refresh still not working?
-What is the versioning token?
-
-
 Render que open bypassed plugins in disabled state?
 
 
 
-How to do templates....
+
+how does wwise pitch affect the event behaviour in sequencers?
 
 
 
 Region metadata:
-- Needs a refresh button
-- Need to read the current project regions and merge/sync with the ExtState values before displaying/populating the UI
-- UI allign to grid
-- Contain UI in scrollable window/layer
 
-how does wwise pitch affect the event behaviour in sequencers?
+How to deal with use of 2D / master tracks.
+
+Expose the saved events to the region metadata plugin
+
+Expose the blueprint tag map?
+
+Is there another way of linking wwise events to regions
+
+Do we need to hide regions?
+
+Didn’t get the events in the metadata generation?
+
+Can Reaper know something about the sequencer contents? For the Region metadata e.g tags?
+
+Can Reaper view regions better?
+
+Saving region metadata is slow in bog projects
+
+Multiple tabs! Need to ensure we save into the right project!
+
+Add automatic project saving at certain points!
+
+Add a check for Duplicate region names! Auto rename them?
+
+Need to generate wwise data, any way of improving that?
+
+Can we make the track names use the event name?
+
+If you change the tag on an existing event what do we  do? 
