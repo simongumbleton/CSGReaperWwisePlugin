@@ -177,7 +177,7 @@ std::string getProjExState(std::string Key, std::string extName)
 	//	PrintToConsole(OutValue);
 	//	i++;
 	//}
-	const int ValOutSize = 256;
+	const int ValOutSize = 25600;/// Need to find a safer way of doing this!
 	char bufferValue[ValOutSize] = "";
 	
 	//std::string OutValue;

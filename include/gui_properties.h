@@ -8,6 +8,7 @@
 #include "RapidJsonUtils.h"
 #include <algorithm>
 #include "settings_structs.h"
+#include "platformhelpers.h"
 
 
 //==============================================================================
@@ -34,6 +35,8 @@ public:
 		}
 		
 		setSize (3000, 30);
+
+		SetPropertyValuesFromExState();
 	}
 	void SetRegionName(const juce::String& name)
 	{
@@ -135,10 +138,10 @@ public:
 			std::string svalue = "";
 			int size;
 			std::map<std::string, std::string>::iterator it;
-			it = results.find(property->getName().toStdString());
+			it = results.find(stringToLower(property->getName().toStdString()));
 			if (it != results.end())
 			{
-				std::string textValue = results[property->getName().toStdString()];
+				std::string textValue = results[stringToLower(property->getName().toStdString())];
 				if (!textValue.empty())
 				{
 					property->setText(textValue, false);

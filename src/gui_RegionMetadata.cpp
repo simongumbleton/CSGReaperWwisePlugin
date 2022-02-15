@@ -141,28 +141,40 @@ void RegionMetadataComponent::resized()
 	//auto LeftHalf = area.removeFromLeft(area.getWidth() / 2);
 	//auto RightHalf = area;
 
-	regionPropertiesViewport->setSize
-	(300+(regionPropertiesViewport->numProperties*150),
-	 100+(regionPropertiesViewport->numRegions*50));
-	auto viewportArea = area.removeFromTop(300);
-	myViewport->setBounds(viewportArea);
+	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
 
-	//auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
-	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
-	
-	auto buttonArea = area.removeFromTop(buttonHeight);
+	txt_pluginVersion->setBounds(statusRow.removeFromRight(50));
+	btn_SettingsMetadata->setBounds(statusRow.removeFromLeft(40));
+
+	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth() / 2).reduced(border));
+	debugLabel->setBounds(statusRow);
+
+	auto bottomBuffer = area.removeFromBottom(50);
+
+	auto buttonArea = area.removeFromBottom(buttonHeight);
 
 	auto savebuttonArea = buttonArea.removeFromLeft(300);
-	
+
 	btn_Save->setBounds(savebuttonArea.reduced(border));
 
 	auto refreshButtonArea = buttonArea.removeFromLeft(300);
 
 	btn_Refresh->setBounds(refreshButtonArea.reduced(border));
+
+	regionPropertiesViewport->setSize
+	(300+(regionPropertiesViewport->numProperties*150),
+	 100+(regionPropertiesViewport->numRegions*50));
+	auto viewportArea = area;
+	myViewport->setBounds(viewportArea);
+
+	//auto TopRightQtr = RightHalf.removeFromTop(RightHalf.getHeight()/2);
+	//auto CreateCorner = TopRightQtr.removeFromRight(TopRightQtr.getWidth()/1.5);
 	
-	auto edgesize = buttonArea.getWidth()*0.1;
-	auto offsetL = buttonArea.removeFromLeft(edgesize);
-	auto offsetR = buttonArea.removeFromRight(edgesize);
+	
+	
+	//auto edgesize = buttonArea.getWidth()*0.1;
+	//auto offsetL = buttonArea.removeFromLeft(edgesize);
+	//auto offsetR = buttonArea.removeFromRight(edgesize);
 	
 	//auto optionsArea1 = LeftHalf.removeFromTop(buttonHeight).reduced(border);
 	
@@ -178,13 +190,7 @@ void RegionMetadataComponent::resized()
 	
 	//txt_ConnectionStatus->setBounds(bottomRow);
 	
-	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
 	
-	txt_pluginVersion->setBounds(statusRow.removeFromRight(50));
-	btn_SettingsMetadata->setBounds(statusRow.removeFromLeft(40));
-	
-	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth()/2).reduced(border));
-	debugLabel->setBounds(statusRow);
 }
 
 
