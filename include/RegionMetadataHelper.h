@@ -9,6 +9,7 @@
 // for convenience
 using json = nlohmann::json;
 
+class ReaProject;
 
 struct RegionInfo
 {
@@ -64,10 +65,8 @@ public:
 
 	bool CreateProjectRegionJsonFile(std::string filename,json data);
 
-	static std::vector<std::string> GetEventListFromProjExtState();
+	static std::vector<std::string> GetEventListFromProjExtState(ReaProject* inProject = nullptr);
 
-
-	
 };
 
 

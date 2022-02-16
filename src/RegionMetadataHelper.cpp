@@ -251,11 +251,11 @@ bool ProjectRegionMetadataHelper::CreateProjectRegionJsonFile(std::string filena
 	}
 }
 
-std::vector<std::string> ProjectRegionMetadataHelper::GetEventListFromProjExtState()
+std::vector<std::string> ProjectRegionMetadataHelper::GetEventListFromProjExtState(ReaProject* inProject)
 {
 	std::string svalue = "";
 	std::vector<std::string> tempListValues;
-	svalue = getProjExState("EVENTS", "CSGTRANSFERWWISEEVENTS");
+	svalue = getProjExState("EVENTS", "CSGTRANSFERWWISEEVENTS",inProject);
 	if (!svalue.empty())
 	{
 		char* pch;

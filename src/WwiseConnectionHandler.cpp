@@ -129,8 +129,10 @@ std::vector<WwiseObject> WwiseConnectionHandler::GetWwiseObjects(bool suppressOu
 	{
 		/// WWise connection not found!
 		ReportConnectionError(MyCurrentWwiseConnection);
-		throw std::string("Wwise connection not found!");
+		return std::vector<WwiseObject>();
+		//throw std::string("Wwise connection not found!");
 	}
+	
 	using namespace AK::WwiseAuthoringAPI;
 
 	if (getargs.fromSelected)	/// Need to get the selected object first
@@ -147,7 +149,8 @@ std::vector<WwiseObject> WwiseConnectionHandler::GetWwiseObjects(bool suppressOu
 		std::string message = MoreRawReturnResults["message"].GetVariant().GetString().c_str();
 		PrintToConsole(message);
 		PrintToConsole("ERROR. Get Object Call Failed. Exiting.");
-		throw std::string("ERROR. Get Object Call Failed!");
+		return std::vector<WwiseObject>();
+		//throw std::string("ERROR. Get Object Call Failed!");
 	}
 	waapi_GetWaapiResultsArray(Results, MoreRawReturnResults);
 	std::vector<WwiseObject> WwiseObjects;

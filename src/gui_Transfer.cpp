@@ -538,10 +538,12 @@ void TransferToWwiseComponent::buttonClicked(juce::Button * pButton)
 	}
 	else if (pButton == btn_RenderAndImport)
 	{
+		currentProject = GetCurrentReaProject();
+		EventsToSave.empty();
 		//thisCreateImportWindow->backupRenderQueFiles();
 		if (thisCreateImportWindow->handleUI_RenderImport())
 		{
-			SaveEventsToExState();
+			SaveEventsToExState(currentProject);
 			RefreshRenderJobTree();
 		}
 		//thisCreateImportWindow->restoreRenderQueFiles();
@@ -805,9 +807,9 @@ void TransferToWwiseComponent::AddEventToSaveList(std::string eventName)
 	}
 }
 
-void TransferToWwiseComponent::SaveEventsToExState()
+void TransferToWwiseComponent::SaveEventsToExState(ReaProject* inProject)
 {
-	GetExistingEventsFromExState();
+	GetExistingEventsFromExState(inProject);
 	if (EventsToSave.empty())
 	{
 		return;
@@ -825,12 +827,12 @@ void TransferToWwiseComponent::SaveEventsToExState()
 	}
 	//PrintToConsole(valuesToJson.str());
 	valuesToJson.seekp(-1, valuesToJson.cur); valuesToJson << "}";
-	saveProjExState("Events", valuesToJson.str(), name);
+	saveProjExState("Events", valuesToJson.str(), name, inProject);
 }
 
-void TransferToWwiseComponent::GetExistingEventsFromExState()
+void TransferToWwiseComponent::GetExistingEventsFromExState(ReaProject* inProject)
 {
-	std::vector<std::string> existingEvents = ProjectRegionMetadataHelper::GetEventListFromProjExtState();
+	std::vector<std::string> existingEvents = ProjectRegionMetadataHelper::GetEventListFromProjExtState(inProject);
 	for (auto event : existingEvents)
 	{
 		if (thisCreateImportWindow)

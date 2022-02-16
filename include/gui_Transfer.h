@@ -114,9 +114,9 @@ public:
 
 	void AddEventToSaveList(std::string eventName);
 
-	void SaveEventsToExState();
+	void SaveEventsToExState(ReaProject* inProject = nullptr);
 
-	void GetExistingEventsFromExState();
+	void GetExistingEventsFromExState(ReaProject* inProject = nullptr);
 
 private:
 
@@ -184,7 +184,7 @@ private:
 	
 	std::unique_ptr<FileChooser> myChooser;
 
-	
+	ReaProject* currentProject = nullptr;
 	
 
 	StringArray ToJuceStringArray(std::vector<std::string>strings);

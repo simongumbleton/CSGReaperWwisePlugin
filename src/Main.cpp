@@ -146,18 +146,23 @@ std::string GetCurrentReaperProjectPath()
 	return std::string(projPath);
 }
 
+void SaveProject(ReaProject* inProj)
+{
+	Main_SaveProject(inProj, false);
+}
 void SaveProject()
 {
 	Main_SaveProject(GetCurrentReaProject(), false);
 }
 
-void saveProjExState(std::string Key, std::string Value,std::string extName)
+void saveProjExState(std::string Key, std::string Value,std::string extName,ReaProject* inProj)
 {
-	SetProjExtState(GetCurrentReaProject(), extName.c_str(), &Key[0], &Value[0]);
-	SaveProject();
+	if (inProj == nullptr){inProj = GetCurrentReaProject();}
+	SetProjExtState(inProj, extName.c_str(), &Key[0], &Value[0]);
+	SaveProject(inProj);
 }
 
-std::string getProjExState(std::string Key, std::string extName)
+std::string getProjExState(std::string Key, std::string extName,ReaProject* inProj)
 {
 	//std::string KeyOutValue;
 	//char bufferK[256] = "x";
@@ -184,7 +189,8 @@ std::string getProjExState(std::string Key, std::string extName)
 	//int OutSize;
 	std::string keyUC = stringToUpper(Key);
 	//needs a char* for outvalue
-	GetProjExtState(GetCurrentReaProject(), extName.c_str(), &keyUC[0], bufferValue, ValOutSize);
+	if (inProj == nullptr){inProj = GetCurrentReaProject();}
+	GetProjExtState(inProj, extName.c_str(), &keyUC[0], bufferValue, ValOutSize);
 	return std::string(bufferValue);
 }
 

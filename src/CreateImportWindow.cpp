@@ -863,7 +863,22 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 		{
 			std::string type = obj["type"].GetVariant();
 			std::string name = obj["name"].GetVariant();
-			if (type == "AudioFileSource") { continue; }
+			if (type == "AudioFileSource")
+			{	// If the type is audiosource we are replacing an existing sound
+				// audiosources can't have events created for them, so we assume there is one
+				// save the probable name in the events list
+				// need to check for versions etc, maybe get the existing parent event?
+				if (owningGUIWindow)
+				{
+					TransferToWwiseComponent* parentAsTransferComponent = dynamic_cast<TransferToWwiseComponent*>(owningGUIWindow);
+					if (parentAsTransferComponent)
+					{
+						parentAsTransferComponent->AddEventToSaveList("Play_"+name);
+					}
+				}
+				continue;
+				
+			}
 			std::string notes = "rpp:" + filenameFromPathString(curJobImportArgs.SourceReaperProject) + "\nNotes:";
 			std::string versionToken = "";
 			if (IsAudioFileAVersion(name, versionToken))

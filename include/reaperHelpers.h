@@ -30,9 +30,9 @@ int countRegions();
 
 int countMarkers();
 
-void saveProjExState(std::string Key, std::string Value, std::string extName = "CSGREGIONPROPERTIES");
+void saveProjExState(std::string Key, std::string Value, std::string extName = "CSGREGIONPROPERTIES",ReaProject* inProj = nullptr);
 
-std::string getProjExState(std::string Key, std::string extName = "CSGREGIONPROPERTIES");
+std::string getProjExState(std::string Key, std::string extName = "CSGREGIONPROPERTIES",ReaProject* inProj = nullptr);
 
 void bringWindowsToFront();
 
