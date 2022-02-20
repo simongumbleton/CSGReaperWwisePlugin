@@ -761,6 +761,68 @@ bool WwiseConnectionHandler::SetupTemplateObject(std::string templateObjID, std:
 	return true;
 }
 
+std::vector<WwiseObject> WwiseConnectionHandler::FindPlayEventsForID(std::string targetObjID) { 
+	std::vector<WwiseObject> matchingPlayEvents;
+	ObjectGetArgs args;
+	args.From = {"id",targetObjID};
+	args.Select = "referencesTo";
+	args.Where = {"type:isIn","Action"};
+	args.customReturnArgs.push_back("type");
+	args.customReturnArgs.push_back("path");
+	args.customReturnArgs.push_back("parent");
+	args.customReturnArgs.push_back("@ActionType");
+	AK::WwiseAuthoringAPI::AkJson::Array results;
+	std::vector<WwiseObject> MyWwiseObjects;
+	try {
+		MyWwiseObjects = GetWwiseObjects(false, args, results);
+	}
+	catch (std::string e) {
+		PrintToConsole(e);
+		return matchingPlayEvents;
+	}
+	for (auto obj : MyWwiseObjects)
+	{
+		if ((stringToLower(obj.properties["type"]) == "action")
+			and (obj.numericProperties["@ActionType"]==1))
+		{
+			auto parent = GetWwiseObjectFromID(obj.properties["parent_id"]);
+			if (!parent.isEmpty) {
+				matchingPlayEvents.push_back(parent);
+				
+			}
+		}
+	}
+	return matchingPlayEvents;
+}
+
+WwiseObject WwiseConnectionHandler::GetWwiseObjectFromID(std::string guid)
+{
+	ObjectGetArgs getArgs;
+	getArgs.From = { "id",guid };
+	getArgs.Select = "";
+	getArgs.customReturnArgs.push_back("path");
+	getArgs.customReturnArgs.push_back("workunit");
+	getArgs.customReturnArgs.push_back("filePath");
+	getArgs.customReturnArgs.push_back("parent");
+
+	AK::WwiseAuthoringAPI::AkJson::Array results;
+	std::vector<WwiseObject> MyWwiseObjects;
+	try {
+		MyWwiseObjects = GetWwiseObjects(false, getArgs, results);
+	}
+	catch (std::string e) {
+		//PrintToConsole(e);
+	}
+	if (MyWwiseObjects.empty())
+	{
+		return WwiseObject();
+	}
+	else
+	{
+		return MyWwiseObjects[0];
+	}
+}
+
 
 
 

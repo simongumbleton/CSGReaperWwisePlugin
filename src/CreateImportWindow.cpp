@@ -764,8 +764,6 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 		args.ParentID = "\\Events\\Default Work Unit";
 	}
 	
-	
-	
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	if (!WwiseConnectionHnd->CreateWwiseObject(false, args, results))
 	{
@@ -777,7 +775,12 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 		TransferToWwiseComponent* parentAsTransferComponent = dynamic_cast<TransferToWwiseComponent*>(owningGUIWindow);
 		if (parentAsTransferComponent)
 		{
-			parentAsTransferComponent->AddEventToSaveList(args.Name);
+			for (auto obj : results)
+			{
+				std::string name = obj["name"].GetVariant();
+				parentAsTransferComponent->AddEventToSaveList(name);
+			}
+			
 		}
 	}
 }
@@ -865,15 +868,33 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 			std::string name = obj["name"].GetVariant();
 			if (type == "AudioFileSource")
 			{	// If the type is audiosource we are replacing an existing sound
-				// audiosources can't have events created for them, so we assume there is one
-				// save the probable name in the events list
-				// need to check for versions etc, maybe get the existing parent event?
-				if (owningGUIWindow)
+				WwiseObject wwiseObject = GetWwiseObjectFromID(obj["id"].GetVariant());
+				auto parentID = wwiseObject.properties["parent_id"];
+				WwiseObject parentObj = GetWwiseObjectFromID(parentID);
+				std::vector<WwiseObject> events = WwiseConnectionHnd->FindPlayEventsForID(parentID);
+				if (events.empty())
 				{
-					TransferToWwiseComponent* parentAsTransferComponent = dynamic_cast<TransferToWwiseComponent*>(owningGUIWindow);
-					if (parentAsTransferComponent)
+					if (!parentObj.isEmpty)
 					{
-						parentAsTransferComponent->AddEventToSaveList("Play_"+name);
+						auto pathParent = GetWwiseObjectFromID(parentObj.properties["parent_id"]);
+						CreatePlayEventForID(parentObj.properties["id"],parentObj.properties["name"], "",pathParent.properties["path"]);
+					}
+					
+				}
+				else
+				{
+					if (owningGUIWindow)
+					{
+						TransferToWwiseComponent* parentAsTransferComponent = dynamic_cast<TransferToWwiseComponent*>(owningGUIWindow);
+						if (parentAsTransferComponent)
+						{
+							for (auto event : events)
+							{
+								if (event.isEmpty) continue;
+								parentAsTransferComponent->AddEventToSaveList(event.properties["name"]);
+							}
+						
+						}
 					}
 				}
 				continue;
@@ -1259,30 +1280,7 @@ void CreateImportWindow::OpenHelp()
 
 WwiseObject CreateImportWindow::GetWwiseObjectFromID(std::string guid)
 {
-	ObjectGetArgs getArgs;
-	getArgs.From = { "id",guid };
-	getArgs.Select = "";
-	getArgs.customReturnArgs.push_back("path");
-	getArgs.customReturnArgs.push_back("workunit");
-	getArgs.customReturnArgs.push_back("filePath");
-	getArgs.customReturnArgs.push_back("parent");
-
-	AK::WwiseAuthoringAPI::AkJson::Array results;
-	std::vector<WwiseObject> MyWwiseObjects;
-	try {
-		MyWwiseObjects = WwiseConnectionHnd->GetWwiseObjects(false, getArgs, results);
-	}
-	catch (std::string e) {
-		//PrintToConsole(e);
-	}
-	if (MyWwiseObjects.empty())
-	{
-		return WwiseObject();
-	}
-	else
-	{
-		return MyWwiseObjects[0];
-	}
+	return WwiseConnectionHnd->GetWwiseObjectFromID(guid);
 }
 
 std::vector<WwiseObject> CreateImportWindow::GetWwiseObjectsByName(std::string objectName,std::string type)

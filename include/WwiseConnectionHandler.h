@@ -128,6 +128,10 @@ public:
 	bool CheckForProjectFileChanges();
 	
 	bool SetupTemplateObject(std::string templateObjID, std::string destinationParentID, std::string newName);
+	
+	std::vector<WwiseObject> FindPlayEventsForID(std::string targetObjID);
+	
+	WwiseObject GetWwiseObjectFromID(std::string guid);
 
 
 private:
@@ -259,6 +263,8 @@ public:
 	std::vector<WwiseObject> GetTemplateWwiseObjects(std::string templateWwisePath);
 	
 	bool DoesTemplatePathExist(std::string templateWwisePath);
+	
+	
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
