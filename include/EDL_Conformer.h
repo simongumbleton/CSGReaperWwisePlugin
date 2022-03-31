@@ -5,7 +5,12 @@
 #include <regex>
 #include "settings_structs.h"
 
-
+struct ShotAnimInfo
+{
+	std::string animClipName;
+	std::string animTCStart;
+	std::string animTCEnd;
+};
 
 struct ShotTCInfo
 {
@@ -14,6 +19,7 @@ struct ShotTCInfo
 	std::string destStartTC;
 	std::string destEndTC;
 	std::string shotName;
+	std::vector<ShotAnimInfo>ShotAnimInfos;
 	bool empty = true;
 };
 
