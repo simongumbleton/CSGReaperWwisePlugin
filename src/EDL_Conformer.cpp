@@ -65,14 +65,14 @@ void EDLconformer::FinishWork() {
 
 
 void EDLconformer::PrepareUnchangedSections() {
-	int unchangedSectionIndex = -1;
-	int lastUnchangedSourceStart = -1;
-	int lastUnchangedSourceEnd = -1;
-	int lastUnchangedDestStart = -1;
-	int lastUnchangedDestEnd = -1;
-	int newShotOffset = INT_MAX;
-	int lastChangeStartTime = -1;
-	int lastChangeEndTime = -1;
+	int64_t unchangedSectionIndex = -1;
+	int64_t lastUnchangedSourceStart = -1;
+	int64_t lastUnchangedSourceEnd = -1;
+	int64_t lastUnchangedDestStart = -1;
+	int64_t lastUnchangedDestEnd = -1;
+	int64_t newShotOffset = INT_MAX;
+	int64_t lastChangeStartTime = -1;
+	int64_t lastChangeEndTime = -1;
 	
 	for (auto result : conformResults)
 	{
@@ -222,6 +222,15 @@ void EDLconformer::PrepareChangedSections() {
 				conformResults[i].changed = true;
 			}
 			
+			if (shotHasAnimClipChanges(oldshotTCinfo, newshotTCinfo))
+			{
+				conformResults[i].animClipChanged = true;
+				///TODO - should we track this as a shot change?
+				shotChanged = true;
+				conformResults[i].changed = true;
+			}
+
+
 			int shotInternalStartDifference = new_offset_In_frames - old_offset_In_frames;
 			int shotInternalEndDifference = new_offset_Out_frames - old_offset_Out_frames;
 			int durationDifference = new_duration_frames - old_duration_frames;
@@ -265,6 +274,7 @@ void EDLconformer::PrepareChangedSections() {
 				changedShot.destEndTC = destEndTime_TC;
 				changedShot.shotName = shot;
 				changedShot.empty = false;
+				changedShot.ShotAnimInfos = newshotTCinfo.ShotAnimInfos;
 				changedSections.push_back(changedShot);
 			}
 			else
@@ -734,6 +744,19 @@ bool EDLconformer::TimeIsEqual(float num1, float num2, int decimalPlaces) {
 	return isequal;
 }
 
+bool EDLconformer::shotHasAnimClipChanges(ShotTCInfo oldShot, ShotTCInfo newShot)
+{
+	if (oldShot.ShotAnimInfos.size() != newShot.ShotAnimInfos.size()) { return true; }
+	for (auto oldAnimClip : oldShot.ShotAnimInfos)
+	{
+		auto clipName = oldAnimClip.first;
+		if (newShot.ShotAnimInfos.find(clipName) == newShot.ShotAnimInfos.end()) { return true; }
+		if (oldAnimClip.second.animTCStart != newShot.ShotAnimInfos[clipName].animTCStart) { return true; }
+		if (oldAnimClip.second.animTCEnd != newShot.ShotAnimInfos[clipName].animTCEnd) { return true; }
+	}
+	return false;
+}
+
 
 float EDLconformer::TruncateFloat(float inFloat, int decimalPlaces, std::string& outInts, std::string& outDecs)
 {
@@ -753,6 +776,7 @@ float EDLconformer::TruncateFloat(float inFloat, int decimalPlaces, std::string&
 				break;
 			case 1:
 				decs = token.substr(0,decimalPlaces);
+				break;
 			default:
 				break;
 		}
@@ -796,7 +820,7 @@ std::string EDLconformer::FramesToTimecodeString(int inFrames) {
 }
 
 
-int EDLconformer::TimecodeToFrames(std::string inTimecode) { 
+int64_t EDLconformer::TimecodeToFrames(std::string inTimecode) { 
 	std::stringstream result;
 	int framesPerhour = EdlCompSettings.framerate * 3600;
 	int framesPermin = EdlCompSettings.framerate * 60;

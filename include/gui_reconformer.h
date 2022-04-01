@@ -84,12 +84,13 @@ public:
 class PreviewArea : public Component
 {
 public:
-	float maxDuration;
+	float maxDuration = FLT_MAX;
 	
 	bool canPreview = false;
 	
 	juce::Array<juce::Rectangle<float>> UnchangedRegions;
 	juce::Array<juce::Rectangle<float>> ChangedRegions;
+	juce::Array<juce::Rectangle<float>> AnimChangedRegions;
 	
 	PreviewArea(){
 		//setSize(100, 50);
@@ -123,6 +124,14 @@ public:
 			r.setSize(rectangle.getWidth()*getBoundsInParent().getWidth(), 50);
 			g.fillRect(r);
 		}
+		g.setColour(juce::Colours::aliceblue);
+		for (auto rectangle : AnimChangedRegions)
+		{
+			juce::Rectangle<float> r = rectangle;
+			r.setX(rectangle.getX() * getBoundsInParent().getWidth());
+			r.setSize(rectangle.getWidth() * getBoundsInParent().getWidth(), 50);
+			g.fillRect(r);
+		}
 	}
 	
 	void DrawRegions()
@@ -136,7 +145,7 @@ public:
 		repaint();
 	}
 	
-	void AddRegion(float startTime, float endTime,bool changed)
+	void AddRegion(float startTime, float endTime,bool changed,bool animChanged=false)
 	{
 		float width = getBoundsInParent().getWidth();
 		float normStart = (startTime/maxDuration);

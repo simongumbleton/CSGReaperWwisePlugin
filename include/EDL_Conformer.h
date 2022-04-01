@@ -29,6 +29,7 @@ struct ConformResultsInfo
 	ShotTCInfo oldShot;
 	ShotTCInfo newShot;
 	bool changed = false;
+	bool animClipChanged = false;
 };
 
 class EDLconformer
@@ -68,7 +69,7 @@ public:
 	
 	float TimecodeToSeconds(std::string inTimecode);
 	
-	int TimecodeToFrames(std::string inTimecode);
+	int64_t TimecodeToFrames(std::string inTimecode);
 	
 	std::string FramesToTimecodeString(int inFrames);
 	
@@ -114,7 +115,7 @@ private:
 	
 	bool TimeIsEqual(float num1,float num2,int decimalPlaces=4);
 	
-	
+	bool shotHasAnimClipChanges(ShotTCInfo oldShot, ShotTCInfo newShot);
 	
 	bool GatherAndCheckCommandIDs();
 	
