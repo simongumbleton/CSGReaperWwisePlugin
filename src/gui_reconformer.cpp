@@ -170,6 +170,12 @@ void ConformerComponent::DrawPreviewConform() {
 										 conformerComponent->TimecodeToSeconds(region.destEndTC),
 										 false);
 			}
+			for (auto region : conformerComponent->animClipChangedSections)
+			{
+				RegionPreview->AddRegionForAnimChange(
+										 conformerComponent->TimecodeToSeconds(region.destStartTC),
+										 conformerComponent->TimecodeToSeconds(region.destEndTC));
+			}
 			txt_preview->setText("Preview of conform...", juce::NotificationType::dontSendNotification);
 			RegionPreview->repaint();
 		}

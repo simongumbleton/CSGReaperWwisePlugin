@@ -84,7 +84,7 @@ public:
 class PreviewArea : public Component
 {
 public:
-	float maxDuration = FLT_MAX;
+	float maxDuration = std::numeric_limits<float>::max();
 	
 	bool canPreview = false;
 	
@@ -92,9 +92,20 @@ public:
 	juce::Array<juce::Rectangle<float>> ChangedRegions;
 	juce::Array<juce::Rectangle<float>> AnimChangedRegions;
 	
+	Colour unchangedRegionColour = juce::Colours::lightgreen;
+	Colour changedRegionColour = juce::Colours::yellow;
+	Colour AnimChangedRegionColour = juce::Colours::mediumvioletred;
+	
 	PreviewArea(){
 		//setSize(100, 50);
 	};
+	
+	PreviewArea(Colour unchanged, Colour changed, Colour animchange)
+	{
+		unchangedRegionColour = unchanged;
+		changedRegionColour = changed;
+		AnimChangedRegionColour = animchange;
+	}
 	
 	~PreviewArea(){};
 	
@@ -108,7 +119,7 @@ public:
 		g.setColour(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 		g.fillAll();
 		
-		g.setColour (juce::Colours::lightgreen);
+		g.setColour (unchangedRegionColour);
 		for (auto rectangle : UnchangedRegions)
 		{
 			juce::Rectangle<float> r = rectangle;
@@ -116,7 +127,7 @@ public:
 			r.setSize(rectangle.getWidth()*getBoundsInParent().getWidth(), 50);
 			g.fillRect(r);
 		}
-		g.setColour(juce::Colours::yellow);
+		g.setColour(changedRegionColour);
 		for (auto rectangle : ChangedRegions)
 		{
 			juce::Rectangle<float> r = rectangle;
@@ -124,12 +135,12 @@ public:
 			r.setSize(rectangle.getWidth()*getBoundsInParent().getWidth(), 50);
 			g.fillRect(r);
 		}
-		g.setColour(juce::Colours::aliceblue);
+		g.setColour(AnimChangedRegionColour);
 		for (auto rectangle : AnimChangedRegions)
 		{
 			juce::Rectangle<float> r = rectangle;
 			r.setX(rectangle.getX() * getBoundsInParent().getWidth());
-			r.setSize(rectangle.getWidth() * getBoundsInParent().getWidth(), 50);
+			r.setSize(rectangle.getWidth() * getBoundsInParent().getWidth(), 10);
 			g.fillRect(r);
 		}
 	}
@@ -142,6 +153,7 @@ public:
 	{
 		UnchangedRegions.clear();
 		ChangedRegions.clear();
+		AnimChangedRegions.clear();
 		repaint();
 	}
 	
@@ -160,6 +172,16 @@ public:
 		{
 			UnchangedRegions.add(rec);
 		}
+	};
+	void AddRegionForAnimChange(float startTime, float endTime)
+	{
+		float width = getBoundsInParent().getWidth();
+		float normStart = (startTime/maxDuration);
+		float normEnd = (endTime/maxDuration);
+		juce::Rectangle<float> rec;
+		rec.setPosition(normStart, 0);
+		rec.setSize(normEnd-normStart, 10);
+		AnimChangedRegions.add(rec);
 	};
 	
 };

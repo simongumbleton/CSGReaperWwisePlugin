@@ -173,6 +173,7 @@ void EDLconformer::PrepareChangedSections() {
 		}
 		int matchingNewShotIndex = -1;
 		bool shotChanged = false;
+		bool shotHasAnimChanges = false;
 		bool foundMatch = false;
 		int matchCount = 0;
 		
@@ -222,13 +223,7 @@ void EDLconformer::PrepareChangedSections() {
 				conformResults[i].changed = true;
 			}
 			
-			if (shotHasAnimClipChanges(oldshotTCinfo, newshotTCinfo))
-			{
-				conformResults[i].animClipChanged = true;
-				///TODO - should we track this as a shot change?
-				shotChanged = true;
-				conformResults[i].changed = true;
-			}
+			
 
 
 			int shotInternalStartDifference = new_offset_In_frames - old_offset_In_frames;
@@ -260,6 +255,18 @@ void EDLconformer::PrepareChangedSections() {
 			auto destStartTime_TC = FramesToTimecodeString(destStartTime_frames);
 			auto destEndTime_TC = FramesToTimecodeString(destEndTime_frames);
 			
+			
+			if (shotHasAnimClipChanges(oldshotTCinfo, newshotTCinfo))
+			{
+				shotHasAnimChanges = true;
+				conformResults[i].animClipChanged = true;
+				///TODO - should we track this as a shot change?
+				//shotChanged = true;
+				//conformResults[i].changed = true;
+				animClipChangedSections.push_back(newshotTCinfo);
+			}
+			
+			
 			if (shotChanged)
 			{
 				auto sourceEndTimeTrimmed = FramesToTimecodeString(sourceEndTime_frames);
@@ -276,6 +283,7 @@ void EDLconformer::PrepareChangedSections() {
 				changedShot.empty = false;
 				changedShot.ShotAnimInfos = newshotTCinfo.ShotAnimInfos;
 				changedSections.push_back(changedShot);
+				
 			}
 			else
 			{
@@ -879,7 +887,7 @@ bool EDLconformer::DoConform() {
 	if (EdlCompSettings.CreateEDLFileRegion){
 		auto startTime = new_shotTimeInfo.front().destStartTC;
 		auto endTime = new_shotTimeInfo.back().destEndTC;
-		int colour = ColorToNative(255,255,255)|16777216; //red
+		int colour = ColorToNative(255,255,255)|16777216; //white
 		AddRegion(startTime,endTime,filepath_New_EDL,colour);
 	}
 	
@@ -889,7 +897,7 @@ bool EDLconformer::DoConform() {
 		Print("CHANGE: "+changedShot.shotName+": New Timecode: "+changedShot.destStartTC+" "+changedShot.destEndTC);
 		if (EdlCompSettings.CreateRegionsForChangedShots)
 		{
-			int colour = ColorToNative(255,255,255)|16777216;// -- red
+			int colour = ColorToNative(255,255,0)|16777216;// -- yellow
 			AddRegion( changedShot.destStartTC, changedShot.destEndTC ,"CHANGE: "+ changedShot.shotName ,colour);
 		}
 	}
@@ -905,6 +913,17 @@ bool EDLconformer::DoConform() {
 		CopyOldSliceToNewTime(sourceStartTime_TC,sourceEndTime_TC,destStartTime_TC,destEndTime_TC, "Unchanged section "+std::to_string(i));
 	}
 	
+	if (EdlCompSettings.CreateRegionsForChangedShots)
+	{
+		int colour = ColorToNative(255,0,255)|16777216;// -- pink
+		for (auto animChangeSection : animClipChangedSections)
+		{
+			AddRegion( animChangeSection.destStartTC, animChangeSection.destEndTC ,"ANIMATION CLIP CHANGE: " ,colour);
+		}
+		
+	}
+	
+	
 	CropProject();
 	FinishWork();
 	Undo_EndBlock("CSG EDL Conform", -1);
@@ -914,6 +933,7 @@ bool EDLconformer::DoConform() {
 void EDLconformer::ResetConform() {
 	unchangedSections.clear();
 	changedSections.clear();
+	animClipChangedSections.clear();
 	old_shotTimeInfo.clear();
 	new_shotTimeInfo.clear();
 	conformResults.clear();

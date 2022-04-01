@@ -38,6 +38,7 @@ public:
 
 	std::vector<ShotTCInfo> unchangedSections;
 	std::vector<ShotTCInfo> changedSections;
+	std::vector<ShotTCInfo> animClipChangedSections;
 	
 	std::string filepath_Old_EDL;
 	std::string filepath_New_EDL;
