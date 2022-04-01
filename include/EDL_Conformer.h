@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <unordered_map>
 #include <regex>
 #include "settings_structs.h"
 
@@ -19,7 +20,7 @@ struct ShotTCInfo
 	std::string destStartTC;
 	std::string destEndTC;
 	std::string shotName;
-	std::vector<ShotAnimInfo>ShotAnimInfos;
+	std::unordered_map<std::string, ShotAnimInfo>ShotAnimInfos;
 	bool empty = true;
 };
 

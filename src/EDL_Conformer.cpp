@@ -395,45 +395,107 @@ void EDLconformer::SetTimeSelection(std::string startTimecode, std::string endTi
 std::vector<ShotTCInfo> EDLconformer::CreateShotTimeInfo(std::vector<std::string> inFilelines) {
 	std::vector<ShotTCInfo> tcinfo;
 	if (inFilelines.empty()) return tcinfo;
-	for (int index = 0; index < inFilelines.size()-1; ++index)
+	for (int64_t index = 0; index < inFilelines.size()-1; ++index)
 	{
 		// access using []
 		std::string currentLine = inFilelines[index];
-		std::string nextLine = inFilelines[index+1];
+		
 		std::vector<std::string> matches = FindTimecodeValuesInString(currentLine);
 		//did the line contain 4 time code values indicating the shot?
 		if (matches.size() == 4)
 		{
-			//nextLine here is : "* FROM CLIP NAME: TestSequence_EDL_Shot1.avi"
-			nextLine.erase(remove(nextLine.begin(), nextLine.end(), '*'), nextLine.end());
-			std::size_t found = nextLine.find("FROM CLIP NAME");
-			if (found != nextLine.npos)
+			// Read through the next chunk of lines to gather the info for this shot. It looks like this for Unreal
+			/*
+			* FROM CLIP NAME: SC01_0010_V2.avi
+
+			* SKELETAL ACTOR: BP_Eva_Full
+			* ANIMATION CLIP: Sc01_Sh10_Through_Sc02_Sh90_Master_tk009_Eva
+			* FRAME RANGE FROM: 0 TO: 149
+			* TIMECODE RANGE FROM: 09:35:24:07 TO: 09:35:29:05
+			*/
+			ShotTCInfo shotInfo;
+			shotInfo.sourceStartTC = matches[0];
+			shotInfo.sourceEndTC = matches[1];
+			shotInfo.destStartTC = matches[2];
+			shotInfo.destEndTC = matches[3];
+			shotInfo.empty = false;
+
+			int64_t nextLineIndex = index + 1;
+			bool done = false;
+			while (!done && nextLineIndex < inFilelines.size() - 1)
 			{
-				// Search for the substring in string
-				std::string toErase = " FROM CLIP NAME: ";
-				size_t pos = nextLine.find(toErase);
-				if (pos != nextLine.npos)
-				{
-					// If found then erase it from string
-					nextLine.erase(pos, toErase.length());
+				std::string nextLine = inFilelines[nextLineIndex];
+
+				std::vector<std::string> matches = FindTimecodeValuesInString(nextLine);
+				//we hit the start of another shot so break out of the while loop
+				if (matches.size() == 4) {
+					done = true;
+					break;
 				}
-				toErase = ".avi";
-				pos = nextLine.find(toErase);
-				if (pos != nextLine.npos)
-				{
-					// If found then erase it from string
-					nextLine.erase(pos, toErase.length());
+				if (nextLine.empty()){
+					//line is empty so increment the index and move on
+					nextLineIndex++;
+					continue;
 				}
-				std::string shotName = nextLine;
-				ShotTCInfo shotInfo;
-				shotInfo.shotName = shotName;
-				shotInfo.sourceStartTC = matches[0];
-				shotInfo.sourceEndTC = matches[1];
-				shotInfo.destStartTC = matches[2];
-				shotInfo.destEndTC = matches[3];
-				shotInfo.empty = false;
-				tcinfo.push_back(shotInfo);
+				nextLine.erase(remove(nextLine.begin(), nextLine.end(), '*'), nextLine.end());
+				std::size_t found;
+
+				found = nextLine.find("FROM CLIP NAME"); 
+				if (found != nextLine.npos)
+				{
+					// Search for the substring in string
+					std::string toErase = " FROM CLIP NAME: ";
+					size_t pos = nextLine.find(toErase);
+					if (pos != nextLine.npos)
+					{
+						// If found then erase it from string
+						nextLine.erase(pos, toErase.length());
+					}
+					toErase = ".avi";
+					pos = nextLine.find(toErase);
+					if (pos != nextLine.npos)
+					{
+						// If found then erase it from string
+						nextLine.erase(pos, toErase.length());
+					}
+					std::string shotName = nextLine;
+					shotInfo.shotName = shotName;
+					nextLineIndex++;
+					continue;
+				}
+				found = nextLine.find("ANIMATION CLIP");
+				if (found != nextLine.npos)
+				{
+					// Search for the substring in string
+					std::string toErase = " ANIMATION CLIP: ";
+					size_t pos = nextLine.find(toErase);
+					if (pos != nextLine.npos)
+					{
+						// If found then erase it from string
+						nextLine.erase(pos, toErase.length());
+					}
+					std::string animClipName = nextLine;
+					ShotAnimInfo shotAnimInfo;
+					shotAnimInfo.animClipName = animClipName;
+
+					if ((nextLineIndex + 2) < (inFilelines.size() - 1))
+					{
+						std::string shotAnimTCline = inFilelines[nextLineIndex + 2];
+						std::vector<std::string> animmatches = FindTimecodeValuesInString(shotAnimTCline);
+						if (animmatches.size() == 2)
+						{
+							shotAnimInfo.animTCStart = animmatches[0];
+							shotAnimInfo.animTCEnd = animmatches[1];
+							shotInfo.ShotAnimInfos.try_emplace(animClipName, shotAnimInfo);
+						}
+					}
+					nextLineIndex++;
+					continue;
+				}
+
+				nextLineIndex++;
 			}
+			tcinfo.push_back(shotInfo);
 		}
 	}
 	return tcinfo;
