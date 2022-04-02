@@ -321,6 +321,10 @@ private:
 		for (auto region : getNonMasterProjectRegionNames())
 		{
 			properties.push_back(new PropertiesComponent(region, regionPropertyList));
+			
+			
+			
+			
 		}
 		//for (int i = 0;i < count;i++)
 		//{

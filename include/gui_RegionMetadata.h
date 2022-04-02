@@ -131,7 +131,7 @@ private:
 	
 	
 	
-	Array<PropertiesComponent*> createProperties(int count)
+/*	Array<PropertiesComponent*> createProperties(int count)
 	{// TO DO - count should be the number of regions
 		Array<PropertiesComponent*> properties;
 		for (auto region : getNonMasterProjectRegionNames())
@@ -143,7 +143,7 @@ private:
 		//	properties.add(new PropertiesComponent("Region"));
 		//}
 		return properties;
-	}
+	}*/
 
 	StringArray ToJuceStringArray(std::vector<std::string>strings);
 
