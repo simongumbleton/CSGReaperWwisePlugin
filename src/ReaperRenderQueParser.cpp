@@ -35,7 +35,7 @@ using namespace std;
 void TestReadRenderQue()
 {
 	string resourcePath = GetReaperResourcePath();
-	string QrenderPath = resourcePath + kPathSeparator +"QueuedRenders";
+	string QrenderPath = resourcePath + PLATFORMHELPERS::kPathSeparator +"QueuedRenders";
 	std::vector<string> renderQueFiles;
 
 	for (const auto & p : filesystem::directory_iterator(QrenderPath))
@@ -56,7 +56,7 @@ void TestReadRenderQue()
 std::vector<std::string> GetListOfRenderQues()
 {
 	string resourcePath = GetReaperResourcePath();
-	string QrenderPath = resourcePath + kPathSeparator + "QueuedRenders";
+	string QrenderPath = resourcePath + PLATFORMHELPERS::kPathSeparator + "QueuedRenders";
 	std::vector<string> renderQueFiles;
 
 	//TODO add some saftey checks here. It can crash if it finds a file it doesn't know what to do with. Reaper crashed and left a file with no extension and Japanese characters, which crashed the plugin here
@@ -124,9 +124,9 @@ RenderQueJob CreateRenderQueJobFromRenderQueFile(std::string pathToQueFile)
 					string rppfile;
 					while (tkns >> rppfile)
 					{
-						if (stringToLower(rppfile).find(".rpp") != line.npos)
+						if (PLATFORMHELPERS::stringToLower(rppfile).find(".rpp") != line.npos)
 						{
-							RPPfile = stringToLower(rppfile);
+							RPPfile = PLATFORMHELPERS::stringToLower(rppfile);
 						}
 					}
 				}
@@ -192,9 +192,9 @@ void ParseRenderQueFile(string pathToQueFile)
 				string rppfile;
 				while (tkns >> rppfile)
 				{
-					if (stringToLower(rppfile).find(".rpp") != line.npos)
+					if (PLATFORMHELPERS::stringToLower(rppfile).find(".rpp") != line.npos)
 					{
-						RPPfile = stringToLower(rppfile);
+						RPPfile = PLATFORMHELPERS::stringToLower(rppfile);
 					}
 				}
 			}

@@ -78,6 +78,7 @@
     <ClCompile Include="src\gui_settings.cpp" />
     <ClCompile Include="src\gui_Transfer.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\platformhelpers.cpp" />
     <ClCompile Include="src\ReaperRenderQueParser.cpp" />
     <ClCompile Include="src\RegionMetadataHelper.cpp" />
     <ClCompile Include="src\WaapiConnect.cpp" />

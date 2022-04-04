@@ -200,7 +200,7 @@ bool WwiseConnectionHandler::CreateWwiseObject(bool suppressOutputMessages, Crea
 	}
 	else if (createArgs.Type == "MusicTrack")
 	{
-		if (stringToLower(createArgs.ParentType).compare("musicsegment") != 0)
+		if (PLATFORMHELPERS::stringToLower(createArgs.ParentType).compare("musicsegment") != 0)
 		{
 			//Something went wrong!
 			PrintToConsole("ERROR. Parent of MusicTrack must be MusicSegment!");
@@ -547,9 +547,9 @@ WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, st
 	if (!isParentID)
 	{
 	//the parent param was not an ID, lets try to find it in the wwise project
-		if (stringToLower(parent) == "actor-mixer hierarchy"){
+		if (PLATFORMHELPERS::stringToLower(parent) == "actor-mixer hierarchy"){
 			parent = "\\"+parent;}
-		else if (stringToLower(parent) == "events"){
+		else if (PLATFORMHELPERS::stringToLower(parent) == "events"){
 			parent = "\\"+parent;}
 
 		ObjectGetArgs getArgs;
@@ -579,7 +579,7 @@ WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, st
 		{
 			PrintToConsole("Could not locate parent in wwise project. Attempting to create. Arg given = "+parent);
 			//if "Actor-Mixer Hierarchy" in parent:
-			size_t foundPos = stringToLower(parent).find("actor-mixer hierarchy");
+			size_t foundPos = PLATFORMHELPERS::stringToLower(parent).find("actor-mixer hierarchy");
 			if (foundPos != parent.npos)
 			{
 				std::string p = parent.substr(foundPos+21,parent.npos);
@@ -594,7 +594,7 @@ WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, st
 			}
 			else
 			{//elif "Events" in parent:
-				size_t foundPos = stringToLower(parent).find("events");
+				size_t foundPos = PLATFORMHELPERS::stringToLower(parent).find("events");
 				if (foundPos != parent.npos)
 				{
 					std::string p = parent.substr(foundPos+6,parent.npos);
@@ -637,7 +637,7 @@ WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, st
 	
 	
 	WwiseObject lastChild;
-	std::vector<std::string> pathlist = stringSplitToList(path, "\\");
+	std::vector<std::string> pathlist = PLATFORMHELPERS::stringSplitToList(path, "\\");
 	for (auto node : pathlist)
 	{
 		if (node == "") {continue;}
@@ -651,7 +651,7 @@ WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, st
 			if (found != node.npos)
 			{
 				type = node.substr(0,found);
-				type = stringReplace(type, "<", "");
+				type = PLATFORMHELPERS::stringReplace(type, "<", "");
 				name = node.substr(found+1,node.npos);
 			}
 		}
@@ -679,7 +679,7 @@ WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, st
 		{
 			for (auto item : MyWwiseObjects)
 			{
-				if (stringToLower(item.properties["name"]) == stringToLower(name))
+				if (PLATFORMHELPERS::stringToLower(item.properties["name"]) == PLATFORMHELPERS::stringToLower(name))
 				{
 					//node already exists in wwise
 					foundMatch = true;
@@ -750,7 +750,7 @@ bool WwiseConnectionHandler::SetupTemplateObject(std::string templateObjID, std:
 	}
 	for (auto obj : MyWwiseObjects)
 	{ //check if a named object already exists under the parent. We only want to create a template if we are adding a new audio file
-		if (stringToLower(obj.properties["name"]) == stringToLower(newName))
+		if (PLATFORMHELPERS::stringToLower(obj.properties["name"]) == PLATFORMHELPERS::stringToLower(newName))
 		{
 			return false;
 		}
@@ -782,7 +782,7 @@ std::vector<WwiseObject> WwiseConnectionHandler::FindPlayEventsForID(std::string
 	}
 	for (auto obj : MyWwiseObjects)
 	{
-		if ((stringToLower(obj.properties["type"]) == "action")
+		if ((PLATFORMHELPERS::stringToLower(obj.properties["type"]) == "action")
 			and (obj.numericProperties["@ActionType"]==1))
 		{
 			auto parent = GetWwiseObjectFromID(obj.properties["parent_id"]);

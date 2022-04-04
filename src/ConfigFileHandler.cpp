@@ -32,12 +32,12 @@ map<string, string> rawConfigData;
 bool ReadConfigFile(config & outConfig)
 {
 	string reaperPath = GetReaperResourcePath();
-	configFileDir = reaperPath + kPathSeparator + "UserPlugins";
+	configFileDir = reaperPath + PLATFORMHELPERS::kPathSeparator + "UserPlugins";
 
 	ifstream configFile;
 	CheckConfigExists();
 
-	configFile.open(configFileDir + kPathSeparator + "csg_reaperwwise.config");
+	configFile.open(configFileDir + PLATFORMHELPERS::kPathSeparator + "csg_reaperwwise.config");
 
 	//std::istringstream is_file(dummyconfig);
 
@@ -99,7 +99,7 @@ bool ReadConfigFile(config & outConfig)
 
 bool CheckConfigExists()
 {
-	ifstream outFile(configFileDir + kPathSeparator +"csg_reaperwwise.config");
+	ifstream outFile(configFileDir + PLATFORMHELPERS::kPathSeparator +"csg_reaperwwise.config");
 	if (!outFile.is_open())
 	{
 		CreateConfigFile();
@@ -110,7 +110,7 @@ bool CheckConfigExists()
 bool CreateConfigFile()
 {
 	ofstream newFile;
-	newFile.open(configFileDir + kPathSeparator + "csg_reaperwwise.config");
+	newFile.open(configFileDir + PLATFORMHELPERS::kPathSeparator + "csg_reaperwwise.config");
 	for (auto entry : configFileDefaults)
 	{
 		newFile << entry.first << "=" << entry.second << "\n";
@@ -127,7 +127,7 @@ bool insertDefaultValueInConfig(string Key)
 	{
 		ofstream configFile;
 		CheckConfigExists();
-		configFile.open(configFileDir + kPathSeparator + "csg_reaperwwise.config",std::ofstream::out | std::ofstream::app);
+		configFile.open(configFileDir + PLATFORMHELPERS::kPathSeparator + "csg_reaperwwise.config",std::ofstream::out | std::ofstream::app);
 		configFile << Key << "=" << configFileDefaults.at(Key) << "\n";
 		configFile.close();
 		result = true;

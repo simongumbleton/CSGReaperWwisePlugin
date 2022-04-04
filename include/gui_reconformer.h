@@ -30,12 +30,12 @@ public:
 	
 	bool isSet()
 	{
-		return ends_with(getText().toStdString(), fileExtensionToAccept);
+		return PLATFORMHELPERS::ends_with(getText().toStdString(), fileExtensionToAccept);
 	};
 	
 	bool isInterestedInFileDrag (const StringArray &files) override {
 		if (files.isEmpty()) return false;
-		if (ends_with(stringToLower(files.begin()->toStdString()), fileExtensionToAccept))
+		if (PLATFORMHELPERS::ends_with(PLATFORMHELPERS::stringToLower(files.begin()->toStdString()), fileExtensionToAccept))
 		{
 			return true;
 		}
@@ -261,25 +261,14 @@ private:
 		,btn_Settings
 	};
 	
-	std::unique_ptr<FileChooser> myChooser;
-	
 	File oldEDLFilepath;
 	
 	File newEDLFilepath;
 	
 	File wavFilepath;
+	File wavDirpath;
 	 
-	File askUserForFile(std::string message = "Select EDL file",std::string extension = "*.edl")
-	{
-		myChooser = std::make_unique<FileChooser> (message,
-												   File::getSpecialLocation (File::userHomeDirectory),
-												   extension);
-		myChooser->browseForFileToOpen();
-		return myChooser->getResult();
-	}
-	
-	
-	
+
 };
 
 

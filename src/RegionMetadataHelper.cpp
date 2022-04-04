@@ -67,7 +67,7 @@ void ProjectRegionMetadataHelper::fillProjectRegionInfos()
 
 bool ProjectRegionMetadataHelper::isMasterRegion_Name(std::string regionName)
 {
-	std::size_t found = stringToLower(regionName).find("_master",regionName.length()-7);
+	std::size_t found = PLATFORMHELPERS::stringToLower(regionName).find("_master",regionName.length()-7);
 	if (found != regionName.npos)
 	{
 		return true;
@@ -115,7 +115,7 @@ void ProjectRegionMetadataHelper::getEventsForRegion(RegionInfo& rinfo)
 	rinfo.events.clear();
 	for (auto event : GetEventListFromProjExtState())
 	{
-		size_t found = stringToLower(event).find(stringToLower(rinfo.name));
+		size_t found = PLATFORMHELPERS::stringToLower(event).find(PLATFORMHELPERS::stringToLower(rinfo.name));
 		if (found != std::string::npos)
 		{
 			rinfo.events.insert(event);
@@ -167,7 +167,7 @@ void ProjectRegionMetadataHelper::writeMasterRegionInfoToJson()
 	//ProjectRegionInfo["master_regions"] = MasterRegions;
 
 	json ProjectRegionInfo;
-	ProjectRegionInfo["reaper_project"] = stringToLower(GetCurrentReaperProjectName());
+	ProjectRegionInfo["reaper_project"] = PLATFORMHELPERS::stringToLower(GetCurrentReaperProjectName());
 	for (auto& master : MasterRegions)
 	{
 		ProjectRegionInfo["master_regions"][master.first] = RegionInfoToJson(master.second);
@@ -177,7 +177,7 @@ void ProjectRegionMetadataHelper::writeMasterRegionInfoToJson()
 	//PrintToConsole(output);
 
 	//std::string projNameJson = stringReplace(stringToLower(GetCurrentReaperProject()),".rpp" , ".json");
-	std::string projPathjson = stringReplace(stringToLower(GetCurrentReaperProjectPath()), ".rpp", ".json"); ;
+	std::string projPathjson = PLATFORMHELPERS::stringReplace(PLATFORMHELPERS::stringToLower(GetCurrentReaperProjectPath()), ".rpp", ".json"); ;
 	//	filename = projPath..projNameJson
 
 	bool result = CreateProjectRegionJsonFile(projPathjson, ProjectRegionInfo);

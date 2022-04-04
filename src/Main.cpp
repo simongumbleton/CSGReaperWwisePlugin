@@ -131,7 +131,7 @@ std::string GetCurrentReaperProject()
 
 std::string GetCurrentReaperProjectName()
 {
-	return filenameFromPathString(GetCurrentReaperProject());
+	return PLATFORMHELPERS::filenameFromPathString(GetCurrentReaperProject());
 }
 
 ReaProject* GetCurrentReaProject()
@@ -187,7 +187,7 @@ std::string getProjExState(std::string Key, std::string extName,ReaProject* inPr
 	
 	//std::string OutValue;
 	//int OutSize;
-	std::string keyUC = stringToUpper(Key);
+	std::string keyUC = PLATFORMHELPERS::stringToUpper(Key);
 	//needs a char* for outvalue
 	if (inProj == nullptr){inProj = GetCurrentReaProject();}
 	GetProjExtState(inProj, extName.c_str(), &keyUC[0], bufferValue, ValOutSize);
@@ -250,7 +250,7 @@ std::vector<std::string> getNonMasterProjectRegionNames()
 			std::string namestr = name;
 			if (!namestr.empty())
 			{
-				if (!ends_with(stringToLower(name), "_master"))
+				if (!PLATFORMHELPERS::ends_with(PLATFORMHELPERS::stringToLower(name), "_master"))
 				{
 					results.push_back(namestr);
 				}

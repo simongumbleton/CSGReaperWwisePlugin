@@ -138,10 +138,10 @@ public:
 			std::string svalue = "";
 			int size;
 			std::map<std::string, std::string>::iterator it;
-			it = results.find(stringToLower(property->getName().toStdString()));
+			it = results.find(PLATFORMHELPERS::stringToLower(property->getName().toStdString()));
 			if (it != results.end())
 			{
-				std::string textValue = results[stringToLower(property->getName().toStdString())];
+				std::string textValue = results[PLATFORMHELPERS::stringToLower(property->getName().toStdString())];
 				if (!textValue.empty())
 				{
 					property->setText(textValue, false);

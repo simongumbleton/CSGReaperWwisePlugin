@@ -699,8 +699,8 @@ bool TransferToWwiseComponent::askUserForWwiseSubDir(std::string &OutSubDir)
 	if (myChooser->browseForDirectory())
 	{
 		File selectedFile (myChooser->getResult());
-		std::string subDir = selectedFile.getRelativePathFrom(fWwiseRoot).toStdString()+kPathSeparator;
-		std::string subDirLower = stringToLower(subDir);
+		std::string subDir = selectedFile.getRelativePathFrom(fWwiseRoot).toStdString()+ PLATFORMHELPERS::kPathSeparator;
+		std::string subDirLower = PLATFORMHELPERS::stringToLower(subDir);
 		if (subDir.empty() or subDir==".")
 		{
 			PrintToConsole("Wwise originals location must be inside SFX or Voices folder..");
@@ -712,16 +712,16 @@ bool TransferToWwiseComponent::askUserForWwiseSubDir(std::string &OutSubDir)
 			return false;
 		}
 		//strip the first dir off because it will either be SFX or Voices
-		if (subDir.find(kPathSeparator) != subDir.npos)
+		if (subDir.find(PLATFORMHELPERS::kPathSeparator) != subDir.npos)
 		{
-			subDir.erase(0, subDir.find(kPathSeparator) + 1);
+			subDir.erase(0, subDir.find(PLATFORMHELPERS::kPathSeparator) + 1);
 		}
 		//if subDir contained voices, then we must then strip the language folder too
 		if (subDirLower.find("voices") != subDirLower.npos)
 		{
-			if (subDir.find(kPathSeparator) != subDir.npos)
+			if (subDir.find(PLATFORMHELPERS::kPathSeparator) != subDir.npos)
 			{
-				subDir.erase(0, subDir.find(kPathSeparator) + 1);
+				subDir.erase(0, subDir.find(PLATFORMHELPERS::kPathSeparator) + 1);
 			}
 		}
 		//PrintToConsole(subDir);

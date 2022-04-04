@@ -347,6 +347,26 @@ void EDLconformer::CopyOldSliceToNewTime(std::string oldStart, std::string oldEn
 	Main_OnCommand(cmd_DuplicateItemsInSelectionToEditCursor,0);
 }
 
+void EDLconformer::AssembleEditFromAnimClipTimecode(std::string sourceStart, std::string sourceEnd, std::string destStart, std::string destEnd, MediaTrack* sourceTrack,MediaTrack* destTrack) {
+	Main_OnCommand(cmd_UnselectAllItems, 0);
+	Main_OnCommand(cmd_UnSelectAllTracks, 0);
+	SetTrackSelected(sourceTrack, true);
+	SetTimeSelection(sourceStart, sourceEnd);
+	Main_OnCommand(cmd_SelectAllItemsOnSelectedTracksInTimeSelection, 0);
+	Main_OnCommand(cmd_CopySelectedAreaOfItems, 0);
+	SetTrackSelected(sourceTrack, false);
+
+	
+	SetTrackSelected(destTrack, true);
+	Main_OnCommand(cmd_SetFirstSelectedTrackAsLastTouched, 0);
+	SetEditCursorToTimecode(destStart);
+	Main_OnCommand(cmd_PasteItemsTracks, 0);
+	SetTrackSelected(destTrack, false);
+	//Main_OnCommand(cmd_DuplicateItemsInSelectionToEditCursor, 0);
+}
+
+
+
 
 void EDLconformer::MovePreviousRegions() { 
 	float originalContentEndTime_secs = TimecodeToSeconds(originalEndTime) + TimecodeToSeconds(EdlCompSettings.timeLineOffset);
@@ -496,6 +516,20 @@ std::vector<ShotTCInfo> EDLconformer::CreateShotTimeInfo(std::vector<std::string
 					ShotAnimInfo shotAnimInfo;
 					shotAnimInfo.animClipName = animClipName;
 
+					std::string prevLine = inFilelines[nextLineIndex - 1];
+					found = prevLine.find("* SKELETAL ACTOR");
+					if (found != prevLine.npos)
+					{
+						std::string toErase = "* SKELETAL ACTOR: ";
+						size_t pos = prevLine.find(toErase);
+						if (pos != prevLine.npos)
+						{
+							// If found then erase it from string
+							prevLine.erase(pos, toErase.length());
+						}
+						shotAnimInfo.actor = prevLine;
+					}
+
 					if ((nextLineIndex + 2) < (inFilelines.size() - 1))
 					{
 						std::string shotAnimTCline = inFilelines[nextLineIndex + 2];
@@ -545,7 +579,16 @@ void EDLconformer::SetEditCursorToTimecode(std::string inTimecode) {
 
 bool EDLconformer::GatherAndCheckCommandIDs() {
 	
-	std::string command = "Script: cfillion_Copy project markers and regions in time selection.lua";
+	std::string command = "Item: Select all items on selected tracks in current time selection";
+	cmd_SelectAllItemsOnSelectedTracksInTimeSelection = NamedCommandLookup("40718");
+	if (cmd_SelectAllItemsOnSelectedTracksInTimeSelection == 0)
+	{
+		Print("Error! Missing one or more required Reaper actions!!");
+		Print(command);
+		return false;
+	}
+
+	command = "Script: cfillion_Copy project markers and regions in time selection.lua";
 	cmd_CopyRegionsInTimeSelection = NamedCommandLookup("_RSa09cbea8104d59c4dcebdc4aa0f59e2bbe7edb62");
 	if (cmd_CopyRegionsInTimeSelection == 0)
 	{
@@ -717,7 +760,7 @@ float EDLconformer::TimecodeToSeconds(std::string inTimecode) {
 	std::stringstream result;
 	float seconds = 0.0f;
 	int i = 0;
-	std::vector<std::string> tokens = stringSplitToList(inTimecode, ":");
+	std::vector<std::string> tokens = PLATFORMHELPERS::stringSplitToList(inTimecode, ":");
 	for (auto token : tokens)
 	{
 		switch (i) {
@@ -775,7 +818,7 @@ float EDLconformer::TruncateFloat(float inFloat, int decimalPlaces, std::string&
 	std::stringstream floatToString;
 	floatToString.precision(decimalPlaces);
 	floatToString << std::fixed << inFloat;
-	std::vector<std::string> tokens = stringSplitToList(floatToString.str(), ".");
+	std::vector<std::string> tokens = PLATFORMHELPERS::stringSplitToList(floatToString.str(), ".");
 	for (auto token : tokens)
 	{
 		switch (i) {
@@ -834,7 +877,7 @@ int64_t EDLconformer::TimecodeToFrames(std::string inTimecode) {
 	int framesPermin = EdlCompSettings.framerate * 60;
 	int frames = 0;
 	int i = 0;
-	std::vector<std::string> tokens = stringSplitToList(inTimecode, ":");
+	std::vector<std::string> tokens = PLATFORMHELPERS::stringSplitToList(inTimecode, ":");
 	for (auto token : tokens)
 	{
 		switch (i) {
@@ -1021,19 +1064,105 @@ void EDLconformer::LoadSettingsFromExtState() {
 	EdlCompSettings.framerate = std::stof(tempListValues[4]);
 }
 
-void EDLconformer::InitiateDialogueAssembly(std::string filepath) {
+void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 	
-	//get the dialogue file
-	PrintToConsole(filepath);
-	int trackindex = 4;
-	trackindex = trackindex << 16;
-	
-	int test = 1 << 16;
-	
-	int mode = 0 + 4 + test;
-	PrintToConsole(mode);
-	InsertMedia(filepath.c_str(),mode);
+	if (!isConformReady())
+	{
+		PrintToConsole("Cannot Assemble edit - Missing EDL comparison data - Ensure you have loaded an old and new EDL file");
+		return;
+	}
 
+	MatchAnimClipsWithWavs(PLATFORMHELPERS::GetFilesInDirectory(folderpath,"*.wav"));
+
+	if (AnimClipToWavMap.empty()) { return; }
+
+	for (auto entry : AnimClipToWavMap)
+	{
+		std::string currentAnimClip = entry.first;
+		std::string filepath = entry.second;
+		if ((filepath.empty()) or (filepath == "none")) { continue; }
+
+		//get the dialogue file
+		//PrintToConsole(filepath);
+
+		Main_OnCommand(cmd_UnSelectAllTracks, 0);
+
+		int numTracks = GetNumTracks();
+
+		int trackindex = numTracks - 1;
+		//	trackindex = trackindex << 16;
+
+		SetOnlyTrackSelected(GetTrack(0, trackindex)); // set the last track in the project selected
+
+		int mode = 1 | 4096; //inserts on a new track and moves to the source position
+		PrintToConsole(mode);
+		InsertMedia(filepath.c_str(), mode);
+
+		MediaTrack* DonerTrack = GetTrack(0, numTracks);
+		char trackName[256];
+		GetSetMediaTrackInfo_String(DonerTrack, "P_NAME", trackName, false);
+
+		InsertTrackAtIndex(-1, false);
+		MediaTrack* TargetTrack = GetTrack(0, numTracks + 1);
+
+		//std::string newTrackName = trackName + std::string("_Assembled");
+		GetSetMediaTrackInfo_String(TargetTrack, "P_NAME", trackName, true);
+
+		RefreshTimeline();
+
+		for (auto shot : new_shotTimeInfo)
+		{
+			for (auto animClip : shot.ShotAnimInfos)
+			{
+				if (animClip.first == currentAnimClip)
+				{
+					AssembleEditFromAnimClipTimecode(
+						animClip.second.animTCStart,
+						animClip.second.animTCEnd,
+						shot.destStartTC,
+						shot.destEndTC,
+						DonerTrack,
+						TargetTrack
+					);
+				}
+			}
+		}
+
+		DeleteTrack(DonerTrack);
+
+		RefreshTimeline();
+	}
+	
+
+
+}
+
+void EDLconformer::MatchAnimClipsWithWavs(std::vector<std::string> wavFiles)
+{
+	for (auto shot : new_shotTimeInfo)
+	{
+		for (auto anim : shot.ShotAnimInfos)
+		{
+			if (anim.second.actor == "HeadMesh") { continue;  } //Skip headmesh entries for now so we don't have duplicates
+
+			if (AnimClipToWavMap[anim.first] == "")//we have an anim clip with no saved audio file, so try to find a match
+			{
+				// for now, match using the name. Assumes that the audio file name is included in the anim clip name!!
+				for (auto file : wavFiles)
+				{
+					std::size_t found;
+					found = PLATFORMHELPERS::stringToLower(anim.first).find(PLATFORMHELPERS::stringToLower(PLATFORMHELPERS::filenameFromPathString(file,true)));
+					if (found != anim.first.npos)
+					{
+						AnimClipToWavMap[anim.first] = file;
+						break;
+					}
+					AnimClipToWavMap[anim.first] = "none";//weve looped through all the wav files here and didn't find a match. Mark it as having no associated wav so we dont waste time checking it again
+				}
+			}
+		}
+		
+	}
 }
 
 

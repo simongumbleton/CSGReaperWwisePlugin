@@ -85,7 +85,7 @@ void ConformerComponent::buttonClicked(juce::Button *pButton) {
 
 	if (pButton == btn_ChooseOldEDL)
 	{
-		oldEDLFilepath = askUserForFile("Choose OLD EDL File..");
+		oldEDLFilepath = PLATFORMHELPERS::askUserForFile("Choose OLD EDL File..");
 		if (oldEDLFilepath.hasFileExtension("edl"))
 		{
 			dragDropTarget01->setText(oldEDLFilepath.getFullPathName(), juce::NotificationType::sendNotification);
@@ -93,7 +93,7 @@ void ConformerComponent::buttonClicked(juce::Button *pButton) {
 	}
 	else if (pButton == btn_ChooseNewEDL)
 	{
-		newEDLFilepath = askUserForFile("Choose NEW EDL File..");
+		newEDLFilepath = PLATFORMHELPERS::askUserForFile("Choose NEW EDL File..");
 		if (newEDLFilepath.hasFileExtension("edl"))
 		{
 			dragDropTarget02->setText(newEDLFilepath.getFullPathName(), juce::NotificationType::sendNotification);
@@ -105,8 +105,9 @@ void ConformerComponent::buttonClicked(juce::Button *pButton) {
 	}
 	else if (pButton == btn_LoadWav)
 	{
-		wavFilepath = askUserForFile("Load wav","*.wav");
-		conformerComponent->InitiateDialogueAssembly(wavFilepath.getFullPathName().toStdString());
+		//wavFilepath = askUserForFile("Load wav","*.wav");
+		wavDirpath = PLATFORMHELPERS::askUserForDirectory("Choose WAV location..");
+		conformerComponent->InitiateDialogueAssembly(wavDirpath.getFullPathName().toStdString());
 	}
 	else if (pButton == btn_Settings)
 	{

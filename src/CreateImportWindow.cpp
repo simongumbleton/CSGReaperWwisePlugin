@@ -495,9 +495,9 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 					std::string existingWwisePath = "";
 					//strip file at the os seperator to get just the filename
 					std::string fullPath = file;
-					if (file.rfind(kPathSeparator) != file.npos)
+					if (file.rfind(PLATFORMHELPERS::kPathSeparator) != file.npos)
 					{
-						file.erase(0, file.rfind(kPathSeparator)+1);
+						file.erase(0, file.rfind(PLATFORMHELPERS::kPathSeparator)+1);
 					}
 
 					if (AudioFileExistsInWwise(file,fileOverride.second.parentWwiseObject, existingOriginalsPath, existingWwisePath))
@@ -507,9 +507,9 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						if (job.ImportLanguage != "SFX")
 						{
 							
-							if (existingOriginalsPath.find(kPathSeparator) != existingOriginalsPath.npos)
+							if (existingOriginalsPath.find(PLATFORMHELPERS::kPathSeparator) != existingOriginalsPath.npos)
 							{
-								existingOriginalsPath.erase(0, existingOriginalsPath.find(kPathSeparator) + 1);
+								existingOriginalsPath.erase(0, existingOriginalsPath.find(PLATFORMHELPERS::kPathSeparator) + 1);
 							}
 
 						}
@@ -537,7 +537,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						fileOverride.second.userOrigsSubDir,
 						audiofile,
 						fileOverride.second.createEventOption,
-						filenameFromPathString(job.ParentReaperProject),
+						PLATFORMHELPERS::filenameFromPathString(job.ParentReaperProject),
 						"",
 						fileOverride.second.Template
 						
@@ -570,9 +570,9 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 				std::string existingWwisePath = "";
 				// file is the full path in this context, need to get the just the filename
 				std::string fullPath = file;
-				if (file.rfind(kPathSeparator) != file.npos)
+				if (file.rfind(PLATFORMHELPERS::kPathSeparator) != file.npos)
 				{
-					file.erase(0, file.rfind(kPathSeparator)+1);
+					file.erase(0, file.rfind(PLATFORMHELPERS::kPathSeparator)+1);
 				}
 
 				WwiseObject originalJobWwiseParent = job.parentWwiseObject;
@@ -584,9 +584,9 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 					if (job.ImportLanguage != "SFX")
 					{
 					
-						if (existingOriginalsPath.find(kPathSeparator) != existingOriginalsPath.npos)
+						if (existingOriginalsPath.find(PLATFORMHELPERS::kPathSeparator) != existingOriginalsPath.npos)
 						{
-							existingOriginalsPath.erase(0, existingOriginalsPath.find(kPathSeparator) + 1);
+							existingOriginalsPath.erase(0, existingOriginalsPath.find(PLATFORMHELPERS::kPathSeparator) + 1);
 						}
 
 					}
@@ -609,7 +609,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 						existingOriginalsPath,
 						importfiles,
 						job.createEventOption,
-						filenameFromPathString(job.ParentReaperProject),
+						PLATFORMHELPERS::filenameFromPathString(job.ParentReaperProject),
 						"",
 						job.Template
 					);
@@ -643,7 +643,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 				job.userOrigsSubDir,
 				job.RenderQueJobFileList,
 				job.createEventOption,
-				filenameFromPathString(job.ParentReaperProject),
+				PLATFORMHELPERS::filenameFromPathString(job.ParentReaperProject),
 				"",
 				job.Template
 			);
@@ -719,7 +719,7 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 }
 
 std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath) {
-	std::vector<std::string> tokens = stringSplitToList(inPath, "\\");
+	std::vector<std::string> tokens = PLATFORMHELPERS::stringSplitToList(inPath, "\\");
 	std::string result;
 	int i = 0;
 	for (auto token : tokens)
@@ -744,7 +744,7 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 	//std::string remove = "\\Actor-Mixer Hierarchy";
 	//path.erase(0, remove.length());
 	CreateObjectArgs args;
-	args.ParentID = stringReplace(path, "\\Actor-Mixer Hierarchy", "\\Events");;
+	args.ParentID = PLATFORMHELPERS::stringReplace(path, "\\Actor-Mixer Hierarchy", "\\Events");;
 	args.Type = "Event";
 	args.Name = "Play_"+name;
 	args.createPlayEvent = true;
@@ -900,7 +900,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 				continue;
 				
 			}
-			std::string notes = "rpp:" + filenameFromPathString(curJobImportArgs.SourceReaperProject) + "\nNotes:";
+			std::string notes = "rpp:" + PLATFORMHELPERS::filenameFromPathString(curJobImportArgs.SourceReaperProject) + "\nNotes:";
 			std::string versionToken = "";
 			if (IsAudioFileAVersion(name, versionToken))
 			{
@@ -921,7 +921,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 		// \Actor-Mixer Hierarchy\Default Work Unit\MyAM\AnotherAM\New Random Container
 		std::string target = curJobImportArgs.ImportLocation;
 		std::string name = curJobImportArgs.ImportLocation.erase(0,curJobImportArgs.ImportLocation.rfind("\\")+1);
-		std::string notes = "rpp:" + filenameFromPathString(curJobImportArgs.SourceReaperProject) + "\nNotes:";
+		std::string notes = "rpp:" + PLATFORMHELPERS::filenameFromPathString(curJobImportArgs.SourceReaperProject) + "\nNotes:";
 		CreatePlayEventForID(target, name, notes);
 	}
 	if (success)

@@ -6,11 +6,14 @@
 #include <regex>
 #include "settings_structs.h"
 
+class MediaTrack;
+
 struct ShotAnimInfo
 {
 	std::string animClipName;
 	std::string animTCStart;
 	std::string animTCEnd;
+	std::string actor;
 };
 
 struct ShotTCInfo
@@ -80,7 +83,9 @@ public:
 	
 	void SaveSettingsToExtState();
 	
-	void InitiateDialogueAssembly(std::string filepath);
+	void InitiateDialogueAssembly(std::string folderpath);
+
+	void MatchAnimClipsWithWavs(std::vector<std::string>wavFiles);
 	
 private:
 	
@@ -101,13 +106,15 @@ private:
 	int cmd_CropProjectToTimeSelection=0;
 	int cmd_CopyRegionsInTimeSelection=0;
 	int cmd_PasteRegionsToEditCursor=0;
+	int cmd_SelectAllItemsOnSelectedTracksInTimeSelection = 0;
 	
 	std::vector<ShotTCInfo> old_shotTimeInfo;
 	std::vector<ShotTCInfo> new_shotTimeInfo;
 	
 	std::vector<ConformResultsInfo> conformResults;
 	
-	
+	std::unordered_map < std::string, std::string>AnimClipToWavMap;
+
 	std::string originalEndTime = "";
 	int numberOfShots = 0;
 	bool working = false;
@@ -139,6 +146,8 @@ private:
 	void MovePreviousRegions();
 	
 	void CopyOldSliceToNewTime(std::string oldStart,std::string oldEnd,std::string newStart,std::string NewEnd,std::string ShotName);
+
+	void AssembleEditFromAnimClipTimecode(std::string sourceStart, std::string sourceEnd, std::string destStart, std::string destEnd, MediaTrack* sourceTrack, MediaTrack* destTrack);
 	
 	void CropProjectToTime(std::string newProjEndTime);
 	

@@ -79,7 +79,7 @@ EDLSettingsCmp::EDLSettingsCmp(EDLSettingsStruct& inSettings):rSettings(inSettin
 	
 	txt_StartOffset->onTextChange = [this]
 	{
-		if (!stringIsTimecode(txt_StartOffset->getText().toStdString()))
+		if (!PLATFORMHELPERS::stringIsTimecode(txt_StartOffset->getText().toStdString()))
 		{
 			txt_StartOffset->setText(rSettings.timeLineOffset, sendNotification);
 		}
@@ -138,7 +138,7 @@ int EDLSettingsCmp::getSavedFramerateAsID(){
 	for (auto choice : supportedFramerates)
 	{
 		auto choiceAsFloat = choice.getFloatValue();
-		if (isEqual(choiceAsFloat,rSettings.framerate))
+		if (PLATFORMHELPERS::isEqual(choiceAsFloat,rSettings.framerate))
 		{
 			return i;
 		}

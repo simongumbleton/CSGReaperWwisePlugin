@@ -71,7 +71,7 @@ CreateWwiseComponent::CreateWwiseComponent(juce::Component* parentComp) //constr
 	
 	INtxt_Count->onTextChange = [this]
 	{
-		if ((!stringIsNumber(INtxt_Count->getText().toStdString()))
+		if ((!PLATFORMHELPERS::stringIsNumber(INtxt_Count->getText().toStdString()))
 			or (INtxt_Count->getText().length()>2)
 			or (stoi(INtxt_Count->getText().toStdString())==0))
 		{
