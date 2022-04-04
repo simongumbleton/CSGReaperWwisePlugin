@@ -34,6 +34,11 @@ ConformerComponent::ConformerComponent()
 	addAndMakeVisible(txt_pluginVersion);
 	txt_pluginVersion->setText(Reconformer::GetPluginVersionString(), juce::NotificationType::dontSendNotification);
 	addAndMakeVisible(helpButton);
+	
+	addAndMakeVisible(dragDropWavTarget);
+	addAndMakeVisible(btn_LoadWav);
+	
+	
 	setSize(500, 350);
 	
 	addAndMakeVisible(btn_Settings);
@@ -61,6 +66,12 @@ void ConformerComponent::resized()
 	RegionPreview->setBounds(area.removeFromTop(50));
 	auto buffer1 = area.removeFromTop(10);
 	btn_DoConform->setBounds(area.removeFromTop(50));
+	
+	auto WavArea = area.removeFromTop(50);
+	btn_LoadWav->setBounds(WavArea.removeFromLeft(35));
+	dragDropWavTarget->setBounds(WavArea);
+	
+	
 	
 	auto statusarea = area.removeFromBottom(40);
 	txt_pluginVersion->setBounds(statusarea.removeFromRight(50).removeFromBottom(25));
@@ -91,6 +102,11 @@ void ConformerComponent::buttonClicked(juce::Button *pButton) {
 	else if (pButton == btn_DoConform)
 	{
 		TriggerConform();
+	}
+	else if (pButton == btn_LoadWav)
+	{
+		wavFilepath = askUserForFile("Load wav","*.wav");
+		conformerComponent->InitiateDialogueAssembly(wavFilepath.getFullPathName().toStdString());
 	}
 	else if (pButton == btn_Settings)
 	{

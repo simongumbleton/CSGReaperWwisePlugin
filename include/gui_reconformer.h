@@ -11,8 +11,11 @@ class DragDropHelper : public FileDragAndDropTarget, public Label
 {
 public:
 	
-	DragDropHelper(){
+	std::string fileExtensionToAccept = ".edl";
+	
+	DragDropHelper(std::string fileExt){
 		setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
+		if (!fileExt.empty()) {fileExtensionToAccept = fileExt;}
 	};
 	
 	~DragDropHelper(){};
@@ -27,12 +30,12 @@ public:
 	
 	bool isSet()
 	{
-		return ends_with(getText().toStdString(), ".edl");
+		return ends_with(getText().toStdString(), fileExtensionToAccept);
 	};
 	
 	bool isInterestedInFileDrag (const StringArray &files) override {
 		if (files.isEmpty()) return false;
-		if (ends_with(stringToLower(files.begin()->toStdString()), ".edl"))
+		if (ends_with(stringToLower(files.begin()->toStdString()), fileExtensionToAccept))
 		{
 			return true;
 		}
@@ -219,9 +222,13 @@ private:
 	
 	SettingsButton * btn_Settings = new SettingsButton("settingsBtn");
 	
-	DragDropHelper * dragDropTarget01 = new DragDropHelper();
+	DragDropHelper * dragDropTarget01 = new DragDropHelper(".edl");
 	
-	DragDropHelper * dragDropTarget02 = new DragDropHelper();
+	DragDropHelper * dragDropTarget02 = new DragDropHelper(".edl");
+	
+	DragDropHelper * dragDropWavTarget = new DragDropHelper(".wav");
+	
+	juce::TextButton * btn_LoadWav = new TextButton("Load Wav");
 	
 	PreviewArea * RegionPreview = new PreviewArea();
 	
@@ -249,7 +256,8 @@ private:
 		btn_ChooseOldEDL,
 		btn_ChooseNewEDL,
 		btn_DoConform,
-		helpButton
+		helpButton,
+		btn_LoadWav
 		,btn_Settings
 	};
 	
@@ -258,6 +266,8 @@ private:
 	File oldEDLFilepath;
 	
 	File newEDLFilepath;
+	
+	File wavFilepath;
 	 
 	File askUserForFile(std::string message = "Select EDL file",std::string extension = "*.edl")
 	{

@@ -80,6 +80,8 @@ public:
 	
 	void SaveSettingsToExtState();
 	
+	void InitiateDialogueAssembly(std::string filepath);
+	
 private:
 	
 	//command IDs
@@ -153,5 +155,7 @@ private:
 	void CropProject();
 	
 	bool isConformReady();
+	
+	
 	
 };

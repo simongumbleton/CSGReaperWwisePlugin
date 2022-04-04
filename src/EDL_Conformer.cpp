@@ -1021,6 +1021,22 @@ void EDLconformer::LoadSettingsFromExtState() {
 	EdlCompSettings.framerate = std::stof(tempListValues[4]);
 }
 
+void EDLconformer::InitiateDialogueAssembly(std::string filepath) {
+	
+	//get the dialogue file
+	PrintToConsole(filepath);
+	int trackindex = 4;
+	trackindex = trackindex << 16;
+	
+	int test = 1 << 16;
+	
+	int mode = 0 + 4 + test;
+	PrintToConsole(mode);
+	InsertMedia(filepath.c_str(),mode);
+
+}
+
+
 
 
 
