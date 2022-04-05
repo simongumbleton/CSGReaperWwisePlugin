@@ -35,6 +35,13 @@ struct ConformResultsInfo
 	bool animClipChanged = false;
 };
 
+struct AnimClipAssemblerInfo
+{
+	std::string wavFilePath = "";
+	std::string actorName = "";
+};
+
+
 class EDLconformer
 {
 public:
@@ -107,13 +114,17 @@ private:
 	int cmd_CopyRegionsInTimeSelection=0;
 	int cmd_PasteRegionsToEditCursor=0;
 	int cmd_SelectAllItemsOnSelectedTracksInTimeSelection = 0;
+	int cmd_SetSelectedTrackFolderState_Parent = 0;
+	int cmd_SetSelectedTrackFolderState_Normal = 0;
+	int cmd_SetSelectedTrackFolderState_LastInFolder = 0;
+	int cmd_InsertTrackAfterCurrentSelection = 0;
 	
 	std::vector<ShotTCInfo> old_shotTimeInfo;
 	std::vector<ShotTCInfo> new_shotTimeInfo;
 	
 	std::vector<ConformResultsInfo> conformResults;
 	
-	std::unordered_map < std::string, std::string>AnimClipToWavMap;
+	std::unordered_map < std::string, AnimClipAssemblerInfo>AnimClipToWavMap;//anim clip name is the key
 
 	std::string originalEndTime = "";
 	int numberOfShots = 0;

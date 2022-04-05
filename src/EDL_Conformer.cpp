@@ -60,7 +60,7 @@ void EDLconformer::FinishWork() {
 	Print("Finished");
 	UpdateTimeline();
 	Main_OnCommand(cmd_CloseAllRunningScripts,0);
-	ResetConform();
+	//ResetConform();
 }
 
 
@@ -588,6 +588,45 @@ bool EDLconformer::GatherAndCheckCommandIDs() {
 		return false;
 	}
 
+
+	command = "Track: Insert new track";
+	cmd_InsertTrackAfterCurrentSelection = NamedCommandLookup("40001");
+	if (cmd_InsertTrackAfterCurrentSelection == 0)
+	{
+		Print("Error! Missing one or more required Reaper actions!!");
+		Print(command);
+		return false;
+	}
+
+	command = "SWS/S&M: Set selected tracks folder states to parent";
+	cmd_SetSelectedTrackFolderState_Parent = NamedCommandLookup("_S&M_FOLDERON");
+	if (cmd_SetSelectedTrackFolderState_Parent == 0)
+	{
+		Print("Error! Missing one or more required Reaper actions!!");
+		Print(command);
+		return false;
+	}
+
+	command = "SWS/S&M: Set selected tracks folder states to normal";
+	cmd_SetSelectedTrackFolderState_Normal = NamedCommandLookup("_S&M_FOLDEROFF");
+	if (cmd_SetSelectedTrackFolderState_Normal == 0)
+	{
+		Print("Error! Missing one or more required Reaper actions!!");
+		Print(command);
+		return false;
+	}
+
+	command = "SWS/S&M: Set selected tracks folder states to last in folder";
+	cmd_SetSelectedTrackFolderState_LastInFolder = NamedCommandLookup("_S&M_FOLDER_LAST");
+	if (cmd_SetSelectedTrackFolderState_LastInFolder == 0)
+	{
+		Print("Error! Missing one or more required Reaper actions!!");
+		Print(command);
+		return false;
+	}
+
+
+
 	command = "Script: cfillion_Copy project markers and regions in time selection.lua";
 	cmd_CopyRegionsInTimeSelection = NamedCommandLookup("_RSa09cbea8104d59c4dcebdc4aa0f59e2bbe7edb62");
 	if (cmd_CopyRegionsInTimeSelection == 0)
@@ -980,6 +1019,7 @@ void EDLconformer::ResetConform() {
 	old_shotTimeInfo.clear();
 	new_shotTimeInfo.clear();
 	conformResults.clear();
+	AnimClipToWavMap.clear();
 }
 
 bool EDLconformer::isConformReady() { 
@@ -1071,15 +1111,36 @@ void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 		PrintToConsole("Cannot Assemble edit - Missing EDL comparison data - Ensure you have loaded an old and new EDL file");
 		return;
 	}
+	
+	Main_OnCommand(cmd_UnSelectAllTracks, 0);
+
+
+	//Setup the main assembly root track
+	InsertTrackAtIndex(-1, false);
+	MediaTrack* AssemblyParentTrack = GetTrack(0, GetNumTracks() - 1);
+
+	std::string parentName = "ASSEMBLER";
+	char parentTrackName[256];
+	strcpy(parentTrackName, parentName.c_str());
+
+	GetSetMediaTrackInfo_String(AssemblyParentTrack, "P_NAME", parentTrackName, true);
+	int parentTrackIndex = GetMediaTrackInfo_Value(AssemblyParentTrack, "IP_TRACKNUMBER")-1;
+	Main_OnCommand(cmd_SetSelectedTrackFolderState_Parent, 0);
 
 	MatchAnimClipsWithWavs(PLATFORMHELPERS::GetFilesInDirectory(folderpath,"*.wav"));
 
 	if (AnimClipToWavMap.empty()) { return; }
 
+
+	std::unordered_map<std::string, MediaTrack*>ActorTrackMap;
+
+
 	for (auto entry : AnimClipToWavMap)
 	{
 		std::string currentAnimClip = entry.first;
-		std::string filepath = entry.second;
+		std::string filepath = entry.second.wavFilePath;
+		std::string actorName = entry.second.actorName;
+
 		if ((filepath.empty()) or (filepath == "none")) { continue; }
 
 		//get the dialogue file
@@ -1087,6 +1148,21 @@ void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 
 		Main_OnCommand(cmd_UnSelectAllTracks, 0);
 
+
+		if (ActorTrackMap[actorName] == nullptr)
+		{
+			SetOnlyTrackSelected(AssemblyParentTrack);
+			Main_OnCommand(cmd_InsertTrackAfterCurrentSelection, 0);
+			MediaTrack* ActorTrack = GetTrack(0, parentTrackIndex+1);
+			char actorTrackName[256];
+			strcpy(actorTrackName, actorName.c_str());
+			GetSetMediaTrackInfo_String(ActorTrack, "P_NAME", actorTrackName, true);
+			Main_OnCommand(cmd_SetSelectedTrackFolderState_Parent, 0);
+			ActorTrackMap[actorName] = ActorTrack;
+			Main_OnCommand(cmd_UnSelectAllTracks, 0);
+		}
+
+		// Setup the doner track
 		int numTracks = GetNumTracks();
 
 		int trackindex = numTracks - 1;
@@ -1099,14 +1175,19 @@ void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 		InsertMedia(filepath.c_str(), mode);
 
 		MediaTrack* DonerTrack = GetTrack(0, numTracks);
-		char trackName[256];
-		GetSetMediaTrackInfo_String(DonerTrack, "P_NAME", trackName, false);
+		char donerTrackName[256];
+		GetSetMediaTrackInfo_String(DonerTrack, "P_NAME", donerTrackName, false);
 
-		InsertTrackAtIndex(-1, false);
-		MediaTrack* TargetTrack = GetTrack(0, numTracks + 1);
+
+
+		//Setup the Target track
+		int TargetTrackIndex = GetMediaTrackInfo_Value(ActorTrackMap[actorName], "IP_TRACKNUMBER") - 1;
+
+		InsertTrackAtIndex(TargetTrackIndex+1, false);
+		MediaTrack* TargetTrack = GetTrack(0, TargetTrackIndex + 1);
 
 		//std::string newTrackName = trackName + std::string("_Assembled");
-		GetSetMediaTrackInfo_String(TargetTrack, "P_NAME", trackName, true);
+		GetSetMediaTrackInfo_String(TargetTrack, "P_NAME", donerTrackName, true);
 
 		RefreshTimeline();
 
@@ -1139,13 +1220,20 @@ void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 
 void EDLconformer::MatchAnimClipsWithWavs(std::vector<std::string> wavFiles)
 {
+	// Takes in a list of WAV files, and tries to find a pairing of animation clip to wav file, and fills in the AnimClipToWavMap
+	AnimClipToWavMap.clear();
 	for (auto shot : new_shotTimeInfo)
 	{
 		for (auto anim : shot.ShotAnimInfos)
 		{
 			if (anim.second.actor == "HeadMesh") { continue;  } //Skip headmesh entries for now so we don't have duplicates
 
-			if (AnimClipToWavMap[anim.first] == "")//we have an anim clip with no saved audio file, so try to find a match
+			if (!AnimClipToWavMap.contains(anim.first)) //if the anim is not in the map already, create the default entry
+			{
+				AnimClipToWavMap.try_emplace(anim.first, AnimClipAssemblerInfo());
+			}
+
+			if (AnimClipToWavMap[anim.first].wavFilePath == "")//we have an anim clip with no saved audio file, so try to find a match
 			{
 				// for now, match using the name. Assumes that the audio file name is included in the anim clip name!!
 				for (auto file : wavFiles)
@@ -1154,10 +1242,11 @@ void EDLconformer::MatchAnimClipsWithWavs(std::vector<std::string> wavFiles)
 					found = PLATFORMHELPERS::stringToLower(anim.first).find(PLATFORMHELPERS::stringToLower(PLATFORMHELPERS::filenameFromPathString(file,true)));
 					if (found != anim.first.npos)
 					{
-						AnimClipToWavMap[anim.first] = file;
+						AnimClipToWavMap[anim.first].wavFilePath = file;
+						AnimClipToWavMap[anim.first].actorName = anim.second.actor;
 						break;
 					}
-					AnimClipToWavMap[anim.first] = "none";//weve looped through all the wav files here and didn't find a match. Mark it as having no associated wav so we dont waste time checking it again
+					AnimClipToWavMap[anim.first].wavFilePath = "none";//weve looped through all the wav files here and didn't find a match. Mark it as having no associated wav so we dont waste time checking it again
 				}
 			}
 		}
