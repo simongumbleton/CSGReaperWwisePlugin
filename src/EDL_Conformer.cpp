@@ -588,6 +588,32 @@ bool EDLconformer::GatherAndCheckCommandIDs() {
 		return false;
 	}
 
+	command = "Track: Set to one random color";
+	cmd_SetSelectedTracksToOneRandomColor = NamedCommandLookup("40360");
+	if (cmd_SetSelectedTracksToOneRandomColor == 0)
+	{
+		Print("Error! Missing one or more required Reaper actions!!");
+		Print(command);
+		return false;
+	}
+
+	command = "SWS: Select children of selected folder track(s)";
+	cmd_SelectChildrenOfSelectedFolderTrack = NamedCommandLookup("_SWS_SELCHILDREN2");
+	if (cmd_SelectChildrenOfSelectedFolderTrack == 0)
+	{
+		Print("Error! Missing one or more required Reaper actions!!");
+		Print(command);
+		return false;
+	}
+
+	command = "Xenakios/SWS: Set selected tracks as folder";
+	cmd_MakeFolderFromSelectedTracks = NamedCommandLookup("_XENAKIOS_SELTRACKSASFOLDER");
+	if (cmd_MakeFolderFromSelectedTracks == 0)
+	{
+		Print("Error! Missing one or more required Reaper actions!!");
+		Print(command);
+		return false;
+	}
 
 	command = "Track: Insert new track";
 	cmd_InsertTrackAfterCurrentSelection = NamedCommandLookup("40001");
@@ -1125,7 +1151,11 @@ void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 
 	GetSetMediaTrackInfo_String(AssemblyParentTrack, "P_NAME", parentTrackName, true);
 	int parentTrackIndex = GetMediaTrackInfo_Value(AssemblyParentTrack, "IP_TRACKNUMBER")-1;
+	SetOnlyTrackSelected(AssemblyParentTrack);
 	Main_OnCommand(cmd_SetSelectedTrackFolderState_Parent, 0);
+	Main_OnCommand(cmd_UnSelectAllTracks, 0);
+
+	RefreshTimeline();
 
 	MatchAnimClipsWithWavs(PLATFORMHELPERS::GetFilesInDirectory(folderpath,"*.wav"));
 
@@ -1148,6 +1178,7 @@ void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 
 		Main_OnCommand(cmd_UnSelectAllTracks, 0);
 
+		std::vector<MediaTrack*>TracksToFolderize;
 
 		if (ActorTrackMap[actorName] == nullptr)
 		{
@@ -1157,10 +1188,15 @@ void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 			char actorTrackName[256];
 			strcpy(actorTrackName, actorName.c_str());
 			GetSetMediaTrackInfo_String(ActorTrack, "P_NAME", actorTrackName, true);
-			Main_OnCommand(cmd_SetSelectedTrackFolderState_Parent, 0);
+
+			SetOnlyTrackSelected(ActorTrack);
+			Main_OnCommand(cmd_SetSelectedTracksToOneRandomColor, 0);
+			//Main_OnCommand(cmd_SetSelectedTrackFolderState_Parent, 0);
 			ActorTrackMap[actorName] = ActorTrack;
 			Main_OnCommand(cmd_UnSelectAllTracks, 0);
 		}
+
+		TracksToFolderize.push_back(ActorTrackMap[actorName]);
 
 		// Setup the doner track
 		int numTracks = GetNumTracks();
@@ -1185,6 +1221,10 @@ void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 
 		InsertTrackAtIndex(TargetTrackIndex+1, false);
 		MediaTrack* TargetTrack = GetTrack(0, TargetTrackIndex + 1);
+		//SetOnlyTrackSelected(TargetTrack);
+		//Main_OnCommand(cmd_SetSelectedTrackFolderState_LastInFolder,0);
+
+		TracksToFolderize.push_back(TargetTrack);
 
 		//std::string newTrackName = trackName + std::string("_Assembled");
 		GetSetMediaTrackInfo_String(TargetTrack, "P_NAME", donerTrackName, true);
@@ -1211,6 +1251,18 @@ void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 
 		DeleteTrack(DonerTrack);
 
+		Main_OnCommand(cmd_UnSelectAllTracks, 0);
+
+		//Children
+
+		for (auto track : TracksToFolderize)
+		{
+			SetTrackSelected(track, true);
+			Main_OnCommand(cmd_SelectChildrenOfSelectedFolderTrack, 0);
+		}
+		Main_OnCommand(cmd_MakeFolderFromSelectedTracks, 0);
+		//Main_OnCommand(cmd_SetSelectedTracksToOneRandomColor, 0);
+		Main_OnCommand(cmd_UnSelectAllTracks, 0);
 		RefreshTimeline();
 	}
 	

@@ -118,6 +118,9 @@ private:
 	int cmd_SetSelectedTrackFolderState_Normal = 0;
 	int cmd_SetSelectedTrackFolderState_LastInFolder = 0;
 	int cmd_InsertTrackAfterCurrentSelection = 0;
+	int cmd_MakeFolderFromSelectedTracks = 0;
+	int cmd_SelectChildrenOfSelectedFolderTrack = 0;
+	int cmd_SetSelectedTracksToOneRandomColor = 0;
 	
 	std::vector<ShotTCInfo> old_shotTimeInfo;
 	std::vector<ShotTCInfo> new_shotTimeInfo;

@@ -39,7 +39,9 @@ namespace PLATFORMHELPERS
 	File askUserForDirectory(std::string message = "Select a folder");
 	Array<File> GetFilesInDirectory(File dir, std::string type = "*.wav");
 	std::vector<std::string> GetFilesInDirectory(std::string dir, std::string type = "*.wav");
-
+	bool doesFilePathExist(std::string filepath);
+	bool isPathDirectory(std::string filepath);
+	bool isPathFile(std::string filepath);
 }
 
 

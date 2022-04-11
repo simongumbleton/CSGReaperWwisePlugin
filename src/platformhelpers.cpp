@@ -183,3 +183,21 @@ std::vector<std::string> PLATFORMHELPERS::GetFilesInDirectory(std::string dir, s
 	}
 	return filelist;
 }
+
+bool PLATFORMHELPERS::doesFilePathExist(std::string filepath)
+{
+	File path(filepath);
+	return path.exists();
+}
+
+bool PLATFORMHELPERS::isPathDirectory(std::string filepath)
+{
+	File path(filepath);
+	return path.isDirectory();
+}
+
+bool PLATFORMHELPERS::isPathFile(std::string filepath)
+{
+	File path(filepath);
+	return path.existsAsFile();
+}

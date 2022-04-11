@@ -11,11 +11,14 @@ class DragDropHelper : public FileDragAndDropTarget, public Label
 {
 public:
 	
-	std::string fileExtensionToAccept = ".edl";
+	std::string fileExtensionToAccept = ".wav";
+	std::string displayText = "Drag & drop here...";
 	
 	DragDropHelper(std::string fileExt){
 		setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
-		if (!fileExt.empty()) {fileExtensionToAccept = fileExt;}
+		//if (!fileExt.empty()) {fileExtensionToAccept = fileExt;}
+		fileExtensionToAccept = fileExt;
+		resetDisplayText();
 	};
 	
 	~DragDropHelper(){};
@@ -28,13 +31,35 @@ public:
 		//g.fillRect(getLocalBounds().reduced(5));
 	//}
 	
+	void resetDisplayText(std::string txtToDisplay = "")
+	{
+		if (!txtToDisplay.empty())
+		{
+			displayText = txtToDisplay;
+		}
+		setText(displayText, dontSendNotification);
+	};
+
 	bool isSet()
 	{
-		return PLATFORMHELPERS::ends_with(getText().toStdString(), fileExtensionToAccept);
+		if (!fileExtensionToAccept.empty())
+		{
+			return PLATFORMHELPERS::ends_with(getText().toStdString(), fileExtensionToAccept);
+		}
+		//No ext specified
+		else
+		{
+			if (getText().toStdString() == displayText || getText().isEmpty())
+			{
+				return false;
+			}
+		}
+		return true;
 	};
 	
 	bool isInterestedInFileDrag (const StringArray &files) override {
 		if (files.isEmpty()) return false;
+		if (fileExtensionToAccept.empty()) return true; // no ext specified, so as long as the array is not empty we are interested
 		if (PLATFORMHELPERS::ends_with(PLATFORMHELPERS::stringToLower(files.begin()->toStdString()), fileExtensionToAccept))
 		{
 			return true;
@@ -213,6 +238,10 @@ private:
 	juce::Label * txt_NewEdlTxt = new Label("Choose NEW EDL file...");
 	
 	juce::Label * txt_preview = new Label("Preview of conform...");
+
+	juce::Label* txt_assemblerTitle = new Label("Auto Assembly of Audio from EDL Animation Clip Info...");
+
+	juce::Label* txt_assemblerInfo = new Label("Location of audio files to use in assembly....");
 	
 	juce::TextButton * btn_ChooseOldEDL = new TextButton("...");
 	
@@ -226,9 +255,9 @@ private:
 	
 	DragDropHelper * dragDropTarget02 = new DragDropHelper(".edl");
 	
-	DragDropHelper * dragDropWavTarget = new DragDropHelper(".wav");
+	DragDropHelper * dragDropWavFolderTarget = new DragDropHelper("");
 	
-	juce::TextButton * btn_LoadWav = new TextButton("Load Wav");
+	juce::TextButton * btn_AssembleAudio = new TextButton("Assemble Audio From EDL Anim Clip Info");
 	
 	PreviewArea * RegionPreview = new PreviewArea();
 	
@@ -257,7 +286,7 @@ private:
 		btn_ChooseNewEDL,
 		btn_DoConform,
 		helpButton,
-		btn_LoadWav
+		btn_AssembleAudio
 		,btn_Settings
 	};
 	
@@ -265,8 +294,7 @@ private:
 	
 	File newEDLFilepath;
 	
-	File wavFilepath;
-	File wavDirpath;
+	std::string wavDirpath;
 	 
 
 };
@@ -283,7 +311,7 @@ public:
 		setUsingNativeTitleBar(true);
 		setContentOwned(component, true);
 		setResizable(true, false);
-		setResizeLimits(500, 500, 10000, 10000);
+		setResizeLimits(500, 600, 10000, 10000);
 		centreWithSize(getWidth(), getHeight());
 		mWindowState = windowStatus;
 		*mWindowState = true;
