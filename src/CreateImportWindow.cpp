@@ -719,8 +719,33 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 }
 
 std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath) {
+
+	std::string result = "";
+
+	WwiseObject AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromPath(inPath);
+	if (!AMpaentObject.isEmpty)
+	{
+		while ((AMpaentObject.properties["name"] != "Actor-Mixer Hierarchy") or (AMpaentObject.properties["parent_id"] != ""))
+		{
+			if (AMpaentObject.properties["type"] != "WorkUnit")
+			{
+				result.insert(0, "<Folder>" + (AMpaentObject.properties["name"]) + "\\");
+			}
+			else
+			{
+				result.insert(0,"<WorkUnit>" + (AMpaentObject.properties["name"] + EventWorkunitSuffix) + "\\");
+			}
+			AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromID(AMpaentObject.properties["parent_id"]);
+		}
+
+		return result;
+	}
+
+
+
+	// old method
 	std::vector<std::string> tokens = PLATFORMHELPERS::stringSplitToList(inPath, "\\");
-	std::string result;
+	
 	int i = 0;
 	for (auto token : tokens)
 	{
@@ -743,6 +768,9 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 {
 	//std::string remove = "\\Actor-Mixer Hierarchy";
 	//path.erase(0, remove.length());
+
+	std::string evPath = PrepareEventPathForCreation(path);
+
 	CreateObjectArgs args;
 	args.ParentID = PLATFORMHELPERS::stringReplace(path, "\\Actor-Mixer Hierarchy", "\\Events");;
 	args.Type = "Event";
@@ -755,7 +783,7 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 	
 	args.eventArgs = eventArgs;
 
-	std::string evPath = PrepareEventPathForCreation(args.ParentID);
+	
 	
 	WwiseObject createdPathObj = WwiseConnectionHnd->CreateStructureFromPath(evPath,"Events");
 	if (createdPathObj.isEmpty)

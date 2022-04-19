@@ -96,6 +96,8 @@ public:
 
 	std::vector<WwiseObject> GetWwiseObjects(bool suppressOuputMessages, ObjectGetArgs& getargs, AK::WwiseAuthoringAPI::AkJson::Array& Results);
 	
+	bool IsValidWwiseGUID(std::string input);
+
 	WwiseObject CreateStructureFromPath(std::string path,std::string parent = "Actor-Mixer Hierarchy");
 
 	bool CreateWwiseObject(bool suppressOutputMessages, CreateObjectArgs& createArgs, AK::WwiseAuthoringAPI::AkJson::Array& Results,bool enableAutomation = true);
@@ -133,6 +135,8 @@ public:
 	
 	WwiseObject GetWwiseObjectFromID(std::string guid);
 
+	WwiseObject GetWwiseObjectFromPath(std::string path);
+
 
 private:
 
@@ -163,6 +167,8 @@ public:
 	WwiseConnectionHandler * WwiseConnectionHnd = nullptr;
 	std::vector<RenderQueJob> GlobalListOfRenderQueJobs;
 	std::vector<std::string> RenderFilesBackup;
+
+	std::string EventWorkunitSuffix = "_Events"; // set this from the GUI settings
 	
 	//TransferToWwiseComponent * owningGUIWindow;
 	BaseWwiseGuiComponent * owningGUIWindow = nullptr;

@@ -41,6 +41,7 @@ namespace PLATFORMHELPERS
 	std::vector<std::string> GetFilesInDirectory(std::string dir, std::string type = "*.wav");
 	bool doesFilePathExist(std::string filepath);
 	bool isPathDirectory(std::string filepath);
+	std::vector<std::string> FindRegexMatches(std::string inString, std::string regexPattern);
 	bool isPathFile(std::string filepath);
 }
 

@@ -291,6 +291,7 @@ bool WwiseConnectionHandler::ImportAudioToWwise(bool suppressOutputMessages, Imp
 		
 		PrintToConsole("ERROR. Import Failed. Exiting. "+message+" : "+uri);
 		waapi_UndoHandler(Cancel, "Auto Import");
+		waapi_SetAutomationMode(false);
 		return false;
 	}
 	waapi_GetWaapiResultsArray(Results, MoreRawReturnResults);
@@ -533,6 +534,14 @@ bool WwiseConnectionHandler::SubscribeOnProjectClosed
 	return waapi_SetupSubscription(ak::wwise::core::project::preClosed, in_callback, outsubscriptionID);
 }
 
+
+bool WwiseConnectionHandler::IsValidWwiseGUID(std::string input)
+{
+	std::string guidPattern = "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
+	auto matches = PLATFORMHELPERS::FindRegexMatches(input, guidPattern);
+	return (matches.size() > 0);
+}
+
 WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, std::string parent)
 {
 	if ((parent == "") or (path == ""))
@@ -542,7 +551,7 @@ WwiseObject WwiseConnectionHandler::CreateStructureFromPath(std::string path, st
 	}
 	bool isParentID = false;
 	std::string nextParentID;
-	//isParentID = isStringValidID(parent) // need to implement this regex check
+	isParentID = IsValidWwiseGUID(parent); // need to implement this regex check
 	
 	if (!isParentID)
 	{
@@ -804,6 +813,7 @@ WwiseObject WwiseConnectionHandler::GetWwiseObjectFromID(std::string guid)
 	getArgs.customReturnArgs.push_back("workunit");
 	getArgs.customReturnArgs.push_back("filePath");
 	getArgs.customReturnArgs.push_back("parent");
+	getArgs.customReturnArgs.push_back("type");
 
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	std::vector<WwiseObject> MyWwiseObjects;
@@ -823,7 +833,34 @@ WwiseObject WwiseConnectionHandler::GetWwiseObjectFromID(std::string guid)
 	}
 }
 
+WwiseObject WwiseConnectionHandler::GetWwiseObjectFromPath(std::string path)
+{
+	ObjectGetArgs getArgs;
+	getArgs.From = { "path",path };
+	getArgs.Select = "";
+	getArgs.customReturnArgs.push_back("path");
+	getArgs.customReturnArgs.push_back("workunit");
+	getArgs.customReturnArgs.push_back("filePath");
+	getArgs.customReturnArgs.push_back("parent");
+	getArgs.customReturnArgs.push_back("type");
 
+	AK::WwiseAuthoringAPI::AkJson::Array results;
+	std::vector<WwiseObject> MyWwiseObjects;
+	try {
+		MyWwiseObjects = GetWwiseObjects(false, getArgs, results);
+	}
+	catch (std::string e) {
+		//PrintToConsole(e);
+	}
+	if (MyWwiseObjects.empty())
+	{
+		return WwiseObject();
+	}
+	else
+	{
+		return MyWwiseObjects[0];
+	}
+}
 
 
 

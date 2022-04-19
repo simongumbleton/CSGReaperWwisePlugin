@@ -201,3 +201,24 @@ bool PLATFORMHELPERS::isPathFile(std::string filepath)
 	File path(filepath);
 	return path.existsAsFile();
 }
+
+
+std::vector<std::string> PLATFORMHELPERS::FindRegexMatches(std::string inString, std::string regexPattern)
+{
+	//std::regex tcPattern("[0-9][0-9]\\:[0-9][0-9]\\:[0-9][0-9]\\:[0-9][0-9]");
+	std::regex tcPattern(regexPattern);
+	std::vector<std::string> matches;
+	std::sregex_iterator iter(inString.begin(), inString.end(), tcPattern);
+	std::sregex_iterator end;
+	int count = 0;
+	while (iter != end)
+	{
+		for (unsigned i = 0; i < iter->size(); ++i)
+		{
+			matches.push_back((*iter)[i]);
+		}
+		++iter;
+		count++;
+	}
+	return matches;
+}
