@@ -769,10 +769,26 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 	//std::string remove = "\\Actor-Mixer Hierarchy";
 	//path.erase(0, remove.length());
 
+	CreateObjectArgs args;
+
 	std::string evPath = PrepareEventPathForCreation(path);
 
-	CreateObjectArgs args;
-	args.ParentID = PLATFORMHELPERS::stringReplace(path, "\\Actor-Mixer Hierarchy", "\\Events");;
+	///Need to seach for existing event work units before we try and create the structure
+	/// Because if the structure is not mirrored exactly, we could fail to find the right parent, and then when trying to create it will fail if there is already a work unit with the same name!
+
+	WwiseObject createdPathObj = WwiseConnectionHnd->CreateStructureFromPath(evPath, "Events");
+	if (createdPathObj.isEmpty)
+	{
+		//failed to create the supplied event path, fallback to default work unit
+		args.ParentID = "\\Events\\Default Work Unit";
+	}
+	else
+	{
+		createdPathObj = WwiseConnectionHnd->GetWwiseObjectFromID(createdPathObj.properties["id"]);// get a bunch of default properties for the new object, incl path
+		args.ParentID = createdPathObj.properties["path"];
+	}
+
+	
 	args.Type = "Event";
 	args.Name = "Play_"+name;
 	args.createPlayEvent = true;
@@ -785,12 +801,7 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 
 	
 	
-	WwiseObject createdPathObj = WwiseConnectionHnd->CreateStructureFromPath(evPath,"Events");
-	if (createdPathObj.isEmpty)
-	{
-		//failed to create the supplied event path, fallback to default work unit
-		args.ParentID = "\\Events\\Default Work Unit";
-	}
+	
 	
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	if (!WwiseConnectionHnd->CreateWwiseObject(false, args, results))

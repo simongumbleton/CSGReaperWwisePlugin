@@ -133,9 +133,9 @@ public:
 	
 	std::vector<WwiseObject> FindPlayEventsForID(std::string targetObjID);
 	
-	WwiseObject GetWwiseObjectFromID(std::string guid);
+	WwiseObject GetWwiseObjectFromID(std::string guid, std::vector<std::string>returnProperties = {});
 
-	WwiseObject GetWwiseObjectFromPath(std::string path);
+	WwiseObject GetWwiseObjectFromPath(std::string path, std::vector<std::string>returnProperties = {});
 
 
 private:

@@ -804,7 +804,7 @@ std::vector<WwiseObject> WwiseConnectionHandler::FindPlayEventsForID(std::string
 	return matchingPlayEvents;
 }
 
-WwiseObject WwiseConnectionHandler::GetWwiseObjectFromID(std::string guid)
+WwiseObject WwiseConnectionHandler::GetWwiseObjectFromID(std::string guid, std::vector<std::string>returnProperties)
 {
 	ObjectGetArgs getArgs;
 	getArgs.From = { "id",guid };
@@ -814,6 +814,11 @@ WwiseObject WwiseConnectionHandler::GetWwiseObjectFromID(std::string guid)
 	getArgs.customReturnArgs.push_back("filePath");
 	getArgs.customReturnArgs.push_back("parent");
 	getArgs.customReturnArgs.push_back("type");
+
+	for (auto item : returnProperties)
+	{
+		getArgs.customReturnArgs.push_back(item);
+	}
 
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	std::vector<WwiseObject> MyWwiseObjects;
@@ -833,7 +838,7 @@ WwiseObject WwiseConnectionHandler::GetWwiseObjectFromID(std::string guid)
 	}
 }
 
-WwiseObject WwiseConnectionHandler::GetWwiseObjectFromPath(std::string path)
+WwiseObject WwiseConnectionHandler::GetWwiseObjectFromPath(std::string path, std::vector<std::string>returnProperties)
 {
 	ObjectGetArgs getArgs;
 	getArgs.From = { "path",path };
@@ -843,6 +848,10 @@ WwiseObject WwiseConnectionHandler::GetWwiseObjectFromPath(std::string path)
 	getArgs.customReturnArgs.push_back("filePath");
 	getArgs.customReturnArgs.push_back("parent");
 	getArgs.customReturnArgs.push_back("type");
+	for (auto item : returnProperties)
+	{
+		getArgs.customReturnArgs.push_back(item);
+	}
 
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	std::vector<WwiseObject> MyWwiseObjects;
