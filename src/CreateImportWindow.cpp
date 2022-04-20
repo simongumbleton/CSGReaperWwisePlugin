@@ -718,49 +718,59 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 	
 }
 
-std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath) {
+std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath, WwiseObject& OUT_parentObject) {
+
+	if (WwiseConnectionHnd->IsValidWwiseGUID(inPath))
+	{
+		//inPath was an ID, so we dont need to do anything
+		OUT_parentObject = WwiseConnectionHnd->GetWwiseObjectFromID(inPath);
+		return inPath;
+	}
+	bool isPathInEventsAlready = (inPath.starts_with("\\Events\\") or inPath.starts_with("Events\\"));
+	if (isPathInEventsAlready)
+	{
+		// inPath is already in the events hierarchy, so we dont need to do anything
+		OUT_parentObject = WwiseConnectionHnd->GetWwiseObjectFromPath(inPath);
+		return inPath;
+	}
+
+	bool isPathInActorMixer = (inPath.starts_with("\\Actor-Mixer Hierarchy\\") or inPath.starts_with("Actor-Mixer Hierarchy\\"));
+	if (!isPathInActorMixer)
+	{
+		PrintToConsole("Error! When Preparing path for event creation, the input was not in Events or Actormixer paths!");
+		PrintToConsole("InPath = " + inPath);
+		return "";
+	}
 
 	std::string result = "";
+
+
+
+
+	// Branch on different event options
+
+	// Mirror only work units in actor mixer Path - 
 
 	WwiseObject AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromPath(inPath);
 	if (!AMpaentObject.isEmpty)
 	{
+		OUT_parentObject = AMpaentObject;
 		while ((AMpaentObject.properties["name"] != "Actor-Mixer Hierarchy") or (AMpaentObject.properties["parent_id"] != ""))
 		{
-			if (AMpaentObject.properties["type"] != "WorkUnit")
+			if (AMpaentObject.properties["type"] == "WorkUnit")
 			{
-				result.insert(0, "<Folder>" + (AMpaentObject.properties["name"]) + "\\");
-			}
-			else
-			{
-				result.insert(0,"<WorkUnit>" + (AMpaentObject.properties["name"] + EventWorkunitSuffix) + "\\");
+				result.insert(0, "<WorkUnit>" + (AMpaentObject.properties["name"] + EventWorkunitSuffix) + "\\");
 			}
 			AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromID(AMpaentObject.properties["parent_id"]);
 		}
+		//Try to find any existing matches in wwise starting at the deepest
+
 
 		return result;
 	}
 
 
-
-	// old method
-	std::vector<std::string> tokens = PLATFORMHELPERS::stringSplitToList(inPath, "\\");
 	
-	int i = 0;
-	for (auto token : tokens)
-	{
-		if (token == "Events") continue;
-		if (i == 0)
-		{
-			result += "<WorkUnit>"+token+"\\";
-		}
-		else{
-			result += "<Folder>"+token+"\\";
-		}
-		i++;
-		
-	}
-	return result;
 }
 
 
@@ -771,7 +781,13 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 
 	CreateObjectArgs args;
 
-	std::string evPath = PrepareEventPathForCreation(path);
+	WwiseObject eventParentObj;
+	std::string evPath = PrepareEventPathForCreation(path, eventParentObj);
+	if (evPath.empty())
+	{
+		//There was some error in the preparation of the event path
+		return;
+	}
 
 	///Need to seach for existing event work units before we try and create the structure
 	/// Because if the structure is not mirrored exactly, we could fail to find the right parent, and then when trying to create it will fail if there is already a work unit with the same name!

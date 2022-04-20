@@ -264,7 +264,7 @@ public:
 
 	std::vector<WwiseObject> GetWwiseObjectsByName(std::string objectName, std::string type);
 	
-	std::string PrepareEventPathForCreation(std::string inPath);
+	std::string PrepareEventPathForCreation(std::string inPath, WwiseObject& OUT_parentObject);
 	
 	std::vector<WwiseObject> GetTemplateWwiseObjects(std::string templateWwisePath);
 	
