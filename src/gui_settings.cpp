@@ -236,9 +236,9 @@ TransferSettingsCmp::TransferSettingsCmp(TransferSettingsStruct& inSettings) :rS
 	btn_useAtomationMode->setToggleState(inSettings.useAtomationMode, NotificationType::dontSendNotification);
 	info_useAtomationMode->attachToComponent(btn_useAtomationMode, true);
 
-	info_userorigsubdir->setText("Waapi Port:", NotificationType::dontSendNotification);
+	info_userorigsubdir->setText("Originals Subfolder:", NotificationType::dontSendNotification);
 	addAndMakeVisible(info_userorigsubdir);
-	info_userorigsubdir->setTooltip("WAMP port to use for Wwise connection");
+	info_userorigsubdir->setTooltip("Loaction for audio files inside Originals");
 	txt_userorigsubdir->setEditable(true);
 	txt_userorigsubdir->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
 	addAndMakeVisible(txt_userorigsubdir);
@@ -246,9 +246,9 @@ TransferSettingsCmp::TransferSettingsCmp(TransferSettingsStruct& inSettings) :rS
 	txt_userorigsubdir->addListener(this);
 	txt_userorigsubdir->setText(String(rSettings.userorigsubdir), NotificationType::dontSendNotification);
 
-	info_versionToken->setText("Waapi Port:", NotificationType::dontSendNotification);
+	info_versionToken->setText("Version Token:", NotificationType::dontSendNotification);
 	addAndMakeVisible(info_versionToken);
-	info_versionToken->setTooltip("WAMP port to use for Wwise connection");
+	info_versionToken->setTooltip("Suffix to indicate audio file version");
 	txt_versionToken->setEditable(true);
 	txt_versionToken->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
 	addAndMakeVisible(txt_versionToken);
@@ -256,10 +256,137 @@ TransferSettingsCmp::TransferSettingsCmp(TransferSettingsStruct& inSettings) :rS
 	txt_versionToken->addListener(this);
 	txt_versionToken->setText(String(rSettings.versionToken), NotificationType::dontSendNotification);
 	
+	info_templatePath->setText("Template Path:", NotificationType::dontSendNotification);
+	addAndMakeVisible(info_templatePath);
+	info_templatePath->setTooltip("Location of Wwise template root");
+	txt_templatePath->setEditable(true);
+	txt_templatePath->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
+	addAndMakeVisible(txt_templatePath);
+	info_templatePath->attachToComponent(txt_templatePath, true);
+	txt_templatePath->addListener(this);
+	txt_templatePath->setText(String(rSettings.templatePath), NotificationType::dontSendNotification);
 
+	info_eventWorkUnitSuffix->setText("Event Work Unit Suffix:", NotificationType::dontSendNotification);
+	addAndMakeVisible(info_eventWorkUnitSuffix);
+	info_eventWorkUnitSuffix->setTooltip("Suffix to use when matching work unit structures between Actor-Mixer and Events");
+	txt_eventWorkUnitSuffix->setEditable(true);
+	txt_eventWorkUnitSuffix->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
+	addAndMakeVisible(txt_eventWorkUnitSuffix);
+	info_eventWorkUnitSuffix->attachToComponent(txt_eventWorkUnitSuffix, true);
+	txt_eventWorkUnitSuffix->addListener(this);
+	txt_eventWorkUnitSuffix->setText(String(rSettings.eventWorkUnitSuffix), NotificationType::dontSendNotification);
+	
+	info_UserEventPath->setText("Custom Event Path:", NotificationType::dontSendNotification);
+	addAndMakeVisible(info_UserEventPath);
+	info_UserEventPath->setTooltip("Root path for events to be created in if using Default/Custom path mode");
+	txt_UserEventPath->setEditable(true);
+	txt_UserEventPath->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
+	addAndMakeVisible(txt_UserEventPath);
+	info_UserEventPath->attachToComponent(txt_UserEventPath, true);
+	txt_UserEventPath->addListener(this);
+	txt_UserEventPath->setText(String(rSettings.UserEventPath), NotificationType::dontSendNotification);
 
+	info_eventcreationoption->setText("Event Creation Method:", NotificationType::dontSendNotification);
+	addAndMakeVisible(info_eventcreationoption);
+	info_eventcreationoption->setTooltip("How to organise events created by the Transfer");
+	
+	addAndMakeVisible(dd_eventcreationoption);
+	info_eventcreationoption->attachToComponent(dd_eventcreationoption, true);
 	InitComboBox(dd_eventcreationoption, eventCreationOptions);
+	dd_eventcreationoption->setSelectedId(rSettings.eEventCreationOption + 1);//combo box index starts at 1
+	
 
 
 }
 
+void TransferSettingsCmp::resized()
+{
+	auto area = getBoundsInParent();
+	auto width = getWidth();
+	info->setBounds(area.removeFromTop(20));
+	info->setJustificationType(Justification::centred);
+	auto buffer = area.removeFromTop(30);
+	auto area1 = area.removeFromTop(30);
+	info_waapiPort->setBounds(area1.removeFromLeft(width/2));
+	txt_waapiPort->setBounds(area1.reduced(3));
+	
+	buffer = area.removeFromTop(5);
+	auto area2 = area.removeFromTop(30);
+	info_useAtomationMode->setBounds(area2.removeFromLeft(width/2));
+	btn_useAtomationMode->setBounds(area2.reduced(3));
+	
+	buffer = area.removeFromTop(5);
+	auto area3 = area.removeFromTop(30);
+	info_templatePath->setBounds(area3.removeFromLeft(width/2));
+	txt_templatePath->setBounds(area3.reduced(3));
+	
+	buffer = area.removeFromTop(5);
+	auto area4 = area.removeFromTop(30);
+	info_versionToken->setBounds(area4.removeFromLeft(width/2));
+	txt_versionToken->setBounds(area4.reduced(3));
+
+	buffer = area.removeFromTop(5);
+	auto area5 = area.removeFromTop(30);
+	info_userorigsubdir->setBounds(area5.removeFromLeft(width/2));
+	txt_userorigsubdir->setBounds(area5.reduced(3));
+	
+	buffer = area.removeFromTop(5);
+	auto area6 = area.removeFromTop(30);
+	info_eventcreationoption->setBounds(area6.removeFromLeft(width/2));
+	dd_eventcreationoption->setBounds(area6.reduced(3));
+	
+	buffer = area.removeFromTop(5);
+	auto area7 = area.removeFromTop(30);
+	info_UserEventPath->setBounds(area7.removeFromLeft(width/2));
+	txt_UserEventPath->setBounds(area7.reduced(3));
+	
+	buffer = area.removeFromTop(5);
+	auto area8 = area.removeFromTop(30);
+	info_eventWorkUnitSuffix->setBounds(area8.removeFromLeft(width/2));
+	txt_eventWorkUnitSuffix->setBounds(area8.reduced(3));
+};
+
+void TransferSettingsCmp::buttonClicked(juce::Button* pButton)
+{
+	//PrintToConsole(pButton->getName().toStdString());
+	if (pButton == btn_useAtomationMode){
+		rSettings.useAtomationMode = btn_useAtomationMode->getToggleState();
+	}
+};
+
+void TransferSettingsCmp::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
+{
+	if (comboBoxThatHasChanged == dd_eventcreationoption)
+	{
+		int value = dd_eventcreationoption->getSelectedId()-1;
+		rSettings.eEventCreationOption = (ETransferEventCreationOption)value;
+	}
+};
+
+void TransferSettingsCmp::labelTextChanged(Label* labelThatHasChanged)
+{
+	//PrintToConsole(labelThatHasChanged->getName().toStdString());
+	if (labelThatHasChanged == txt_waapiPort){
+		rSettings.waapiport = txt_waapiPort->getText().getIntValue();
+	}
+	else if (labelThatHasChanged == txt_userorigsubdir)
+	{
+		rSettings.userorigsubdir = txt_userorigsubdir->getText().toStdString();
+	}
+	else if (labelThatHasChanged == txt_templatePath)
+	{
+		rSettings.templatePath = txt_templatePath->getText().toStdString();
+	}
+	else if (labelThatHasChanged == txt_versionToken)
+	{
+		rSettings.templatePath = txt_versionToken->getText().toStdString();
+	}
+	else if (labelThatHasChanged == txt_UserEventPath)
+	{
+		rSettings.UserEventPath = txt_UserEventPath->getText().toStdString();
+	}
+	else if (labelThatHasChanged == txt_eventWorkUnitSuffix)
+	{
+		rSettings.eventWorkUnitSuffix = txt_eventWorkUnitSuffix->getText().toStdString();
+	}
+};

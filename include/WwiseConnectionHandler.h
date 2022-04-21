@@ -11,6 +11,7 @@
 //#include "PluginWindow.h"
 #include <map>
 #include <vector>
+#include "settings_structs.h"
 
 class BaseWwiseGuiComponent;
 
@@ -111,6 +112,10 @@ public:
 	bool LinkParentChildObjects(std::vector<WwiseObject>& objects);
 
 	void SetOptionsFromConfig(config myConfig);
+	
+	void SetWaapiPort(int newPort);
+	
+	void SetUseAutomationMode(bool useAM);
 
 	void SetWwiseAutomationMode(bool enable);
 	
@@ -178,6 +183,7 @@ public:
 	~CreateImportWindow();
 
 	config myConfig;
+	TransferSettingsStruct TransferComponentSettings;
 
 	//static INT_PTR CALLBACK DialogProcStatic(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 	
@@ -270,7 +276,8 @@ public:
 	
 	bool DoesTemplatePathExist(std::string templateWwisePath);
 	
-	
+	void SaveSettingsToExtState();
+	void LoadSettingsFromExtState();
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };

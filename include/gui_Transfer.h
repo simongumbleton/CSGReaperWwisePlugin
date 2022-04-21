@@ -9,6 +9,7 @@
 #include "reaperHelpers.h"
 #include "gui_create.h"
 #include <set>
+#include "gui_settings.h"
 
 
 
@@ -109,6 +110,8 @@ public:
 	bool askUserForWwiseSubDir(std::string &OutSubDir);
 
 	void setTransferValuesFromConfig(config c);
+	
+	void setTransferValuesFromSettings(TransferSettingsStruct& inSettings);
 
 	std::set<std::string> EventsToSave;
 
@@ -136,6 +139,8 @@ private:
 	juce::TextButton * btn_ChooseWwiseOriginalsDir = new TextButton("Choose Originals Dir");
 	juce::ToggleButton * btn_isVoice = new ToggleButton("Is Voice?");
 	juce::ToggleButton * btn_OriginalsMatchesWwise = new ToggleButton("Originals Dir Matches Wwise?");
+	
+	SettingsButton * btn_Settings = new SettingsButton("settingsBtn");
 
 	std::vector<juce::Button*> buttons{
 	btn_RenderAndImport,
@@ -145,7 +150,8 @@ private:
 	btn_isVoice,
 	btn_OriginalsMatchesWwise,
 	btn_ChooseWwiseOriginalsDir,
-	helpButton
+	helpButton,
+	btn_Settings
 	};
 
 	juce::ComboBox * dd_Language = new ComboBox("dd_Language"); //drop down
@@ -235,6 +241,7 @@ public:
 	
 	TransferToWwiseComponent* transferComp = nullptr;
 	CreateWwiseComponent* createComp = nullptr;
+	TransferSettingsCmp* transferSettingsCmp = nullptr;
 
 	CreateImportWindow* thisCreateImportWindow = nullptr;
 	CurrentWwiseConnection* MyCurrentWwiseConnection = nullptr;
@@ -250,6 +257,7 @@ public:
 
 		transferComp = new TransferToWwiseComponent(this);
 		createComp = new CreateWwiseComponent(this);
+		
 
 		thisCreateImportWindow->OnInitDlg();
 
@@ -260,9 +268,11 @@ public:
 		//transferComp->TryConnectToWwise();
 		//createComp->TryConnectToWwise();
 		
+		transferSettingsCmp = new TransferSettingsCmp(thisCreateImportWindow->TransferComponentSettings);
+		
 		addTab("Transfer",juce::Colours::darkslategrey,transferComp,true,0);
 		addTab("Create",juce::Colours::darkslategrey,createComp,true,1);
-
+		addTab("Settings",juce::Colours::darkslategrey,transferSettingsCmp,true,2);
 
 		
 	};

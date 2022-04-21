@@ -142,7 +142,14 @@ std::vector<std::string> PLATFORMHELPERS::stringSplitToList(std::string target, 
 bool PLATFORMHELPERS::ends_with(std::string const& value, std::string const& ending)
 {
 	if (ending.size() > value.size()) return false;
-	return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+	//return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+	return std::equal(ending.begin(), ending.end(), value.end()-ending.size());
+}
+
+bool PLATFORMHELPERS::starts_with(std::string const& value, std::string const& startstring)
+{
+	if (startstring.size() > value.size()) return false;
+	return std::equal(startstring.begin(), startstring.end(), value.begin());
 }
 
 File PLATFORMHELPERS::askUserForFile(std::string message, std::string extension)

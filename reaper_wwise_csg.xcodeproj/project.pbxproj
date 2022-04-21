@@ -49,6 +49,8 @@
 		9ECD1BD1278CE1BD00E39C62 /* EDL_Conformer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9ECD1BCF278CE1BD00E39C62 /* EDL_Conformer.cpp */; };
 		9ECD1BD6278CE1EC00E39C62 /* EDL_Conformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9ECD1BD5278CE1EC00E39C62 /* EDL_Conformer.h */; };
 		9ED27E14272724DA00A3AC7F /* json.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9ED27E13272724DA00A3AC7F /* json.hpp */; };
+		9EDF8A812812078B0020544E /* WaapiConnect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EDF8A7F2812078B0020544E /* WaapiConnect.cpp */; };
+		9EDF8A822812078B0020544E /* platformhelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EDF8A802812078B0020544E /* platformhelpers.cpp */; };
 		9EE4E5DD24CA16A0006BC020 /* WwiseConnectionHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */; };
 		9EE4E5DE24CA16A3006BC020 /* WwiseConnectionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EBC0E9C24C346160068154E /* WwiseConnectionHandler.h */; };
 		9EE4E5E024CA1FC5006BC020 /* CreateImportWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */; };
@@ -144,6 +146,8 @@
 		9ECD1BCF278CE1BD00E39C62 /* EDL_Conformer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EDL_Conformer.cpp; sourceTree = "<group>"; };
 		9ECD1BD5278CE1EC00E39C62 /* EDL_Conformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EDL_Conformer.h; sourceTree = "<group>"; };
 		9ED27E13272724DA00A3AC7F /* json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
+		9EDF8A7F2812078B0020544E /* WaapiConnect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaapiConnect.cpp; sourceTree = "<group>"; };
+		9EDF8A802812078B0020544E /* platformhelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = platformhelpers.cpp; sourceTree = "<group>"; };
 		9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CreateImportWindow.cpp; path = src/CreateImportWindow.cpp; sourceTree = SOURCE_ROOT; };
 		9EECDF6027A0BA660092DDB4 /* gui_settings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gui_settings.cpp; sourceTree = "<group>"; };
 		9EECDF6627A0BA960092DDB4 /* gui_settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gui_settings.h; sourceTree = "<group>"; };
@@ -241,6 +245,8 @@
 		9E78220824C0E9B2005401E2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				9EDF8A802812078B0020544E /* platformhelpers.cpp */,
+				9EDF8A7F2812078B0020544E /* WaapiConnect.cpp */,
 				9E5B444F254A112D00382C38 /* gui_RegionMetadata.cpp */,
 				9EE4E5DF24CA1FC5006BC020 /* CreateImportWindow.cpp */,
 				9EBC0E9B24C345BC0068154E /* WwiseConnectionHandler.cpp */,
@@ -467,6 +473,7 @@
 				9ECD1BD1278CE1BD00E39C62 /* EDL_Conformer.cpp in Sources */,
 				C484E6931C1BAD49005C6CCC /* swell-wnd.mm in Sources */,
 				9EE4E5E024CA1FC5006BC020 /* CreateImportWindow.cpp in Sources */,
+				9EDF8A822812078B0020544E /* platformhelpers.cpp in Sources */,
 				9E4024CB2722170B0057AB9F /* pugixml.cpp in Sources */,
 				9E78206224C0E904005401E2 /* include_juce_gui_basics.mm in Sources */,
 				9E4024D2272217AF0057AB9F /* workunithelper.cpp in Sources */,
@@ -501,6 +508,7 @@
 				C484E69B1C1BAE94005C6CCC /* lice_line.cpp in Sources */,
 				9E8161B52718E3B700216C42 /* gui_create.cpp in Sources */,
 				C484E6921C1BAD49005C6CCC /* swell-miscdlg.mm in Sources */,
+				9EDF8A812812078B0020544E /* WaapiConnect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

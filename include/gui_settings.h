@@ -392,21 +392,22 @@ public:
 
 	std::vector<String> eventCreationOptions;
 	
+	int getEventOptionAsID();
 
 	//void InitComboBox(juce::ComboBox* comboBox, std::vector<String> choices);
 
 
-	//void buttonClicked(juce::Button* pButton)override;
+	void buttonClicked(juce::Button* pButton)override;
 
-	//void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override;
+	void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override;
 
-	//void labelTextChanged(Label* labelThatHasChanged)override;
+	void labelTextChanged(Label* labelThatHasChanged)override;
 
 	TransferSettingsCmp(TransferSettingsStruct& inSettings);
 
 	~TransferSettingsCmp() {};
 
-	//void resized() override;
+	void resized() override;
 
 private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferSettingsCmp)

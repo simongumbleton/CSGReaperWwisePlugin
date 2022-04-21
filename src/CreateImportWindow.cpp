@@ -86,7 +86,19 @@ void CreateImportWindow::OnInitDlg()
 
 	//config myConfig;
 	ReadConfigFile(myConfig);
-	WwiseConnectionHnd->SetOptionsFromConfig(myConfig);
+	//WwiseConnectionHnd->SetOptionsFromConfig(myConfig);
+	
+	TransferComponentSettings.userorigsubdir = "Hello";
+	TransferComponentSettings.eEventCreationOption = ETransferEventCreationOption::E_UserEventWorkUnitPath;
+	
+	SaveSettingsToExtState();
+	SaveProject();
+	LoadSettingsFromExtState();
+	
+	
+	WwiseConnectionHnd->SetWaapiPort(TransferComponentSettings.waapiport);
+	WwiseConnectionHnd->SetUseAutomationMode(TransferComponentSettings.useAtomationMode);
+	
 
 }
 //=============================================================================
@@ -726,7 +738,7 @@ std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath, 
 		OUT_parentObject = WwiseConnectionHnd->GetWwiseObjectFromID(inPath);
 		return inPath;
 	}
-	bool isPathInEventsAlready = (inPath.starts_with("\\Events\\") or inPath.starts_with("Events\\"));
+	bool isPathInEventsAlready = (PLATFORMHELPERS::starts_with(inPath, "\\Events\\") or PLATFORMHELPERS::starts_with(inPath, "Events\\"));
 	if (isPathInEventsAlready)
 	{
 		// inPath is already in the events hierarchy, so we dont need to do anything
@@ -734,7 +746,7 @@ std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath, 
 		return inPath;
 	}
 
-	bool isPathInActorMixer = (inPath.starts_with("\\Actor-Mixer Hierarchy\\") or inPath.starts_with("Actor-Mixer Hierarchy\\"));
+	bool isPathInActorMixer = (PLATFORMHELPERS::starts_with(inPath, "\\Actor-Mixer Hierarchy\\") or PLATFORMHELPERS::starts_with(inPath, "Actor-Mixer Hierarchy\\"));
 	if (!isPathInActorMixer)
 	{
 		PrintToConsole("Error! When Preparing path for event creation, the input was not in Events or Actormixer paths!");
@@ -764,7 +776,7 @@ std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath, 
 				{
 					for (auto object : foundObjects)
 					{
-						if ( (object.properties["path"].starts_with("\\Events\\")) or (object.properties["path"].starts_with("Events\\")) )
+						if ((PLATFORMHELPERS::starts_with(object.properties["path"], "\\Events\\") or PLATFORMHELPERS::starts_with(object.properties["path"], "Events\\")))
 						{
 							OUT_parentObject = foundObjects[0];
 							result = OUT_parentObject.properties["path"] + "\\" + result;
@@ -1135,7 +1147,7 @@ bool CreateImportWindow::AudioFileExistsInWwise(std::string audioFile, WwiseObje
 				if (obj.properties.find("filePath") != obj.properties.end())
 				{
 #ifndef _WIN32
-					thisSoundInfo.workUnitPath = cleanWwisePathsFromMac(obj.properties.at("filePath"));
+					thisSoundInfo.workUnitPath = PLATFORMHELPERS::cleanWwisePathsFromMac(obj.properties.at("filePath"));
 #else
 					thisSoundInfo.workUnitPath = obj.properties.at("filePath");
 #endif // !_WIN32
@@ -1417,7 +1429,64 @@ bool CreateImportWindow::DoesTemplatePathExist(std::string templateWwisePath) {
 	return true;
 }
 
+void CreateImportWindow::SaveSettingsToExtState() {
+	std::string name = "CSGTransferSettings";
+	std::stringstream valuesToJson;
+	//"{ 'id': 1234, 'name': 'nandini' }"
+	valuesToJson << '{';
+	valuesToJson << "'" << TransferComponentSettings.waapiport << "'" << ",";
+	valuesToJson << "'" << std::boolalpha << TransferComponentSettings.useAtomationMode << "'" << ",";
+	valuesToJson << "'" << TransferComponentSettings.userorigsubdir << "'" << ",";
+	valuesToJson << "'" << TransferComponentSettings.templatePath << "'" << ",";
+	valuesToJson << "'" << TransferComponentSettings.versionToken << "'" << ",";
+	valuesToJson << "'" << TransferComponentSettings.eEventCreationOption << "'" << ",";
+	valuesToJson << "'" << TransferComponentSettings.eventWorkUnitSuffix << "'" << ",";
+	valuesToJson << "'" << TransferComponentSettings.UserEventPath << "'" << ",";
+	valuesToJson << "}";
+	saveProjExState("Transfer", valuesToJson.str(), name);
+}
 
+
+void CreateImportWindow::LoadSettingsFromExtState() {
+	
+	std::string svalue = "";
+	std::vector<std::string> tempListValues;
+	svalue = getProjExState("Transfer", "CSGTransferSettings");
+	
+	if (svalue.empty()) {return;}
+	
+	char* pch;
+	printf("Splitting string \"%s\" into tokens:\n", svalue.c_str());
+	//char delims[] = "\n !@#$%^&*)(_+-=][}{|:;'<>?,./\"\\";
+	char delims[] = "{,}";
+	pch = strtok(&svalue[0], delims);
+	
+	while (pch != NULL)
+	{
+		printf("%s\n", pch);
+		std::string value = std::string(pch);
+		value.erase(std::remove(value.begin(), value.end(), '\''), value.end());
+
+
+		tempListValues.push_back(value);
+		pch = strtok(NULL, delims);
+	}
+	
+	if (tempListValues.size() != 8)//number of settings in the struct
+	{
+		printf("Warning! Mismatch in number of settings retrived from extstate");
+		return;
+	}
+	
+	TransferComponentSettings.waapiport = std::stoi(tempListValues[0]);
+	istringstream(tempListValues[1]) >> std::boolalpha >> TransferComponentSettings.useAtomationMode;
+	TransferComponentSettings.userorigsubdir = tempListValues[2];
+	TransferComponentSettings.templatePath = tempListValues[3];
+	TransferComponentSettings.versionToken = tempListValues[4];
+	TransferComponentSettings.eEventCreationOption = ETransferEventCreationOption(std::stoi(tempListValues[5]));
+	TransferComponentSettings.eventWorkUnitSuffix = tempListValues[6];
+	TransferComponentSettings.UserEventPath = tempListValues[7];
+}
 
 
 

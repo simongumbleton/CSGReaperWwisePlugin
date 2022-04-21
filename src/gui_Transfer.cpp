@@ -116,7 +116,8 @@ TransferToWwiseComponent::TransferToWwiseComponent(juce::Component* parentComp) 
 	updateProgressValue(0);
 	
 	ReadConfigFile(myConfig);
-	setTransferValuesFromConfig(myConfig);
+	//setTransferValuesFromConfig(myConfig);
+	setTransferValuesFromSettings(thisCreateImportWindow->TransferComponentSettings);
 	
 	InitComboBoxTemplate();
 	
@@ -252,6 +253,9 @@ void TransferToWwiseComponent::resized()
 	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
 	txt_pluginVersion->setBounds(statusRow.removeFromRight(50));
 	
+	auto settingsButtonArea = statusRow.removeFromLeft(20);
+	btn_Settings->setBounds(settingsButtonArea);
+	
 	auto statusLeft = statusRow.removeFromLeft(statusRow.getWidth()/2);
 	
 	statusLabel->setBounds(statusRow.removeFromLeft(statusRow.getWidth()/2).reduced(border));
@@ -272,6 +276,9 @@ void TransferToWwiseComponent::resized()
 	//tree_RenderJobTree->setBounds(LeftHalf.removeFromTop(treeHeight).reduced(border));
 	
 	tree_RenderJobTree->setBounds(area.reduced(border));
+	
+
+	
 
 }
 
@@ -739,6 +746,12 @@ void TransferToWwiseComponent::setTransferValuesFromConfig(config c)
 	}
 	
 }
+
+void TransferToWwiseComponent::setTransferValuesFromSettings(TransferSettingsStruct& inSettings)
+{
+	INtxt_OriginalsSubDir->setText(inSettings.userorigsubdir, juce::NotificationType::dontSendNotification);
+}
+
 
 void TransferToWwiseComponent::handle_OnBecameActiveTab()
 {

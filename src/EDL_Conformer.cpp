@@ -1280,7 +1280,7 @@ void EDLconformer::MatchAnimClipsWithWavs(std::vector<std::string> wavFiles)
 		{
 			if (anim.second.actor == "HeadMesh") { continue;  } //Skip headmesh entries for now so we don't have duplicates
 
-			if (!AnimClipToWavMap.contains(anim.first)) //if the anim is not in the map already, create the default entry
+			if (AnimClipToWavMap.count(anim.first)==0) //if the anim is not in the map already, create the default entry
 			{
 				AnimClipToWavMap.try_emplace(anim.first, AnimClipAssemblerInfo());
 			}

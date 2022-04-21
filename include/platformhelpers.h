@@ -35,6 +35,7 @@ namespace PLATFORMHELPERS
 	std::string filenameFromPathString(std::string input, bool removeExtension = false);
 	std::vector<std::string> stringSplitToList(std::string target, std::string delim);
 	bool ends_with(std::string const& value, std::string const& ending);
+	bool starts_with(std::string const& value, std::string const& startstring);
 	File askUserForFile(std::string message = "Select EDL file", std::string extension = "*.edl");
 	File askUserForDirectory(std::string message = "Select a folder");
 	Array<File> GetFilesInDirectory(File dir, std::string type = "*.wav");
