@@ -39,6 +39,19 @@ void SettingsComponent::resized()
 	info->setJustificationType(Justification::centred);
 };
 
+void SettingsComponent::InitComboBox(juce::ComboBox* comboBox, std::vector<String> choices)
+{
+	comboBox->clear();
+	int i = 1;
+	for (auto choice : choices)
+	{
+		comboBox->addItem(choice, i);
+		i++;
+	}
+	comboBox->addListener(this);
+	comboBox->setSelectedItemIndex(0, false);
+	addAndMakeVisible(comboBox);
+}
 
 
 SettingsWindow::SettingsWindow(const juce::String& name, bool* windowStatus): DocumentWindow(name, juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), juce::DocumentWindow::allButtons)
@@ -147,6 +160,7 @@ int EDLSettingsCmp::getSavedFramerateAsID(){
 	return 1;
 };
 
+/*
 void EDLSettingsCmp::InitComboBox(juce::ComboBox * comboBox, std::vector<String> choices)
 {
 	comboBox->clear();
@@ -160,6 +174,7 @@ void EDLSettingsCmp::InitComboBox(juce::ComboBox * comboBox, std::vector<String>
 	comboBox->setSelectedItemIndex(0, false);
 	addAndMakeVisible(comboBox);
 }
+*/
 
 void EDLSettingsCmp::buttonClicked(juce::Button* pButton)
 {
@@ -189,3 +204,62 @@ void EDLSettingsCmp::labelTextChanged(Label* labelThatHasChanged)
 		rSettings.timeLineOffset = txt_StartOffset->getText().toStdString();
 	}
 };
+
+
+
+TransferSettingsCmp::TransferSettingsCmp(TransferSettingsStruct& inSettings) :rSettings(inSettings)
+{
+
+	for (const auto e : all_EventCreationOptions)
+	{
+		eventCreationOptions.push_back(e);
+	}
+
+	info->setText("Transfer To Wwise Settings", NotificationType::dontSendNotification);
+
+	info_waapiPort->setText("Waapi Port:", NotificationType::dontSendNotification);
+	addAndMakeVisible(info_waapiPort);
+	info_waapiPort->setTooltip("WAMP port to use for Wwise connection");
+	txt_waapiPort->setEditable(true);
+	txt_waapiPort->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
+	addAndMakeVisible(txt_waapiPort);
+	info_waapiPort->attachToComponent(txt_waapiPort, true);
+	txt_waapiPort->addListener(this);
+	txt_waapiPort->setText(String(rSettings.waapiport), NotificationType::dontSendNotification);
+
+	info_useAtomationMode->setText("Use Wwise Automation Mode:", NotificationType::dontSendNotification);
+	addAndMakeVisible(info_useAtomationMode);
+	info_useAtomationMode->setTooltip("Use Wwise Automation mode for transfers");
+	btn_useAtomationMode->addListener(this);
+	addAndMakeVisible(btn_useAtomationMode);
+	btn_useAtomationMode->setTooltip("Create a region with the name of the new EDL file.");
+	btn_useAtomationMode->setToggleState(inSettings.useAtomationMode, NotificationType::dontSendNotification);
+	info_useAtomationMode->attachToComponent(btn_useAtomationMode, true);
+
+	info_userorigsubdir->setText("Waapi Port:", NotificationType::dontSendNotification);
+	addAndMakeVisible(info_userorigsubdir);
+	info_userorigsubdir->setTooltip("WAMP port to use for Wwise connection");
+	txt_userorigsubdir->setEditable(true);
+	txt_userorigsubdir->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
+	addAndMakeVisible(txt_userorigsubdir);
+	info_userorigsubdir->attachToComponent(txt_userorigsubdir, true);
+	txt_userorigsubdir->addListener(this);
+	txt_userorigsubdir->setText(String(rSettings.userorigsubdir), NotificationType::dontSendNotification);
+
+	info_versionToken->setText("Waapi Port:", NotificationType::dontSendNotification);
+	addAndMakeVisible(info_versionToken);
+	info_versionToken->setTooltip("WAMP port to use for Wwise connection");
+	txt_versionToken->setEditable(true);
+	txt_versionToken->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
+	addAndMakeVisible(txt_versionToken);
+	info_versionToken->attachToComponent(txt_versionToken, true);
+	txt_versionToken->addListener(this);
+	txt_versionToken->setText(String(rSettings.versionToken), NotificationType::dontSendNotification);
+	
+
+
+	InitComboBox(dd_eventcreationoption, eventCreationOptions);
+
+
+}
+

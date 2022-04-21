@@ -8,9 +8,26 @@
 
 #pragma once
 
+enum ETransferEventCreationOption
+{
+	E_MirrorActorMixerWorkUnits = 0,
+	E_UserEventWorkUnitPath = 1
+};
+
+//constexpr std::initializer_list<ETransferEventCreationOption> all_EventCreationOptions = { E_MirrorActorMixerWorkUnits, E_UserEventWorkUnitPath };
+static const char* all_EventCreationOptions[] =
+{ "Mirror Actor-Mixer Work Unit Structure", "Use Default/Custom Path" };
+
 struct TransferSettingsStruct
 {
-	
+	int waapiport = 8080;
+	bool useAtomationMode = true;
+	std::string userorigsubdir = "ImportedFromReaper/";
+	std::string versionToken = "_v00";
+	std::string templatePath = "\\Actor-Mixer Hierarchy\\Templates\\Templates";
+	std::string eventWorkUnitSuffix = "_Events";
+	std::string UserEventPath = "\\Events\\Default Work Unit";
+	ETransferEventCreationOption eEventCreationOption;
 };
 
 struct MetadataSettingsStruct

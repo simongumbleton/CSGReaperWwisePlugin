@@ -34,6 +34,8 @@ public:
 	SettingsComponent();
 	
 	~SettingsComponent();
+
+	void InitComboBox(juce::ComboBox* comboBox, std::vector<String> choices);
 	
 	void resized() override;
 	
@@ -81,10 +83,6 @@ private:
 
 
 
-class TransferSettingsWnd : public SettingsWindow
-{
-public:
-};
 
 
 class DynamicTextEntry : public Component, public juce::Label::Listener
@@ -311,7 +309,7 @@ public:
 	ToggleButton * btn_ExistingRegions = new ToggleButton("Copy Existing Regions");
 	ToggleButton * btn_ChangedShots = new ToggleButton("Create Regions for Changed Shots");
 	
-	void InitComboBox(juce::ComboBox * comboBox, std::vector<String> choices);
+	//void InitComboBox(juce::ComboBox * comboBox, std::vector<String> choices);
 	
 	
 	void buttonClicked(juce::Button* pButton)override;
@@ -356,4 +354,89 @@ public:
  private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EDLSettingsWnd)
 
+};
+
+
+class TransferSettingsCmp : public SettingsComponent
+{
+	TransferSettingsStruct& rSettings;
+
+public:
+	TooltipWindow tooltipWindow{ nullptr,750 };
+
+	Label* info_waapiPort = new Label("info_waapiPort");
+	Label* txt_waapiPort = new Label("txt_waapiPort");
+
+	Label* info_useAtomationMode = new Label("info_useAtomationMode");
+	ToggleButton* btn_useAtomationMode = new ToggleButton("useAtomationMode");
+
+	Label* info_userorigsubdir = new Label("info_userorigsubdir");
+	Label* txt_userorigsubdir = new Label("txt_userorigsubdir");
+
+	Label* info_versionToken = new Label("info_versionToken");
+	Label* txt_versionToken = new Label("txt_versionToken");
+
+	Label* info_templatePath = new Label("info_templatePath");
+	Label* txt_templatePath = new Label("txt_templatePath");
+
+	Label* info_eventWorkUnitSuffix = new Label("info_eventWorkUnitSuffix");
+	Label* txt_eventWorkUnitSuffix = new Label("txt_eventWorkUnitSuffix");
+
+	Label* info_UserEventPath = new Label("info_UserEventPath");
+	Label* txt_UserEventPath = new Label("txt_UserEventPath");
+
+
+	Label* info_eventcreationoption = new Label("info_eventcreationoption");
+	//Label* txt_eventcreationoption = new Label("txt_eventcreationoption");
+	ComboBox* dd_eventcreationoption = new ComboBox("dd_eventcreationoption");
+
+	std::vector<String> eventCreationOptions;
+	
+
+	//void InitComboBox(juce::ComboBox* comboBox, std::vector<String> choices);
+
+
+	//void buttonClicked(juce::Button* pButton)override;
+
+	//void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override;
+
+	//void labelTextChanged(Label* labelThatHasChanged)override;
+
+	TransferSettingsCmp(TransferSettingsStruct& inSettings);
+
+	~TransferSettingsCmp() {};
+
+	//void resized() override;
+
+private:
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferSettingsCmp)
+};
+
+
+
+class TransferSettingsWnd : public SettingsWindow
+{
+public:
+	TransferSettingsCmp* settingsComp;
+
+	TransferSettingsWnd(const juce::String name, TransferSettingsStruct& inSettings, bool& windowStatus) : SettingsWindow(name, &windowStatus)
+	{
+		settingsComp = new TransferSettingsCmp(inSettings);
+		setContentOwned(settingsComp, true);
+		childSettingsComponent = settingsComp;
+		childSettingsComponent->owningParentComponent = this;
+	}
+
+	virtual void readSettingsFromParent()override
+	{
+
+	};
+
+	virtual void updateSettingsInParent()override
+	{
+
+	};
+
+private:
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferSettingsWnd)
 };

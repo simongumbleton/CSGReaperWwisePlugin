@@ -304,5 +304,8 @@
     <ClInclude Include="include\versioning.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\settings_structs.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
