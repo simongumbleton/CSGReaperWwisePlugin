@@ -751,26 +751,40 @@ std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath, 
 
 	// Mirror only work units in actor mixer Path - 
 
-	WwiseObject AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromPath(inPath);
+	WwiseObject AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromPath(inPath); //this would be the actor mixer path of the object if we are doing mirroring behaviour
 	if (!AMpaentObject.isEmpty)
 	{
-		OUT_parentObject = AMpaentObject;
 		while ((AMpaentObject.properties["name"] != "Actor-Mixer Hierarchy") or (AMpaentObject.properties["parent_id"] != ""))
 		{
 			if (AMpaentObject.properties["type"] == "WorkUnit")
 			{
+				//Try to find an existing WU in event structure
+				auto foundObjects = GetWwiseObjectsByName(AMpaentObject.properties["name"] + EventWorkunitSuffix, "WorkUnit", true, {"path"});
+				if (foundObjects.size() > 0)
+				{
+					for (auto object : foundObjects)
+					{
+						if ( (object.properties["path"].starts_with("\\Events\\")) or (object.properties["path"].starts_with("Events\\")) )
+						{
+							OUT_parentObject = foundObjects[0];
+							result = OUT_parentObject.properties["path"] + "\\" + result;
+							result = PLATFORMHELPERS::stringReplace(result, "\\Events\\", "");
+							return result;
+						}
+					}
+					
+				}
+
 				result.insert(0, "<WorkUnit>" + (AMpaentObject.properties["name"] + EventWorkunitSuffix) + "\\");
+				
 			}
 			AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromID(AMpaentObject.properties["parent_id"]);
 		}
-		//Try to find any existing matches in wwise starting at the deepest
-
-
 		return result;
 	}
 
 
-	
+	return result;
 }
 
 
@@ -1338,12 +1352,24 @@ WwiseObject CreateImportWindow::GetWwiseObjectFromID(std::string guid)
 	return WwiseConnectionHnd->GetWwiseObjectFromID(guid);
 }
 
-std::vector<WwiseObject> CreateImportWindow::GetWwiseObjectsByName(std::string objectName,std::string type)
+std::vector<WwiseObject> CreateImportWindow::GetWwiseObjectsByName(std::string objectName,std::string type, bool exactMatch, std::vector<std::string> returnProperties)
 {
 	ObjectGetArgs getArgs;
 	getArgs.From = { "ofType",type };
 	getArgs.Select = "";
-	getArgs.Where = { "name:contains",objectName};
+	if (exactMatch)
+	{
+		getArgs.Where = { "name:matches", "^"+objectName+"$"};
+	}
+	else
+	{
+		getArgs.Where = { "name:contains",objectName };
+	}
+
+	for (auto property : returnProperties)
+	{
+		getArgs.customReturnArgs.push_back(property);
+	}
 
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	std::vector<WwiseObject> MyWwiseObjects;

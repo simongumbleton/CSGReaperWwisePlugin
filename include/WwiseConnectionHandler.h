@@ -262,7 +262,7 @@ public:
 	
 	WwiseObject GetWwiseObjectFromID(std::string guid);
 
-	std::vector<WwiseObject> GetWwiseObjectsByName(std::string objectName, std::string type);
+	std::vector<WwiseObject> GetWwiseObjectsByName(std::string objectName, std::string type, bool exactMatch = false, std::vector<std::string> returnProperties = {});
 	
 	std::string PrepareEventPathForCreation(std::string inPath, WwiseObject& OUT_parentObject);
 	
