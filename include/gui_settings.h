@@ -409,6 +409,27 @@ public:
 
 	void resized() override;
 
+	void handle_OnBecameActiveTab();
+
+	void handle_OnTabBecameInactive();
+
+	void LoadSettingsFromExtState();
+
+	void SaveSettingsToExtState();
+
+	void handleCommandMessage(int commandId) override
+	{
+		switch (commandId) {
+		case 30: handle_OnBecameActiveTab();
+			break;
+		case 31: handle_OnTabBecameInactive();
+			break;
+		}
+	}
+
+	void UpdateSettingsValues(TransferSettingsStruct& inSettings);
+
+
 private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransferSettingsCmp)
 };

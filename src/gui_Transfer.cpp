@@ -253,8 +253,8 @@ void TransferToWwiseComponent::resized()
 	auto statusRow = area.removeFromBottom(labelHeight).reduced(border);
 	txt_pluginVersion->setBounds(statusRow.removeFromRight(50));
 	
-	auto settingsButtonArea = statusRow.removeFromLeft(20);
-	btn_Settings->setBounds(settingsButtonArea);
+	//auto settingsButtonArea = statusRow.removeFromLeft(20);
+	//btn_Settings->setBounds(settingsButtonArea);
 	
 	auto statusLeft = statusRow.removeFromLeft(statusRow.getWidth()/2);
 	

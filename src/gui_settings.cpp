@@ -144,7 +144,9 @@ void EDLSettingsCmp::resized()
 	auto buffer5 = area.removeFromTop(5);
 	btn_ChangedShots->setBounds(area.removeFromTop(20));
 	
-};
+}
+
+;
 
 int EDLSettingsCmp::getSavedFramerateAsID(){
 	int i = 1;
@@ -390,3 +392,23 @@ void TransferSettingsCmp::labelTextChanged(Label* labelThatHasChanged)
 		rSettings.eventWorkUnitSuffix = txt_eventWorkUnitSuffix->getText().toStdString();
 	}
 };
+
+void TransferSettingsCmp::handle_OnBecameActiveTab()
+{
+	PrintToConsole("Settings active");
+}
+void TransferSettingsCmp::handle_OnTabBecameInactive()
+{
+	PrintToConsole("Settings closed");
+}
+void TransferSettingsCmp::LoadSettingsFromExtState()
+{
+}
+void TransferSettingsCmp::SaveSettingsToExtState()
+{
+}
+
+void TransferSettingsCmp::UpdateSettingsValues(TransferSettingsStruct& inSettings)
+{
+
+}
