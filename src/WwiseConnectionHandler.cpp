@@ -510,11 +510,16 @@ void WwiseConnectionHandler::SetOptionsFromConfig(config myConfig)
 	MyCurrentWwiseConnection.useAutomationMode = myConfig.useAutomationMode;
 }
 
-void WwiseConnectionHandler::SetWaapiPort(int newPort)
+void WwiseConnectionHandler::Settings_SetWaapiPort(int newPort)
 {
-	MyCurrentWwiseConnection.port = newPort;
+	if (newPort != MyCurrentWwiseConnection.port)
+	{
+		MyCurrentWwiseConnection.port = newPort;
+		ConnectToWwise(false, newPort);
+	}
+	
 }
-void WwiseConnectionHandler::SetUseAutomationMode(bool useAM)
+void WwiseConnectionHandler::Settings_SetUseAutomationMode(bool useAM)
 {
 	MyCurrentWwiseConnection.useAutomationMode = useAM;
 }

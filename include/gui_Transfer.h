@@ -293,12 +293,15 @@ public:
 		if (transferComp)
 		{
 			transferComp->handle_Shutdown();
+			delete transferComp;
 		}
 		if (createComp)
 		{
 			createComp->handle_Shutdown();
+			delete createComp;
 		}
 
+		delete thisCreateImportWindow;
 
 	};
 	

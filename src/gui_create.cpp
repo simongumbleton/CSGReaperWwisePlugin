@@ -378,8 +378,18 @@ void CreateWwiseComponent::setTransferValuesFromConfig(config c)
 	//}
 }
 
+void CreateWwiseComponent::setTransferValuesFromSettings(TransferSettingsStruct& inSettings)
+{
+	//if (!c.userOrigDir.empty())
+	//{
+	//}
+}
+
 void CreateWwiseComponent::handle_OnBecameActiveTab()
 {
+	WwiseCntnHndlr->Settings_SetWaapiPort(thisCreateImportWindow->TransferComponentSettings.waapiport);
+	WwiseCntnHndlr->Settings_SetUseAutomationMode(thisCreateImportWindow->TransferComponentSettings.useAtomationMode);
+	setTransferValuesFromSettings(thisCreateImportWindow->TransferComponentSettings);
 	bool connected = MyCurrentWwiseConnection->connected;
 	if ((connected) && (MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
 	{

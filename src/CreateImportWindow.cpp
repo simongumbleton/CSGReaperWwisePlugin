@@ -67,10 +67,13 @@ void CreateImportWindow::SetupPluginParent(WwiseConnectionHandler * parent)
 CreateImportWindow::CreateImportWindow()
 {
 	WwiseConnectionHnd = new WwiseConnectionHandler();
+	LoadSettingsFromExtState();
 }
 
 CreateImportWindow::~CreateImportWindow()
 {
+	SaveSettingsToExtState();
+	SaveProject();
 	owningGUIWindow = nullptr;
 }
 
@@ -88,16 +91,11 @@ void CreateImportWindow::OnInitDlg()
 	ReadConfigFile(myConfig);
 	//WwiseConnectionHnd->SetOptionsFromConfig(myConfig);
 	
-	TransferComponentSettings.userorigsubdir = "Hello";
-	TransferComponentSettings.eEventCreationOption = ETransferEventCreationOption::E_UserEventWorkUnitPath;
-	
-	SaveSettingsToExtState();
-	SaveProject();
 	LoadSettingsFromExtState();
 	
 	
-	WwiseConnectionHnd->SetWaapiPort(TransferComponentSettings.waapiport);
-	WwiseConnectionHnd->SetUseAutomationMode(TransferComponentSettings.useAtomationMode);
+	WwiseConnectionHnd->Settings_SetWaapiPort(TransferComponentSettings.waapiport);
+	WwiseConnectionHnd->Settings_SetUseAutomationMode(TransferComponentSettings.useAtomationMode);
 	
 
 }
@@ -762,39 +760,56 @@ std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath, 
 	// Branch on different event options
 
 	// Mirror only work units in actor mixer Path - 
-
-	WwiseObject AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromPath(inPath); //this would be the actor mixer path of the object if we are doing mirroring behaviour
-	if (!AMpaentObject.isEmpty)
+	if (TransferComponentSettings.eEventCreationOption == ETransferEventCreationOption::E_MirrorActorMixerWorkUnits)
 	{
-		while ((AMpaentObject.properties["name"] != "Actor-Mixer Hierarchy") or (AMpaentObject.properties["parent_id"] != ""))
+		WwiseObject AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromPath(inPath); //this would be the actor mixer path of the object if we are doing mirroring behaviour
+		if (!AMpaentObject.isEmpty)
 		{
-			if (AMpaentObject.properties["type"] == "WorkUnit")
+			while ((AMpaentObject.properties["name"] != "Actor-Mixer Hierarchy") or (AMpaentObject.properties["parent_id"] != ""))
 			{
-				//Try to find an existing WU in event structure
-				auto foundObjects = GetWwiseObjectsByName(AMpaentObject.properties["name"] + EventWorkunitSuffix, "WorkUnit", true, {"path"});
-				if (foundObjects.size() > 0)
+				if (AMpaentObject.properties["type"] == "WorkUnit")
 				{
-					for (auto object : foundObjects)
+					//Try to find an existing WU in event structure
+					auto foundObjects = GetWwiseObjectsByName(AMpaentObject.properties["name"] + EventWorkunitSuffix, "WorkUnit", true, { "path" });
+					if (foundObjects.size() > 0)
 					{
-						if ((PLATFORMHELPERS::starts_with(object.properties["path"], "\\Events\\") or PLATFORMHELPERS::starts_with(object.properties["path"], "Events\\")))
+						for (auto object : foundObjects)
 						{
-							OUT_parentObject = foundObjects[0];
-							result = OUT_parentObject.properties["path"] + "\\" + result;
-							result = PLATFORMHELPERS::stringReplace(result, "\\Events\\", "");
-							return result;
+							if ((PLATFORMHELPERS::starts_with(object.properties["path"], "\\Events\\") or PLATFORMHELPERS::starts_with(object.properties["path"], "Events\\")))
+							{
+								OUT_parentObject = foundObjects[0];
+								result = OUT_parentObject.properties["path"] + "\\" + result;
+								result = PLATFORMHELPERS::stringReplace(result, "\\Events\\", "");
+								return result;
+							}
 						}
-					}
-					
-				}
 
-				result.insert(0, "<WorkUnit>" + (AMpaentObject.properties["name"] + EventWorkunitSuffix) + "\\");
-				
+					}
+
+					result.insert(0, "<WorkUnit>" + (AMpaentObject.properties["name"] + EventWorkunitSuffix) + "\\");
+
+				}
+				AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromID(AMpaentObject.properties["parent_id"]);
 			}
-			AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromID(AMpaentObject.properties["parent_id"]);
+			return result;
+		}
+
+	}
+	
+	else if (TransferComponentSettings.eEventCreationOption == ETransferEventCreationOption::E_UserEventWorkUnitPath)
+	{
+		// TO DO: Santize this in case user entered something bogus....
+		result = TransferComponentSettings.UserEventPath;
+		if (PLATFORMHELPERS::starts_with(result, "\\Events\\"))
+		{
+			result = PLATFORMHELPERS::stringReplace(result, "\\Events\\", "");
+		}
+		else if (PLATFORMHELPERS::starts_with(result, "Events\\"))
+		{
+			result = PLATFORMHELPERS::stringReplace(result, "Events\\", "");
 		}
 		return result;
 	}
-
 
 	return result;
 }
@@ -1490,6 +1505,9 @@ void CreateImportWindow::LoadSettingsFromExtState() {
 
 
 
+void CreateImportWindow::UpdateSettings()
+{
 
+}
 
 

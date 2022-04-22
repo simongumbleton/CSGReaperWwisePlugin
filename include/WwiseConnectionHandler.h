@@ -113,9 +113,9 @@ public:
 
 	void SetOptionsFromConfig(config myConfig);
 	
-	void SetWaapiPort(int newPort);
+	void Settings_SetWaapiPort(int newPort);
 	
-	void SetUseAutomationMode(bool useAM);
+	void Settings_SetUseAutomationMode(bool useAM);
 
 	void SetWwiseAutomationMode(bool enable);
 	
@@ -278,6 +278,8 @@ public:
 	
 	void SaveSettingsToExtState();
 	void LoadSettingsFromExtState();
+
+	void UpdateSettings();
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };

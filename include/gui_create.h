@@ -69,6 +69,8 @@ public:
 	}
 
 	void setTransferValuesFromConfig(config c);
+
+	void setTransferValuesFromSettings(TransferSettingsStruct& inSettings);
 	
 	void handle_OnBecameActiveTab();
 	

@@ -755,6 +755,9 @@ void TransferToWwiseComponent::setTransferValuesFromSettings(TransferSettingsStr
 
 void TransferToWwiseComponent::handle_OnBecameActiveTab()
 {
+	WwiseCntnHndlr->Settings_SetWaapiPort(thisCreateImportWindow->TransferComponentSettings.waapiport);
+	WwiseCntnHndlr->Settings_SetUseAutomationMode(thisCreateImportWindow->TransferComponentSettings.useAtomationMode);
+	setTransferValuesFromSettings(thisCreateImportWindow->TransferComponentSettings);
 	bool connected = MyCurrentWwiseConnection->connected;
 	if ((connected)&&(MyCurrentWwiseConnection->projectGlobals.ProjectPath != ""))
 	{

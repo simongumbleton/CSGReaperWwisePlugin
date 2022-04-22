@@ -400,6 +400,7 @@ void TransferSettingsCmp::handle_OnBecameActiveTab()
 void TransferSettingsCmp::handle_OnTabBecameInactive()
 {
 	PrintToConsole("Settings closed");
+	
 }
 void TransferSettingsCmp::LoadSettingsFromExtState()
 {
