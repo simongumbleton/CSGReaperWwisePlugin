@@ -37,7 +37,7 @@ namespace CreateTransfer{
 }
 
 namespace RegionMetadata{
-	static const double pluginVersionNumber = 1.06;
+	static const double pluginVersionNumber = 1.07;
 
 	static std::string GetPluginVersionString()
 	{
@@ -46,7 +46,7 @@ namespace RegionMetadata{
 }
 
 namespace Reconformer{
-	static const double pluginVersionNumber = 1.06;
+	static const double pluginVersionNumber = 1.07;
 
 	static std::string GetPluginVersionString()
 	{
