@@ -22,6 +22,13 @@ std::mutex mx_tem;
 RegionMetadataComponent::RegionMetadataComponent() //constructor
 {
 	
+	LoadSettingsFromExtState();
+	
+	
+	myViewport = new Viewport();
+	regionPropertiesViewport = new PropertiesViewportComponent(regionMetadataSettings.PropertyNames);
+	
+	
 	thisCreateImportWindow = new CreateImportWindow();
 	if (thisCreateImportWindow)
 	{
@@ -91,11 +98,15 @@ RegionMetadataComponent::RegionMetadataComponent() //constructor
 
 RegionMetadataComponent::~RegionMetadataComponent()
 {
-	
+	SaveSettingsToExtState();
 	WwiseCntnHndlr->UnsubscribeFromTopicByID(21);
 	WwiseCntnHndlr->UnsubscribeFromTopicByID(22);
 	WwiseCntnHndlr->RemoveActiveComponent(this);
 	RegionMetadataComponent::currentWwiseTemplateComponent = nullptr;
+	delete regionPropertiesViewport;
+	delete myViewport;
+	delete thisCreateImportWindow;
+	
 }
 
 void RegionMetadataComponent::InitAllButtons(std::vector<juce::Button *> buttons)
@@ -332,7 +343,8 @@ void RegionMetadataComponent::handle_OnButton_Saved()
 
 void RegionMetadataComponent::handle_OnButton_Refresh()
 {
-	regionPropertiesViewport->refreshRegionsFromProject();
+	//regionPropertiesViewport->refreshRegionsFromProject();
+	UpdateRegionPropertiesFromSettings();
 	//regionPropertiesViewport->repaint();
 }
 
@@ -343,3 +355,62 @@ void RegionMetadataComponent::LaunchSettingsWindow()
 	addAndMakeVisible(settingsWndHndl_meta);
 	settingsWndHndl_meta->centreWithSize(300, 400);
 }
+
+void RegionMetadataComponent::SaveSettingsToExtState() { 
+	std::string name = "CSGRegionMetadataSettings";
+	std::stringstream valuesToJson;
+	//"{ 'id': 1234, 'name': 'nandini' }"
+	
+	deleteGlobalExtState(name,true);
+	
+	valuesToJson << "{";
+	
+	for (auto property : regionMetadataSettings.PropertyNames)
+	{
+		valuesToJson << "'" << property << "'" << ",";
+	}
+	
+	valuesToJson << "}";
+	//saveProjExState("EDL", valuesToJson.str(), name);
+	saveGlobalExtState(name, valuesToJson.str(),true);
+}
+
+void RegionMetadataComponent::LoadSettingsFromExtState() { 
+	std::string svalue = "";
+	std::vector<std::string> tempListValues;
+	std::string name = "CSGRegionMetadataSettings";
+	//svalue = getProjExState("Transfer", "CSGTransferSettings");
+	svalue = getGlobalExtState(name);
+	
+	if (svalue.empty()) {return;}
+	
+	char* pch;
+	printf("Splitting string \"%s\" into tokens:\n", svalue.c_str());
+	//char delims[] = "\n !@#$%^&*)(_+-=][}{|:;'<>?,./\"\\";
+	char delims[] = "{,}";
+	pch = strtok(&svalue[0], delims);
+	
+	while (pch != NULL)
+	{
+		printf("%s\n", pch);
+		std::string value = std::string(pch);
+		value.erase(std::remove(value.begin(), value.end(), '\''), value.end());
+
+
+		tempListValues.push_back(value);
+		pch = strtok(NULL, delims);
+	}
+	if (tempListValues.size() == 0)
+	{
+		PrintToConsole("Failed to load Region Metadata settings from Ext state");
+		return;
+	}
+	regionMetadataSettings.PropertyNames.clear();
+	
+	for (auto value : tempListValues)
+	{
+		regionMetadataSettings.PropertyNames.push_back(value);
+	}
+}
+
+

@@ -162,6 +162,11 @@ void saveProjExState(std::string Key, std::string Value,std::string extName,ReaP
 	SaveProject(inProj);
 }
 
+void deleteProjExtState(std::string Key, std::string extName,ReaProject* inProj)
+{
+	saveProjExState(Key.c_str(),"",extName.c_str(),inProj);
+}
+
 std::string getProjExState(std::string Key, std::string extName,ReaProject* inProj)
 {
 	//std::string KeyOutValue;
@@ -193,6 +198,30 @@ std::string getProjExState(std::string Key, std::string extName,ReaProject* inPr
 	GetProjExtState(inProj, extName.c_str(), &keyUC[0], bufferValue, ValOutSize);
 	return std::string(bufferValue);
 }
+
+void saveGlobalExtState(std::string Key, std::string Value,bool persist, std::string extName)
+{
+	SetExtState(extName.c_str(),Key.c_str(), Value.c_str(), persist);
+}
+
+void deleteGlobalExtState(std::string Key,bool persist, std::string extName)
+{
+	DeleteExtState(extName.c_str(),Key.c_str(),persist);
+}
+
+std::string getGlobalExtState(std::string Key, std::string extName)
+{
+	std::string value = "";
+	std::string keyUC = PLATFORMHELPERS::stringToUpper(Key);
+	bool HasState = HasExtState(extName.c_str(), keyUC.c_str());
+	if (HasState)
+	{
+		value = GetExtState(extName.c_str(), keyUC.c_str());
+	}
+	return value;
+}
+
+
 
 void Reaper_RenderAllQuedJobs()
 {

@@ -1458,7 +1458,8 @@ void CreateImportWindow::SaveSettingsToExtState() {
 	valuesToJson << "'" << TransferComponentSettings.eventWorkUnitSuffix << "'" << ",";
 	valuesToJson << "'" << TransferComponentSettings.UserEventPath << "'" << ",";
 	valuesToJson << "}";
-	saveProjExState("Transfer", valuesToJson.str(), name);
+	//saveProjExState("Transfer", valuesToJson.str(), name);
+	saveGlobalExtState(name, valuesToJson.str(),true);
 }
 
 
@@ -1466,7 +1467,9 @@ void CreateImportWindow::LoadSettingsFromExtState() {
 	
 	std::string svalue = "";
 	std::vector<std::string> tempListValues;
-	svalue = getProjExState("Transfer", "CSGTransferSettings");
+	std::string name = "CSGTransferSettings";
+	//svalue = getProjExState("Transfer", "CSGTransferSettings");
+	svalue = getGlobalExtState(name);
 	
 	if (svalue.empty()) {return;}
 	

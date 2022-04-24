@@ -1088,7 +1088,8 @@ void EDLconformer::SaveSettingsToExtState() {
 	valuesToJson << "'" << EdlCompSettings.timeLineOffset << "'" << ",";
 	valuesToJson << "'" << EdlCompSettings.framerate << "'";
 	valuesToJson << "}";
-	saveProjExState("EDL", valuesToJson.str(), name);
+	//saveProjExState("EDL", valuesToJson.str(), name);
+	saveGlobalExtState(name, valuesToJson.str(),true);
 }
 
 
@@ -1096,7 +1097,9 @@ void EDLconformer::LoadSettingsFromExtState() {
 	
 	std::string svalue = "";
 	std::vector<std::string> tempListValues;
-	svalue = getProjExState("EDL", "CSGEDLSettings");
+	std::string name = "CSGEDLSettings";
+	//svalue = getProjExState("EDL", "CSGEDLSettings");
+	svalue = getGlobalExtState(name);
 	
 	if (svalue.empty()) {return;}
 	

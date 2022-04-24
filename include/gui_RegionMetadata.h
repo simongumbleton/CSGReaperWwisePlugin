@@ -67,6 +67,10 @@ public:
 	void handle_OnButton_Refresh();
 
 	void LaunchSettingsWindow();
+	
+	void LoadSettingsFromExtState();
+	
+	void SaveSettingsToExtState();
 
 	void UpdateRegionPropertiesFromSettings()
 	{
@@ -94,8 +98,8 @@ public:
 	}
 	
 	//Array<PropertiesComponent*> RegionProperties;
-	Viewport* myViewport = new Viewport();
-	PropertiesViewportComponent* regionPropertiesViewport = new PropertiesViewportComponent(regionMetadataSettings.PropertyNames);
+	Viewport* myViewport;
+	PropertiesViewportComponent* regionPropertiesViewport;
 
 private:
 	std::unique_ptr<ProjectRegionMetadataHelper> metadataHelper;

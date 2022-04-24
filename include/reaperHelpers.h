@@ -34,5 +34,17 @@ void saveProjExState(std::string Key, std::string Value, std::string extName = "
 
 std::string getProjExState(std::string Key, std::string extName = "CSGREGIONPROPERTIES",ReaProject* inProj = nullptr);
 
+void deleteProjExtState(std::string Key = "", std::string extName = "CSGREGIONPROPERTIES",ReaProject* inProj = nullptr);
+
+void saveGlobalExtState(std::string Key, std::string Value,bool persist = true, std::string extName = "CSGPlugin");
+
+std::string getGlobalExtState(std::string Key, std::string extName = "CSGPlugin");
+
+void deleteGlobalExtState(std::string Key,bool persist = true, std::string extName = "CSGPlugin");
+
+
+
+
+
 void bringWindowsToFront();
 
