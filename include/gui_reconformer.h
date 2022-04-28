@@ -239,9 +239,9 @@ private:
 	
 	juce::Label * txt_preview = new Label("Preview of conform...");
 
-	juce::Label* txt_assemblerTitle = new Label("Auto Assembly of Audio from EDL Animation Clip Info...");
+//	juce::Label* txt_assemblerTitle = new Label("Auto Assembly of Audio from EDL Animation Clip Info...");
 
-	juce::Label* txt_assemblerInfo = new Label("Location of audio files to use in assembly....");
+//	juce::Label* txt_assemblerInfo = new Label("Location of audio files to use in assembly....");
 	
 	juce::TextButton * btn_ChooseOldEDL = new TextButton("...");
 	
@@ -255,9 +255,9 @@ private:
 	
 	DragDropHelper * dragDropTarget02 = new DragDropHelper(".edl");
 	
-	DragDropHelper * dragDropWavFolderTarget = new DragDropHelper("");
+//	DragDropHelper * dragDropWavFolderTarget = new DragDropHelper("");
 	
-	juce::TextButton * btn_AssembleAudio = new TextButton("Assemble Audio From EDL Anim Clip Info");
+//	juce::TextButton * btn_AssembleAudio = new TextButton("Assemble Audio From EDL Anim Clip Info");
 	
 	PreviewArea * RegionPreview = new PreviewArea();
 	
@@ -286,20 +286,79 @@ private:
 		btn_ChooseNewEDL,
 		btn_DoConform,
 		helpButton,
-		btn_AssembleAudio
-		,btn_Settings
+//		btn_AssembleAudio,
+		btn_Settings
 	};
 	
 	File oldEDLFilepath;
 	
 	File newEDLFilepath;
 	
-	std::string wavDirpath;
+//	std::string wavDirpath;
 	 
 
 };
 
+class AssemblerComponent : public BaseWwiseGuiComponent
+{
+public:
+	AssemblerComponent();
 
+	~AssemblerComponent()
+	{
+		delete conformerComponent;
+	};
+	EDLconformer* conformerComponent = nullptr;
+
+	EDLSettingsWnd* settingsWndHndl = nullptr;
+
+	bool windowStatus = false;
+
+private:
+	juce::Label* txt_assemblerTitle = new Label("Auto Assembly of Audio from EDL Animation Clip Info...");
+
+	juce::Label* txt_assemblerInfo = new Label("Location of audio files to use in assembly....");
+
+	DragDropHelper* dragDropWavFolderTarget = new DragDropHelper("");
+
+	juce::TextButton* btn_AssembleAudio = new TextButton("Assemble Audio From EDL Anim Clip Info");
+
+	juce::Label* txt_NewEdlTxt = new Label("Choose NEW EDL file...");
+
+	juce::TextButton* btn_ChooseNewEDL = new TextButton("...");
+
+	DragDropHelper* dragDropTarget01 = new DragDropHelper(".edl");
+
+
+	void resized() override;
+
+	void InitAllButtons(std::vector<juce::Button*> buttons);
+
+	void buttonClicked(juce::Button* pButton)override;
+
+	void comboBoxChanged(ComboBox* comboBoxThatHasChanged)override;
+
+	void labelTextChanged(Label* labelThatHasChanged)override;
+
+	void TriggerConform();
+
+	void DrawPreviewConform();
+
+	void LaunchSettingsWindow();
+
+	void SaveSettings();
+
+	void GetCurrentSettings();
+
+	std::vector<juce::Button*> buttons{
+		helpButton,
+		btn_AssembleAudio
+	};
+
+	File newEDLFilepath;
+
+	std::string wavDirpath;
+};
 
 class ConformerWindow : public juce::DocumentWindow
 {

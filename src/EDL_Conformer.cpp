@@ -304,26 +304,26 @@ void EDLconformer::RefreshTimeline() {
 
 
 bool EDLconformer::IngestEDLFiles() {
-	if (not std::filesystem::exists(filepath_Old_EDL))
+
+	old_shotTimeInfo.clear();
+	new_shotTimeInfo.clear();
+
+	if (std::filesystem::exists(filepath_Old_EDL))
 	{
-		PrintToConsole("Warning! Invalid filepath provided for OLD edl");
-		return false;
+		std::vector<std::string> old_fileLines = ReadFile(filepath_Old_EDL);
+		old_shotTimeInfo = CreateShotTimeInfo(old_fileLines);
+		if (not old_shotTimeInfo.empty())
+		{
+			originalEndTime = old_shotTimeInfo.back().destEndTC;
+		}
+
 	}
-	if (not std::filesystem::exists(filepath_New_EDL))
+	if (std::filesystem::exists(filepath_New_EDL))
 	{
-		PrintToConsole("Warning! Invalid filepath provided for NEW edl");
-		return false;
+		std::vector<std::string> new_fileLines = ReadFile(filepath_New_EDL);
+		new_shotTimeInfo = CreateShotTimeInfo(new_fileLines);
 	}
 	
-	std::vector<std::string> old_fileLines = ReadFile(filepath_Old_EDL);
-	std::vector<std::string> new_fileLines = ReadFile(filepath_New_EDL);
-
-	old_shotTimeInfo = CreateShotTimeInfo(old_fileLines);
-	if (not old_shotTimeInfo.empty())
-	{
-		originalEndTime = old_shotTimeInfo.back().destEndTC;
-	}
-	new_shotTimeInfo = CreateShotTimeInfo(new_fileLines);
 	return (not old_shotTimeInfo.empty() && not new_shotTimeInfo.empty());
 }
 
@@ -1048,6 +1048,12 @@ void EDLconformer::ResetConform() {
 	AnimClipToWavMap.clear();
 }
 
+bool EDLconformer::SetupDialogueAssembly()
+{
+	IngestEDLFiles();
+	return !new_shotTimeInfo.empty();
+}
+
 bool EDLconformer::isConformReady() { 
 	return not
 	(
@@ -1135,9 +1141,9 @@ void EDLconformer::LoadSettingsFromExtState() {
 
 void EDLconformer::InitiateDialogueAssembly(std::string folderpath) {
 	
-	if (!isConformReady())
+	if (!SetupDialogueAssembly())
 	{
-		PrintToConsole("Cannot Assemble edit - Missing EDL comparison data - Ensure you have loaded an old and new EDL file");
+		PrintToConsole("Cannot Assemble edit - Missing EDL comparison data - Ensure you have loaded a valid EDL file");
 		return;
 	}
 	

@@ -73,6 +73,8 @@ public:
 	bool DoConform();
 	
 	void ResetConform();
+
+	bool SetupDialogueAssembly();
 	
 	float GetNewEndTime();
 	

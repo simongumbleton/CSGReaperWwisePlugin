@@ -90,6 +90,7 @@
       </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\EDL_Conformer.cpp" />
+    <ClCompile Include="src\gui_assembler.cpp" />
     <ClCompile Include="src\gui_create.cpp" />
     <ClCompile Include="src\gui_reconformer.cpp" />
     <ClCompile Include="src\gui_RegionMetadata.cpp" />

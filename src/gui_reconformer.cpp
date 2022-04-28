@@ -35,13 +35,13 @@ ConformerComponent::ConformerComponent()
 	txt_pluginVersion->setText(Reconformer::GetPluginVersionString(), juce::NotificationType::dontSendNotification);
 	addAndMakeVisible(helpButton);
 	
-	txt_assemblerTitle->setText("Auto Assembly of Audio from EDL Animation Clip Info...", juce::NotificationType::dontSendNotification);
-	txt_assemblerInfo->setText("Choose the location of audio files to use in assembly.", juce::NotificationType::dontSendNotification);
-	addAndMakeVisible(txt_assemblerTitle);
-	addAndMakeVisible(txt_assemblerInfo);
+//	txt_assemblerTitle->setText("Auto Assembly of Audio from EDL Animation Clip Info...", juce::NotificationType::dontSendNotification);
+//	txt_assemblerInfo->setText("Choose the location of audio files to use in assembly.", juce::NotificationType::dontSendNotification);
+//	addAndMakeVisible(txt_assemblerTitle);
+//	addAndMakeVisible(txt_assemblerInfo);
 	//dragDropWavFolderTarget->setText("Drag & drop here...", juce::NotificationType::dontSendNotification);
-	addAndMakeVisible(dragDropWavFolderTarget);
-	addAndMakeVisible(btn_AssembleAudio);
+//	addAndMakeVisible(dragDropWavFolderTarget);
+//	addAndMakeVisible(btn_AssembleAudio);
 	
 	
 	setSize(600, 350);
@@ -74,11 +74,11 @@ void ConformerComponent::resized()
 	
 	auto buffer2 = area.removeFromTop(20);
 
-	auto WavArea = area.removeFromTop(150);
-	txt_assemblerTitle->setBounds(WavArea.removeFromTop(25));
-	txt_assemblerInfo->setBounds(WavArea.removeFromTop(20));
-	dragDropWavFolderTarget->setBounds(WavArea.removeFromTop(50));
-	btn_AssembleAudio->setBounds(WavArea.removeFromTop(35));
+//	auto WavArea = area.removeFromTop(150);
+//	txt_assemblerTitle->setBounds(WavArea.removeFromTop(25));
+//	txt_assemblerInfo->setBounds(WavArea.removeFromTop(20));
+//	dragDropWavFolderTarget->setBounds(WavArea.removeFromTop(50));
+//	btn_AssembleAudio->setBounds(WavArea.removeFromTop(35));
 	
 	
 	
@@ -113,6 +113,7 @@ void ConformerComponent::buttonClicked(juce::Button *pButton) {
 	{
 		TriggerConform();
 	}
+	/*
 	else if (pButton == btn_AssembleAudio)
 	{
 		//wavFilepath = askUserForFile("Load wav","*.wav");
@@ -129,7 +130,7 @@ void ConformerComponent::buttonClicked(juce::Button *pButton) {
 			dragDropWavFolderTarget->setText("Drag & drop here...", juce::NotificationType::dontSendNotification);
 		}
 		
-	}
+	}*/
 	else if (pButton == btn_Settings)
 	{
 		LaunchSettingsWindow();

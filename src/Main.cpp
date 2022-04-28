@@ -48,18 +48,22 @@ char currentProject[256];
 bool transferWindowStatus = false;
 bool templateWindowStatus = false;
 bool edlWindowStatus = false;
+bool assemblerWindowStatus = false;
 juce::DocumentWindow * currentTransferWindow = nullptr;
 juce::DocumentWindow * currentTemplateWindow = nullptr;
 juce::DocumentWindow * currentEDLWindow = nullptr;
+juce::DocumentWindow* currentAssemblerWindow = nullptr;
 
 gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise" };
 gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Region Metadata" };
 gaccel_register_t EDL_Window = { { 0, 0, 0 }, "CSG Ext - EDL Conformer" };
+gaccel_register_t Assembler_Window = { { 0, 0, 0 }, "CSG Ext - EDL Assembler" };
 
 
 void LaunchTransferWindow();
 void LaunchTemplateWindow();
 void LaunchEDLWindow();
+void LaunchAssemblerWindow();
 bool HookCommandProc(int command, int flag);
 static void menuHook(const char *name, HMENU handle, const int f);
 static void AddCustomCSGMenuItems(HMENU parentMenuHandle = NULL);
@@ -89,11 +93,13 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		REGISTER_AND_CHKERROR(Transfer_To_Wwise.accel.cmd, "command_id", "CSG_Ext_TransferToWwise");
 		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "CSG_Ext_RegionMetadata");
 		REGISTER_AND_CHKERROR(EDL_Window.accel.cmd, "command_id", "CSG_Ext_EDLConformer");
+		REGISTER_AND_CHKERROR(Assembler_Window.accel.cmd, "command_id", "CSG_Ext_EDLAssembler");
 		
 		//register our custom actions
 		plugin_register("gaccel", &Transfer_To_Wwise.accel);
 		plugin_register("gaccel", &Template_To_Wwise.accel);
 		plugin_register("gaccel", &EDL_Window.accel);
+		plugin_register("gaccel", &Assembler_Window.accel);
 		
 		//hook command is where we process command IDs and launch our custom actions
 		rec->Register("hookcommand", (void*)HookCommandProc);
@@ -309,7 +315,22 @@ void LaunchEDLWindow()
 	}
 	else
 	{
-		currentEDLWindow = new ConformerWindow("EDL", new ConformerComponent(),&edlWindowStatus);
+		currentEDLWindow = new ConformerWindow("Unreal EDL Conformer", new ConformerComponent(),&edlWindowStatus);
+	}
+}
+
+void LaunchAssemblerWindow()
+{
+	initialiseJuce_GUI();
+	MessageManagerLock mml(Thread::getCurrentThread());
+
+	if (assemblerWindowStatus)
+	{
+		currentAssemblerWindow->toFront(true);
+	}
+	else
+	{
+		currentAssemblerWindow = new ConformerWindow("Unreal EDL Assembler", new AssemblerComponent(), &assemblerWindowStatus);
 	}
 }
 
@@ -387,6 +408,10 @@ void bringWindowsToFront()
 	{
 		currentEDLWindow->toFront(true);
 	}
+	if (currentAssemblerWindow && assemblerWindowStatus)
+	{
+		currentAssemblerWindow->toFront(true);
+	}
 }
 
 
@@ -396,6 +421,7 @@ void ClearCurrentWindowPtr()
 	currentTransferWindow = nullptr;
 	currentTemplateWindow = nullptr;
 	currentEDLWindow = nullptr;
+	currentAssemblerWindow = nullptr;
 }
 
 bool HookCommandProc(int command, int flag)
@@ -415,6 +441,11 @@ bool HookCommandProc(int command, int flag)
 	else if (command == EDL_Window.accel.cmd)
 	{
 		LaunchEDLWindow();
+		return true;
+	}
+	else if (command == Assembler_Window.accel.cmd)
+	{
+		LaunchAssemblerWindow();
 		return true;
 	}
 	return false;
@@ -439,15 +470,19 @@ static void AddCustomCSGMenuItems(HMENU parentMenuHandle)
 	
 	// add each command to the popupmenu
 	mi.wID = Transfer_To_Wwise.accel.cmd;
-	mi.dwTypeData = (char *)"CSG - Transfer To Wwise";
+	mi.dwTypeData = (char *)"Transfer To Wwise";
 	InsertMenuItem(hMenu, 0, true, &mi);
 	
 	mi.wID = Template_To_Wwise.accel.cmd;
-	mi.dwTypeData = (char *)"CSG - Region Metadata";
+	mi.dwTypeData = (char *)"Region Metadata";
 	InsertMenuItem(hMenu, 0, true, &mi);
 	
 	mi.wID = EDL_Window.accel.cmd;
-	mi.dwTypeData = (char *)"CSG - EDL Conformer";
+	mi.dwTypeData = (char *)"Unreal EDL Conformer";
+	InsertMenuItem(hMenu, 0, true, &mi);
+
+	mi.wID = Assembler_Window.accel.cmd;
+	mi.dwTypeData = (char*)"Unreal EDL Assembler";
 	InsertMenuItem(hMenu, 0, true, &mi);
 
 	if (!parentMenuHandle)
