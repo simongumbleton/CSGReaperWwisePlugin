@@ -238,7 +238,7 @@ TransferSettingsCmp::TransferSettingsCmp(TransferSettingsStruct& inSettings) :rS
 	btn_useAtomationMode->setToggleState(inSettings.useAtomationMode, NotificationType::dontSendNotification);
 	info_useAtomationMode->attachToComponent(btn_useAtomationMode, true);
 
-	info_userorigsubdir->setText("Originals Subfolder:", NotificationType::dontSendNotification);
+	info_userorigsubdir->setText("Default Originals Subfolder:", NotificationType::dontSendNotification);
 	addAndMakeVisible(info_userorigsubdir);
 	info_userorigsubdir->setTooltip("Loaction for audio files inside Originals");
 	txt_userorigsubdir->setEditable(true);
@@ -258,7 +258,7 @@ TransferSettingsCmp::TransferSettingsCmp(TransferSettingsStruct& inSettings) :rS
 	txt_versionToken->addListener(this);
 	txt_versionToken->setText(String(rSettings.versionToken), NotificationType::dontSendNotification);
 	
-	info_templatePath->setText("Template Path:", NotificationType::dontSendNotification);
+	info_templatePath->setText("Wwise Template Actor-Mixer Path:", NotificationType::dontSendNotification);
 	addAndMakeVisible(info_templatePath);
 	info_templatePath->setTooltip("Location of Wwise template root");
 	txt_templatePath->setEditable(true);
@@ -278,7 +278,7 @@ TransferSettingsCmp::TransferSettingsCmp(TransferSettingsStruct& inSettings) :rS
 	txt_eventWorkUnitSuffix->addListener(this);
 	txt_eventWorkUnitSuffix->setText(String(rSettings.eventWorkUnitSuffix), NotificationType::dontSendNotification);
 	
-	info_UserEventPath->setText("Custom Event Path:", NotificationType::dontSendNotification);
+	info_UserEventPath->setText("Custom/Default Event Path:", NotificationType::dontSendNotification);
 	addAndMakeVisible(info_UserEventPath);
 	info_UserEventPath->setTooltip("Root path for events to be created in if using Default/Custom path mode");
 	txt_UserEventPath->setEditable(true);

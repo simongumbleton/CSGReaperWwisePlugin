@@ -26,31 +26,40 @@ static std::string GetPluginVersionAsString(double Vnumber)
 	return streamObj3.str();
 }
 
-
-namespace CreateTransfer{
-	static const double pluginVersionNumber = 1.07;
+// Track plugin versions as one value instead of individual components
+namespace GlobalPlugin {
+	static const double pluginVersionNumber = 1.10;
 
 	static std::string GetPluginVersionString()
 	{
 		return GetPluginVersionAsString(pluginVersionNumber);
+	}
+}
+
+namespace CreateTransfer{
+	//static const double pluginVersionNumber = 1.08;
+
+	static std::string GetPluginVersionString()
+	{
+		return GetPluginVersionAsString(GlobalPlugin::pluginVersionNumber);
 	}
 }
 
 namespace RegionMetadata{
-	static const double pluginVersionNumber = 1.07;
+	//static const double pluginVersionNumber = 1.08;
 
 	static std::string GetPluginVersionString()
 	{
-		return GetPluginVersionAsString(pluginVersionNumber);
+		return GetPluginVersionAsString(GlobalPlugin::pluginVersionNumber);
 	}
 }
 
 namespace Reconformer{
-	static const double pluginVersionNumber = 1.07;
+	//static const double pluginVersionNumber = 1.08;
 
 	static std::string GetPluginVersionString()
 	{
-		return GetPluginVersionAsString(pluginVersionNumber);
+		return GetPluginVersionAsString(GlobalPlugin::pluginVersionNumber);
 	}
 }
 #endif /* versioning_h */

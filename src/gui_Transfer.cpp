@@ -742,14 +742,20 @@ void TransferToWwiseComponent::setTransferValuesFromConfig(config c)
 {
 	if (!c.userOrigDir.empty())
 	{
-		INtxt_OriginalsSubDir->setText(c.userOrigDir, juce::NotificationType::dontSendNotification);
+//		INtxt_OriginalsSubDir->setText(c.userOrigDir, juce::NotificationType::dontSendNotification);
 	}
 	
 }
 
 void TransferToWwiseComponent::setTransferValuesFromSettings(TransferSettingsStruct& inSettings)
 {
-	INtxt_OriginalsSubDir->setText(inSettings.userorigsubdir, juce::NotificationType::dontSendNotification);
+	if (!inSettings.userorigsubdir.empty())
+	{
+		if (INtxt_OriginalsSubDir->getText().isEmpty())
+		{
+			INtxt_OriginalsSubDir->setText(inSettings.userorigsubdir, juce::NotificationType::dontSendNotification);
+		}
+	}
 }
 
 
