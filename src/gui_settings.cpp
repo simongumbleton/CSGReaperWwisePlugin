@@ -395,11 +395,11 @@ void TransferSettingsCmp::labelTextChanged(Label* labelThatHasChanged)
 
 void TransferSettingsCmp::handle_OnBecameActiveTab()
 {
-	PrintToConsole("Settings active");
+	//PrintToConsole("Settings active");
 }
 void TransferSettingsCmp::handle_OnTabBecameInactive()
 {
-	PrintToConsole("Settings closed");
+	//PrintToConsole("Settings closed");
 	
 }
 void TransferSettingsCmp::LoadSettingsFromExtState()
