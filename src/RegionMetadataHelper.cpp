@@ -1,7 +1,10 @@
 #include "RegionMetadataHelper.h"
-#include "reaperHelpers.h"
-#include "reaper_plugin_functions.h"
+
 #include "platformhelpers.h"
+#include "reaper_plugin.h"
+#include "reaper_plugin_functions.h"
+#include "reaperHelpers.h"
+
 #include "WwiseConnectionHandler.h"
 
 #include <iomanip>

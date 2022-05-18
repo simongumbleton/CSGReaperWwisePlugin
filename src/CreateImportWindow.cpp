@@ -1457,6 +1457,7 @@ void CreateImportWindow::SaveSettingsToExtState() {
 	valuesToJson << "'" << TransferComponentSettings.eEventCreationOption << "'" << ",";
 	valuesToJson << "'" << TransferComponentSettings.eventWorkUnitSuffix << "'" << ",";
 	valuesToJson << "'" << TransferComponentSettings.UserEventPath << "'" << ",";
+	valuesToJson << "'" << TransferComponentSettings.eventMirroringDepth << "'" << ",";
 	valuesToJson << "}";
 	//saveProjExState("Transfer", valuesToJson.str(), name);
 	saveGlobalExtState(name, valuesToJson.str(),true);
@@ -1490,7 +1491,7 @@ void CreateImportWindow::LoadSettingsFromExtState() {
 		pch = strtok(NULL, delims);
 	}
 	
-	if (tempListValues.size() != 8)//number of settings in the struct
+	if (tempListValues.size() != 9)//number of settings in the struct
 	{
 		printf("Warning! Mismatch in number of settings retrived from extstate");
 		return;
@@ -1504,6 +1505,7 @@ void CreateImportWindow::LoadSettingsFromExtState() {
 	TransferComponentSettings.eEventCreationOption = ETransferEventCreationOption(std::stoi(tempListValues[5]));
 	TransferComponentSettings.eventWorkUnitSuffix = tempListValues[6];
 	TransferComponentSettings.UserEventPath = tempListValues[7];
+	TransferComponentSettings.eventMirroringDepth = std::stoi(tempListValues[8]);
 }
 
 

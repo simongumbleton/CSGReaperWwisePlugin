@@ -297,6 +297,15 @@ TransferSettingsCmp::TransferSettingsCmp(TransferSettingsStruct& inSettings) :rS
 	InitComboBox(dd_eventcreationoption, eventCreationOptions);
 	dd_eventcreationoption->setSelectedId(rSettings.eEventCreationOption + 1);//combo box index starts at 1
 	
+	info_eventMirrorDepth->setText("Event Mirroring Depth:", NotificationType::dontSendNotification);
+	addAndMakeVisible(info_eventMirrorDepth);
+	info_eventMirrorDepth->setTooltip("Depth limit when mirroring work units in the event hierarchy");
+	txt_eventMirrorDepth->setEditable(true);
+	txt_eventMirrorDepth->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
+	addAndMakeVisible(txt_eventMirrorDepth);
+	info_eventMirrorDepth->attachToComponent(txt_eventMirrorDepth, true);
+	txt_eventMirrorDepth->addListener(this);
+	txt_eventMirrorDepth->setText(String(rSettings.eventMirroringDepth), NotificationType::dontSendNotification);
 
 
 }
@@ -346,6 +355,11 @@ void TransferSettingsCmp::resized()
 	auto area8 = area.removeFromTop(30);
 	info_eventWorkUnitSuffix->setBounds(area8.removeFromLeft(width/2));
 	txt_eventWorkUnitSuffix->setBounds(area8.reduced(3));
+	
+	buffer = area.removeFromTop(5);
+	auto area9 = area.removeFromTop(30);
+	info_eventMirrorDepth->setBounds(area9.removeFromLeft(width/2));
+	txt_eventMirrorDepth->setBounds(area9.reduced(3));
 };
 
 void TransferSettingsCmp::buttonClicked(juce::Button* pButton)
@@ -390,6 +404,10 @@ void TransferSettingsCmp::labelTextChanged(Label* labelThatHasChanged)
 	else if (labelThatHasChanged == txt_eventWorkUnitSuffix)
 	{
 		rSettings.eventWorkUnitSuffix = txt_eventWorkUnitSuffix->getText().toStdString();
+	}
+	else if (labelThatHasChanged == txt_eventMirrorDepth)
+	{
+		rSettings.eventMirroringDepth = std::stoi(txt_eventWorkUnitSuffix->getText().toStdString());
 	}
 };
 

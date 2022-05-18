@@ -25,9 +25,10 @@ struct TransferSettingsStruct
 	std::string userorigsubdir = "ImportedFromReaper/";
 	std::string versionToken = "_v00";
 	std::string templatePath = "\\Actor-Mixer Hierarchy\\Templates\\Templates";
-	std::string eventWorkUnitSuffix = "_Events";
+	std::string eventWorkUnitSuffix = "";
 	std::string UserEventPath = "\\Events\\Default Work Unit";
 	ETransferEventCreationOption eEventCreationOption;
+	int eventMirroringDepth = 4;
 };
 
 struct MetadataSettingsStruct

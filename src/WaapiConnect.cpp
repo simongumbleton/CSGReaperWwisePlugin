@@ -34,13 +34,13 @@ bool WAAPIConnect::Connect(bool suppressOuputMessages)	//Connect to Wwise. Optio
 	AkJson wwiseInfo;
 	bool success = false;
 
-	if (success = m_client.Connect("127.0.0.1", g_Waapi_Port))
+	if ((success = m_client.Connect("127.0.0.1", g_Waapi_Port)))
 	{
 		//Get Wwise info
-		if (success = m_client.Call(ak::wwise::core::getInfo,
-			AkJson(AkJson::Type::Map),
-			AkJson(AkJson::Type::Map),
-			wwiseInfo))
+		if ((success = m_client.Call(ak::wwise::core::getInfo,
+									 AkJson(AkJson::Type::Map),
+									 AkJson(AkJson::Type::Map),
+									 wwiseInfo)))
 		{
 
 			//create a status text string and set it

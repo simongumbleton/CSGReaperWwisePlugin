@@ -390,6 +390,9 @@ public:
 	//Label* txt_eventcreationoption = new Label("txt_eventcreationoption");
 	ComboBox* dd_eventcreationoption = new ComboBox("dd_eventcreationoption");
 
+	Label* info_eventMirrorDepth = new Label("info_eventMirrorDepth");
+	Label* txt_eventMirrorDepth = new Label("txt_eventMirrorDepth");
+	
 	std::vector<String> eventCreationOptions;
 	
 	int getEventOptionAsID();
