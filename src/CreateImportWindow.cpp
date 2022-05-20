@@ -830,6 +830,36 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 		return;
 	}
 
+	if (TransferComponentSettings.eventMirroringDepth > 0)
+	{
+		//Handling cutting the path down to the required depth
+		std::string cutEvPath = "";
+		int targetdepth = TransferComponentSettings.eventMirroringDepth;
+		int depthCount = 0;
+		auto tokens = PLATFORMHELPERS::stringSplitToList(evPath, "\\");
+		if (tokens.size() > targetdepth)
+		{
+			//PrintToConsole("Need to cull the path");
+			for (auto token : tokens)
+			{
+				depthCount++;
+				if (depthCount <= targetdepth)
+				{
+					cutEvPath.append(token + "\\");
+					//result.insert(0, "<WorkUnit>" + (AMpaentObject.properties["name"] + EventWorkunitSuffix) + "\\");
+				}
+				else
+				{
+					break;
+				}
+			}
+			evPath = cutEvPath;
+		}
+
+	}
+
+
+
 	///Need to seach for existing event work units before we try and create the structure
 	/// Because if the structure is not mirrored exactly, we could fail to find the right parent, and then when trying to create it will fail if there is already a work unit with the same name!
 

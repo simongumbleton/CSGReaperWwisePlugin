@@ -119,7 +119,10 @@ std::vector<std::string> PLATFORMHELPERS::stringSplitToList(std::string target, 
 			{
 				//no more delimeters found so save the last remaining token
 				std::string token = target.substr(start);
-				v.push_back(token);
+				if (!token.empty())
+				{
+					v.push_back(token);
+				}
 				break;
 			}
 			if (x != 0)

@@ -270,7 +270,7 @@ TransferSettingsCmp::TransferSettingsCmp(TransferSettingsStruct& inSettings) :rS
 
 	info_eventWorkUnitSuffix->setText("Event Work Unit Suffix:", NotificationType::dontSendNotification);
 	addAndMakeVisible(info_eventWorkUnitSuffix);
-	info_eventWorkUnitSuffix->setTooltip("Suffix to use when matching work unit structures between Actor-Mixer and Events");
+	info_eventWorkUnitSuffix->setTooltip("When mirroring the event structure, append an optional suffix to the event work units that are created");
 	txt_eventWorkUnitSuffix->setEditable(true);
 	txt_eventWorkUnitSuffix->setColour(Label::backgroundColourId, Colours::lightseagreen.withAlpha(0.5f));
 	addAndMakeVisible(txt_eventWorkUnitSuffix);
@@ -407,7 +407,10 @@ void TransferSettingsCmp::labelTextChanged(Label* labelThatHasChanged)
 	}
 	else if (labelThatHasChanged == txt_eventMirrorDepth)
 	{
-		rSettings.eventMirroringDepth = std::stoi(txt_eventWorkUnitSuffix->getText().toStdString());
+		if (txt_eventMirrorDepth->getText().isNotEmpty())
+		{
+			rSettings.eventMirroringDepth = std::stoi(txt_eventMirrorDepth->getText().toStdString());
+		}
 	}
 };
 
