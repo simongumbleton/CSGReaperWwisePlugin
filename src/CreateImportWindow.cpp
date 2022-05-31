@@ -770,14 +770,14 @@ std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath, 
 				if (AMpaentObject.properties["type"] == "WorkUnit")
 				{
 					//Try to find an existing WU in event structure
-					auto foundObjects = GetWwiseObjectsByName(AMpaentObject.properties["name"] + EventWorkunitSuffix, "WorkUnit", true, { "path" });
+					auto foundObjects = GetWwiseObjectsByName(AMpaentObject.properties["name"] + TransferComponentSettings.eventWorkUnitSuffix, "WorkUnit", true, { "path" });
 					if (foundObjects.size() > 0)
 					{
 						for (auto object : foundObjects)
 						{
 							if ((PLATFORMHELPERS::starts_with(object.properties["path"], "\\Events\\") or PLATFORMHELPERS::starts_with(object.properties["path"], "Events\\")))
 							{
-								OUT_parentObject = foundObjects[0];
+								OUT_parentObject = object;
 								result = OUT_parentObject.properties["path"] + "\\" + result;
 								result = PLATFORMHELPERS::stringReplace(result, "\\Events\\", "");
 								return result;
@@ -786,7 +786,7 @@ std::string CreateImportWindow::PrepareEventPathForCreation(std::string inPath, 
 
 					}
 
-					result.insert(0, "<WorkUnit>" + (AMpaentObject.properties["name"] + EventWorkunitSuffix) + "\\");
+					result.insert(0, "<WorkUnit>" + (AMpaentObject.properties["name"] + TransferComponentSettings.eventWorkUnitSuffix) + "\\");
 
 				}
 				AMpaentObject = WwiseConnectionHnd->GetWwiseObjectFromID(AMpaentObject.properties["parent_id"]);
@@ -846,7 +846,7 @@ void CreateImportWindow::CreatePlayEventForID(std::string id, std::string name,s
 				if (depthCount <= targetdepth)
 				{
 					cutEvPath.append(token + "\\");
-					//result.insert(0, "<WorkUnit>" + (AMpaentObject.properties["name"] + EventWorkunitSuffix) + "\\");
+					//result.insert(0, "<WorkUnit>" + (AMpaentObject.properties["name"] + TransferComponentSettings.eventWorkUnitSuffix) + "\\");
 				}
 				else
 				{

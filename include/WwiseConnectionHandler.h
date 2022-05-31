@@ -173,7 +173,7 @@ public:
 	std::vector<RenderQueJob> GlobalListOfRenderQueJobs;
 	std::vector<std::string> RenderFilesBackup;
 
-	std::string EventWorkunitSuffix = "_Events"; // set this from the GUI settings
+	//std::string EventWorkunitSuffix = "_Events"; // set this from the GUI settings
 	
 	//TransferToWwiseComponent * owningGUIWindow;
 	BaseWwiseGuiComponent * owningGUIWindow = nullptr;

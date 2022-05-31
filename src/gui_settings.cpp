@@ -8,6 +8,7 @@
 
 #include "gui_settings.h"
 #include "image_helper.h"
+#include <iostream>
 
 
 SettingsButton::SettingsButton(const String & name)
@@ -27,7 +28,7 @@ SettingsComponent::SettingsComponent(){
 	info->setText("EDL Settings", NotificationType::dontSendNotification);
 	addAndMakeVisible(info);
 	setWantsKeyboardFocus(true);
-	grabKeyboardFocus();
+//	grabKeyboardFocus();
 };
 
 SettingsComponent::~SettingsComponent(){};
@@ -417,17 +418,75 @@ void TransferSettingsCmp::labelTextChanged(Label* labelThatHasChanged)
 void TransferSettingsCmp::handle_OnBecameActiveTab()
 {
 	//PrintToConsole("Settings active");
+	LoadSettingsFromExtState();
 }
 void TransferSettingsCmp::handle_OnTabBecameInactive()
 {
 	//PrintToConsole("Settings closed");
+	SaveSettingsToExtState();
 	
 }
 void TransferSettingsCmp::LoadSettingsFromExtState()
 {
+	std::string svalue = "";
+	std::vector<std::string> tempListValues;
+	std::string name = "CSGTransferSettings";
+	//svalue = getProjExState("Transfer", "CSGTransferSettings");
+	svalue = getGlobalExtState(name);
+
+	if (svalue.empty()) { return; }
+
+	char* pch;
+	printf("Splitting string \"%s\" into tokens:\n", svalue.c_str());
+	//char delims[] = "\n !@#$%^&*)(_+-=][}{|:;'<>?,./\"\\";
+	char delims[] = "{,}";
+	pch = strtok(&svalue[0], delims);
+
+	while (pch != NULL)
+	{
+		printf("%s\n", pch);
+		std::string value = std::string(pch);
+		value.erase(std::remove(value.begin(), value.end(), '\''), value.end());
+
+
+		tempListValues.push_back(value);
+		pch = strtok(NULL, delims);
+	}
+
+	if (tempListValues.size() != 9)//number of settings in the struct
+	{
+		printf("Warning! Mismatch in number of settings retrived from extstate");
+		return;
+	}
+
+	rSettings.waapiport = std::stoi(tempListValues[0]);
+	std::istringstream(tempListValues[1]) >> std::boolalpha >> rSettings.useAtomationMode;
+	rSettings.userorigsubdir = tempListValues[2];
+	rSettings.templatePath = tempListValues[3];
+	rSettings.versionToken = tempListValues[4];
+	rSettings.eEventCreationOption = ETransferEventCreationOption(std::stoi(tempListValues[5]));
+	rSettings.eventWorkUnitSuffix = tempListValues[6];
+	rSettings.UserEventPath = tempListValues[7];
+	rSettings.eventMirroringDepth = std::stoi(tempListValues[8]);
 }
 void TransferSettingsCmp::SaveSettingsToExtState()
 {
+	std::string name = "CSGTransferSettings";
+	std::stringstream valuesToJson;
+	//"{ 'id': 1234, 'name': 'nandini' }"
+	valuesToJson << '{';
+	valuesToJson << "'" << rSettings.waapiport << "'" << ",";
+	valuesToJson << "'" << std::boolalpha << rSettings.useAtomationMode << "'" << ",";
+	valuesToJson << "'" << rSettings.userorigsubdir << "'" << ",";
+	valuesToJson << "'" << rSettings.templatePath << "'" << ",";
+	valuesToJson << "'" << rSettings.versionToken << "'" << ",";
+	valuesToJson << "'" << rSettings.eEventCreationOption << "'" << ",";
+	valuesToJson << "'" << rSettings.eventWorkUnitSuffix << "'" << ",";
+	valuesToJson << "'" << rSettings.UserEventPath << "'" << ",";
+	valuesToJson << "'" << rSettings.eventMirroringDepth << "'" << ",";
+	valuesToJson << "}";
+	//saveProjExState("Transfer", valuesToJson.str(), name);
+	saveGlobalExtState(name, valuesToJson.str(), true);
 }
 
 void TransferSettingsCmp::UpdateSettingsValues(TransferSettingsStruct& inSettings)
