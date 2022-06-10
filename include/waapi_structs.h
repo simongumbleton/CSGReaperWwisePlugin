@@ -184,7 +184,7 @@ struct CreateObjectChoices {
 	};
 	std::vector<std::string> waapiCREATEchoices_EVENTOPTIONS
 	{
-		"None","Play@Parent", "Play@Children"
+		"None","Play Event for Parent Container", "Play Event for Each Sound"
 	};
 	std::vector<std::string> waapiCREATEchoices_IMPORTTYPE
 	{

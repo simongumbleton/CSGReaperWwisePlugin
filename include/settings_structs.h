@@ -27,7 +27,7 @@ struct TransferSettingsStruct
 	std::string templatePath = "\\Actor-Mixer Hierarchy\\Templates\\Templates";
 	std::string eventWorkUnitSuffix = "";
 	std::string UserEventPath = "\\Events\\Default Work Unit";
-	ETransferEventCreationOption eEventCreationOption;
+	ETransferEventCreationOption eEventCreationOption = ETransferEventCreationOption::E_MirrorActorMixerWorkUnits;
 	int eventMirroringDepth = 4;
 };
 

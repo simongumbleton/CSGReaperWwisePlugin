@@ -46,7 +46,7 @@ TransferToWwiseComponent::TransferToWwiseComponent(juce::Component* parentComp) 
 	InitComboBox(dd_EventOption, myCreateChoices.waapiCREATEchoices_EVENTOPTIONS,"Event Options..");
 	addAndMakeVisible(info_EventOption);
 	info_EventOption->attachToComponent(dd_EventOption, true);
-	info_EventOption->setText("Create Events for: ", juce::NotificationType::dontSendNotification);
+	info_EventOption->setText("Create Events: ", juce::NotificationType::dontSendNotification);
 	
 	
 	InitComboBox(dd_ImportType, myCreateChoices.waapiCREATEchoices_IMPORTTYPE,"Sfx");
