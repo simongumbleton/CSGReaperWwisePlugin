@@ -82,6 +82,9 @@
     <ClCompile Include="include\JUCE\include_juce_graphics.cpp" />
     <ClCompile Include="include\JUCE\include_juce_gui_basics.cpp" />
     <ClCompile Include="include\pugixml.cpp" />
+    <ClCompile Include="libs\wav-riff-master\src\Chunk.cpp" />
+    <ClCompile Include="libs\wav-riff-master\src\WavData.cpp" />
+    <ClCompile Include="libs\wav-riff-master\src\wavFileTest.cpp" />
     <ClCompile Include="src\ConfigFileHandler.cpp" />
     <ClCompile Include="src\CreateImportWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -102,6 +105,7 @@
     <ClCompile Include="src\RegionMetadataHelper.cpp" />
     <ClCompile Include="src\WaapiConnect.cpp" />
     <ClCompile Include="src\WaapiFunctions.cpp" />
+    <ClCompile Include="src\wav_helper.cpp" />
     <ClCompile Include="src\workunithelper.cpp" />
     <ClCompile Include="src\WwiseConnectionHandler.cpp" />
   </ItemGroup>
@@ -178,8 +182,11 @@
     <ClInclude Include="include\WaapiConnect.h" />
     <ClInclude Include="include\WaapiFunctions.h" />
     <ClInclude Include="include\waapi_structs.h" />
+    <ClInclude Include="include\wav_helper.h" />
     <ClInclude Include="include\workunithelper.h" />
     <ClInclude Include="include\WwiseConnectionHandler.h" />
+    <ClInclude Include="libs\wav-riff-master\include\Chunk.hpp" />
+    <ClInclude Include="libs\wav-riff-master\include\WavData.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{a6ede66c-9f09-446a-8fe4-5ee4f3cbedb9}</ProjectGuid>
@@ -626,7 +633,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;VALIDATE_WAMP;USE_WEBSOCKET;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Debug";SimonsReaperPlugin_EXPORTS;%(PreprocessorDefinitions);JUCE_MODAL_LOOPS_PERMITTED=1</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(WWISESDK)\include;D:\Work\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\wav-riff-master\include;$(ProjectDir)include;$(WWISESDK)\include;D:\Work\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions> /bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -671,7 +678,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;VALIDATE_WAMP;USE_WEBSOCKET;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Debug";SimonsReaperPlugin_EXPORTS;%(PreprocessorDefinitions);JUCE_MODAL_LOOPS_PERMITTED=1</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <AdditionalIncludeDirectories>D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\wav-riff-master\include;D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions> /bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -716,7 +723,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;VALIDATE_WAMP;USE_WEBSOCKET;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Debug";SimonsReaperPlugin_EXPORTS;%(PreprocessorDefinitions);JUCE_MODAL_LOOPS_PERMITTED=1</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <AdditionalIncludeDirectories>D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\wav-riff-master\include;D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
@@ -760,7 +767,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;VALIDATE_WAMP;USE_WEBSOCKET;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Debug";SimonsReaperPlugin_EXPORTS;AK_ENABLE_ASSERTS;%(PreprocessorDefinitions);JUCE_MODAL_LOOPS_PERMITTED=1</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <AdditionalIncludeDirectories>D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\wav-riff-master\include;D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions>/bigobj</AdditionalOptions>
     </ClCompile>
@@ -835,7 +842,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debugx64|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\wav-riff-master\include;D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -965,7 +972,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(WWISESDK)\include;D:\Work\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\wav-riff-master\include;$(ProjectDir)include;$(WWISESDK)\include;D:\Work\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -1009,7 +1016,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\wav-riff-master\include;D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -1095,7 +1102,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\wav-riff-master\include;D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -1180,7 +1187,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libs\wav-riff-master\include;D:\Work\JUCE\modules;$(ProjectDir)include;$(WWISESDK)\include</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>

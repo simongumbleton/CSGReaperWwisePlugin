@@ -16,6 +16,12 @@
     <Filter Include="images">
       <UniqueIdentifier>{e2e13148-f5f7-4427-b0f5-bd6b23370167}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libs">
+      <UniqueIdentifier>{cbaac595-cddc-404e-b21b-b022fea5c17f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\wav-riff-master">
+      <UniqueIdentifier>{c73a3cbb-a0bd-4326-9c54-ee2439303871}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ConfigFileHandler.cpp">
@@ -88,6 +94,18 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\gui_assembler.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\wav-riff-master\src\Chunk.cpp">
+      <Filter>libs\wav-riff-master</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\wav-riff-master\src\WavData.cpp">
+      <Filter>libs\wav-riff-master</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\wav-riff-master\src\wavFileTest.cpp">
+      <Filter>libs\wav-riff-master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wav_helper.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -308,6 +326,15 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\settings_structs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\wav-riff-master\include\Chunk.hpp">
+      <Filter>libs\wav-riff-master</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\wav-riff-master\include\WavData.hpp">
+      <Filter>libs\wav-riff-master</Filter>
+    </ClInclude>
+    <ClInclude Include="include\wav_helper.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

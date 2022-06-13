@@ -12,6 +12,7 @@
 #include <future>
 #include <thread>
 #include "workunithelper.h"
+#include "wav_helper.h"
 
 
 #include "ConfigFileHandler.h"
@@ -1555,6 +1556,10 @@ void CreateImportWindow::UpdateSettings()
 void CreateImportWindow::SaveRenderOutputFilesToProjExState(RenderQueJob& job)
 {
 	auto rpp = job.ParentReaperProject;
+
+//	ReadBextChunk(job.RenderQueJobFileList[0]);// WIP 
+
+
 
 	auto rProj = GetReaProjectFromProjectName(job.ParentReaperProject);
 	if (rProj)
