@@ -16,6 +16,8 @@ ReaProject* GetCurrentReaProject();
 
 std::string GetCurrentReaperProjectPath();
 
+ReaProject* GetReaProjectFromProjectName(std::string inName);
+
 void SaveProject();
 
 void Reaper_RenderAllQuedJobs();

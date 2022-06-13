@@ -468,6 +468,8 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 	for (auto &job : GlobalListOfRenderQueJobs)
 	{
 		numFilesToImport += job.RenderQueJobFileList.size();
+
+		
 	}
 	
 	
@@ -475,6 +477,11 @@ bool CreateImportWindow::ImportJobsIntoWwise()
 	{
 		if (job.hasRendered)
 		{
+			//Save the list of audio files we created
+
+			SaveRenderOutputFilesToProjExState(job);
+
+
 			///deal with file overrides here
 
 			if (job.hasPerFileOverrides)
@@ -986,7 +993,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	success = WwiseConnectionHnd->ImportAudioToWwise(false, curJobImportArgs, results);
 	
-	if (curJobImportArgs.eventCreateOption == 1)
+	if (curJobImportArgs.eventCreateOption == 1)//play event per sound file
 	{
 		for (auto obj : results)
 		{
@@ -1042,7 +1049,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 			CreatePlayEventForID(obj["id"].GetVariant(), name, notes,pwobj.properties["path"]);
 		}
 	}
-	else if (curJobImportArgs.eventCreateOption == 2)
+	else if (curJobImportArgs.eventCreateOption == 2)// play event for parent container
 	{
 		// \Actor-Mixer Hierarchy\Default Work Unit\MyAM\AnotherAM\New Random Container
 		std::string target = curJobImportArgs.ImportLocation;
@@ -1545,4 +1552,70 @@ void CreateImportWindow::UpdateSettings()
 
 }
 
+void CreateImportWindow::SaveRenderOutputFilesToProjExState(RenderQueJob& job)
+{
+	auto rpp = job.ParentReaperProject;
 
+	auto rProj = GetReaProjectFromProjectName(job.ParentReaperProject);
+	if (rProj)
+	{
+		std::string name = "CSGTransferRenderedFiles";
+		std::stringstream valuesToJson;
+		//"{ 'id': 1234, 'name': 'nandini' }"
+		valuesToJson << '{';
+
+		for (auto oldValue : GetRenderOutputFilesFromProjExState(rProj))
+		{
+			valuesToJson << "'";
+			valuesToJson << oldValue;
+			valuesToJson << "'";
+			valuesToJson << ",";
+		}
+
+		for (auto value : job.RenderQueJobFileList)
+		{
+			valuesToJson << "'";
+			valuesToJson << value;
+			valuesToJson << "'";
+			valuesToJson << ",";
+		}
+		//PrintToConsole(valuesToJson.str());
+		valuesToJson.seekp(-1, valuesToJson.cur); valuesToJson << "}";
+		saveProjExState("RENDEREDFILES", valuesToJson.str(), name, rProj);
+	}
+}
+
+std::vector<std::string> CreateImportWindow::GetRenderOutputFilesFromProjExState(ReaProject* rProj)
+{
+	std::vector<std::string> tempListValues;
+	//auto rProj = GetReaProjectFromProjectName(job.ParentReaperProject);
+	if (rProj != nullptr) {
+
+		std::string svalue = "";
+		
+		std::string name = "CSGTransferRenderedFiles";
+		//svalue = getProjExState("Transfer", "CSGTransferSettings");
+		svalue = getProjExState("RENDEREDFILES", name, rProj);
+
+			if (svalue.empty()) { return tempListValues; }
+
+		char* pch;
+		printf("Splitting string \"%s\" into tokens:\n", svalue.c_str());
+		//char delims[] = "\n !@#$%^&*)(_+-=][}{|:;'<>?,./\"\\";
+		char delims[] = "{,}";
+		pch = strtok(&svalue[0], delims);
+
+		while (pch != NULL)
+		{
+			printf("%s\n", pch);
+			std::string value = std::string(pch);
+			value.erase(std::remove(value.begin(), value.end(), '\''), value.end());
+
+
+			tempListValues.push_back(value);
+			pch = strtok(NULL, delims);
+		}
+	}
+
+	return tempListValues;
+}

@@ -15,6 +15,8 @@
 
 class BaseWwiseGuiComponent;
 
+class ReaProject;
+
 
 class WwiseConnectionHandler
 {	
@@ -280,6 +282,10 @@ public:
 	void LoadSettingsFromExtState();
 
 	void UpdateSettings();
+
+	void SaveRenderOutputFilesToProjExState(RenderQueJob& job);
+
+	std::vector<std::string> GetRenderOutputFilesFromProjExState(ReaProject* rProj);
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };

@@ -127,6 +127,34 @@ std::string GetReaperResourcePath()
 	return GetResourcePath();
 }
 
+ReaProject* GetReaProjectFromProjectName(std::string inName)
+{
+	ReaProject* proj = nullptr;
+	char projName[256];
+	int i = 0;
+	bool done = false;
+	while (!done)
+	{
+		proj = EnumProjects(i, projName, MAX_PATH);
+		if (proj == nullptr)
+		{
+			done = true;
+			return proj;
+		}
+		//GetProjectName(proj, projName, 256);
+		auto x = PLATFORMHELPERS::stringToLower(inName);
+		auto y = PLATFORMHELPERS::stringToLower(std::string(projName));
+		if (strcmp(x.c_str(),y.c_str()) == 0)
+		{
+			done = true;
+			return proj;
+		}
+		i++;
+	}
+	return nullptr;
+}
+	
+
 std::string GetCurrentReaperProject()
 {
 	char projName[256];
