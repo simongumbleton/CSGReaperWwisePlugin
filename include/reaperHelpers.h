@@ -4,6 +4,16 @@
 
 class ReaProject;
 
+struct ReaperRegion
+{
+	bool isRegion;
+	double pos;
+	double regEnd;
+	//std::string name;
+	const char* name;
+	int index;
+};
+
 void GetReaperGlobals();
 
 std::string GetReaperResourcePath();
@@ -44,9 +54,11 @@ std::string getGlobalExtState(std::string Key, std::string extName = "CSGPlugin"
 
 void deleteGlobalExtState(std::string Key,bool persist = true, std::string extName = "CSGPlugin");
 
+std::vector<ReaperRegion> findRegionsAtTime(float inSeconds, ReaProject* inProj = nullptr);
 
+bool doesRegionContainTime(std::string regionName, float inSeconds, ReaProject* inProj = nullptr);
 
-
+std::vector<ReaperRegion> getAllProjectRegions(ReaProject* inProj = nullptr);
 
 void bringWindowsToFront();
 

@@ -293,6 +293,73 @@ int countMarkers()
 }
 
 
+std::vector<ReaperRegion> findRegionsAtTime(float inSeconds, ReaProject* inProj)
+{
+	std::vector<ReaperRegion> regions;
+	if (inProj == nullptr)
+	{
+		inProj = GetCurrentReaProject();
+	}
+	if (inProj)
+	{
+		for (auto& reg : getAllProjectRegions())
+		{
+			if ((reg.pos - inSeconds <= 0.001) && (inSeconds - reg.regEnd <= 0.001 )) // use some small epsilon to account for float errors
+			//if ((reg.pos <= inSeconds + 0.0001) && (reg.regEnd >= inSeconds))
+			{
+				regions.push_back(reg);
+			}
+		}
+	}
+	return regions;
+}
+
+bool doesRegionContainTime(std::string regionName, float inSeconds, ReaProject* inProj)
+{
+	if (inProj == nullptr)
+	{
+		inProj = GetCurrentReaProject();
+	}
+	if (inProj)
+	{
+		for (auto& reg : findRegionsAtTime(inSeconds, inProj))
+		{
+			if (PLATFORMHELPERS::stringToLower(reg.name) == PLATFORMHELPERS::stringToLower(regionName))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+std::vector<ReaperRegion> getAllProjectRegions(ReaProject* inProj)
+{
+	std::vector<ReaperRegion> regions;
+
+	if (inProj == nullptr)
+	{
+		inProj = GetCurrentReaProject();
+	}
+	if (inProj)
+	{
+		int total = countRegions() + countMarkers();
+		int i = 0;
+		while (i < total)
+		{
+			ReaperRegion r;
+			EnumProjectMarkers(i, &r.isRegion, &r.pos, &r.regEnd, &r.name, &r.index);
+			if (r.isRegion)
+			{
+				regions.push_back(r);
+			}
+			i++;
+		}
+	}
+	return regions;
+}
+
+
 
 std::vector<std::string> getNonMasterProjectRegionNames()
 {

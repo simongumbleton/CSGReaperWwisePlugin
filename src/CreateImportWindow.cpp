@@ -13,6 +13,7 @@
 #include <thread>
 #include "workunithelper.h"
 #include "wav_helper.h"
+#include "Reaper_ExtState_Helper.h"
 
 
 #include "ConfigFileHandler.h"
@@ -925,7 +926,7 @@ ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent,
 													 bool OrigsDirMatchesWwise,
 													 std::string userOrigSubDir,
 													 std::vector<std::string> ImportFiles,
-													 std::string eventCreateOption,
+													 int eventCreateOption,
 													 std::string SourceReaperProj,
 													 std::string Notes,
 													 WwiseObject Template
@@ -974,6 +975,9 @@ ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent,
 		imports = std::make_pair(file, objectPath);
 		importArgs.ImportFileList.push_back(imports);
 	}
+
+	importArgs.eventCreateOption = eventCreateOption;
+	/*
 	if (eventCreateOption == "Play@Children") // "None", "Play@Children" , "Play@Parent"
 	{
 		importArgs.eventCreateOption = 1;
@@ -983,7 +987,7 @@ ImportObjectArgs CreateImportWindow::SetupImportArgs(WwiseObject parent,
 		importArgs.eventCreateOption = 2;
 	}
 	else importArgs.eventCreateOption = 0;
-
+	*/
 
 	return importArgs;
 }
@@ -994,7 +998,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 	AK::WwiseAuthoringAPI::AkJson::Array results;
 	success = WwiseConnectionHnd->ImportAudioToWwise(false, curJobImportArgs, results);
 	
-	if (curJobImportArgs.eventCreateOption == 1)//play event per sound file
+	if (curJobImportArgs.eventCreateOption == 2)//play event per sound file
 	{
 		for (auto obj : results)
 		{
@@ -1050,7 +1054,7 @@ bool CreateImportWindow::ImportCurrentRenderJob(ImportObjectArgs curJobImportArg
 			CreatePlayEventForID(obj["id"].GetVariant(), name, notes,pwobj.properties["path"]);
 		}
 	}
-	else if (curJobImportArgs.eventCreateOption == 2)// play event for parent container
+	else if (curJobImportArgs.eventCreateOption == 1)// play event for parent container
 	{
 		// \Actor-Mixer Hierarchy\Default Work Unit\MyAM\AnotherAM\New Random Container
 		std::string target = curJobImportArgs.ImportLocation;
@@ -1555,72 +1559,30 @@ void CreateImportWindow::UpdateSettings()
 
 void CreateImportWindow::SaveRenderOutputFilesToProjExState(RenderQueJob& job)
 {
-	auto rpp = job.ParentReaperProject;
-
-//	ReadBextChunk(job.RenderQueJobFileList[0]);// WIP 
-
-
-
 	auto rProj = GetReaProjectFromProjectName(job.ParentReaperProject);
 	if (rProj)
 	{
 		std::string name = "CSGTransferRenderedFiles";
 		std::stringstream valuesToJson;
 		//"{ 'id': 1234, 'name': 'nandini' }"
-		valuesToJson << '{';
+		std::unordered_map<std::string, float> keyValues = EXTSTATE::GetRenderOutputFilesFromProjExState(rProj);
 
-		for (auto oldValue : GetRenderOutputFilesFromProjExState(rProj))
+		for (auto file : job.RenderQueJobFileList)
 		{
-			valuesToJson << "'";
-			valuesToJson << oldValue;
-			valuesToJson << "'";
-			valuesToJson << ",";
+			float timeRef = WAV::GetBWFTimecode_Seconds(file);// WIP
+			auto fileName = PLATFORMHELPERS::filenameFromPathString(file);
+			keyValues[fileName] = timeRef;
 		}
-
-		for (auto value : job.RenderQueJobFileList)
+		valuesToJson << '{';
+		for (auto entry : keyValues)
 		{
-			valuesToJson << "'";
-			valuesToJson << value;
-			valuesToJson << "'";
+			valuesToJson << "'" << entry.first << "'";
+			valuesToJson << ":";
+			valuesToJson << "'" << entry.second << "'";
 			valuesToJson << ",";
 		}
 		//PrintToConsole(valuesToJson.str());
 		valuesToJson.seekp(-1, valuesToJson.cur); valuesToJson << "}";
 		saveProjExState("RENDEREDFILES", valuesToJson.str(), name, rProj);
 	}
-}
-
-std::vector<std::string> CreateImportWindow::GetRenderOutputFilesFromProjExState(ReaProject* rProj)
-{
-	std::vector<std::string> tempListValues;
-	//auto rProj = GetReaProjectFromProjectName(job.ParentReaperProject);
-	if (rProj != nullptr) {
-
-		std::string svalue = "";
-		
-		std::string name = "CSGTransferRenderedFiles";
-		//svalue = getProjExState("Transfer", "CSGTransferSettings");
-		svalue = getProjExState("RENDEREDFILES", name, rProj);
-
-			if (svalue.empty()) { return tempListValues; }
-
-		char* pch;
-		printf("Splitting string \"%s\" into tokens:\n", svalue.c_str());
-		//char delims[] = "\n !@#$%^&*)(_+-=][}{|:;'<>?,./\"\\";
-		char delims[] = "{,}";
-		pch = strtok(&svalue[0], delims);
-
-		while (pch != NULL)
-		{
-			printf("%s\n", pch);
-			std::string value = std::string(pch);
-			value.erase(std::remove(value.begin(), value.end(), '\''), value.end());
-
-
-			tempListValues.push_back(value);
-			pch = strtok(NULL, delims);
-		}
-	}
-
-	return tempListValues;
 }

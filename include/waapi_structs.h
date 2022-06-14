@@ -42,7 +42,7 @@ struct RenderJobFileOverride
 	bool OrigDirMatchesWwise = false;
 	std::string userOrigsSubDir;
 	bool hasImported = false;
-	std::string createEventOption;
+	int createEventOption;
 	IMPORT_TYPE EimportType;
 	WwiseObject Template;
 };
@@ -61,7 +61,7 @@ struct RenderQueJob
 	std::string userOrigsSubDir;
 	bool hasPerFileOverrides = false;
 	std::map<std::string, RenderJobFileOverride> perFileOverridesmap;
-	std::string createEventOption;
+	int createEventOption;
 	IMPORT_TYPE EimportType;
 	WwiseObject Template;
 	
@@ -124,7 +124,7 @@ struct ImportObjectArgs {
 	std::vector<std::pair<std::string, std::string>> ImportFileList;
 	std::string importOperation = "useExisting";
 	std::string objectType;
-	int eventCreateOption = 0; // 0 = no event, 1 = children, 2 = parent
+	int eventCreateOption = 0; // 0 = no event, 1 = play parent, 2 = play per sound
 	std::string Workunit = "";
 	std::string Notes = "";
 	std::string SourceReaperProject = "";

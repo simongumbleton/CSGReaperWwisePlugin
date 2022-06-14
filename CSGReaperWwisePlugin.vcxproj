@@ -102,6 +102,7 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\platformhelpers.cpp" />
     <ClCompile Include="src\ReaperRenderQueParser.cpp" />
+    <ClCompile Include="src\Reaper_ExtState_Helper.cpp" />
     <ClCompile Include="src\RegionMetadataHelper.cpp" />
     <ClCompile Include="src\WaapiConnect.cpp" />
     <ClCompile Include="src\WaapiFunctions.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="include\rapidjson\writer.h" />
     <ClInclude Include="include\reaperHelpers.h" />
     <ClInclude Include="include\ReaperRenderQueParser.h" />
+    <ClInclude Include="include\Reaper_ExtState_Helper.h" />
     <ClInclude Include="include\reaper_plugin.h" />
     <ClInclude Include="include\reaper_plugin_functions.h" />
     <ClInclude Include="include\RegionMetadataHelper.h" />

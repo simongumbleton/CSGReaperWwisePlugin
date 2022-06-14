@@ -6,6 +6,7 @@
 #include "reaperHelpers.h"
 
 #include "WwiseConnectionHandler.h"
+#include "Reaper_ExtState_Helper.h"
 
 #include <iomanip>
 #include <cstdlib>
@@ -116,12 +117,28 @@ void ProjectRegionMetadataHelper::getMasterRegionForRegion(RegionInfo &rinfo)
 void ProjectRegionMetadataHelper::getEventsForRegion(RegionInfo& rinfo)
 {
 	rinfo.events.clear();
+	std::unordered_map<std::string, float> RenderedWavs = EXTSTATE::GetRenderOutputFilesFromProjExState(nullptr);//current project
 	for (auto event : GetEventListFromProjExtState())
 	{
 		size_t found = PLATFORMHELPERS::stringToLower(event).find(PLATFORMHELPERS::stringToLower(rinfo.name));
 		if (found != std::string::npos)
 		{
-			rinfo.events.insert(event);
+			//found a region that could match an event. Check if we have a matching rendered audio file with a timecode reference
+			for (auto& wav : RenderedWavs)
+			{
+				auto fileName = std::filesystem::path(wav.first).replace_extension("").string();
+				size_t found = PLATFORMHELPERS::stringToLower(event).find(PLATFORMHELPERS::stringToLower(fileName));
+				if (found != event.npos)
+				{
+					//Event name contains the filename, so it must be Play_<filename>. See if the saved time reference matches this region
+					auto timeRef = wav.second;
+					if (doesRegionContainTime(rinfo.name,timeRef))
+					{
+						//The wav time ref falls within this regions bounds
+						rinfo.events.insert(event);
+					}
+				}
+			}
 		}
 	}
 }

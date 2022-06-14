@@ -383,7 +383,7 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 					fileOverride.parentWwiseObject = selectedParent;
 					fileOverride.isVoice = CheckIsVoice();
 					fileOverride.EimportType = GetImportType();
-					fileOverride.createEventOption = dd_EventOption->getText().toStdString();
+					fileOverride.createEventOption = dd_EventOption->getSelectedId() -1;// dd_EventOption->getText().toStdString();
 					fileOverride.OrigDirMatchesWwise = CheckOriginalsDirectory();
 
 					std::vector<WwiseObject> templates = thisCreateImportWindow->GetTemplateWwiseObjects(myConfig.templatePath);
@@ -425,7 +425,7 @@ void TransferToWwiseComponent::ApplySettingsToSelectedJobs() {
 					renderJob.isVoice = CheckIsVoice();
 					renderJob.EimportType = GetImportType();
 
-					renderJob.createEventOption = dd_EventOption->getText().toStdString();
+					renderJob.createEventOption = dd_EventOption->getSelectedId() - 1 ;//dd_EventOption->getText().toStdString();
 
 					renderJob.OrigDirMatchesWwise = CheckOriginalsDirectory();
 

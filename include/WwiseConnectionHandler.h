@@ -246,7 +246,7 @@ public:
 	ImportObjectArgs SetupImportArgs(WwiseObject parent, IMPORT_TYPE importType, std::string ImportLanguage,
 									 bool OrigsDirMatchesWwise, std::string userOrigSubDir,
 									 std::vector<std::string> ImportFiles,
-									 std::string eventCreateOption,
+									 int eventCreateOption,
 									 std::string SourceReaperProj = "",
 									 std::string Notes = "",
 									 WwiseObject Template = WwiseObject());
@@ -285,7 +285,7 @@ public:
 
 	void SaveRenderOutputFilesToProjExState(RenderQueJob& job);
 
-	std::vector<std::string> GetRenderOutputFilesFromProjExState(ReaProject* rProj);
+	std::unordered_map<std::string, float> GetRenderOutputFilesFromProjExState(ReaProject* rProj);
 
 	//INT_PTR CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
