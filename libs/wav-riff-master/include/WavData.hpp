@@ -65,6 +65,14 @@ public:
   void read(const std::string &fn);
 
   /**
+ * @brief Reads all defined chunks from a binary file and prints them out
+ * Chunks that are read but not defined are stored as undefined chunks.
+ * @param std::string filename
+ * @param bool print or not
+ */
+  void readQuick_Chunk(const std::string& fn, const std::string chunkName);
+  
+  /**
    * @brief Writes all defined and undefined chunks to a binary file
    * @param std::string filename
    * @param bool to drop or not drop undefined trunks when writing

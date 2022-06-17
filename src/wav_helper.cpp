@@ -14,7 +14,8 @@ void WAV::ReadBextChunk(std::string inFile)
     uint64_t timeTotal = 0;
 
     WavData* wav = new WavData();
-    wav->read(inFile);
+    //wav->read(inFile);
+    wav->readQuick_Chunk(inFile, "bext");
     auto bextChunk = wav->getChunk("bext");
     for (auto field : bextChunk->getAllFields())
     {
@@ -50,7 +51,8 @@ float WAV::GetBWFTimecode_Seconds(std::string inFile)
     int sampleRate = GetBWFSampleRate(inFile);
 
     WavData* wav = new WavData();
-    wav->read(inFile);
+    //wav->read(inFile);
+    wav->readQuick_Chunk(inFile, "bext");
     auto bextChunk = wav->getChunk("bext");
     for (auto field : bextChunk->getAllFields())
     {
@@ -83,7 +85,8 @@ uint32_t WAV::GetBWFSampleRate(std::string inFile)
 {
     uint32_t sampleRate = 0;
     WavData* wav = new WavData();
-    wav->read(inFile);
+    //wav->read(inFile);
+    wav->readQuick_Chunk(inFile, "fmt ");
     auto fmtChunk = wav->getChunk("fmt "); // here "fmt " must include a space as this is how its defined in WavData?????
     for (auto field : fmtChunk->getAllFields())
     {

@@ -222,6 +222,37 @@ void WavData::read(const std::string &fn) {
   r_.close();
 }
 
+void WavData::readQuick_Chunk(const std::string& fn, const std::string chunkName) {
+    resetData();
+    r_.open(fn, std::ifstream::binary);
+    assert(r_.is_open());
+
+    // RIFF check
+    auto riff = chunks_["RIFF"];
+    std::string data;
+    readBytes(ID_SIZE, data);
+    if (data.compare(0, ID_SIZE, "RIFF"))
+        throw std::string("Not a RIFF compliant file format\n");
+    readBytes(CK_SIZE_BYTES, data);
+    unsigned int ckSize = toType<unsigned int>(data);
+    readBytes(4, data);
+    if (data.compare(0, ID_SIZE, "WAVE"))
+        throw std::string("Not an adequate wav file format\n");
+
+    // Reading chunks
+    while (!r_.eof()) {
+        readBytes(ID_SIZE, data);
+        auto chunk_name = data;
+        readChunk(data);
+        if (chunk_name == chunkName)
+        {
+            printf("Found chunk");
+            break;
+        }
+    }
+    r_.close();
+}
+
 void WavData::write(const std::string &fn, bool writeUndefinedChunks) {
   assert(exists("RIFF") && exists("fmt ") && exists("data") && exists("fact"));
   w_.open(fn, std::ios::binary);
