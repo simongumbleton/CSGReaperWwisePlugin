@@ -28,7 +28,7 @@ static std::string GetPluginVersionAsString(double Vnumber)
 
 // Track plugin versions as one value instead of individual components
 namespace GlobalPlugin {
-	static const double pluginVersionNumber = 1.11;
+	static const double pluginVersionNumber = 1.12;
 
 	static std::string GetPluginVersionString()
 	{
