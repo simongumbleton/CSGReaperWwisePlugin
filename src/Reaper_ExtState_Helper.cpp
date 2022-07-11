@@ -1,5 +1,19 @@
 #include "Reaper_ExtState_Helper.h"
 
+
+std::string EXTSTATE::transferSettingsName = "CSGTransferSettings";
+
+std::string EXTSTATE::edlSettingsName = "CSGEDLSettings";
+
+std::string EXTSTATE::regionMetadataSettingsName = "CSGRegionMetadataSettings";
+
+std::string EXTSTATE::renderedFilesName = "CSGTransferRenderedFiles";
+
+std::string EXTSTATE::transferEventsName = "CSGTransferWwiseEvents";
+
+
+
+
 std::unordered_map<std::string, float> EXTSTATE::GetRenderOutputFilesFromProjExState(ReaProject* rProj)
 {
 	std::vector<std::string> tempListValues;
@@ -14,7 +28,7 @@ std::unordered_map<std::string, float> EXTSTATE::GetRenderOutputFilesFromProjExS
 
 		std::string svalue = "";
 
-		std::string name = "CSGTransferRenderedFiles";
+		std::string name = EXTSTATE::renderedFilesName;// "CSGTransferRenderedFiles";
 		//svalue = getProjExState("Transfer", "CSGTransferSettings");
 		svalue = getProjExState("RENDEREDFILES", name, rProj);
 

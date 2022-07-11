@@ -23,6 +23,7 @@
 #include "GUI.h"
 #include "gui_Transfer.h"
 #include "gui_RegionMetadata.h"
+#include "gui_ExtState.h"
 
 #include "reaperHelpers.h"
 #include "platformhelpers.h"
@@ -49,21 +50,25 @@ bool transferWindowStatus = false;
 bool templateWindowStatus = false;
 bool edlWindowStatus = false;
 bool assemblerWindowStatus = false;
+bool extStateWindowStatus = false;
 juce::DocumentWindow * currentTransferWindow = nullptr;
 juce::DocumentWindow * currentTemplateWindow = nullptr;
 juce::DocumentWindow * currentEDLWindow = nullptr;
 juce::DocumentWindow* currentAssemblerWindow = nullptr;
+juce::DocumentWindow* currentExtStateWindow = nullptr;
 
 gaccel_register_t Transfer_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Transfer To Wwise" };
 gaccel_register_t Template_To_Wwise = { { 0, 0, 0 }, "CSG Ext - Region Metadata" };
 gaccel_register_t EDL_Window = { { 0, 0, 0 }, "CSG Ext - EDL Conformer" };
 gaccel_register_t Assembler_Window = { { 0, 0, 0 }, "CSG Ext - EDL Assembler" };
+gaccel_register_t ExtState_Window = { { 0, 0, 0 }, "CSG Ext - Ext State" };
 
 
 void LaunchTransferWindow();
 void LaunchTemplateWindow();
 void LaunchEDLWindow();
 void LaunchAssemblerWindow();
+void LaunchExtStateWindow();
 bool HookCommandProc(int command, int flag);
 static void menuHook(const char *name, HMENU handle, const int f);
 static void AddCustomCSGMenuItems(HMENU parentMenuHandle = NULL);
@@ -94,12 +99,14 @@ REAPER_PLUGIN_DLL_EXPORT int REAPER_PLUGIN_ENTRYPOINT(REAPER_PLUGIN_HINSTANCE hI
 		REGISTER_AND_CHKERROR(Template_To_Wwise.accel.cmd, "command_id", "CSG_Ext_RegionMetadata");
 		REGISTER_AND_CHKERROR(EDL_Window.accel.cmd, "command_id", "CSG_Ext_EDLConformer");
 		REGISTER_AND_CHKERROR(Assembler_Window.accel.cmd, "command_id", "CSG_Ext_EDLAssembler");
+		REGISTER_AND_CHKERROR(ExtState_Window.accel.cmd, "command_id", "CSG_Ext_ExtState");
 		
 		//register our custom actions
 		plugin_register("gaccel", &Transfer_To_Wwise.accel);
 		plugin_register("gaccel", &Template_To_Wwise.accel);
 		plugin_register("gaccel", &EDL_Window.accel);
 		plugin_register("gaccel", &Assembler_Window.accel);
+		plugin_register("gaccel", &ExtState_Window.accel);
 		
 		//hook command is where we process command IDs and launch our custom actions
 		rec->Register("hookcommand", (void*)HookCommandProc);
@@ -489,6 +496,21 @@ void LaunchTemplateWindow()
 	
 }
 
+void LaunchExtStateWindow()
+{
+	initialiseJuce_GUI();
+	MessageManagerLock mml(Thread::getCurrentThread());
+
+	if (extStateWindowStatus)
+	{
+		currentExtStateWindow->toFront(true);
+	}
+	else
+	{
+		currentExtStateWindow = new ExtStateGuiWindow("Ext State", &extStateWindowStatus);
+	}
+}
+
 void bringWindowsToFront()
 {
 	if (currentTransferWindow && transferWindowStatus)
@@ -507,6 +529,10 @@ void bringWindowsToFront()
 	{
 		currentAssemblerWindow->toFront(true);
 	}
+	if (currentExtStateWindow && extStateWindowStatus)
+	{
+		currentExtStateWindow->toFront(true);
+	}
 }
 
 
@@ -517,6 +543,7 @@ void ClearCurrentWindowPtr()
 	currentTemplateWindow = nullptr;
 	currentEDLWindow = nullptr;
 	currentAssemblerWindow = nullptr;
+	currentExtStateWindow = nullptr;
 }
 
 bool HookCommandProc(int command, int flag)
@@ -541,6 +568,11 @@ bool HookCommandProc(int command, int flag)
 	else if (command == Assembler_Window.accel.cmd)
 	{
 		LaunchAssemblerWindow();
+		return true;
+	}
+	else if (command == ExtState_Window.accel.cmd)
+	{
+		LaunchExtStateWindow();
 		return true;
 	}
 	return false;
@@ -578,6 +610,10 @@ static void AddCustomCSGMenuItems(HMENU parentMenuHandle)
 
 	mi.wID = Assembler_Window.accel.cmd;
 	mi.dwTypeData = (char*)"Unreal EDL Assembler";
+	InsertMenuItem(hMenu, 0, true, &mi);
+
+	mi.wID = ExtState_Window.accel.cmd;
+	mi.dwTypeData = (char*)"Reaper Ext State";
 	InsertMenuItem(hMenu, 0, true, &mi);
 
 	if (!parentMenuHandle)

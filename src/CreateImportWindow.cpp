@@ -1487,7 +1487,7 @@ bool CreateImportWindow::DoesTemplatePathExist(std::string templateWwisePath) {
 }
 
 void CreateImportWindow::SaveSettingsToExtState() {
-	std::string name = "CSGTransferSettings";
+	std::string name = EXTSTATE::transferSettingsName;// "CSGTransferSettings";
 	std::stringstream valuesToJson;
 	//"{ 'id': 1234, 'name': 'nandini' }"
 	valuesToJson << '{';
@@ -1510,7 +1510,7 @@ void CreateImportWindow::LoadSettingsFromExtState() {
 	
 	std::string svalue = "";
 	std::vector<std::string> tempListValues;
-	std::string name = "CSGTransferSettings";
+	std::string name = EXTSTATE::transferSettingsName;// "CSGTransferSettings";
 	//svalue = getProjExState("Transfer", "CSGTransferSettings");
 	svalue = getGlobalExtState(name);
 	

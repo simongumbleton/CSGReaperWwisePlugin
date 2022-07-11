@@ -18,6 +18,7 @@
 #include <fstream>
 #include <algorithm>
 #include <unordered_map>
+#include "Reaper_ExtState_Helper.h"
 
 
 
@@ -1084,7 +1085,7 @@ float EDLconformer::GetNewEndTime() {
 }
 
 void EDLconformer::SaveSettingsToExtState() { 
-	std::string name = "CSGEDLSettings";
+	std::string name = EXTSTATE::edlSettingsName;// "CSGEDLSettings";
 	std::stringstream valuesToJson;
 	//"{ 'id': 1234, 'name': 'nandini' }"
 	valuesToJson << '{';
@@ -1103,7 +1104,7 @@ void EDLconformer::LoadSettingsFromExtState() {
 	
 	std::string svalue = "";
 	std::vector<std::string> tempListValues;
-	std::string name = "CSGEDLSettings";
+	std::string name = EXTSTATE::edlSettingsName;//"CSGEDLSettings";
 	//svalue = getProjExState("EDL", "CSGEDLSettings");
 	svalue = getGlobalExtState(name);
 	

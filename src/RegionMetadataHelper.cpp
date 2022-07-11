@@ -87,12 +87,12 @@ bool ProjectRegionMetadataHelper::isMasterRegion_Info(RegionInfo &regionInfo)
 
 void ProjectRegionMetadataHelper::getProjectMasterRegions()
 {
-	MasterRegions.empty();
+	MasterRegions.clear();
 	for (auto &region : ProjectRegions)
 	{
 		if (isMasterRegion_Name(region.first))
 		{
-			ProjectRegions[region.first].children.empty();
+			ProjectRegions[region.first].children.clear();
 			MasterRegions.emplace(region);
 		}
 	}
@@ -275,7 +275,7 @@ std::vector<std::string> ProjectRegionMetadataHelper::GetEventListFromProjExtSta
 {
 	std::string svalue = "";
 	std::vector<std::string> tempListValues;
-	svalue = getProjExState("EVENTS", "CSGTRANSFERWWISEEVENTS",inProject);
+	svalue = getProjExState("EVENTS", EXTSTATE::transferEventsName,inProject);//"CSGTRANSFERWWISEEVENTS"
 	if (!svalue.empty())
 	{
 		char* pch;

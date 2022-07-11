@@ -9,6 +9,7 @@
 #include "gui_settings.h"
 #include "image_helper.h"
 #include <iostream>
+#include "Reaper_ExtState_Helper.h"
 
 
 SettingsButton::SettingsButton(const String & name)
@@ -430,7 +431,7 @@ void TransferSettingsCmp::LoadSettingsFromExtState()
 {
 	std::string svalue = "";
 	std::vector<std::string> tempListValues;
-	std::string name = "CSGTransferSettings";
+	std::string name = EXTSTATE::transferSettingsName;// "CSGTransferSettings";
 	//svalue = getProjExState("Transfer", "CSGTransferSettings");
 	svalue = getGlobalExtState(name);
 
@@ -471,7 +472,7 @@ void TransferSettingsCmp::LoadSettingsFromExtState()
 }
 void TransferSettingsCmp::SaveSettingsToExtState()
 {
-	std::string name = "CSGTransferSettings";
+	std::string name = EXTSTATE::transferSettingsName;//"CSGTransferSettings";
 	std::stringstream valuesToJson;
 	//"{ 'id': 1234, 'name': 'nandini' }"
 	valuesToJson << '{';

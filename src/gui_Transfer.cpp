@@ -5,6 +5,7 @@
 #include "RegionMetadataHelper.h"
 #include <filesystem>
 #include <mutex>
+#include "Reaper_ExtState_Helper.h"
 
 StringArray TransferToWwiseComponent::ToJuceStringArray(std::vector<std::string> strings)
 {
@@ -840,7 +841,7 @@ void TransferToWwiseComponent::SaveEventsToExState(ReaProject* inProject)
 
 	GetExistingEventsFromExState(inProject);
 
-	std::string name = "CSGTransferWwiseEvents";
+	std::string name = EXTSTATE::transferEventsName;// "CSGTransferWwiseEvents";
 	std::stringstream valuesToJson;
 	//"{ 'id': 1234, 'name': 'nandini' }"
 	valuesToJson << '{';

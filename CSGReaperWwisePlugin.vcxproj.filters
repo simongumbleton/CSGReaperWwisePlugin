@@ -111,6 +111,9 @@
     <ClCompile Include="src\Reaper_ExtState_Helper.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui_ExtState.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\JUCE\include_juce_core.mm">
@@ -341,6 +344,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Reaper_ExtState_Helper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gui_ExtState.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

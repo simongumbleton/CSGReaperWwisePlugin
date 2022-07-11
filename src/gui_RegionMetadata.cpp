@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <mutex>
 #include "RegionMetadataHelper.h"
+#include "Reaper_ExtState_Helper.h"
 
 
 StringArray RegionMetadataComponent::ToJuceStringArray(std::vector<std::string> strings)
@@ -357,7 +358,7 @@ void RegionMetadataComponent::LaunchSettingsWindow()
 }
 
 void RegionMetadataComponent::SaveSettingsToExtState() { 
-	std::string name = "CSGRegionMetadataSettings";
+	std::string name = EXTSTATE::regionMetadataSettingsName;// "CSGRegionMetadataSettings";
 	std::stringstream valuesToJson;
 	//"{ 'id': 1234, 'name': 'nandini' }"
 	
@@ -378,7 +379,7 @@ void RegionMetadataComponent::SaveSettingsToExtState() {
 void RegionMetadataComponent::LoadSettingsFromExtState() { 
 	std::string svalue = "";
 	std::vector<std::string> tempListValues;
-	std::string name = "CSGRegionMetadataSettings";
+	std::string name = EXTSTATE::regionMetadataSettingsName;//"CSGRegionMetadataSettings";
 	//svalue = getProjExState("Transfer", "CSGTransferSettings");
 	svalue = getGlobalExtState(name);
 	
