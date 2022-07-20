@@ -1540,7 +1540,7 @@ void CreateImportWindow::LoadSettingsFromExtState() {
 	}
 	
 	TransferComponentSettings.waapiport = std::stoi(tempListValues[0]);
-	istringstream(tempListValues[1]) >> std::boolalpha >> TransferComponentSettings.useAtomationMode;
+	std::istringstream(tempListValues[1]) >> std::boolalpha >> TransferComponentSettings.useAtomationMode;
 	TransferComponentSettings.userorigsubdir = tempListValues[2];
 	TransferComponentSettings.templatePath = tempListValues[3];
 	TransferComponentSettings.versionToken = tempListValues[4];

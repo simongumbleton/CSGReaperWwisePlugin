@@ -12,7 +12,7 @@
 #include "ConfigFileHandler.h"
 #include "platformhelpers.h"
 
-using namespace std;
+//using namespace std;
 
 std::map<std::string, std::string> configFileDefaults = {
 	{"waapiPort","8080"},
@@ -25,16 +25,16 @@ std::map<std::string, std::string> configFileDefaults = {
 
 // MyMap myMap = { {"hello", 42}, {"world", 88} };
 	 
-string configFileDir = "";
-map<string, string> rawConfigData;
+std::string configFileDir = "";
+std::map<std::string, std::string> rawConfigData;
 
 
 bool ReadConfigFile(config & outConfig)
 {
-	string reaperPath = GetReaperResourcePath();
+	std::string reaperPath = GetReaperResourcePath();
 	configFileDir = reaperPath + PLATFORMHELPERS::kPathSeparator + "UserPlugins";
 
-	ifstream configFile;
+	std::ifstream configFile;
 	CheckConfigExists();
 
 	configFile.open(configFileDir + PLATFORMHELPERS::kPathSeparator + "csg_reaperwwise.config");
@@ -99,7 +99,7 @@ bool ReadConfigFile(config & outConfig)
 
 bool CheckConfigExists()
 {
-	ifstream outFile(configFileDir + PLATFORMHELPERS::kPathSeparator +"csg_reaperwwise.config");
+	std::ifstream outFile(configFileDir + PLATFORMHELPERS::kPathSeparator +"csg_reaperwwise.config");
 	if (!outFile.is_open())
 	{
 		CreateConfigFile();
@@ -109,7 +109,7 @@ bool CheckConfigExists()
 
 bool CreateConfigFile()
 {
-	ofstream newFile;
+	std::ofstream newFile;
 	newFile.open(configFileDir + PLATFORMHELPERS::kPathSeparator + "csg_reaperwwise.config");
 	for (auto entry : configFileDefaults)
 	{
@@ -120,12 +120,12 @@ bool CreateConfigFile()
 	return true;
 }
 
-bool insertDefaultValueInConfig(string Key)
+bool insertDefaultValueInConfig(std::string Key)
 {
 	bool result = false;
 	if (configFileDefaults.find(Key) != configFileDefaults.end())
 	{
-		ofstream configFile;
+		std::ofstream configFile;
 		CheckConfigExists();
 		configFile.open(configFileDir + PLATFORMHELPERS::kPathSeparator + "csg_reaperwwise.config",std::ofstream::out | std::ofstream::app);
 		configFile << Key << "=" << configFileDefaults.at(Key) << "\n";

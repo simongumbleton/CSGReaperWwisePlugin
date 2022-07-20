@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
+//using namespace std;
 
 struct config
 {
@@ -21,4 +21,4 @@ bool ReadConfigFile(config& outConfig);
 // PRIVATE internal helper functions
 bool CheckConfigExists();
 bool CreateConfigFile();
-bool insertDefaultValueInConfig(string Key);
+bool insertDefaultValueInConfig(std::string Key);

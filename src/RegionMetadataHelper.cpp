@@ -19,7 +19,7 @@
 
 
 
-using namespace std;
+//using namespace std;
 
 
 ProjectRegionMetadataHelper::ProjectRegionMetadataHelper()
@@ -252,7 +252,7 @@ json ProjectRegionMetadataHelper::RegionInfoToJson(RegionInfo& rinfo)
 bool ProjectRegionMetadataHelper::CreateProjectRegionJsonFile(std::string filename, json data)
 {
 
-	ofstream newFile;
+	std::ofstream newFile;
 	newFile.open(filename, std::ofstream::out | std::ofstream::trunc);
 
 	if (!newFile.good()) 

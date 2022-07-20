@@ -146,7 +146,7 @@ void TransferToWwiseComponent::InitAllButtons(std::vector<juce::Button *> button
 	}
 }
 
-void TransferToWwiseComponent::InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices,string displayText)
+void TransferToWwiseComponent::InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices, std::string displayText)
 {
 	comboBox->clear();
 	comboBox->addItemList(ToJuceStringArray(choices),1);
@@ -635,7 +635,7 @@ void TransferToWwiseComponent::RefreshRenderJobTree()
 	for (auto RenderJob : thisCreateImportWindow->GlobalListOfRenderQueJobs)
 	{
 		//Add the job to the tree
-		string jobPath = RenderJob.RenderQueFilePath;
+		std::string jobPath = RenderJob.RenderQueFilePath;
 		RenderQueJobTreeItem* job = new RenderQueJobTreeItem(jobPath);
 		
 		for (auto renderFile : RenderJob.RenderQueJobFileList)

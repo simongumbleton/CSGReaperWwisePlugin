@@ -37,7 +37,7 @@ public:
 
 	void InitAllButtons(std::vector<juce::Button *> buttons);
 
-	void InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices, string displayText);
+	void InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices, std::string displayText);
 	
 	void handleUI_B_CreateObject();
 	

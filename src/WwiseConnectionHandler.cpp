@@ -342,9 +342,9 @@ bool WwiseConnectionHandler::GetWwiseProjectGlobals(bool suppressOutputMessages,
 
 	if (Results.size() != 0)
 	{
-		WwiseProjGlobals.DefaultLanguage = string(Results[0]["@DefaultLanguage"].GetVariant());
-		WwiseProjGlobals.ProjectName = string(Results[0]["name"].GetVariant());
-		WwiseProjGlobals.ProjectPath = string(Results[0]["filePath"].GetVariant());
+		WwiseProjGlobals.DefaultLanguage = std::string(Results[0]["@DefaultLanguage"].GetVariant());
+		WwiseProjGlobals.ProjectName = std::string(Results[0]["name"].GetVariant());
+		WwiseProjGlobals.ProjectPath = std::string(Results[0]["filePath"].GetVariant());
 		
 #ifndef _WIN32 //Not windows! Wwise gives crappy paths on mac e.g.
 		//replace("Y:", "~").replace('\\', '/')

@@ -143,7 +143,7 @@ void CreateWwiseComponent::InitAllButtons(std::vector<juce::Button *> buttons)
 	}
 }
 
-void CreateWwiseComponent::InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices,string displayText)
+void CreateWwiseComponent::InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices, std::string displayText)
 {
 	comboBox->clear();
 	comboBox->addItemList(ToJuceStringArray(choices),1);

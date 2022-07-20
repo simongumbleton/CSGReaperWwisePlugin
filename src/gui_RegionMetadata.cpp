@@ -122,7 +122,7 @@ void RegionMetadataComponent::InitAllButtons(std::vector<juce::Button *> buttons
 	}
 }
 
-void RegionMetadataComponent::InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices,string displayText)
+void RegionMetadataComponent::InitComboBox(juce::ComboBox * comboBox, std::vector<std::string> choices, std::string displayText)
 {
 	comboBox->clear();
 	comboBox->addItemList(ToJuceStringArray(choices),1);
